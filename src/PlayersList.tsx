@@ -17,6 +17,7 @@ export const PlayersList = (props: PlayersListProps) => {
         fetch("http://localhost:8000/players")
             .then(res => res.json())
             .then((players: Player[]) => setPlayers(players))
+            .catch(err => console.error(err))
     }, [])
 
     return (
