@@ -3,7 +3,8 @@ import { List } from "semantic-ui-react"
 
 interface Player {
     id: number
-    name: string
+    username: string
+    displayName: string
 }
 
 interface PlayersListProps {
@@ -27,7 +28,7 @@ export const PlayersList = (props: PlayersListProps) => {
             <List>
                 {players.map(p => (
                     <List.Item>
-                        {p.name}
+                        <a href={`/players/${p.username}`}>{p.displayName}</a>
                     </List.Item>
                 ))}
             </List>
