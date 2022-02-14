@@ -1,6 +1,7 @@
 import { Tab } from "semantic-ui-react"
 
 import { PlayersPage } from "./PlayersPage"
+import { ResultsPage } from "./ResultsPage"
 
 import "./App.css"
 
@@ -11,6 +12,14 @@ const App = () => {
             render: () => (
                 <Tab.Pane attached={false}>
                     <PlayersPage />
+                </Tab.Pane>
+            )
+        },
+        {
+            menuItem: "Results",
+            render: () => (
+                <Tab.Pane attached={false}>
+                    <ResultsPage />
                 </Tab.Pane>
             )
         },

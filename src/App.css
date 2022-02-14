@@ -56,3 +56,13 @@
   height: max(500px, 50vh);
   color: black;
 }
+
+.results-page {
+  display: flex;
+}
+
+.results-list {
+  width: max(500px, 50vw);
+  height: max(500px, 50vh);
+  color: black;
+}
