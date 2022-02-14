@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Form } from "semantic-ui-react"
 
 interface AddPlayerProps {
-    addedPlayer: () => void
+    onAddedPlayer: () => void
 }
 
 export const AddPlayer = (props: AddPlayerProps) => {
@@ -20,7 +20,7 @@ export const AddPlayer = (props: AddPlayerProps) => {
                 "Content-Type": "application/json"
             }
         })
-            .then(props.addedPlayer)
+            .then(props.onAddedPlayer)
             .then(() => setUsername(""))
             .then(() => setDisplayName(""))
     }

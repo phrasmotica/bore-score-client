@@ -4,7 +4,7 @@ import { Player } from "./Player"
 
 interface PlayerDetailsProps {
     player: Player
-    deletedPlayer: () => void
+    onDeletedPlayer: () => void
 }
 
 export const PlayerDetails = (props: PlayerDetailsProps) => {
@@ -12,7 +12,7 @@ export const PlayerDetails = (props: PlayerDetailsProps) => {
         fetch(`http://localhost:8000/players/${props.player.username}`, {
             method: "DELETE"
         })
-            .then(props.deletedPlayer)
+            .then(props.onDeletedPlayer)
     }
 
     return (

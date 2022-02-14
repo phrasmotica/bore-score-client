@@ -11,28 +11,31 @@ export const PlayersPage = () => {
     const [selectedPlayer, setSelectedPlayer] = useState<string>()
     const [showAddPlayer, setShowAddPlayer] = useState(false)
 
-    useEffect(() => {
-        fetchPlayers()
-            .then(setPlayers)
-    }, [showAddPlayer, selectedPlayer])
+    const fetchAndSetPlayers = () => {
+        fetchPlayers().then(setPlayers)
+    }
+
+    useEffect(fetchAndSetPlayers, [])
 
     const getSelectedPlayer = () => players.find(p => p.username === selectedPlayer)
 
-    const setSelectedPlayerHandler = (username: string | undefined) => {
-        setSelectedPlayer(username)
-        setShowAddPlayer(false)
+    const onAddedPlayer = fetchAndSetPlayers
+
+    const onDeletedPlayer = () => {
+        fetchAndSetPlayers()
+        setSelectedPlayer(undefined)
     }
 
     const renderDetails = () => {
         if (showAddPlayer) {
-            return <AddPlayer addedPlayer={() => setShowAddPlayer(false)} />
+            return <AddPlayer onAddedPlayer={onAddedPlayer} />
         }
 
         if (selectedPlayer !== undefined) {
             return (
                 <PlayerDetails
                     player={getSelectedPlayer()!}
-                    deletedPlayer={() => setSelectedPlayer(undefined)} />
+                    onDeletedPlayer={onDeletedPlayer} />
             )
         }
 
@@ -41,6 +44,11 @@ export const PlayersPage = () => {
                 <h2>No player selected</h2>
             </div>
         )
+    }
+
+    const setSelectedPlayerHandler = (username: string | undefined) => {
+        setSelectedPlayer(username)
+        setShowAddPlayer(false)
     }
 
     return (
