@@ -46,11 +46,6 @@
   width: 120px;
 }
 
-.player-card {
-  padding: 2px;
-  border-radius: 5px;
-}
-
 .player-details {
   width: max(500px, 50vw);
   height: max(500px, 50vh);
