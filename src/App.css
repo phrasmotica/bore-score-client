@@ -44,9 +44,16 @@
 .players-list {
   text-align: end;
   width: 120px;
+  margin-right: 10px;
 }
 
 .player-details {
+  width: max(500px, 50vw);
+  height: max(500px, 50vh);
+  color: black;
+}
+
+.add-player {
   width: max(500px, 50vw);
   height: max(500px, 50vh);
   color: black;
