@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { Header, Icon, Menu } from "semantic-ui-react"
 
 import { AddPlayer } from "./AddPlayer"
 import { fetchPlayers } from "../FetchHelpers"
@@ -51,13 +52,28 @@ export const PlayersPage = () => {
         setShowAddPlayer(false)
     }
 
+    const setAddPlayerHandler = (active: boolean) => {
+        setShowAddPlayer(active)
+        setSelectedPlayer(undefined)
+    }
+
     return (
         <div className="players-page">
-            <PlayersList
-                players={players}
-                selectedPlayer={selectedPlayer}
-                setSelectedPlayer={setSelectedPlayerHandler}
-                setAddPlayer={() => setShowAddPlayer(true)} />
+            <div className="sidebar">
+                <Menu vertical>
+                    <Menu.Item
+                        active={showAddPlayer}
+                        onClick={() => setAddPlayerHandler(true)}>
+                        <Icon name="add user" />
+                        Add Player
+                    </Menu.Item>
+                </Menu>
+
+                <PlayersList
+                    players={players}
+                    selectedPlayer={selectedPlayer}
+                    setSelectedPlayer={setSelectedPlayerHandler} />
+            </div>
 
             {renderDetails()}
         </div>

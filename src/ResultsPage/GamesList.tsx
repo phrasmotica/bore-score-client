@@ -1,4 +1,4 @@
-import { Menu } from "semantic-ui-react"
+import { Icon, Menu } from "semantic-ui-react"
 
 import { GameCard } from "./GameCard"
 
@@ -23,9 +23,12 @@ export const GamesList = (props: GamesListProps) => {
     }
 
     return (
-        <div className="games-list">
+        <div className="games-menu">
             <Menu vertical>
-                <Menu.Item header>Filter by game</Menu.Item>
+                <Menu.Item header>
+                    <Icon name="game" />
+                    Filter by game
+                </Menu.Item>
 
                 {props.games.map(g => {
                     let resultCount = props.results.filter(r => r.gameId === g.id)
