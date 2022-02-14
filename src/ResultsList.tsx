@@ -10,7 +10,7 @@ export const ResultsList = () => {
     useEffect(() => {
         fetchResults()
             .then(setResults)
-    })
+    }, [])
 
     return (
         <div className="results-list">
