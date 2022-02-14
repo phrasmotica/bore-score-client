@@ -63,6 +63,11 @@
   display: flex;
 }
 
+.games-list  {
+  text-align: end;
+  margin-right: 10px;
+}
+
 .results-list {
   width: max(500px, 50vw);
   height: max(500px, 50vh);

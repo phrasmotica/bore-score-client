@@ -1,7 +1,8 @@
 import { List } from "semantic-ui-react"
 
-import { Player } from "../models/Player"
 import { PlayerCard } from "./PlayerCard"
+
+import { Player } from "../models/Player"
 
 interface PlayersListProps {
     players: Player[]
