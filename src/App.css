@@ -36,3 +36,23 @@
     transform: rotate(360deg);
   }
 }
+
+.players-page {
+  display: flex;
+}
+
+.players-list {
+  text-align: end;
+  width: 120px;
+}
+
+.player-card {
+  padding: 2px;
+  border-radius: 5px;
+}
+
+.player-details {
+  width: max(500px, 50vw);
+  height: max(500px, 50vh);
+  color: black;
+}

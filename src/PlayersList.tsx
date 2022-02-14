@@ -1,37 +1,24 @@
-import { useEffect, useState } from "react"
 import { List } from "semantic-ui-react"
 
-interface Player {
-    id: number
-    username: string
-    displayName: string
-}
+import { Player } from "./Player"
+import { PlayerCard } from "./PlayerCard"
 
 interface PlayersListProps {
-
+    players: Player[]
+    selectedPlayer: string | undefined
+    setSelectedPlayer: (username: string | undefined) => void
 }
 
-export const PlayersList = (props: PlayersListProps) => {
-    const [players, setPlayers] = useState<Player[]>([])
-
-    useEffect(() => {
-        fetch("http://localhost:8000/players")
-            .then(res => res.json())
-            .then((players: Player[]) => setPlayers(players))
-            .catch(err => console.error(err))
-    }, [])
-
-    return (
-        <div>
-            <h2>Players</h2>
-
-            <List>
-                {players.map(p => (
-                    <List.Item>
-                        <a href={`/players/${p.username}`}>{p.displayName}</a>
-                    </List.Item>
-                ))}
-            </List>
-        </div>
-    )
-}
+export const PlayersList = (props: PlayersListProps) => (
+    <div className="players-list">
+        <List divided relaxed selection>
+            {props.players.map(p => (
+                <PlayerCard
+                    key={p.username}
+                    player={p}
+                    setSelectedPlayer={props.setSelectedPlayer}
+                    isSelected={props.selectedPlayer === p.username} />
+            ))}
+        </List>
+    </div>
+)

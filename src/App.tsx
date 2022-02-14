@@ -1,25 +1,28 @@
-import { Route, Routes } from "react-router"
-import { BrowserRouter } from "react-router-dom"
+import { Tab } from "semantic-ui-react"
 
-import { PlayersList } from "./PlayersList"
-import { PlayerSummary } from "./PlayerSummary"
+import { PlayersPage } from "./PlayersPage"
 
 import "./App.css"
 
-const App = () => (
-    <div className="App">
-        <header className="App-header">
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/" element={<PlayersList />}>
-                    </Route>
+const App = () => {
+    const panes = [
+        {
+            menuItem: "Players",
+            render: () => (
+                <Tab.Pane attached={false}>
+                    <PlayersPage />
+                </Tab.Pane>
+            )
+        },
+    ]
 
-                    <Route path="/players/:username" element={<PlayerSummary />}>
-                    </Route>
-                </Routes>
-            </BrowserRouter>
-        </header>
-    </div>
-)
+    return (
+        <div className="App">
+            <header className="App-header">
+                <Tab menu={{ pointing: true }} panes={panes} />
+            </header>
+        </div>
+    )
+}
 
 export default App
