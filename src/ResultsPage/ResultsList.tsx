@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import { List } from "semantic-ui-react"
 
-import { fetchResults } from "./FetchHelpers"
-import { Result } from "./Result"
+import { fetchResults } from "../FetchHelpers"
+import { Result } from "../models/Result"
 
 export const ResultsList = () => {
     const [results, setResults] = useState<Result[]>([])

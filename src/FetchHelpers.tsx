@@ -1,5 +1,5 @@
-import { Player } from "./Player"
-import { Result } from "./Result"
+import { Player } from "./models/Player"
+import { Result } from "./models/Result"
 
 export const fetchPlayers = () => {
     return fetch("http://localhost:8000/players")

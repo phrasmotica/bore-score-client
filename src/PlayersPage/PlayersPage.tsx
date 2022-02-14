@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 
 import { AddPlayer } from "./AddPlayer"
-import { fetchPlayers } from "./FetchHelpers"
-import { Player } from "./Player"
+import { fetchPlayers } from "../FetchHelpers"
+import { Player } from "../models/Player"
 import { PlayerDetails } from "./PlayerDetails"
 import { PlayersList } from "./PlayersList"
 

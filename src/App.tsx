@@ -1,7 +1,7 @@
 import { Tab } from "semantic-ui-react"
 
-import { PlayersPage } from "./PlayersPage"
-import { ResultsPage } from "./ResultsPage"
+import { PlayersPage } from "./PlayersPage/PlayersPage"
+import { ResultsPage } from "./ResultsPage/ResultsPage"
 
 import "./App.css"
 

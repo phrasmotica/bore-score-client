@@ -1,6 +1,6 @@
 import { Button } from "semantic-ui-react"
 
-import { Player } from "./Player"
+import { Player } from "../models/Player"
 
 interface PlayerDetailsProps {
     player: Player
