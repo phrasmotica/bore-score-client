@@ -29,6 +29,12 @@
   color: black;
 }
 
+.add-player-page {
+  display: flex;
+  width: max(500px, 50vw);
+  height: max(500px, 50vh);
+}
+
 .add-player {
   width: 100%;
   color: black;

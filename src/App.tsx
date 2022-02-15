@@ -1,6 +1,7 @@
 import { Icon, Menu, Segment } from "semantic-ui-react"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 
+import { AddPlayerPage } from "./AddPlayerPage/AddPlayerPage"
 import { PlayersPage } from "./PlayersPage/PlayersPage"
 import { ResultsPage } from "./ResultsPage/ResultsPage"
 
@@ -21,6 +22,10 @@ const App = () => {
                             Players
                         </Menu.Item>
 
+                        <Menu.Item href="/add-player">
+                            Add Player
+                        </Menu.Item>
+
                         <Menu.Item href="/results">
                             Results
                         </Menu.Item>
@@ -30,7 +35,7 @@ const App = () => {
                         <BrowserRouter>
                             <Routes>
                                 <Route path="/" element={<PlayersPage />} />
-
+                                <Route path="/add-player" element={<AddPlayerPage />} />
                                 <Route path="/results" element={<ResultsPage />} />
                             </Routes>
                         </BrowserRouter>
