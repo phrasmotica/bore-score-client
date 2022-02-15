@@ -34,9 +34,35 @@
 }
 
 .add-player-page {
-  display: flex;
+  color: black;
   width: max(500px, 50vw);
   height: max(500px, 50vh);
+}
+
+.add-player-page .sidebar  {
+  text-align: end;
+  margin-right: 1rem;
+}
+
+/* next two classes from here: https://stackoverflow.com/a/25545957 */
+.players-list .ui.menu .item span.username {
+  color: grey;
+  float: right;
+}
+
+.players-list .ui.menu .item span.display-name {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.add-player-page-body {
+  display: flex;
+}
+
+.add-player-page-body > .ui.form {
+  width: 100%;
 }
 
 .add-player {

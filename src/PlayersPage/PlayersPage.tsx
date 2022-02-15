@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
 
 import { fetchPlayers } from "../FetchHelpers"
-import { Player } from "../models/Player"
 import { PlayerDetails } from "./PlayerDetails"
-import { PlayersList } from "./PlayersList"
+import { SelectablePlayersList } from "./SelectablePlayersList"
+
+import { Player } from "../models/Player"
 
 export const PlayersPage = () => {
     const [players, setPlayers] = useState<Player[]>([])
@@ -40,7 +41,7 @@ export const PlayersPage = () => {
 
             <div className="players-page-body">
                 <div className="sidebar">
-                    <PlayersList
+                    <SelectablePlayersList
                         players={players}
                         selectedPlayer={selectedPlayer}
                         setSelectedPlayer={setSelectedPlayer} />
