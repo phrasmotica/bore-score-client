@@ -1,4 +1,4 @@
-import { Menu } from "semantic-ui-react"
+import { Icon, Menu } from "semantic-ui-react"
 
 import { PlayerCard } from "./PlayerCard"
 
@@ -12,8 +12,13 @@ interface PlayersListProps {
 
 export const PlayersList = (props: PlayersListProps) => (
     <div className="players-menu">
-        <Menu vertical>
-            {props.players.map(p => (
+        <Menu vertical color="teal">
+                <Menu.Item header>
+                    <Icon name="user" />
+                    Select a player
+                </Menu.Item>
+
+                {props.players.map(p => (
                 <PlayerCard
                     key={p.username}
                     player={p}

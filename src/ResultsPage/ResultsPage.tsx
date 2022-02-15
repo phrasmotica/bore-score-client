@@ -27,19 +27,23 @@ export const ResultsPage = () => {
 
     return (
         <div className="results-page">
-            <div className="sidebar">
-                <GamesList
+            <h2>Results</h2>
+
+            <div className="results-page-body">
+                <div className="sidebar">
+                    <GamesList
+                        games={games}
+                        results={results}
+                        selectedGame={selectedGame}
+                        setSelectedGame={setSelectedGame} />
+                </div>
+
+                <ResultsList
                     games={games}
                     results={results}
-                    selectedGame={selectedGame}
-                    setSelectedGame={setSelectedGame} />
+                    players={players}
+                    selectedGame={selectedGame} />
             </div>
-
-            <ResultsList
-                games={games}
-                results={results}
-                players={players}
-                selectedGame={selectedGame} />
         </div>
     )
 }

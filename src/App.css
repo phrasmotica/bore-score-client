@@ -14,9 +14,13 @@
 }
 
 .players-page {
-  display: flex;
+  color: black;
   width: max(500px, 50vw);
   height: max(500px, 50vh);
+}
+
+.players-page-body {
+  display: flex;
 }
 
 .players-page .sidebar {
@@ -41,9 +45,13 @@
 }
 
 .results-page {
-  display: flex;
+  color: black;
   width: max(500px, 50vw);
   height: max(500px, 50vh);
+}
+
+.results-page-body {
+  display: flex;
 }
 
 .results-page .sidebar  {

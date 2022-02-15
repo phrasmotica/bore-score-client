@@ -17,7 +17,7 @@ export const PlayerDetails = (props: PlayerDetailsProps) => {
 
     return (
         <div className="player-details">
-            <h2>{props.player.displayName}</h2>
+            <h3>{props.player.displayName}</h3>
 
             <Button color="red" onClick={deletePlayer}>
                 Delete Player

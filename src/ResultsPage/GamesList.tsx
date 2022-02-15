@@ -24,7 +24,7 @@ export const GamesList = (props: GamesListProps) => {
 
     return (
         <div className="games-menu">
-            <Menu vertical>
+            <Menu vertical color="teal">
                 <Menu.Item header>
                     <Icon name="game" />
                     Filter by game

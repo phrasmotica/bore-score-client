@@ -31,23 +31,23 @@ export const PlayersPage = () => {
             )
         }
 
-        return (
-            <div className="player-details">
-                <h2>No player selected</h2>
-            </div>
-        )
+        return null
     }
 
     return (
         <div className="players-page">
-            <div className="sidebar">
-                <PlayersList
-                    players={players}
-                    selectedPlayer={selectedPlayer}
-                    setSelectedPlayer={setSelectedPlayer} />
-            </div>
+            <h2>Players</h2>
 
-            {renderDetails()}
+            <div className="players-page-body">
+                <div className="sidebar">
+                    <PlayersList
+                        players={players}
+                        selectedPlayer={selectedPlayer}
+                        setSelectedPlayer={setSelectedPlayer} />
+                </div>
+
+                {renderDetails()}
+            </div>
         </div>
     )
 }
