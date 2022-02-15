@@ -55,3 +55,14 @@
   color: black;
   width: 100%;
 }
+
+.add-result-page {
+  display: flex;
+  width: max(500px, 50vw);
+  height: max(500px, 50vh);
+}
+
+.add-result {
+  width: 100%;
+  color: black;
+}
