@@ -3,7 +3,7 @@ import { DropdownItemProps, Form } from "semantic-ui-react"
 interface PlayerScoreInputProps {
     label: string
     playerOptions: DropdownItemProps[]
-    playerId: number
+    playerId: number | undefined
     setPlayerId: (id: number) => void
     score: number
     setScore: (score: number) => void

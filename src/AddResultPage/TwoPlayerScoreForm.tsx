@@ -11,67 +11,67 @@ interface TwoPlayerScoreFormProps {
 }
 
 export const TwoPlayerScoreForm = (props: TwoPlayerScoreFormProps) => {
-    const [winnerId, setWinnerId] = useState(0)
-    const [winnerScore, setWinnerScore] = useState(0)
-    const [loserId, setLoserId] = useState(0)
-    const [loserScore, setLoserScore] = useState(0)
+    const [playerOneId, setPlayerOneId] = useState<number>()
+    const [playerOneScore, setPlayerOneScore] = useState(0)
+    const [playerTwoId, setPlayerTwoId] = useState<number>()
+    const [playerTwoScore, setPlayerTwoScore] = useState(0)
 
     useEffect(() => {
         if (props.players.length > 1) {
-            setWinnerId(props.players[0].id)
-            setLoserId(props.players[1].id)
+            setPlayerOneId(props.players[0].id)
+            setPlayerTwoId(props.players[1].id)
         }
     }, [props.players])
 
     useEffect(() => {
         if (props.players.length > 1) {
-            if (winnerId === loserId) {
-                let newLoser = props.players.filter(p => p.id !== winnerId)[0]
-                setLoserId(newLoser.id)
+            if (playerOneId === playerTwoId) {
+                let newPlayerTwo = props.players.filter(p => p.id !== playerOneId)[0]
+                setPlayerTwoId(newPlayerTwo.id)
             }
         }
-    }, [winnerId, loserId, props.players])
+    }, [playerOneId, playerTwoId, props.players])
 
-    const formIsComplete = () => winnerScore > 0
+    const formIsComplete = () => playerOneId !== undefined && playerTwoId !== undefined
 
     const getFormData = () => ({
         scores: [
             {
-                playerId: winnerId,
-                score: winnerScore,
+                playerId: playerOneId,
+                score: playerOneScore,
             },
             {
-                playerId: loserId,
-                score: loserScore,
+                playerId: playerTwoId,
+                score: playerTwoScore,
             },
         ]
     })
 
-    let winnerOptions = props.players.map(p => ({
+    let playerOneOptions = props.players.map(p => ({
         key: p.id,
         text: p.displayName,
         value: p.id,
     }))
 
-    let loserOptions = winnerOptions.filter(o => o.value !== winnerId)
+    let playerTwoOptions = playerOneOptions.filter(o => o.value !== playerOneId)
 
     return (
         <Form onSubmit={() => props.submit(getFormData())}>
             <PlayerScoreInput
-                label="Winner"
-                playerOptions={winnerOptions}
-                playerId={winnerId}
-                setPlayerId={setWinnerId}
-                score={winnerScore}
-                setScore={setWinnerScore} />
+                label="Player 1"
+                playerOptions={playerOneOptions}
+                playerId={playerOneId}
+                setPlayerId={setPlayerOneId}
+                score={playerOneScore}
+                setScore={setPlayerOneScore} />
 
             <PlayerScoreInput
-                label="Loser"
-                playerOptions={loserOptions}
-                playerId={loserId}
-                setPlayerId={setLoserId}
-                score={loserScore}
-                setScore={setLoserScore} />
+                label="Player 2"
+                playerOptions={playerTwoOptions}
+                playerId={playerTwoId}
+                setPlayerId={setPlayerTwoId}
+                score={playerTwoScore}
+                setScore={setPlayerTwoScore} />
 
             <Form.Button
                 color="teal"
