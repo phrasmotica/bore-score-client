@@ -1,4 +1,5 @@
-import { Tab } from "semantic-ui-react"
+import { Icon, Menu, Segment } from "semantic-ui-react"
+import { BrowserRouter, Route, Routes } from "react-router-dom"
 
 import { PlayersPage } from "./PlayersPage/PlayersPage"
 import { ResultsPage } from "./ResultsPage/ResultsPage"
@@ -6,29 +7,35 @@ import { ResultsPage } from "./ResultsPage/ResultsPage"
 import "./App.css"
 
 const App = () => {
-    const panes = [
-        {
-            menuItem: "Players",
-            render: () => (
-                <Tab.Pane attached={false}>
-                    <PlayersPage />
-                </Tab.Pane>
-            )
-        },
-        {
-            menuItem: "Results",
-            render: () => (
-                <Tab.Pane attached={false}>
-                    <ResultsPage />
-                </Tab.Pane>
-            )
-        },
-    ]
-
     return (
         <div className="App">
             <header className="App-header">
-                <Tab menu={{ pointing: true }} panes={panes} />
+                <div className="app-container">
+                    <Menu fluid>
+                        <Menu.Item header>
+                            <Icon name="calculator" />
+                            BoreScore
+                        </Menu.Item>
+
+                        <Menu.Item href="/">
+                            Players
+                        </Menu.Item>
+
+                        <Menu.Item href="/results">
+                            Results
+                        </Menu.Item>
+                    </Menu>
+
+                    <Segment>
+                        <BrowserRouter>
+                            <Routes>
+                                <Route path="/" element={<PlayersPage />} />
+
+                                <Route path="/results" element={<ResultsPage />} />
+                            </Routes>
+                        </BrowserRouter>
+                    </Segment>
+                </div>
             </header>
         </div>
     )
