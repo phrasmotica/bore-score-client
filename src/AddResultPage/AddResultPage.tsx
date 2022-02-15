@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
-import { Form } from "semantic-ui-react"
 
+import { GameSelectMenu } from "./GameSelectMenu"
 import { TwoPlayerScoreForm } from "./TwoPlayerScoreForm"
 import { fetchGames, fetchPlayers } from "../FetchHelpers"
 
@@ -44,26 +44,14 @@ export const AddResultPage = () => {
             .then(() => navigate("/results"))
     }
 
-    let gameOptions = games.map(g => ({
-        key: g.id,
-        text: g.name,
-        value: g.id,
-    }))
-
     return (
         <div className="add-result-page">
-            <div className="add-result">
-                <h2>Add Result</h2>
+            <h2>Add Result</h2>
 
-                <Form className="game-select-form">
-                    <Form.Select
-                        fluid
-                        label="Game"
-                        placeholder="Game"
-                        options={gameOptions}
-                        value={gameId}
-                        onChange={(e, { value }) => setGameId(Number(value))} />
-                </Form>
+            <div className="add-result-form">
+                <div className="sidebar">
+                    <GameSelectMenu games={games} selectedGame={gameId} setSelectedGame={setGameId} />
+                </div>
 
                 <TwoPlayerScoreForm players={players} submit={submit} />
             </div>

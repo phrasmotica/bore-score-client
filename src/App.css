@@ -57,16 +57,20 @@
 }
 
 .add-result-page {
-  display: flex;
+  color: black;
   width: max(500px, 50vw);
   height: max(500px, 50vh);
 }
 
-.add-result {
-  width: 100%;
-  color: black;
+.add-result-page .sidebar  {
+  text-align: end;
+  margin-right: 1rem;
 }
 
-.game-select-form {
-  margin-bottom: 1em;
+.add-result-form {
+  display: flex;
+}
+
+.add-result-form > .ui.form {
+  width: 100%;
 }
