@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import { Form } from "semantic-ui-react"
 
+import { PlayerScoreInput } from "./PlayerScoreInput"
+
 import { Player } from "../models/Player"
 
 interface TwoPlayerScoreFormProps {
@@ -55,42 +57,21 @@ export const TwoPlayerScoreForm = (props: TwoPlayerScoreFormProps) => {
 
     return (
         <Form onSubmit={() => props.submit(getFormData())}>
-            <Form.Group widths="equal">
-                <Form.Select
-                    fluid
-                    label="Winner"
-                    placeholder="Winner"
-                    options={winnerOptions}
-                    value={winnerId}
-                    onChange={(e, { value }) => setWinnerId(Number(value))} />
+            <PlayerScoreInput
+                label="Winner"
+                playerOptions={winnerOptions}
+                playerId={winnerId}
+                setPlayerId={setWinnerId}
+                score={winnerScore}
+                setScore={setWinnerScore} />
 
-                <Form.Input
-                    fluid
-                    label="Score"
-                    type="number"
-                    value={winnerScore}
-                    min={0}
-                    onChange={(e, { value }) => setWinnerScore(Number(value))} />
-            </Form.Group>
-
-            <Form.Group widths="equal">
-                <Form.Select
-                    fluid
-                    label="Loser"
-                    placeholder="Loser"
-                    options={loserOptions}
-                    value={loserId}
-                    onChange={(e, { value }) => setLoserId(Number(value))} />
-
-                <Form.Input
-                    fluid
-                    label="Score"
-                    type="number"
-                    value={loserScore}
-                    min={0}
-                    max={winnerScore - 1}
-                    onChange={(e, { value }) => setLoserScore(Number(value))} />
-            </Form.Group>
+            <PlayerScoreInput
+                label="Loser"
+                playerOptions={loserOptions}
+                playerId={loserId}
+                setPlayerId={setLoserId}
+                score={loserScore}
+                setScore={setLoserScore} />
 
             <Form.Button
                 color="teal"
