@@ -9,32 +9,43 @@ import { ResultsPage } from "./ResultsPage/ResultsPage"
 import "./App.css"
 
 const App = () => {
+    const renderMenu = (page: string) => (
+        <Menu fluid>
+            <Menu.Item header>
+                <Icon name="calculator" />
+                BoreScore
+            </Menu.Item>
+
+            <Menu.Item href="/" active={page === "players"}>
+                Players
+            </Menu.Item>
+
+            <Menu.Item href="/add-player" active={page === "add-player"}>
+                Add Player
+            </Menu.Item>
+
+            <Menu.Item href="/results" active={page === "results"}>
+                Results
+            </Menu.Item>
+
+            <Menu.Item href="/add-result" active={page === "add-result"}>
+                Add Result
+            </Menu.Item>
+        </Menu>
+    )
+
     return (
         <div className="App">
             <header className="App-header">
                 <div className="app-container">
-                    <Menu fluid>
-                        <Menu.Item header>
-                            <Icon name="calculator" />
-                            BoreScore
-                        </Menu.Item>
-
-                        <Menu.Item href="/">
-                            Players
-                        </Menu.Item>
-
-                        <Menu.Item href="/add-player">
-                            Add Player
-                        </Menu.Item>
-
-                        <Menu.Item href="/results">
-                            Results
-                        </Menu.Item>
-
-                        <Menu.Item href="/add-result">
-                            Add Result
-                        </Menu.Item>
-                    </Menu>
+                    <BrowserRouter>
+                        <Routes>
+                            <Route path="/" element={renderMenu("players")} />
+                            <Route path="/add-player" element={renderMenu("add-player")} />
+                            <Route path="/results" element={renderMenu("results")} />
+                            <Route path="/add-result" element={renderMenu("add-result")} />
+                        </Routes>
+                    </BrowserRouter>
 
                     <Segment>
                         <BrowserRouter>
