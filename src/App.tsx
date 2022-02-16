@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 
 import { AddPlayerPage } from "./AddPlayerPage/AddPlayerPage"
 import { AddResultPage } from "./AddResultPage/AddResultPage"
+import { GamesPage } from "./GamesPage/GamesPage"
 import { PlayersPage } from "./PlayersPage/PlayersPage"
 import { ResultsPage } from "./ResultsPage/ResultsPage"
 
@@ -24,6 +25,10 @@ const App = () => {
                 Add Player
             </Menu.Item>
 
+            <Menu.Item href="/games" active={page === "games"}>
+                Games
+            </Menu.Item>
+
             <Menu.Item href="/results" active={page === "results"}>
                 Results
             </Menu.Item>
@@ -42,6 +47,7 @@ const App = () => {
                         <Routes>
                             <Route path="/" element={renderMenu("players")} />
                             <Route path="/add-player" element={renderMenu("add-player")} />
+                            <Route path="/games" element={renderMenu("games")} />
                             <Route path="/results" element={renderMenu("results")} />
                             <Route path="/add-result" element={renderMenu("add-result")} />
                         </Routes>
@@ -52,6 +58,7 @@ const App = () => {
                             <Routes>
                                 <Route path="/" element={<PlayersPage />} />
                                 <Route path="/add-player" element={<AddPlayerPage />} />
+                                <Route path="/games" element={<GamesPage />} />
                                 <Route path="/results" element={<ResultsPage />} />
                                 <Route path="/add-result" element={<AddResultPage />} />
                             </Routes>
