@@ -139,8 +139,8 @@
   flex-grow: 1;
 }
 
-.add-result-page .ui.button.submit-button {
-  margin-top: 0.5rem;
+.add-result-page .ui.buttons {
+  margin-bottom: 1rem;
 }
 
 .add-result-form > .ui.form {
@@ -158,8 +158,4 @@
 
 .player-score-input-removable > .ui.button {
   margin: 0em 0em 1em 1em;
-}
-
-.add-player-button {
-  margin-bottom: 1rem;
 }
