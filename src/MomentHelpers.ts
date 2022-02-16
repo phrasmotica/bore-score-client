@@ -8,3 +8,6 @@ export const dateValue = (moment: moment.Moment) => moment.format(DATE_FORMAT)
 export const timeValue = (moment: moment.Moment) => moment.format(TIME_FORMAT)
 export const submitValue = (moment: moment.Moment) => moment.unix()
 export const displayDateTimeValue = (moment: moment.Moment) => moment.format(DISPLAY_FORMAT)
+
+export const momentFromDate = (dateStr: string) => moment(dateStr, DATE_FORMAT)
+export const momentFromTime = (timeStr: string) => moment(timeStr, TIME_FORMAT)

@@ -76,53 +76,49 @@ export const PlayerScoreForm = (props: PlayerScoreFormProps) => {
     }
 
     return (
-        <div className="form-container">
+        <div>
             <Form>
-                {playerIds.map((playerId, i) => {
-                    return (
-                        <div key={i} className="player-score-input-removable">
-                            <PlayerScoreInput
-                                label={`Player ${i + 1}`}
-                                playerOptions={playerOptions}
-                                playerId={playerId}
-                                setPlayerId={id => setPlayerId(i, id)}
-                                score={playerScores[i]}
-                                setScore={score => setPlayerScore(i, score)} />
+                {playerIds.map((playerId, i) => (
+                    <div key={i} className="player-score-input-removable">
+                        <PlayerScoreInput
+                            key={i}
+                            label={`Player ${i + 1}`}
+                            playerOptions={playerOptions}
+                            playerId={playerId}
+                            setPlayerId={id => setPlayerId(i, id)}
+                            score={playerScores[i]}
+                            setScore={score => setPlayerScore(i, score)} />
 
-                            <Button
-                                icon
-                                inverted
-                                color="red"
-                                onClick={() => removePlayer(i)}
-                                disabled={i < props.minPlayerCount}>
-                                <Icon name="minus" />
-                            </Button>
-                        </div>
-                    )
-                })}
+                        <Button
+                            icon
+                            inverted
+                            color="red"
+                            onClick={() => removePlayer(i)}
+                            disabled={i < props.minPlayerCount}>
+                            <Icon name="minus" />
+                        </Button>
+                    </div>
+                ))}
             </Form>
 
-            <div className="add-player-button">
-                <Button
-                    icon
-                    color="yellow"
-                    disabled={getPlayerCount() >= props.maxPlayerCount}
-                    onClick={addPlayer}>
-                    <span>Add Player&nbsp;</span>
-                    <Icon name="plus" />
-                </Button>
-            </div>
+            <Button
+                icon
+                className="add-player-button"
+                color="yellow"
+                disabled={getPlayerCount() >= props.maxPlayerCount}
+                onClick={addPlayer}>
+                <span>Add Player&nbsp;</span>
+                <Icon name="plus" />
+            </Button>
 
-            <div>
-                <Button
-                    icon
-                    color="teal"
-                    disabled={!formIsComplete()}
-                    onClick={() => props.submit(getFormData())}>
-                    <span>Submit Result&nbsp;</span>
-                    <Icon name="check" />
-                </Button>
-            </div>
+            <Button
+                icon
+                color="teal"
+                disabled={!formIsComplete()}
+                onClick={() => props.submit(getFormData())}>
+                <span>Submit Result&nbsp;</span>
+                <Icon name="check" />
+            </Button>
         </div>
     )
 }

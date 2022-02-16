@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
-import { Form } from "semantic-ui-react"
 import moment from "moment"
 
-import { DateTimePicker } from "./DateTimePicker"
-import { GamePicker } from "./GamePicker"
+import { CommonForm } from "./CommonForm"
 import { PlayerScoreForm } from "./PlayerScoreForm"
 
 import { fetchGames, fetchPlayers } from "../FetchHelpers"
@@ -36,7 +34,7 @@ export const AddResultPage = () => {
 
     const navigate = useNavigate()
 
-    const renderForm = () => {
+    const renderGameForm = () => {
         if (game?.gameType === GameType.Score) {
             return (
                 <PlayerScoreForm
@@ -73,14 +71,14 @@ export const AddResultPage = () => {
         <div className="add-result-page">
             <h2>Add Result</h2>
 
-            <div className="add-result-form">
-                <Form>
-                    <GamePicker games={games} selectedGame={game} setSelectedGame={setGame} />
-                    <DateTimePicker dateTime={timestamp} setDateTime={setTimestamp} />
-                </Form>
+            <CommonForm
+                games={games}
+                selectedGame={game}
+                setSelectedGame={setGame}
+                timestamp={timestamp}
+                setTimestamp={setTimestamp} />
 
-                {renderForm()}
-            </div>
+            {renderGameForm()}
         </div>
     )
 }
