@@ -139,12 +139,12 @@
   flex-grow: 1;
 }
 
-.add-result-form > .ui.form {
-  margin-right: 1rem;
+.add-result-page .ui.button.submit-button {
+  margin-top: 0.5rem;
 }
 
-.add-result-form .form-container {
-  width: 100%;
+.add-result-form > .ui.form {
+  margin-right: 1rem;
 }
 
 .player-score-input-removable {

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
+import { Button, Icon } from "semantic-ui-react"
 import moment from "moment"
 
 import { CommonForm } from "./CommonForm"
@@ -17,6 +18,8 @@ export const AddResultPage = () => {
 
     const [game, setGame] = useState<Game>()
     const [timestamp, setTimestamp] = useState(moment())
+    const [formData, setFormData] = useState({})
+    const [formIsComplete, setFormIsComplete] = useState(false)
 
     useEffect(() => {
         fetchGames()
@@ -41,14 +44,15 @@ export const AddResultPage = () => {
                     players={players}
                     minPlayerCount={game.minPlayers}
                     maxPlayerCount={game.maxPlayers}
-                    submit={submit} />
+                    setFormData={setFormData}
+                    setFormIsComplete={setFormIsComplete} />
             )
         }
 
         return null
     }
 
-    const submit = (formData: any) => {
+    const submit = () => {
         if (game === undefined) {
             return
         }
@@ -79,6 +83,16 @@ export const AddResultPage = () => {
                 setTimestamp={setTimestamp} />
 
             {renderGameForm()}
+
+            <Button
+                className="submit-button"
+                icon
+                color="teal"
+                disabled={!formIsComplete}
+                onClick={submit}>
+                <span>Submit Result&nbsp;</span>
+                <Icon name="check" />
+            </Button>
         </div>
     )
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { Button, Form, Icon } from "semantic-ui-react"
 
 import { PlayerScoreInput } from "./PlayerScoreInput"
@@ -9,7 +9,8 @@ interface PlayerScoreFormProps {
     players: Player[]
     minPlayerCount: number
     maxPlayerCount: number
-    submit: (formData: any) => void
+    setFormData: (formData: any) => void
+    setFormIsComplete: (isComplete: boolean) => void
 }
 
 export const PlayerScoreForm = (props: PlayerScoreFormProps) => {
@@ -34,16 +35,19 @@ export const PlayerScoreForm = (props: PlayerScoreFormProps) => {
         setPlayerScores(playerIdsToUse.map(_ => 0))
     }, [props.players, props.minPlayerCount, props.maxPlayerCount, playerIds.length])
 
-    const getPlayerCount = () => playerIds.length
+    const formIsComplete = useCallback(() => playerIds.length > 0 && new Set(playerIds).size === playerIds.length, [playerIds])
 
-    const formIsComplete = () => getPlayerCount() > 0 && new Set(playerIds).size === playerIds.length
-
-    const getFormData = () => ({
+    const getFormData = useCallback(() => ({
         scores: playerIds.map((playerId, i) => ({
             playerId: playerId,
             score: playerScores[i],
         }))
-    })
+    }), [playerIds, playerScores])
+
+    useEffect(() => {
+        props.setFormData(getFormData())
+        props.setFormIsComplete(formIsComplete())
+    }, [props, getFormData, formIsComplete, playerIds, playerScores])
 
     let playerOptions = props.players.map(p => ({
         key: p.id,
@@ -105,19 +109,10 @@ export const PlayerScoreForm = (props: PlayerScoreFormProps) => {
                 icon
                 className="add-player-button"
                 color="yellow"
-                disabled={getPlayerCount() >= props.maxPlayerCount}
+                disabled={playerIds.length >= props.maxPlayerCount}
                 onClick={addPlayer}>
                 <span>Add Player&nbsp;</span>
                 <Icon name="plus" />
-            </Button>
-
-            <Button
-                icon
-                color="teal"
-                disabled={!formIsComplete()}
-                onClick={() => props.submit(getFormData())}>
-                <span>Submit Result&nbsp;</span>
-                <Icon name="check" />
             </Button>
         </div>
     )
