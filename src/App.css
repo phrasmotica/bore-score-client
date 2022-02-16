@@ -87,6 +87,24 @@
   width: 100%;
 }
 
+.game-synopsis {
+  margin-top: 0rem;
+}
+
+.game-details .game-details-container {
+  margin-bottom: 0.5rem;
+}
+
+.game-details .description {
+  text-align: start;
+  white-space: pre-line;
+  margin-top: 1rem;
+}
+
+.game-details .ui.table {
+  text-align: center;
+}
+
 .results-page {
   color: black;
   width: max(500px, 50vw);
