@@ -16,18 +16,23 @@ export const PlayerScoreForm = (props: PlayerScoreFormProps) => {
     const [playerIds, setPlayerIds] = useState<number[]>([])
     const [playerScores, setPlayerScores] = useState<number[]>([])
 
-    // fill current player inputs with first N players
     useEffect(() => {
-        let effectivePlayerCount = Math.max(props.minPlayerCount, getPlayerCount()) // avoids getPlayerCount() === 0
-        let playersToUse = props.players
+        // fill current player inputs with first N players,
+        // clamping N between minPlayerCount and maxPlayerCount
+        let playerIdsToUse = props.players.map(p => p.id)
+        let effectivePlayerCount = Math.max(props.minPlayerCount, Math.min(props.maxPlayerCount, playerIds.length))
+        let emptySlots = effectivePlayerCount - playerIdsToUse.length
 
-        if (playersToUse.length > effectivePlayerCount) {
-            playersToUse = playersToUse.slice(0, effectivePlayerCount)
+        if (emptySlots > 0) {
+            playerIdsToUse = playerIdsToUse.concat(new Array(emptySlots).fill(0))
+        }
+        else {
+            playerIdsToUse = playerIdsToUse.slice(0, effectivePlayerCount)
         }
 
-        setPlayerIds(playersToUse.map(p => p.id))
-        setPlayerScores(playersToUse.map(_ => 0))
-    }, [props.players])
+        setPlayerIds(playerIdsToUse)
+        setPlayerScores(playerIdsToUse.map(_ => 0))
+    }, [props.players, props.minPlayerCount, props.maxPlayerCount, playerIds.length])
 
     const getPlayerCount = () => playerIds.length
 
@@ -75,7 +80,7 @@ export const PlayerScoreForm = (props: PlayerScoreFormProps) => {
             <Form>
                 {playerIds.map((playerId, i) => {
                     return (
-                        <div className="player-score-input-removable">
+                        <div key={i} className="player-score-input-removable">
                             <PlayerScoreInput
                                 label={`Player ${i + 1}`}
                                 playerOptions={playerOptions}

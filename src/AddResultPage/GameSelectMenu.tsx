@@ -4,8 +4,8 @@ import { Game } from "../models/Game"
 
 interface GameSelectMenuProps {
     games: Game[]
-    selectedGame: number
-    setSelectedGame: (id: number) => void
+    selectedGame: Game | undefined
+    setSelectedGame: (game: Game) => void
 }
 
 export const GameSelectMenu = (props: GameSelectMenuProps) => (
@@ -18,9 +18,10 @@ export const GameSelectMenu = (props: GameSelectMenuProps) => (
 
             {props.games.map(g => (
                 <Menu.Item
-                    active={props.selectedGame === g.id}
+                    key={g.id}
+                    active={props.selectedGame?.id === g.id}
                     color="teal"
-                    onClick={() => props.setSelectedGame(g.id)}>
+                    onClick={() => props.setSelectedGame(g)}>
                     {g.name}
                 </Menu.Item>
             ))}

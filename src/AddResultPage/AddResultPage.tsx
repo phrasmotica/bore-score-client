@@ -5,14 +5,14 @@ import { GameSelectMenu } from "./GameSelectMenu"
 import { PlayerScoreForm } from "./PlayerScoreForm"
 import { fetchGames, fetchPlayers } from "../FetchHelpers"
 
-import { Game } from "../models/Game"
+import { Game, GameType } from "../models/Game"
 import { Player } from "../models/Player"
 
 export const AddResultPage = () => {
     const [games, setGames] = useState<Game[]>([])
     const [players, setPlayers] = useState<Player[]>([])
 
-    const [gameId, setGameId] = useState(0)
+    const [game, setGame] = useState<Game>()
 
     useEffect(() => {
         fetchGames()
@@ -24,17 +24,35 @@ export const AddResultPage = () => {
 
     useEffect(() => {
         if (games.length > 0) {
-            setGameId(games[0].id)
+            setGame(games[0])
         }
     }, [games])
 
     const navigate = useNavigate()
 
+    const renderForm = () => {
+        if (game?.gameType === GameType.Score) {
+            return (
+                <PlayerScoreForm
+                    players={players}
+                    minPlayerCount={game.minPlayers}
+                    maxPlayerCount={game.maxPlayers}
+                    submit={submit} />
+            )
+        }
+
+        return null
+    }
+
     const submit = (formData: any) => {
+        if (game === undefined) {
+            return
+        }
+
         fetch("http://localhost:8000/results", {
             method: "POST",
             body: JSON.stringify({
-                gameId: gameId,
+                gameId: game.id,
                 ...formData
             }),
             headers: {
@@ -52,15 +70,11 @@ export const AddResultPage = () => {
                 <div className="sidebar">
                     <GameSelectMenu
                         games={games}
-                        selectedGame={gameId}
-                        setSelectedGame={setGameId} />
+                        selectedGame={game}
+                        setSelectedGame={setGame} />
                 </div>
 
-                <PlayerScoreForm
-                    players={players}
-                    minPlayerCount={1}
-                    maxPlayerCount={5}
-                    submit={submit} />
+                {renderForm()}
             </div>
         </div>
     )
