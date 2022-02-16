@@ -21,7 +21,7 @@ export const PlayerScoreForm = (props: PlayerScoreFormProps) => {
         // fill current player inputs with first N players,
         // clamping N between minPlayerCount and maxPlayerCount
         let playerIdsToUse = props.players.map(p => p.id)
-        let effectivePlayerCount = Math.max(props.minPlayerCount, Math.min(props.maxPlayerCount, playerIds.length))
+        let effectivePlayerCount = Math.max(props.minPlayerCount, Math.min(props.maxPlayerCount, playerIdsToUse.length))
         let emptySlots = effectivePlayerCount - playerIdsToUse.length
 
         if (emptySlots > 0) {
@@ -33,7 +33,7 @@ export const PlayerScoreForm = (props: PlayerScoreFormProps) => {
 
         setPlayerIds(playerIdsToUse)
         setPlayerScores(playerIdsToUse.map(_ => 0))
-    }, [props.players, props.minPlayerCount, props.maxPlayerCount, playerIds.length])
+    }, [props.players, props.minPlayerCount, props.maxPlayerCount])
 
     const formIsComplete = useCallback(() => playerIds.length > 0 && new Set(playerIds).size === playerIds.length, [playerIds])
 
