@@ -1,6 +1,7 @@
 export interface Result {
     id: number
     gameId: number
+    timestamp: number
     scores: PlayerScore[]
 }
 

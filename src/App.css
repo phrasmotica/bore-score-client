@@ -105,6 +105,10 @@
   display: flex;
 }
 
+.add-result-form-content {
+  width: 100%;
+}
+
 .add-result-form .form-container {
   width: 100%;
 }

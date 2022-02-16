@@ -1,4 +1,7 @@
 import { List } from "semantic-ui-react"
+import moment from "moment"
+
+import { displayDateTimeValue } from "../MomentHelpers"
 
 import { Game } from "../models/Game"
 import { Player } from "../models/Player"
@@ -31,6 +34,7 @@ export const ResultCard = (props: ResultCardProps) => {
         <List.Item key={r.id}>
             <List.Content>
                 <List.Header>{game?.name ?? `<Game ${r.gameId}>`}</List.Header>
+                <List.Description>{displayDateTimeValue(moment.unix(r.timestamp))}</List.Description>
                 <List.Description>{scoresStr}</List.Description>
             </List.Content>
         </List.Item>
