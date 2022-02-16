@@ -105,6 +105,23 @@
   display: flex;
 }
 
-.add-result-form > .ui.form {
+.add-result-form .form-container {
   width: 100%;
+}
+
+.player-score-input-removable {
+  display: flex;
+  align-items: center;
+}
+
+.player-score-input-removable > .equal.width.fields {
+  width: 100%;
+}
+
+.player-score-input-removable > .ui.button {
+  margin-left: 1em;
+}
+
+.add-player-button {
+  margin-bottom: 1rem;
 }

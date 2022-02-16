@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
 
 import { GameSelectMenu } from "./GameSelectMenu"
-import { TwoPlayerScoreForm } from "./TwoPlayerScoreForm"
+import { PlayerScoreForm } from "./PlayerScoreForm"
 import { fetchGames, fetchPlayers } from "../FetchHelpers"
 
 import { Game } from "../models/Game"
@@ -50,10 +50,17 @@ export const AddResultPage = () => {
 
             <div className="add-result-form">
                 <div className="sidebar">
-                    <GameSelectMenu games={games} selectedGame={gameId} setSelectedGame={setGameId} />
+                    <GameSelectMenu
+                        games={games}
+                        selectedGame={gameId}
+                        setSelectedGame={setGameId} />
                 </div>
 
-                <TwoPlayerScoreForm players={players} submit={submit} />
+                <PlayerScoreForm
+                    players={players}
+                    minPlayerCount={1}
+                    maxPlayerCount={5}
+                    submit={submit} />
             </div>
         </div>
     )
