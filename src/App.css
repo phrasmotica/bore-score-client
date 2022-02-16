@@ -103,10 +103,11 @@
 
 .add-result-form {
   display: flex;
+  width: 100%;
 }
 
-.add-result-form-content {
-  width: 100%;
+.add-result-form > .ui.form {
+  margin-right: 1rem;
 }
 
 .add-result-form .form-container {

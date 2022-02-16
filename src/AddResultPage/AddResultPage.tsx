@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
+import { Form } from "semantic-ui-react"
 import moment from "moment"
 
 import { DateTimePicker } from "./DateTimePicker"
-import { GameSelectMenu } from "./GameSelectMenu"
+import { GamePicker } from "./GamePicker"
 import { PlayerScoreForm } from "./PlayerScoreForm"
 
 import { fetchGames, fetchPlayers } from "../FetchHelpers"
@@ -17,7 +18,7 @@ export const AddResultPage = () => {
     const [players, setPlayers] = useState<Player[]>([])
 
     const [game, setGame] = useState<Game>()
-    const [dateTime, setDateTime] = useState(moment())
+    const [timestamp, setTimestamp] = useState(moment())
 
     useEffect(() => {
         fetchGames()
@@ -58,7 +59,7 @@ export const AddResultPage = () => {
             method: "POST",
             body: JSON.stringify({
                 gameId: game.id,
-                timestamp: submitValue(dateTime),
+                timestamp: submitValue(timestamp),
                 ...formData
             }),
             headers: {
@@ -73,18 +74,12 @@ export const AddResultPage = () => {
             <h2>Add Result</h2>
 
             <div className="add-result-form">
-                <div className="sidebar">
-                    <GameSelectMenu
-                        games={games}
-                        selectedGame={game}
-                        setSelectedGame={setGame} />
-                </div>
+                <Form>
+                    <GamePicker games={games} selectedGame={game} setSelectedGame={setGame} />
+                    <DateTimePicker dateTime={timestamp} setDateTime={setTimestamp} />
+                </Form>
 
-                <div className="add-result-form-content">
-                    <DateTimePicker dateTime={dateTime} setDateTime={setDateTime} />
-
-                    {renderForm()}
-                </div>
+                {renderForm()}
             </div>
         </div>
     )

@@ -12,8 +12,9 @@ interface PlayerScoreInputProps {
 export const PlayerScoreInput = (props: PlayerScoreInputProps) => {
     return (
         <Form.Group widths="equal">
-            <Form.Select
-                fluid
+            <Form.Dropdown
+                search
+                selection
                 label={props.label}
                 placeholder={props.label}
                 options={props.playerOptions}
@@ -21,7 +22,6 @@ export const PlayerScoreInput = (props: PlayerScoreInputProps) => {
                 onChange={(e, { value }) => props.setPlayerId(Number(value))} />
 
             <Form.Input
-                fluid
                 label="Score"
                 type="number"
                 value={props.score}

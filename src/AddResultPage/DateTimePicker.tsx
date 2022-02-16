@@ -10,11 +10,9 @@ interface DateTimePickerProps {
 
 export const DateTimePicker = (props: DateTimePickerProps) => {
     return (
-        <Form>
-            <Form.Group>
-                <Form.Input type="date" label="Date" value={dateValue(props.dateTime)} />
-                <Form.Input type="time" label="Time" value={timeValue(props.dateTime)} />
-            </Form.Group>
-        </Form>
+        <Form.Group>
+            <Form.Input type="date" label="Date" value={dateValue(props.dateTime)} />
+            <Form.Input type="time" label="Time" value={timeValue(props.dateTime)} />
+        </Form.Group>
     )
 }
