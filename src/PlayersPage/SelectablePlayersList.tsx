@@ -12,7 +12,10 @@ interface SelectablePlayersListProps {
 export const SelectablePlayersList = (props: SelectablePlayersListProps) => {
     const [searchTerm, setSearchTerm] = useState("")
 
-    const matchesSearchTerm = (p: Player) => p.username.includes(searchTerm) || p.displayName.includes(searchTerm)
+    const matchesSearchTerm = (p: Player) => {
+        return p.username.toLowerCase().includes(searchTerm)
+            || p.displayName.toLowerCase().includes(searchTerm)
+    }
 
     let playersToShow = props.players
     if (searchTerm.length > 0) {
