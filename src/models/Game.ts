@@ -10,4 +10,5 @@ export interface Game {
 
 export enum WinMethod {
     IndividualScore = "Individual Score",
+    IndividualWinner = "Individual Winner"
 }
