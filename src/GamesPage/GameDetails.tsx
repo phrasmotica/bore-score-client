@@ -1,5 +1,6 @@
 import { useState } from "react"
-import { Button, Table } from "semantic-ui-react"
+import { useNavigate } from "react-router"
+import { Button, Icon, Table } from "semantic-ui-react"
 
 import { Game } from "../models/Game"
 
@@ -11,7 +12,11 @@ interface GameDetailsProps {
 export const GameDetails = (props: GameDetailsProps) => {
     const [showDetails, setShowDetails] = useState(false)
 
+    let navigate = useNavigate()
+
     let game = props.game
+
+    const submitResult = () => navigate(`/add-result?gameId=${game.id}`)
 
     const deleteGame = () => {
         fetch(`http://localhost:8000/games/${game.id}`, {
@@ -57,12 +62,23 @@ export const GameDetails = (props: GameDetailsProps) => {
                 </Table>}
             </div>
 
-            <Button
-                fluid
-                color="red"
-                onClick={deleteGame}>
-                Delete Game
-            </Button>
+            <Button.Group widths={2}>
+                <Button
+                    icon
+                    color="teal"
+                    onClick={submitResult}>
+                    <span>Submit Result&nbsp;</span>
+                    <Icon name="check" />
+                </Button>
+
+                <Button
+                    icon
+                    color="red"
+                    onClick={deleteGame}>
+                    <span>Delete Game&nbsp;</span>
+                    <Icon name="remove" />
+                </Button>
+            </Button.Group>
         </div>
     )
 }

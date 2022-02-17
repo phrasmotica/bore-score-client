@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
+import { useSearchParams } from "react-router-dom"
 import moment from "moment"
 
 import { CommonForm } from "./CommonForm"
@@ -12,6 +13,8 @@ import { Game, WinMethod } from "../models/Game"
 import { Player } from "../models/Player"
 
 export const AddResultPage = () => {
+    const [searchParams] = useSearchParams()
+
     const [games, setGames] = useState<Game[]>([])
     const [players, setPlayers] = useState<Player[]>([])
 
@@ -28,9 +31,11 @@ export const AddResultPage = () => {
 
     useEffect(() => {
         if (games.length > 0) {
-            setGame(games[0])
+            let gameIdParam = Number(searchParams.get("gameId"))
+            let defaultGame = games.find(g => g.id === gameIdParam) ?? games[0]
+            setGame(defaultGame)
         }
-    }, [games])
+    }, [games, searchParams])
 
     const navigate = useNavigate()
 
