@@ -8,7 +8,7 @@ import { PlayerScoreForm } from "./PlayerScoreForm"
 import { fetchGames, fetchPlayers } from "../FetchHelpers"
 import { submitValue } from "../MomentHelpers"
 
-import { Game, GameType } from "../models/Game"
+import { Game, WinMethod } from "../models/Game"
 import { Player } from "../models/Player"
 
 export const AddResultPage = () => {
@@ -35,7 +35,7 @@ export const AddResultPage = () => {
     const navigate = useNavigate()
 
     const renderGameForm = () => {
-        if (game?.gameType === GameType.Score) {
+        if (game?.winMethod === WinMethod.IndividualScore) {
             return (
                 <PlayerScoreForm
                     players={players}

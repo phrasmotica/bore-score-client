@@ -1,13 +1,13 @@
 export interface Game {
     id: number
     name: string
-    gameType: GameType
+    winMethod: WinMethod
     synopsis: string
     description: string
     minPlayers: number
     maxPlayers: number
 }
 
-export enum GameType {
-    Score = "Score",
+export enum WinMethod {
+    IndividualScore = "Individual Score",
 }

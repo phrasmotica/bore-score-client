@@ -44,14 +44,14 @@ export const GameDetails = (props: GameDetailsProps) => {
                     <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell>Players</Table.HeaderCell>
-                            <Table.HeaderCell>Type</Table.HeaderCell>
+                            <Table.HeaderCell>Win Method</Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>
 
                     <Table.Body>
                         <Table.Row>
                             <Table.Cell>{game.minPlayers}-{game.maxPlayers}</Table.Cell>
-                            <Table.Cell>{game.gameType}</Table.Cell>
+                            <Table.Cell>{game.winMethod}</Table.Cell>
                         </Table.Row>
                     </Table.Body>
                 </Table>}
