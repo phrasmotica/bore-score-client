@@ -1,6 +1,9 @@
+import moment from "moment"
 import { useState } from "react"
 import { useNavigate } from "react-router"
 import { Button, Icon, Table } from "semantic-ui-react"
+
+import { displayDateValue } from "../MomentHelpers"
 
 import { Game } from "../models/Game"
 
@@ -50,6 +53,10 @@ export const GameDetails = (props: GameDetailsProps) => {
             <div className="game-details-container">
                 {showDetails && game.description.length > 0 && <p className="description">
                     {game.description}
+                </p>}
+
+                {showDetails && <p className="time-created">
+                    <em>Added: {displayDateValue(moment.unix(game.timeCreated))}</em>
                 </p>}
 
                 {showDetails && <Table celled color="blue">

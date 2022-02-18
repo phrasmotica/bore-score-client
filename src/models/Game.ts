@@ -1,6 +1,7 @@
 export interface Game {
     id: number
     name: string
+    timeCreated: number
     winMethod: WinMethod
     synopsis: string
     description: string

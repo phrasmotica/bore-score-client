@@ -105,6 +105,10 @@
   margin-top: 1rem;
 }
 
+.game-details .time-created {
+  text-align: start;
+}
+
 .game-details .ui.table {
   text-align: center;
 }
