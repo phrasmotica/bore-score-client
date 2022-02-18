@@ -45,15 +45,18 @@ export const GameDetails = (props: GameDetailsProps) => {
                 Delete Game
             </Header>
             <Modal.Content>
-                <p>Are you sure you want to delete {game.name}?</p>
+                <p>
+                    Are you sure you want to delete {game.name}?
+                    This will also delete all results for {game.name}!
+                </p>
             </Modal.Content>
             <Modal.Actions>
-                <Button color="green" inverted onClick={deleteGame}>
+                <Button color="green" onClick={deleteGame}>
                     <Icon name="checkmark" />
                     Yes
                 </Button>
 
-                <Button color="red" inverted onClick={() => setShowDeletePrompt(false)}>
+                <Button color="red" onClick={() => setShowDeletePrompt(false)}>
                     <Icon name="remove" />
                     No
                 </Button>
