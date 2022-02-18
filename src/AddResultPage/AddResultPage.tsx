@@ -4,6 +4,7 @@ import { useSearchParams } from "react-router-dom"
 import moment from "moment"
 
 import { CommonForm } from "./CommonForm"
+import { IndividualWinnerForm } from "./IndividualWinnerForm"
 import { PlayerScoreForm } from "./PlayerScoreForm"
 
 import { fetchGames, fetchPlayers } from "../FetchHelpers"
@@ -40,14 +41,24 @@ export const AddResultPage = () => {
     const navigate = useNavigate()
 
     const renderGameForm = () => {
-        if (game?.winMethod === WinMethod.IndividualScore) {
-            return (
-                <PlayerScoreForm
-                    players={players}
-                    minPlayerCount={game.minPlayers}
-                    maxPlayerCount={game.maxPlayers}
-                    submit={submit} />
-            )
+        switch (game?.winMethod) {
+            case WinMethod.IndividualScore:
+                return (
+                    <PlayerScoreForm
+                        players={players}
+                        minPlayerCount={game.minPlayers}
+                        maxPlayerCount={game.maxPlayers}
+                        submit={submit} />
+                )
+
+            case WinMethod.IndividualWinner:
+                return (
+                    <IndividualWinnerForm
+                        players={players}
+                        minPlayerCount={game.minPlayers}
+                        maxPlayerCount={game.maxPlayers}
+                        submit={submit} />
+                )
         }
 
         return null

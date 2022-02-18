@@ -159,3 +159,17 @@
 .player-score-input-removable > .ui.button {
   margin: 0em 0em 1em 1em;
 }
+
+.player-winner-input-removable {
+  display: flex;
+  align-items: center;
+}
+
+.player-winner-input-removable > .equal.width.fields {
+  width: 100%;
+  align-items: center;
+}
+
+.player-winner-input-removable > .ui.button {
+  margin: 0em 0em 1em 1em;
+}
