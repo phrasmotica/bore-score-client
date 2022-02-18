@@ -8,4 +8,5 @@ export interface Result {
 interface PlayerScore {
     playerId: number
     score: number
+    isWinner: boolean
 }
