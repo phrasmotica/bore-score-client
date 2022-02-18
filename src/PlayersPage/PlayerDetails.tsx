@@ -1,5 +1,8 @@
+import moment from "moment"
 import { useState } from "react"
-import { Button, Header, Icon, Modal } from "semantic-ui-react"
+import { Button, Header, Icon, Image, Modal } from "semantic-ui-react"
+
+import { displayDateValue } from "../MomentHelpers"
 
 import { Player } from "../models/Player"
 
@@ -20,7 +23,7 @@ export const PlayerDetails = (props: PlayerDetailsProps) => {
             .then(props.onDeletedPlayer)
     }
 
-    const renderDeletePrompt = () => (
+    const renderDeletePrompt = (player: Player) => (
         <Modal
             onClose={() => setShowDeletePrompt(false)}
             open={showDeletePrompt}
@@ -31,7 +34,7 @@ export const PlayerDetails = (props: PlayerDetailsProps) => {
             </Header>
             <Modal.Content>
                 <p>
-                    Are you sure you want to delete {player?.displayName ?? "<player>"}?
+                    Are you sure you want to delete {player.displayName}?
                     This will also delete all their results!
                 </p>
             </Modal.Content>
@@ -49,11 +52,35 @@ export const PlayerDetails = (props: PlayerDetailsProps) => {
         </Modal>
     )
 
+    if (player === undefined) {
+        return null
+    }
+
     return (
         <div className="player-details">
-            {renderDeletePrompt()}
+            {renderDeletePrompt(player)}
 
-            <h3>{player?.displayName}</h3>
+            <div className="content">
+                <div>
+                    <h3 className="display-name-header">
+                        {player.displayName}
+                    </h3>
+
+                    <p className="username">
+                        {player.username}
+                    </p>
+
+                    <p className="time-created">
+                        <em>Active since {displayDateValue(moment.unix(player.timeCreated))}</em>
+                    </p>
+                </div>
+
+                <div>
+                    <Image
+                        src="https://e.snmc.io/i/600/s/9f6d3d17acac6ce20993eb158c203e4b/5662600/godspeed-you-black-emperor-lift-yr-skinny-fists-like-antennas-to-heaven-cover-art.jpg"
+                        size="small" />
+                </div>
+            </div>
 
             <Button
                 icon

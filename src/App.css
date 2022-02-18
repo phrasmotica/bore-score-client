@@ -36,6 +36,23 @@
   width: 100%;
 }
 
+.player-details .content {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.player-details .display-name-header {
+  text-align: start;
+  margin-bottom: 0.5rem;
+}
+
+.player-details .username {
+  text-align: start;
+  color: grey;
+  margin-bottom: 0.5rem;
+}
+
 .add-player-page {
   color: black;
   width: max(500px, 50vw);
@@ -113,7 +130,7 @@
   margin-top: 1rem;
 }
 
-.game-details .time-created {
+.time-created {
   text-align: start;
 }
 
