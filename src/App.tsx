@@ -8,6 +8,7 @@ import { PlayersPage } from "./PlayersPage/PlayersPage"
 import { ResultsPage } from "./ResultsPage/ResultsPage"
 
 import "./App.css"
+import { AddGamePage } from "./AddGamePage/AddGamePage"
 
 const App = () => {
     const renderMenu = (page: string) => (
@@ -29,6 +30,10 @@ const App = () => {
                 Games
             </Menu.Item>
 
+            <Menu.Item href="/add-game" active={page === "add-game"}>
+                Add Game
+            </Menu.Item>
+
             <Menu.Item href="/results" active={page === "results"}>
                 Results
             </Menu.Item>
@@ -48,6 +53,7 @@ const App = () => {
                             <Route path="/" element={renderMenu("players")} />
                             <Route path="/add-player" element={renderMenu("add-player")} />
                             <Route path="/games" element={renderMenu("games")} />
+                            <Route path="/add-game" element={renderMenu("add-game")} />
                             <Route path="/results" element={renderMenu("results")} />
                             <Route path="/add-result" element={renderMenu("add-result")} />
                         </Routes>
@@ -59,6 +65,7 @@ const App = () => {
                                 <Route path="/" element={<PlayersPage />} />
                                 <Route path="/add-player" element={<AddPlayerPage />} />
                                 <Route path="/games" element={<GamesPage />} />
+                                <Route path="/add-game" element={<AddGamePage />} />
                                 <Route path="/results" element={<ResultsPage />} />
                                 <Route path="/add-result" element={<AddResultPage />} />
                             </Routes>

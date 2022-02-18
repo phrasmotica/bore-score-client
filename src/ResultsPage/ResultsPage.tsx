@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-import { GamesList } from "./GamesList"
+import { GameFilterMenu } from "./GameFilterMenu"
 import { ResultsList } from "./ResultsList"
 import { fetchGames, fetchPlayers, fetchResults } from "../FetchHelpers"
 
@@ -31,7 +31,7 @@ export const ResultsPage = () => {
 
             <div className="results-page-body">
                 <div className="sidebar">
-                    <GamesList
+                    <GameFilterMenu
                         games={games}
                         results={results}
                         selectedGame={selectedGame}

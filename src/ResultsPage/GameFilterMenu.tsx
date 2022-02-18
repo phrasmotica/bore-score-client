@@ -5,14 +5,14 @@ import { GameCard } from "./GameCard"
 import { Game } from "../models/Game"
 import { Result } from "../models/Result"
 
-interface GamesListProps {
+interface GameFilterMenuProps {
     games: Game[]
     results: Result[]
     selectedGame: number | undefined
     setSelectedGame: (id: number | undefined) => void
 }
 
-export const GamesList = (props: GamesListProps) => {
+export const GameFilterMenu = (props: GameFilterMenuProps) => {
     const toggleSelectedGame = (id: number) => {
         if (props.selectedGame === id) {
             props.setSelectedGame(undefined)

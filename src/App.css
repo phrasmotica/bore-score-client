@@ -105,6 +105,21 @@
   text-align: center;
 }
 
+.add-game-page {
+  color: black;
+  width: max(500px, 50vw);
+  height: max(500px, 50vh);
+}
+
+.add-game-page .sidebar  {
+  text-align: end;
+  margin-right: 1rem;
+}
+
+.add-game-page-body {
+  display: flex;
+}
+
 .results-page {
   color: black;
   width: max(500px, 50vw);

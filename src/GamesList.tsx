@@ -1,15 +1,13 @@
 import { useState } from "react"
 import { Input, Menu } from "semantic-ui-react"
 
-import { Game } from "../models/Game"
+import { Game } from "./models/Game"
 
-interface SelectableGamesListProps {
+interface GamesListProps {
     games: Game[]
-    selectedGame: number | undefined
-    setSelectedGame: (id: number | undefined) => void
 }
 
-export const SelectableGamesList = (props: SelectableGamesListProps) => {
+export const GamesList = (props: GamesListProps) => {
     const [searchTerm, setSearchTerm] = useState("")
 
     const matchesSearchTerm = (g: Game) => g.name.toLowerCase().includes(searchTerm)
@@ -20,10 +18,7 @@ export const SelectableGamesList = (props: SelectableGamesListProps) => {
     }
 
     let listItems = gamesToShow.map(g => (
-        <Menu.Item
-            key={g.id}
-            active={props.selectedGame === g.id}
-            onClick={() => props.setSelectedGame(g.id)}>
+        <Menu.Item key={g.id}>
             <span className="display-name">{g.name}</span>
         </Menu.Item>
     ))
@@ -38,7 +33,7 @@ export const SelectableGamesList = (props: SelectableGamesListProps) => {
 
     return (
         <div className="games-list">
-            <Menu vertical color="teal">
+            <Menu vertical>
                 <Menu.Item>
                     <Input
                         icon="search"
