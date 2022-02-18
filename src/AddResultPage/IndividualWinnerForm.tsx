@@ -82,7 +82,7 @@ export const IndividualWinnerForm = (props: IndividualWinnerFormProps) => {
                     color="teal"
                     disabled={!formIsComplete()}
                     onClick={() => props.submit(getFormData())}>
-                    <span>Submit Result&nbsp;</span>
+                    <span>Submit&nbsp;</span>
                     <Icon name="check" />
                 </Button>
             </Button.Group>

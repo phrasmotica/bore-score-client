@@ -1,4 +1,4 @@
-import { Button } from "semantic-ui-react"
+import { Button, Icon } from "semantic-ui-react"
 
 import { Player } from "../models/Player"
 
@@ -19,8 +19,13 @@ export const PlayerDetails = (props: PlayerDetailsProps) => {
         <div className="player-details">
             <h3>{props.player.displayName}</h3>
 
-            <Button color="red" onClick={deletePlayer}>
-                Delete Player
+            <Button
+                icon
+                fluid
+                color="red"
+                onClick={deletePlayer}>
+                <span>Delete Player&nbsp;</span>
+                <Icon name="remove" />
             </Button>
         </div>
     )

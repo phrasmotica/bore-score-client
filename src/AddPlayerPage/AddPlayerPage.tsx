@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { Form } from "semantic-ui-react"
+import { Form, Icon } from "semantic-ui-react"
 
 import { PlayersList } from "../PlayersList"
 
@@ -67,9 +67,12 @@ export const AddPlayerPage = () => {
                     </Form.Group>
 
                     <Form.Button
+                        icon
+                        fluid
                         color="teal"
                         disabled={!formIsComplete()}>
-                        Submit
+                        <span>Add Player&nbsp;</span>
+                        <Icon name="add user" />
                     </Form.Button>
                 </Form>
             </div>

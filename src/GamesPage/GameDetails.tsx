@@ -81,7 +81,7 @@ export const GameDetails = (props: GameDetailsProps) => {
                         color="teal"
                         onClick={submitResult}>
                         <span>Submit Result&nbsp;</span>
-                        <Icon name="check" />
+                        <Icon name="edit" />
                     </Button>
 
                     <Button
