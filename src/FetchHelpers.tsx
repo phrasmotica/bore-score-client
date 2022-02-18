@@ -1,4 +1,4 @@
-import { Game } from "./models/Game"
+import { Game, WinMethod } from "./models/Game"
 import { Player } from "./models/Player"
 import { Result } from "./models/Result"
 
@@ -14,6 +14,13 @@ export const fetchGames = () => {
         .then(res => res.json())
         .catch(err => console.error(err))
         .then((games: Game[]) => games)
+}
+
+export const fetchWinMethods = () => {
+    return fetch("http://localhost:8000/winMethods")
+        .then(res => res.json())
+        .catch(err => console.error(err))
+        .then((winMethods: WinMethod[]) => winMethods)
 }
 
 export const fetchResults = () => {

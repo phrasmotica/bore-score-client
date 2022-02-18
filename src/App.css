@@ -120,6 +120,15 @@
   display: flex;
 }
 
+.add-game-page-body > .ui.form {
+  width: 100%;
+}
+
+.add-game-page-body .ui.form textarea {
+  min-height: 10vh;
+  max-height: 15vh;
+}
+
 .results-page {
   color: black;
   width: max(500px, 50vw);
