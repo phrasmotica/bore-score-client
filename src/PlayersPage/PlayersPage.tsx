@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
+import { useSearchParams } from "react-router-dom"
 
 import { fetchPlayers } from "../FetchHelpers"
 import { PlayerDetails } from "./PlayerDetails"
@@ -7,6 +8,8 @@ import { SelectablePlayersList } from "./SelectablePlayersList"
 import { Player } from "../models/Player"
 
 export const PlayersPage = () => {
+    const [searchParams, setSearchParams] = useSearchParams()
+
     const [players, setPlayers] = useState<Player[]>([])
     const [selectedPlayer, setSelectedPlayer] = useState<string>()
 
@@ -16,18 +19,29 @@ export const PlayersPage = () => {
 
     useEffect(fetchAndSetPlayers, [])
 
-    const getSelectedPlayer = () => players.find(p => p.username === selectedPlayer)
+    const findPlayer = useCallback((username: string | null) => {
+        return players.find(p => p.username === username)
+    }, [players])
+
+    useEffect(() => {
+        if (players.length > 0) {
+            let playerParam = searchParams.get("player")
+            setSelectedPlayer(findPlayer(playerParam)?.username)
+        }
+    }, [players, searchParams, findPlayer])
 
     const onDeletedPlayer = () => {
+        searchParams.delete("player")
+        setSearchParams(searchParams)
+
         fetchAndSetPlayers()
-        setSelectedPlayer(undefined)
     }
 
     const renderDetails = () => {
         if (selectedPlayer !== undefined) {
             return (
                 <PlayerDetails
-                    player={getSelectedPlayer()!}
+                    player={findPlayer(selectedPlayer)!}
                     onDeletedPlayer={onDeletedPlayer} />
             )
         }

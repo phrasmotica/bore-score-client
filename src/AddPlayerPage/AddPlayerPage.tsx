@@ -35,7 +35,8 @@ export const AddPlayerPage = () => {
                 "Content-Type": "application/json"
             }
         })
-            .then(() => navigate("/"))
+            .then(res => res.json())
+            .then((newPlayer: Player) => navigate(`/?player=${newPlayer.username}`))
     }
 
     return (
