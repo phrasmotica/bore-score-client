@@ -25,27 +25,34 @@ export const GameDetails = (props: GameDetailsProps) => {
             .then(props.onDeletedGame)
     }
 
+    let playersStr = `${game.minPlayers}-${game.maxPlayers}`
+    if (game.minPlayers === game.maxPlayers) {
+        playersStr = game.minPlayers.toString()
+    }
+
     return (
         <div className="game-details">
             <h3>{game.name}</h3>
 
-            <h5 className="game-synopsis">
+            {game.synopsis.length > 0 && <h5 className="game-synopsis">
                 {game.synopsis}
-            </h5>
+            </h5>}
 
-            <Button
-                fluid
-                color="blue"
-                onClick={() => setShowDetails(!showDetails)}>
-                {showDetails ? "Hide Details" : "Show Details"}
-            </Button>
+            <div className="show-details-button">
+                <Button
+                    fluid
+                    color="blue"
+                    onClick={() => setShowDetails(!showDetails)}>
+                    {showDetails ? "Hide Details" : "Show Details"}
+                </Button>
+            </div>
 
             <div className="game-details-container">
-                {showDetails && <p className="description">
+                {showDetails && game.description.length > 0 && <p className="description">
                     {game.description}
                 </p>}
 
-                {showDetails && <Table celled color="teal">
+                {showDetails && <Table celled color="blue">
                     <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell>Players</Table.HeaderCell>
@@ -55,7 +62,7 @@ export const GameDetails = (props: GameDetailsProps) => {
 
                     <Table.Body>
                         <Table.Row>
-                            <Table.Cell>{game.minPlayers}-{game.maxPlayers}</Table.Cell>
+                            <Table.Cell>{playersStr}</Table.Cell>
                             <Table.Cell>{game.winMethod}</Table.Cell>
                         </Table.Row>
                     </Table.Body>

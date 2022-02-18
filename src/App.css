@@ -87,8 +87,12 @@
   width: 100%;
 }
 
-.game-synopsis {
+.game-details .game-synopsis {
   margin-top: 0rem;
+}
+
+.game-details .show-details-button {
+  margin-bottom: 0.5rem;
 }
 
 .game-details .game-details-container {
