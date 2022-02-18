@@ -13,6 +13,10 @@
   color: white;
 }
 
+.ui.modal > .ui.icon.header {
+  border-radius: calc(2rem / 7);
+}
+
 .players-page {
   color: black;
   width: max(500px, 50vw);

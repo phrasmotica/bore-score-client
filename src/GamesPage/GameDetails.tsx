@@ -1,7 +1,7 @@
 import moment from "moment"
 import { useState } from "react"
 import { useNavigate } from "react-router"
-import { Button, Icon, Table } from "semantic-ui-react"
+import { Button, Header, Icon, Modal, Table } from "semantic-ui-react"
 
 import { displayDateValue } from "../MomentHelpers"
 
@@ -14,6 +14,7 @@ interface GameDetailsProps {
 
 export const GameDetails = (props: GameDetailsProps) => {
     const [showDetails, setShowDetails] = useState(false)
+    const [showDeletePrompt, setShowDeletePrompt] = useState(false)
 
     let navigate = useNavigate()
 
@@ -26,6 +27,7 @@ export const GameDetails = (props: GameDetailsProps) => {
             method: "DELETE"
         })
             .then(props.onDeletedGame)
+            .then(() => setShowDeletePrompt(false))
     }
 
     let playersStr = `${game.minPlayers}-${game.maxPlayers}`
@@ -33,8 +35,36 @@ export const GameDetails = (props: GameDetailsProps) => {
         playersStr = game.minPlayers.toString()
     }
 
+    const renderDeletePrompt = () => (
+        <Modal
+            onClose={() => setShowDeletePrompt(false)}
+            open={showDeletePrompt}
+            size="mini">
+            <Header icon>
+                <Icon name="warning" />
+                Delete Game
+            </Header>
+            <Modal.Content>
+                <p>Are you sure you want to delete {game.name}?</p>
+            </Modal.Content>
+            <Modal.Actions>
+                <Button color="green" inverted onClick={deleteGame}>
+                    <Icon name="checkmark" />
+                    Yes
+                </Button>
+
+                <Button color="red" inverted onClick={() => setShowDeletePrompt(false)}>
+                    <Icon name="remove" />
+                    No
+                </Button>
+            </Modal.Actions>
+        </Modal>
+    )
+
     return (
         <div className="game-details">
+            {renderDeletePrompt()}
+
             <h3>{game.name}</h3>
 
             {game.synopsis.length > 0 && <h5 className="game-synopsis">
@@ -54,7 +84,7 @@ export const GameDetails = (props: GameDetailsProps) => {
                     <Button
                         icon
                         color="red"
-                        onClick={deleteGame}>
+                        onClick={() => setShowDeletePrompt(true)}>
                         <span>Delete Game&nbsp;</span>
                         <Icon name="remove" />
                     </Button>
