@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { Button, Form, Icon } from "semantic-ui-react"
 
 import { PlayerScoreInput } from "./PlayerScoreInput"
+import { getPlayerIdsToUse, replaceDuplicates } from "../Helpers"
 
 import { Player } from "../models/Player"
 
@@ -17,22 +18,12 @@ export const PlayerScoreForm = (props: PlayerScoreFormProps) => {
     const [playerScores, setPlayerScores] = useState<number[]>([])
 
     useEffect(() => {
-        // fill current player inputs with first N players,
-        // clamping N between minPlayerCount and maxPlayerCount
-        let playerIdsToUse = props.players.map(p => p.id)
-        let effectivePlayerCount = Math.max(props.minPlayerCount, Math.min(props.maxPlayerCount, playerIdsToUse.length))
-        let emptySlots = effectivePlayerCount - playerIdsToUse.length
-
-        if (emptySlots > 0) {
-            playerIdsToUse = playerIdsToUse.concat(new Array(emptySlots).fill(0))
-        }
-        else {
-            playerIdsToUse = playerIdsToUse.slice(0, effectivePlayerCount)
-        }
+        // fill current player inputs with first N (<= minPlayerCount) players
+        let playerIdsToUse = getPlayerIdsToUse(props.players.map(p => p.id), props.minPlayerCount)
 
         setPlayerIds(playerIdsToUse)
         setPlayerScores(playerIdsToUse.map(_ => 0))
-    }, [props.players, props.minPlayerCount, props.maxPlayerCount])
+    }, [props.players, props.minPlayerCount])
 
     const formIsComplete = () => playerIds.length > 0 && new Set(playerIds).size === playerIds.length
 
@@ -50,12 +41,22 @@ export const PlayerScoreForm = (props: PlayerScoreFormProps) => {
     }))
 
     const setPlayerId = (index: number, newId: number) => {
-        setPlayerIds(playerIds.map((id, i) => (i === index) ? newId : id))
+        let newPlayerIds = playerIds.map((id, i) => (i === index) ? newId : id)
+
+        // if we have a duplicate of the new player ID elsewhere in the list
+        // then replace the duplicates with player IDs from the previous set
+        // that are now unused
+        let unusedPlayerIds = playerIds.filter(id => !newPlayerIds.includes(id))
+        let deduplicatedPlayerIds = replaceDuplicates(newPlayerIds, index, unusedPlayerIds)
+
+        setPlayerIds(deduplicatedPlayerIds)
     }
 
     const setPlayerScore = (index: number, newScore: number) => {
         setPlayerScores(playerScores.map((score, i) => (i === index) ? newScore : score))
     }
+
+    const canAddPlayer = () => playerIds.length < Math.min(props.players.length, props.maxPlayerCount)
 
     const addPlayer = () => {
         let nextPlayerId = props.players.find(p => !playerIds.includes(p.id))?.id ?? 0
@@ -80,7 +81,7 @@ export const PlayerScoreForm = (props: PlayerScoreFormProps) => {
                     icon
                     className="add-player-button"
                     color="yellow"
-                    disabled={playerIds.length >= props.maxPlayerCount}
+                    disabled={!canAddPlayer()}
                     onClick={addPlayer}>
                     <span>Add Player&nbsp;</span>
                     <Icon name="plus" />
