@@ -41,6 +41,26 @@ export const GameDetails = (props: GameDetailsProps) => {
                 {game.synopsis}
             </h5>}
 
+            <div className="action-buttons">
+                <Button.Group widths={2}>
+                    <Button
+                        icon
+                        color="teal"
+                        onClick={submitResult}>
+                        <span>Submit Result&nbsp;</span>
+                        <Icon name="check" />
+                    </Button>
+
+                    <Button
+                        icon
+                        color="red"
+                        onClick={deleteGame}>
+                        <span>Delete Game&nbsp;</span>
+                        <Icon name="remove" />
+                    </Button>
+                </Button.Group>
+            </div>
+
             <div className="show-details-button">
                 <Button
                     fluid
@@ -75,24 +95,6 @@ export const GameDetails = (props: GameDetailsProps) => {
                     </Table.Body>
                 </Table>}
             </div>
-
-            <Button.Group widths={2}>
-                <Button
-                    icon
-                    color="teal"
-                    onClick={submitResult}>
-                    <span>Submit Result&nbsp;</span>
-                    <Icon name="check" />
-                </Button>
-
-                <Button
-                    icon
-                    color="red"
-                    onClick={deleteGame}>
-                    <span>Delete Game&nbsp;</span>
-                    <Icon name="remove" />
-                </Button>
-            </Button.Group>
         </div>
     )
 }

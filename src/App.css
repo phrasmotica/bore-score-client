@@ -91,6 +91,10 @@
   margin-top: 0rem;
 }
 
+.game-details .action-buttons {
+  margin-bottom: 0.5rem;
+}
+
 .game-details .show-details-button {
   margin-bottom: 0.5rem;
 }
