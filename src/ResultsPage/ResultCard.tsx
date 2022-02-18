@@ -23,7 +23,7 @@ export const ResultCard = (props: ResultCardProps) => {
         let player = props.players.find(p => p.username === s.username)
 
         return {
-            player: player?.displayName ?? s.username,
+            player: player?.displayName ?? "(unknown player)",
             score: s.score,
             isWinner: s.isWinner,
         }
