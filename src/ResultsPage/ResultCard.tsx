@@ -20,10 +20,10 @@ export const ResultCard = (props: ResultCardProps) => {
 
     // players who were in the game
     let playersWithScores = r.scores.map(s => {
-        let player = props.players.find(p => p.id === s.playerId)
+        let player = props.players.find(p => p.username === s.username)
 
         return {
-            player: player?.displayName ?? `Player ${s.playerId}`,
+            player: player?.displayName ?? s.username,
             score: s.score,
             isWinner: s.isWinner,
         }

@@ -1,4 +1,4 @@
-export const replaceDuplicates = (source: number[], index: number, replacements: number[]) => {
+export const replaceDuplicates = <T>(source: T[], index: number, replacements: T[]) => {
     let target = source[index]
 
     if (source.filter(v => v === target).length > 1) {
@@ -21,12 +21,12 @@ export const replaceDuplicates = (source: number[], index: number, replacements:
     return source
 }
 
-export const getPlayerIdsToUse = (playerIds: number[], minCount: number) => {
-    if (minCount > playerIds.length) {
-        // pad out remaining space with zeroes, i.e. no player selected
-        return playerIds.concat(new Array(minCount - playerIds.length).fill(0))
+export const getPlayersToUse = (players: string[], minCount: number) => {
+    if (minCount > players.length) {
+        // pad out remaining space with empty usernames, i.e. no player selected
+        return players.concat(new Array(minCount - players.length).fill(""))
     }
 
     // restrict to effectiveCount at most
-    return playerIds.slice(0, minCount)
+    return players.slice(0, minCount)
 }

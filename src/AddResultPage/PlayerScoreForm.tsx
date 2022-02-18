@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { Button, Form, Icon } from "semantic-ui-react"
 
 import { PlayerScoreInput } from "./PlayerScoreInput"
-import { getPlayerIdsToUse, replaceDuplicates } from "../Helpers"
+import { getPlayersToUse, replaceDuplicates } from "../Helpers"
 
 import { Player } from "../models/Player"
 
@@ -14,60 +14,59 @@ interface PlayerScoreFormProps {
 }
 
 export const PlayerScoreForm = (props: PlayerScoreFormProps) => {
-    const [playerIds, setPlayerIds] = useState<number[]>([])
+    const [players, setPlayers] = useState<string[]>([])
     const [playerScores, setPlayerScores] = useState<number[]>([])
 
     useEffect(() => {
         // fill current player inputs with first N (<= minPlayerCount) players
-        let playerIdsToUse = getPlayerIdsToUse(props.players.map(p => p.id), props.minPlayerCount)
+        let playersToUse = getPlayersToUse(props.players.map(p => p.username), props.minPlayerCount)
 
-        setPlayerIds(playerIdsToUse)
-        setPlayerScores(playerIdsToUse.map(_ => 0))
+        setPlayers(playersToUse)
+        setPlayerScores(playersToUse.map(_ => 0))
     }, [props.players, props.minPlayerCount])
 
-    const formIsComplete = () => playerIds.length > 0 && new Set(playerIds).size === playerIds.length
+    const formIsComplete = () => players.length > 0 && new Set(players).size === players.length
 
     const getFormData = () => ({
-        scores: playerIds.map((playerId, i) => ({
-            playerId: playerId,
+        scores: players.map((username, i) => ({
+            username: username,
             score: playerScores[i],
         }))
     })
 
     let playerOptions = props.players.map(p => ({
-        key: p.id,
+        key: p.username,
         text: p.displayName,
-        value: p.id,
+        value: p.username,
     }))
 
-    const setPlayerId = (index: number, newId: number) => {
-        let newPlayerIds = playerIds.map((id, i) => (i === index) ? newId : id)
+    const setPlayer = (index: number, newUsername: string) => {
+        let newPlayers = players.map((username, i) => (i === index) ? newUsername : username)
 
-        // if we have a duplicate of the new player ID elsewhere in the list
-        // then replace the duplicates with player IDs from the previous set
-        // that are now unused
-        let unusedPlayerIds = playerIds.filter(id => !newPlayerIds.includes(id))
-        let deduplicatedPlayerIds = replaceDuplicates(newPlayerIds, index, unusedPlayerIds)
+        // if we have a duplicate of the new player elsewhere in the list
+        // then replace the duplicates with players from the previous set that are now unused
+        let unusedPlayers = players.filter(username => !newPlayers.includes(username))
+        let deduplicatedPlayers = replaceDuplicates(newPlayers, index, unusedPlayers)
 
-        setPlayerIds(deduplicatedPlayerIds)
+        setPlayers(deduplicatedPlayers)
     }
 
     const setPlayerScore = (index: number, newScore: number) => {
         setPlayerScores(playerScores.map((score, i) => (i === index) ? newScore : score))
     }
 
-    const canAddPlayer = () => playerIds.length < Math.min(props.players.length, props.maxPlayerCount)
+    const canAddPlayer = () => players.length < Math.min(props.players.length, props.maxPlayerCount)
 
     const addPlayer = () => {
-        let nextPlayerId = props.players.find(p => !playerIds.includes(p.id))?.id ?? 0
-        setPlayerIds([...playerIds, nextPlayerId])
+        let nextPlayer = props.players.find(p => !players.includes(p.username))?.username ?? ""
+        setPlayers([...players, nextPlayer])
         setPlayerScores([...playerScores, 0])
     }
 
     const removePlayer = (index: number) => {
-        let newPlayerIds = [...playerIds]
-        newPlayerIds.splice(index, 1)
-        setPlayerIds(newPlayerIds)
+        let newPlayers = [...players]
+        newPlayers.splice(index, 1)
+        setPlayers(newPlayers)
 
         let newPlayerScores = [...playerScores]
         newPlayerScores.splice(index, 1)
@@ -99,14 +98,14 @@ export const PlayerScoreForm = (props: PlayerScoreFormProps) => {
             </Button.Group>
 
             <Form>
-                {playerIds.map((playerId, i) => (
+                {players.map((username, i) => (
                     <div key={i} className="player-score-input-removable">
                         <PlayerScoreInput
                             key={i}
                             label={`Player ${i + 1}`}
                             playerOptions={playerOptions}
-                            playerId={playerId}
-                            setPlayerId={id => setPlayerId(i, id)}
+                            player={username}
+                            setPlayer={username => setPlayer(i, username)}
                             score={playerScores[i]}
                             setScore={score => setPlayerScore(i, score)} />
 

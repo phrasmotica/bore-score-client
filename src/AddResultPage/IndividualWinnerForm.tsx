@@ -4,7 +4,7 @@ import { Button, Form, Icon } from "semantic-ui-react"
 import { PlayerWinnerInput } from "./PlayerWinnerInput"
 
 import { Player } from "../models/Player"
-import { getPlayerIdsToUse, replaceDuplicates } from "../Helpers"
+import { getPlayersToUse, replaceDuplicates } from "../Helpers"
 
 interface IndividualWinnerFormProps {
     players: Player[]
@@ -14,53 +14,52 @@ interface IndividualWinnerFormProps {
 }
 
 export const IndividualWinnerForm = (props: IndividualWinnerFormProps) => {
-    const [playerIds, setPlayerIds] = useState<number[]>([])
+    const [players, setPlayers] = useState<string[]>([])
     const [winnerIndex, setWinnerIndex] = useState(0)
 
     useEffect(() => {
         // fill current player inputs with first N (<= minPlayerCount) players
-        let playerIdsToUse = getPlayerIdsToUse(props.players.map(p => p.id), props.minPlayerCount)
-        setPlayerIds(playerIdsToUse)
+        let playersToUse = getPlayersToUse(props.players.map(p => p.username), props.minPlayerCount)
+        setPlayers(playersToUse)
     }, [props.players, props.minPlayerCount])
 
-    const formIsComplete = () => playerIds.length > 0 && new Set(playerIds).size === playerIds.length
+    const formIsComplete = () => players.length > 0 && new Set(players).size === players.length
 
     const getFormData = () => ({
-        scores: playerIds.map((playerId, i) => ({
-            playerId: playerId,
+        scores: players.map((username, i) => ({
+            username: username,
             isWinner: i === winnerIndex,
         }))
     })
 
     let playerOptions = props.players.map(p => ({
-        key: p.id,
+        key: p.username,
         text: p.displayName,
-        value: p.id,
+        value: p.username,
     }))
 
-    const setPlayerId = (index: number, newId: number) => {
-        let newPlayerIds = playerIds.map((id, i) => (i === index) ? newId : id)
+    const setPlayer = (index: number, newUsername: string) => {
+        let newPlayers = players.map((username, i) => (i === index) ? newUsername : username)
 
-        // if we have a duplicate of the new player ID elsewhere in the list
-        // then replace the duplicates with player IDs from the previous set
-        // that are now unused
-        let unusedPlayerIds = playerIds.filter(id => !newPlayerIds.includes(id))
-        let deduplicatedPlayerIds = replaceDuplicates(newPlayerIds, index, unusedPlayerIds)
+        // if we have a duplicate of the new player elsewhere in the list
+        // then replace the duplicates with players from the previous set that are now unused
+        let unusedPlayers = players.filter(username => !newPlayers.includes(username))
+        let deduplicatedPlayers = replaceDuplicates(newPlayers, index, unusedPlayers)
 
-        setPlayerIds(deduplicatedPlayerIds)
+        setPlayers(deduplicatedPlayers)
     }
 
-    const canAddPlayer = () => playerIds.length < Math.min(props.players.length, props.maxPlayerCount)
+    const canAddPlayer = () => players.length < Math.min(props.players.length, props.maxPlayerCount)
 
     const addPlayer = () => {
-        let nextPlayerId = props.players.find(p => !playerIds.includes(p.id))?.id ?? 0
-        setPlayerIds([...playerIds, nextPlayerId])
+        let nextPlayer = props.players.find(p => !players.includes(p.username))?.username ?? ""
+        setPlayers([...players, nextPlayer])
     }
 
     const removePlayer = (index: number) => {
-        let newPlayerIds = [...playerIds]
-        newPlayerIds.splice(index, 1)
-        setPlayerIds(newPlayerIds)
+        let newPlayers = [...players]
+        newPlayers.splice(index, 1)
+        setPlayers(newPlayers)
     }
 
     return (
@@ -88,14 +87,14 @@ export const IndividualWinnerForm = (props: IndividualWinnerFormProps) => {
             </Button.Group>
 
             <Form>
-                {playerIds.map((playerId, i) => (
+                {players.map((username, i) => (
                     <div key={i} className="player-winner-input-removable">
                         <PlayerWinnerInput
                             key={i}
                             label={`Player ${i + 1}`}
                             playerOptions={playerOptions}
-                            playerId={playerId}
-                            setPlayerId={id => setPlayerId(i, id)}
+                            player={username}
+                            setPlayer={username => setPlayer(i, username)}
                             isWinner={i === winnerIndex}
                             setIsWinner={() => setWinnerIndex(i)} />
 

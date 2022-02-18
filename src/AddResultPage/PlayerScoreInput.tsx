@@ -3,8 +3,8 @@ import { DropdownItemProps, Form } from "semantic-ui-react"
 interface PlayerScoreInputProps {
     label: string
     playerOptions: DropdownItemProps[]
-    playerId: number | undefined
-    setPlayerId: (id: number) => void
+    player: string
+    setPlayer: (username: string) => void
     score: number
     setScore: (score: number) => void
 }
@@ -18,8 +18,8 @@ export const PlayerScoreInput = (props: PlayerScoreInputProps) => {
                 label={props.label}
                 placeholder={props.label}
                 options={props.playerOptions}
-                value={props.playerId}
-                onChange={(e, { value }) => props.setPlayerId(Number(value))} />
+                value={props.player}
+                onChange={(e, { value }) => props.setPlayer(String(value))} />
 
             <Form.Input
                 label="Score"

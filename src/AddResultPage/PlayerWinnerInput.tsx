@@ -3,8 +3,8 @@ import { DropdownItemProps, Form } from "semantic-ui-react"
 interface PlayerWinnerInputProps {
     label: string
     playerOptions: DropdownItemProps[]
-    playerId: number | undefined
-    setPlayerId: (id: number) => void
+    player: string
+    setPlayer: (username: string) => void
     isWinner: boolean
     setIsWinner: () => void
 }
@@ -18,8 +18,8 @@ export const PlayerWinnerInput = (props: PlayerWinnerInputProps) => {
                 label={props.label}
                 placeholder={props.label}
                 options={props.playerOptions}
-                value={props.playerId}
-                onChange={(e, { value }) => props.setPlayerId(Number(value))} />
+                value={props.player}
+                onChange={(e, { value }) => props.setPlayer(String(value))} />
 
             <Form.Checkbox
                 label="Winner"

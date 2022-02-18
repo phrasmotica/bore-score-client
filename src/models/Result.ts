@@ -6,7 +6,7 @@ export interface Result {
 }
 
 interface PlayerScore {
-    playerId: number
+    username: string
     score: number
     isWinner: boolean
 }
