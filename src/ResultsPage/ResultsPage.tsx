@@ -12,7 +12,7 @@ export const ResultsPage = () => {
     const [games, setGames] = useState<Game[]>([])
     const [players, setPlayers] = useState<Player[]>([])
     const [results, setResults] = useState<Result[]>([])
-    const [selectedGame, setSelectedGame] = useState<number>()
+    const [selectedGame, setSelectedGame] = useState("")
 
     useEffect(() => {
         fetchGames()

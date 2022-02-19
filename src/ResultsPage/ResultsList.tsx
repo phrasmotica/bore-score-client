@@ -10,13 +10,13 @@ interface ResultsListProps {
     games: Game[]
     results: Result[]
     players: Player[]
-    selectedGame: number | undefined
+    selectedGame: string
 }
 
 export const ResultsList = (props: ResultsListProps) => {
     let resultsToShow = props.results
-    if (props.selectedGame !== undefined) {
-        resultsToShow = resultsToShow.filter(r => r.gameId === props.selectedGame)
+    if (props.selectedGame.length > 0) {
+        resultsToShow = resultsToShow.filter(r => r.gameName === props.selectedGame)
     }
 
     return (

@@ -32,8 +32,8 @@ export const AddResultPage = () => {
 
     useEffect(() => {
         if (games.length > 0) {
-            let gameIdParam = Number(searchParams.get("gameId"))
-            let defaultGame = games.find(g => g.id === gameIdParam) ?? games[0]
+            let gameParam = searchParams.get("game")
+            let defaultGame = games.find(g => g.name === gameParam) ?? games[0]
             setGame(defaultGame)
         }
     }, [games, searchParams])
@@ -72,7 +72,7 @@ export const AddResultPage = () => {
         fetch("http://localhost:8000/results", {
             method: "POST",
             body: JSON.stringify({
-                gameId: game.id,
+                gameName: game.name,
                 timestamp: submitValue(timestamp),
                 ...formData
             }),

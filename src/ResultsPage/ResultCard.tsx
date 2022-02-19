@@ -16,7 +16,7 @@ interface ResultCardProps {
 export const ResultCard = (props: ResultCardProps) => {
     let r = props.result
 
-    let game = props.games.find(g => g.id === r.gameId)
+    let game = props.games.find(g => g.name === r.gameName)
 
     // players who were in the game
     let playersWithScores = r.scores.map(s => {
@@ -36,7 +36,7 @@ export const ResultCard = (props: ResultCardProps) => {
 
                 return (
                     <List.Content>
-                        <List.Header>{game?.name ?? `<Game ${r.gameId}>`}</List.Header>
+                        <List.Header>{game?.displayName ?? r.gameName}</List.Header>
                         <List.Description>{displayDateTimeValue(moment.unix(r.timestamp))}</List.Description>
                         <List.Description>{scoresStr}</List.Description>
                     </List.Content>
@@ -47,7 +47,7 @@ export const ResultCard = (props: ResultCardProps) => {
 
                 return (
                     <List.Content>
-                        <List.Header>{game?.name ?? `<Game ${r.gameId}>`}</List.Header>
+                        <List.Header>{game?.displayName ?? r.gameName}</List.Header>
                         <List.Description>{displayDateTimeValue(moment.unix(r.timestamp))}</List.Description>
                         <List.Description>{winnerStr}</List.Description>
                     </List.Content>

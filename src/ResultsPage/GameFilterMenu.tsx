@@ -8,17 +8,17 @@ import { Result } from "../models/Result"
 interface GameFilterMenuProps {
     games: Game[]
     results: Result[]
-    selectedGame: number | undefined
-    setSelectedGame: (id: number | undefined) => void
+    selectedGame: string
+    setSelectedGame: (name: string) => void
 }
 
 export const GameFilterMenu = (props: GameFilterMenuProps) => {
-    const toggleSelectedGame = (id: number) => {
-        if (props.selectedGame === id) {
-            props.setSelectedGame(undefined)
+    const toggleSelectedGame = (name: string) => {
+        if (props.selectedGame === name) {
+            props.setSelectedGame("")
         }
         else {
-            props.setSelectedGame(id)
+            props.setSelectedGame(name)
         }
     }
 
@@ -31,15 +31,15 @@ export const GameFilterMenu = (props: GameFilterMenuProps) => {
                 </Menu.Item>
 
                 {props.games.map(g => {
-                    let resultCount = props.results.filter(r => r.gameId === g.id)
+                    let resultCount = props.results.filter(r => r.gameName === g.name)
 
                     return (
                         <GameCard
-                            key={g.id}
+                            key={g.name}
                             game={g}
                             resultCount={resultCount.length}
-                            setSelectedGame={() => toggleSelectedGame(g.id)}
-                            isSelected={props.selectedGame === g.id} />
+                            setSelectedGame={() => toggleSelectedGame(g.name)}
+                            isSelected={props.selectedGame === g.name} />
                     )
                 })}
             </Menu>

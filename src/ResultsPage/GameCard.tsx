@@ -6,7 +6,7 @@ interface GameCardProps {
     game: Game
     resultCount: number
     isSelected: boolean
-    setSelectedGame: (id: number | undefined) => void
+    setSelectedGame: (name: string) => void
 }
 
 export const GameCard = (props: GameCardProps) => {
@@ -20,13 +20,13 @@ export const GameCard = (props: GameCardProps) => {
         <Menu.Item
             active={isActive}
             disabled={isDisabled}
-            onClick={() => props.setSelectedGame(g.id)}>
+            onClick={() => props.setSelectedGame(g.name)}>
             <Label
                 className={labelClassName}
                 color={isActive ? "teal" : "grey"}>
                 {props.resultCount}
             </Label>
-            {g.name}
+            {g.displayName}
         </Menu.Item>
     )
 }

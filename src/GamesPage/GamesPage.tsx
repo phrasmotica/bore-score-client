@@ -11,7 +11,7 @@ export const GamesPage = () => {
     const [searchParams] = useSearchParams()
 
     const [games, setGames] = useState<Game[]>([])
-    const [selectedGame, setSelectedGame] = useState<number>()
+    const [selectedGame, setSelectedGame] = useState("")
 
     const fetchAndSetGames = () => {
         fetchGames().then(setGames)
@@ -21,21 +21,21 @@ export const GamesPage = () => {
 
     useEffect(() => {
         if (games.length > 0) {
-            let gameIdParam = Number(searchParams.get("gameId"))
-            let defaultGame = games.find(g => g.id === gameIdParam) ?? games[0]
-            setSelectedGame(defaultGame.id)
+            let gameParam = searchParams.get("game")
+            let defaultGame = games.find(g => g.name === gameParam) ?? games[0]
+            setSelectedGame(defaultGame.name)
         }
     }, [games, searchParams])
 
-    const getSelectedGame = () => games.find(g => g.id === selectedGame)
+    const getSelectedGame = () => games.find(g => g.name === selectedGame)
 
     const onDeletedGame = () => {
         fetchAndSetGames()
-        setSelectedGame(undefined)
+        setSelectedGame("")
     }
 
     const renderDetails = () => {
-        if (selectedGame !== undefined) {
+        if (selectedGame.length > 0) {
             return (
                 <GameDetails
                     game={getSelectedGame()!}

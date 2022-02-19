@@ -15,13 +15,13 @@ interface CommonFormProps {
 
 export const CommonForm = (props: CommonFormProps) => {
     let gameOptions = props.games.map(g => ({
-        key: g.id,
-        text: g.name,
-        value: g.id,
+        key: g.name,
+        text: g.displayName,
+        value: g.name,
     }))
 
-    const setSelectedGame = (id: number | undefined) => {
-        let game = props.games.find(g => g.id === id)
+    const setSelectedGame = (name: string) => {
+        let game = props.games.find(g => g.name === name)
         props.setSelectedGame(game)
     }
 
@@ -58,8 +58,8 @@ export const CommonForm = (props: CommonFormProps) => {
                     label="Game"
                     placeholder="Select game..."
                     options={gameOptions}
-                    value={props.selectedGame?.id ?? 0}
-                    onChange={(e, { value }) => setSelectedGame(Number(value))} />
+                    value={props.selectedGame?.name ?? ""}
+                    onChange={(e, { value }) => setSelectedGame(String(value))} />
 
                 <Form.Input
                     type="date"

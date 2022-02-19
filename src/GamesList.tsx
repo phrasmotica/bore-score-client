@@ -10,7 +10,7 @@ interface GamesListProps {
 export const GamesList = (props: GamesListProps) => {
     const [searchTerm, setSearchTerm] = useState("")
 
-    const matchesSearchTerm = (g: Game) => g.name.toLowerCase().includes(searchTerm)
+    const matchesSearchTerm = (g: Game) => g.displayName.toLowerCase().includes(searchTerm)
 
     let gamesToShow = props.games
     if (searchTerm.length > 0) {
@@ -18,8 +18,8 @@ export const GamesList = (props: GamesListProps) => {
     }
 
     let listItems = gamesToShow.map(g => (
-        <Menu.Item key={g.id}>
-            <span className="display-name">{g.name}</span>
+        <Menu.Item key={g.name}>
+            <span className="display-name">{g.displayName}</span>
         </Menu.Item>
     ))
 

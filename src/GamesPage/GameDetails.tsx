@@ -20,10 +20,10 @@ export const GameDetails = (props: GameDetailsProps) => {
 
     let game = props.game
 
-    const submitResult = () => navigate(`/add-result?gameId=${game.id}`)
+    const submitResult = () => navigate(`/add-result?game=${game.name}`)
 
     const deleteGame = () => {
-        fetch(`http://localhost:8000/games/${game.id}`, {
+        fetch(`http://localhost:8000/games/${game.name}`, {
             method: "DELETE"
         })
             .then(props.onDeletedGame)
@@ -46,8 +46,8 @@ export const GameDetails = (props: GameDetailsProps) => {
             </Header>
             <Modal.Content>
                 <p>
-                    Are you sure you want to delete {game.name}?
-                    This will also delete all results for {game.name}!
+                    Are you sure you want to delete {game.displayName}?
+                    This will also delete all results for {game.displayName}!
                 </p>
             </Modal.Content>
             <Modal.Actions>
@@ -68,7 +68,7 @@ export const GameDetails = (props: GameDetailsProps) => {
         <div className="game-details">
             {renderDeletePrompt()}
 
-            <h3>{game.name}</h3>
+            <h3>{game.displayName}</h3>
 
             {game.synopsis.length > 0 && <h5 className="game-synopsis">
                 {game.synopsis}

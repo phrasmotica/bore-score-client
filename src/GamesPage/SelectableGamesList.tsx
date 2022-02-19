@@ -5,14 +5,14 @@ import { Game } from "../models/Game"
 
 interface SelectableGamesListProps {
     games: Game[]
-    selectedGame: number | undefined
-    setSelectedGame: (id: number | undefined) => void
+    selectedGame: string
+    setSelectedGame: (name: string) => void
 }
 
 export const SelectableGamesList = (props: SelectableGamesListProps) => {
     const [searchTerm, setSearchTerm] = useState("")
 
-    const matchesSearchTerm = (g: Game) => g.name.toLowerCase().includes(searchTerm)
+    const matchesSearchTerm = (g: Game) => g.displayName.toLowerCase().includes(searchTerm)
 
     let gamesToShow = props.games
     if (searchTerm.length > 0) {
@@ -21,10 +21,10 @@ export const SelectableGamesList = (props: SelectableGamesListProps) => {
 
     let listItems = gamesToShow.map(g => (
         <Menu.Item
-            key={g.id}
-            active={props.selectedGame === g.id}
-            onClick={() => props.setSelectedGame(g.id)}>
-            <span className="display-name">{g.name}</span>
+            key={g.name}
+            active={props.selectedGame === g.name}
+            onClick={() => props.setSelectedGame(g.name)}>
+            <span className="display-name">{g.displayName}</span>
         </Menu.Item>
     ))
 

@@ -11,7 +11,7 @@ export const AddGamePage = () => {
     const [games, setGames] = useState<Game[]>([])
     const [winMethods, setWinMethods] = useState<WinMethod[]>([])
 
-    const [name, setName] = useState("")
+    const [displayName, setDisplayName] = useState("")
     const [synopsis, setSynopsis] = useState("")
     const [description, setDescription] = useState("")
     const [minPlayers, setMinPlayers] = useState(1)
@@ -34,11 +34,11 @@ export const AddGamePage = () => {
         }
     }, [winMethods])
 
-    const nameIsAvailable = () => !games.map(g => g.name).includes(name)
+    const displayNameIsAvailable = () => !games.map(g => g.displayName).includes(displayName)
 
     const formIsComplete = () => {
-        return name.length > 0
-            && nameIsAvailable()
+        return displayName.length > 0
+            && displayNameIsAvailable()
             && minPlayers > 0
             && maxPlayers >= minPlayers
             && winMethod !== undefined
@@ -48,12 +48,13 @@ export const AddGamePage = () => {
         fetch("http://localhost:8000/games", {
             method: "POST",
             body: JSON.stringify({
-                name: name,
+                displayName: displayName,
                 synopsis: synopsis,
                 description: description,
                 minPlayers: minPlayers,
                 maxPlayers: maxPlayers,
                 winMethod: winMethod,
+                links: []
             }),
             headers: {
                 "Content-Type": "application/json"
@@ -61,7 +62,7 @@ export const AddGamePage = () => {
         })
             .then(res => res.json())
             .then((newGame: Game) => newGame)
-            .then(newGame => navigate(`/games?gameId=${newGame.id}`))
+            .then(newGame => navigate(`/games?game=${newGame.name}`))
     }
 
     const createWinMethodOptions = () => winMethods.map(w => ({ key: w, text: w, value: w }))
@@ -77,11 +78,11 @@ export const AddGamePage = () => {
 
                 <Form onSubmit={submit}>
                     <Form.Input
-                        error={!nameIsAvailable()}
-                        label="Name"
-                        placeholder="Name"
-                        value={name}
-                        onChange={(e, { value }) => setName(value)} />
+                        error={!displayNameIsAvailable()}
+                        label="Display name"
+                        placeholder="Display name"
+                        value={displayName}
+                        onChange={(e, { value }) => setDisplayName(value)} />
 
                     <Form.Input
                         label="Synopsis"
@@ -118,6 +119,8 @@ export const AddGamePage = () => {
                         placeholder="Description"
                         value={description}
                         onChange={(e, { value }) => setDescription(String(value))} />
+
+                    {/* TODO: render form input for adding links */}
 
                     <Form.Button
                         icon

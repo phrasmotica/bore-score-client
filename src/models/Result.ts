@@ -1,6 +1,6 @@
 export interface Result {
-    id: number
-    gameId: number
+    id: string
+    gameName: string
     timestamp: number
     scores: PlayerScore[]
 }
