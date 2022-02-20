@@ -1,3 +1,4 @@
+import { LinkTypeName } from "./LinkType"
 import { WinMethodName } from "./WinMethod"
 
 export interface Game {
@@ -14,11 +15,6 @@ export interface Game {
 }
 
 export interface Link {
-    type: LinkType
+    type: LinkTypeName
     link: string
-}
-
-export enum LinkType {
-    OfficialWebsite = "Official Website",
-	BoardGameGeek = "BoardGameGeek",
 }
