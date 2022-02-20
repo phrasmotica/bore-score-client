@@ -6,9 +6,11 @@ import { Button, Header, Icon, Modal, Table } from "semantic-ui-react"
 import { displayDateValue } from "../MomentHelpers"
 
 import { Game } from "../models/Game"
+import { WinMethod } from "../models/WinMethod"
 
 interface GameDetailsProps {
     game: Game
+    winMethod: WinMethod
     onDeletedGame: () => void
 }
 
@@ -123,7 +125,7 @@ export const GameDetails = (props: GameDetailsProps) => {
                     <Table.Body>
                         <Table.Row>
                             <Table.Cell>{playersStr}</Table.Cell>
-                            <Table.Cell>{game.winMethod}</Table.Cell>
+                            <Table.Cell>{props.winMethod.displayName}</Table.Cell>
                         </Table.Row>
                     </Table.Body>
                 </Table>}

@@ -5,7 +5,8 @@ import { Form, Icon } from "semantic-ui-react"
 import { fetchGames, fetchWinMethods } from "../FetchHelpers"
 import { GamesList } from "../GamesList"
 
-import { Game, WinMethod } from "../models/Game"
+import { Game } from "../models/Game"
+import { WinMethod } from "../models/WinMethod"
 
 export const AddGamePage = () => {
     const [games, setGames] = useState<Game[]>([])
@@ -16,7 +17,7 @@ export const AddGamePage = () => {
     const [description, setDescription] = useState("")
     const [minPlayers, setMinPlayers] = useState(1)
     const [maxPlayers, setMaxPlayers] = useState(2)
-    const [winMethod, setWinMethod] = useState<WinMethod>()
+    const [winMethod, setWinMethod] = useState("")
 
     const navigate = useNavigate()
 
@@ -30,7 +31,7 @@ export const AddGamePage = () => {
 
     useEffect(() => {
         if (winMethods.length > 0) {
-            setWinMethod(winMethods[0])
+            setWinMethod(winMethods[0].name)
         }
     }, [winMethods])
 
@@ -41,7 +42,7 @@ export const AddGamePage = () => {
             && displayNameIsAvailable()
             && minPlayers > 0
             && maxPlayers >= minPlayers
-            && winMethod !== undefined
+            && winMethod.length > 0
     }
 
     const submit = () => {
@@ -65,7 +66,11 @@ export const AddGamePage = () => {
             .then(newGame => navigate(`/games?game=${newGame.name}`))
     }
 
-    const createWinMethodOptions = () => winMethods.map(w => ({ key: w, text: w, value: w }))
+    const createWinMethodOptions = () => winMethods.map(w => ({
+        key: w.name,
+        text: w.displayName,
+        value: w.name
+    }))
 
     return (
         <div className="add-game-page">
@@ -111,7 +116,7 @@ export const AddGamePage = () => {
                             label="Win Method"
                             options={createWinMethodOptions()}
                             value={winMethod}
-                            onChange={(e, { value }) => setWinMethod(value as WinMethod)} />
+                            onChange={(e, { value }) => setWinMethod(String(value))} />
                     </Form.Group>
 
                     <Form.TextArea

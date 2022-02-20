@@ -10,8 +10,9 @@ import { PlayerScoreForm } from "./PlayerScoreForm"
 import { fetchGames, fetchPlayers } from "../FetchHelpers"
 import { submitValue } from "../MomentHelpers"
 
-import { Game, WinMethod } from "../models/Game"
+import { Game } from "../models/Game"
 import { Player } from "../models/Player"
+import { WinMethodName } from "../models/WinMethod"
 
 export const AddResultPage = () => {
     const [searchParams] = useSearchParams()
@@ -42,7 +43,7 @@ export const AddResultPage = () => {
 
     const renderGameForm = () => {
         switch (game?.winMethod) {
-            case WinMethod.IndividualScore:
+            case WinMethodName.IndividualScore:
                 return (
                     <PlayerScoreForm
                         players={players}
@@ -51,7 +52,7 @@ export const AddResultPage = () => {
                         submit={submit} />
                 )
 
-            case WinMethod.IndividualWinner:
+            case WinMethodName.IndividualWinner:
                 return (
                     <IndividualWinnerForm
                         players={players}

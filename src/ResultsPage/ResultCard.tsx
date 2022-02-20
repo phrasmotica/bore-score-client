@@ -3,9 +3,10 @@ import moment from "moment"
 
 import { displayDateTimeValue } from "../MomentHelpers"
 
-import { Game, WinMethod } from "../models/Game"
+import { Game } from "../models/Game"
 import { Player } from "../models/Player"
 import { Result } from "../models/Result"
+import { WinMethodName } from "../models/WinMethod"
 
 interface ResultCardProps {
     result: Result
@@ -31,7 +32,7 @@ export const ResultCard = (props: ResultCardProps) => {
 
     const renderContent = () => {
         switch (game?.winMethod) {
-            case WinMethod.IndividualScore:
+            case WinMethodName.IndividualScore:
                 let scoresStr = playersWithScores.map(s => `${s.player}: ${s.score}`).join(", ")
 
                 return (
@@ -42,7 +43,7 @@ export const ResultCard = (props: ResultCardProps) => {
                     </List.Content>
                 )
 
-            case WinMethod.IndividualWinner:
+            case WinMethodName.IndividualWinner:
                 let winnerStr = playersWithScores.map(s => `${s.player} ${s.isWinner ? "won" : "lost"}`).join(", ")
 
                 return (

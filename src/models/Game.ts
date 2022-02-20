@@ -1,3 +1,5 @@
+import { WinMethodName } from "./WinMethod"
+
 export interface Game {
     id: string
     name: string
@@ -7,13 +9,8 @@ export interface Game {
     description: string
     minPlayers: number
     maxPlayers: number
-    winMethod: WinMethod
+    winMethod: WinMethodName
     links: Link[]
-}
-
-export enum WinMethod {
-    IndividualScore = "Individual Score",
-    IndividualWinner = "Individual Winner"
 }
 
 export interface Link {

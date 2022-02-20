@@ -1,6 +1,7 @@
-import { Game, WinMethod } from "./models/Game"
+import { Game } from "./models/Game"
 import { Player } from "./models/Player"
 import { Result } from "./models/Result"
+import { WinMethod } from "./models/WinMethod"
 
 export const fetchPlayers = () => {
     return fetch("http://localhost:8000/players")
