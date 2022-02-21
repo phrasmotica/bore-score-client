@@ -1,6 +1,6 @@
 export interface LinkType {
     id: string
-    name: string
+    name: LinkTypeName
     timeCreated: number
     displayName: string
 }

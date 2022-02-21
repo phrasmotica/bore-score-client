@@ -3,15 +3,17 @@ import { useSearchParams } from "react-router-dom"
 
 import { GameDetails } from "./GameDetails"
 import { SelectableGamesList } from "./SelectableGamesList"
-import { fetchGames, fetchWinMethods } from "../FetchHelpers"
+import { fetchGames, fetchLinkTypes, fetchWinMethods } from "../FetchHelpers"
 
 import { Game } from "../models/Game"
+import { LinkType } from "../models/LinkType"
 import { WinMethod } from "../models/WinMethod"
 
 export const GamesPage = () => {
     const [searchParams] = useSearchParams()
 
     const [games, setGames] = useState<Game[]>([])
+    const [linkTypes, setLinkTypes] = useState<LinkType[]>([])
     const [winMethods, setWinMethods] = useState<WinMethod[]>([])
 
     const [selectedGame, setSelectedGame] = useState("")
@@ -22,6 +24,9 @@ export const GamesPage = () => {
 
     useEffect(() => {
         fetchAndSetGames()
+
+        fetchLinkTypes()
+            .then(setLinkTypes)
 
         fetchWinMethods()
             .then(setWinMethods)
@@ -52,6 +57,7 @@ export const GamesPage = () => {
                 return (
                     <GameDetails
                         game={game}
+                        linkTypes={linkTypes}
                         winMethod={winMethod}
                         onDeletedGame={onDeletedGame} />
                 )

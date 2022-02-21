@@ -2,10 +2,12 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { Form, Icon } from "semantic-ui-react"
 
+import { LinkForm } from "./LinkForm"
+
 import { fetchGames, fetchWinMethods } from "../FetchHelpers"
 import { GamesList } from "../GamesList"
 
-import { Game } from "../models/Game"
+import { Game, Link } from "../models/Game"
 import { WinMethod } from "../models/WinMethod"
 
 export const AddGamePage = () => {
@@ -18,6 +20,7 @@ export const AddGamePage = () => {
     const [minPlayers, setMinPlayers] = useState(1)
     const [maxPlayers, setMaxPlayers] = useState(2)
     const [winMethod, setWinMethod] = useState("")
+    const [links, setLinks] = useState<Link[]>([])
 
     const navigate = useNavigate()
 
@@ -55,7 +58,7 @@ export const AddGamePage = () => {
                 minPlayers: minPlayers,
                 maxPlayers: maxPlayers,
                 winMethod: winMethod,
-                links: []
+                links: links
             }),
             headers: {
                 "Content-Type": "application/json"
@@ -81,61 +84,66 @@ export const AddGamePage = () => {
                     <GamesList games={games} />
                 </div>
 
-                <Form onSubmit={submit}>
-                    <Form.Input
-                        error={!displayNameIsAvailable()}
-                        label="Display name"
-                        placeholder="Display name"
-                        value={displayName}
-                        onChange={(e, { value }) => setDisplayName(value)} />
-
-                    <Form.Input
-                        label="Synopsis"
-                        placeholder="Synopsis"
-                        value={synopsis}
-                        onChange={(e, { value }) => setSynopsis(value)} />
-
-                    <Form.Group widths="equal">
+                <div>
+                    <Form>
                         <Form.Input
-                            type="number"
-                            label="Minimum Players"
-                            value={minPlayers}
-                            min={1}
-                            onChange={(e, { value }) => setMinPlayers(Number(value))} />
+                            error={!displayNameIsAvailable()}
+                            label="Display name"
+                            placeholder="Display name"
+                            value={displayName}
+                            onChange={(e, { value }) => setDisplayName(value)} />
 
                         <Form.Input
-                            type="number"
-                            label="Maximum Players"
-                            value={maxPlayers}
-                            min={minPlayers}
-                            onChange={(e, { value }) => setMaxPlayers(Number(value))} />
+                            label="Synopsis"
+                            placeholder="Synopsis"
+                            value={synopsis}
+                            onChange={(e, { value }) => setSynopsis(value)} />
 
-                        <Form.Dropdown
-                            selection
-                            type="number"
-                            label="Win Method"
-                            options={createWinMethodOptions()}
-                            value={winMethod}
-                            onChange={(e, { value }) => setWinMethod(String(value))} />
-                    </Form.Group>
+                        <Form.Group widths="equal">
+                            <Form.Input
+                                type="number"
+                                label="Minimum Players"
+                                value={minPlayers}
+                                min={1}
+                                onChange={(e, { value }) => setMinPlayers(Number(value))} />
 
-                    <Form.TextArea
-                        label="Description"
-                        placeholder="Description"
-                        value={description}
-                        onChange={(e, { value }) => setDescription(String(value))} />
+                            <Form.Input
+                                type="number"
+                                label="Maximum Players"
+                                value={maxPlayers}
+                                min={minPlayers}
+                                onChange={(e, { value }) => setMaxPlayers(Number(value))} />
 
-                    {/* TODO: render form input for adding links */}
+                            <Form.Dropdown
+                                selection
+                                label="Win Method"
+                                options={createWinMethodOptions()}
+                                value={winMethod}
+                                onChange={(e, { value }) => setWinMethod(String(value))} />
+                        </Form.Group>
+                    </Form>
 
-                    <Form.Button
-                        icon
-                        fluid
-                        color="teal"
-                        disabled={!formIsComplete()}>
-                        <span>Add Game&nbsp;</span>
-                        <Icon name="check" />
-                    </Form.Button>
-                </Form>
+                    <LinkForm
+                        links={links}
+                        setLinks={setLinks} />
+
+                    <Form onSubmit={submit}>
+                        <Form.TextArea
+                            label="Description"
+                            placeholder="Description"
+                            value={description}
+                            onChange={(e, { value }) => setDescription(String(value))} />
+
+                        <Form.Button
+                            icon
+                            fluid
+                            color="teal"
+                            disabled={!formIsComplete()}>
+                            <span>Add Game&nbsp;</span>
+                            <Icon name="check" />
+                        </Form.Button>
+                    </Form>
+                </div>
             </div>
         </div>
     )

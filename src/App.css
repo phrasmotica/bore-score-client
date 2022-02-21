@@ -130,6 +130,12 @@
   margin-top: 1rem;
 }
 
+.game-details .links {
+  text-align: start;
+  white-space: pre-line;
+  margin-top: 1rem;
+}
+
 .time-created {
   text-align: start;
 }
@@ -155,6 +161,28 @@
 
 .add-game-page-body > .ui.form {
   width: 100%;
+}
+
+.link-form {
+  margin-bottom: 1em;
+}
+
+.link-form .add-link-button {
+  margin-bottom: 1em;
+}
+
+.link-input-removable {
+  display: flex;
+  align-items: center;
+}
+
+.link-input-removable > .equal.width.fields {
+  width: 100%;
+  align-items: center;
+}
+
+.link-input-removable > .ui.button {
+  margin: 0em 0em 1em 1em;
 }
 
 .add-game-page-body .ui.form textarea {

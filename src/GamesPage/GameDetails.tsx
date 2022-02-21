@@ -6,10 +6,12 @@ import { Button, Header, Icon, Modal, Table } from "semantic-ui-react"
 import { displayDateValue } from "../MomentHelpers"
 
 import { Game } from "../models/Game"
+import { LinkType } from "../models/LinkType"
 import { WinMethod } from "../models/WinMethod"
 
 interface GameDetailsProps {
     game: Game
+    linkTypes: LinkType[]
     winMethod: WinMethod
     onDeletedGame: () => void
 }
@@ -109,6 +111,18 @@ export const GameDetails = (props: GameDetailsProps) => {
                 {showDetails && game.description.length > 0 && <p className="description">
                     {game.description}
                 </p>}
+
+                {showDetails && <div className="links">
+                    {game.links.map((l, i) => {
+                        let linkType = props.linkTypes.find(lt => lt.name === l.type)!.displayName
+
+                        return (
+                            <div key={i}>
+                                <em><a href={l.link} target="_blank">{linkType}</a></em>
+                            </div>
+                        )
+                    })}
+                </div>}
 
                 {showDetails && <p className="time-created">
                     <em>Added: {displayDateValue(moment.unix(game.timeCreated))}</em>
