@@ -2,7 +2,15 @@ import { Game } from "./models/Game"
 import { LinkType } from "./models/LinkType"
 import { Player } from "./models/Player"
 import { Result } from "./models/Result"
+import { Summary } from "./models/Summary"
 import { WinMethod } from "./models/WinMethod"
+
+export const fetchSummary = () => {
+    return fetch("http://localhost:8000/summary")
+        .then(res => res.json())
+        .catch(err => console.error(err))
+        .then((summary: Summary) => summary)
+}
 
 export const fetchPlayers = () => {
     return fetch("http://localhost:8000/players")
