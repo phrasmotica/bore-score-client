@@ -20,6 +20,7 @@ export const AddGamePage = () => {
     const [minPlayers, setMinPlayers] = useState(1)
     const [maxPlayers, setMaxPlayers] = useState(2)
     const [winMethod, setWinMethod] = useState("")
+    const [imageLink, setImageLink] = useState("")
     const [links, setLinks] = useState<Link[]>([])
 
     const navigate = useNavigate()
@@ -58,6 +59,7 @@ export const AddGamePage = () => {
                 minPlayers: minPlayers,
                 maxPlayers: maxPlayers,
                 winMethod: winMethod,
+                imageLink: imageLink,
                 links: links
             }),
             headers: {
@@ -120,6 +122,14 @@ export const AddGamePage = () => {
                                 options={createWinMethodOptions()}
                                 value={winMethod}
                                 onChange={(e, { value }) => setWinMethod(String(value))} />
+                        </Form.Group>
+
+                        <Form.Group widths="equal">
+                            <Form.Input
+                                label="Image link"
+                                placeholder="Image link"
+                                value={imageLink}
+                                onChange={(e, { value }) => setImageLink(value)} />
                         </Form.Group>
                     </Form>
 
