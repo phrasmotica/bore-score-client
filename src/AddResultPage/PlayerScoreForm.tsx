@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react"
 import { Button, Form, Icon } from "semantic-ui-react"
 
+import { PlayerCountWarning } from "./PlayerCountWarning"
 import { PlayerScoreInput } from "./PlayerScoreInput"
+
 import { getPlayersToUse, replaceDuplicates } from "../Helpers"
 
 import { Player } from "../models/Player"
@@ -96,6 +98,10 @@ export const PlayerScoreForm = (props: PlayerScoreFormProps) => {
                     <Icon name="check" />
                 </Button>
             </Button.Group>
+
+            {props.players.length < props.maxPlayerCount && <PlayerCountWarning
+                playerCount={props.players.length}
+                maxPlayerCount={props.maxPlayerCount} />}
 
             <Form>
                 {players.map((username, i) => (

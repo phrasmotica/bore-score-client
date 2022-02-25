@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react"
 import { Button, Form, Icon } from "semantic-ui-react"
 
+import { PlayerCountWarning } from "./PlayerCountWarning"
 import { PlayerWinnerInput } from "./PlayerWinnerInput"
 
-import { Player } from "../models/Player"
 import { getPlayersToUse, replaceDuplicates } from "../Helpers"
+
+import { Player } from "../models/Player"
 
 interface IndividualWinnerFormProps {
     players: Player[]
@@ -85,6 +87,10 @@ export const IndividualWinnerForm = (props: IndividualWinnerFormProps) => {
                     <Icon name="check" />
                 </Button>
             </Button.Group>
+
+            {props.players.length < props.maxPlayerCount && <PlayerCountWarning
+                playerCount={props.players.length}
+                maxPlayerCount={props.maxPlayerCount} />}
 
             <Form>
                 {players.map((username, i) => (
