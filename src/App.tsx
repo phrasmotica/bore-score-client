@@ -19,31 +19,31 @@ const App = () => {
                 BoreScore
             </Menu.Item>
 
-            <Menu.Item href="/" active={page === ""}>
+            <Menu.Item href="/">
                 Home
             </Menu.Item>
 
-            <Menu.Item href="/players" active={page === "players"}>
+            <Menu.Item href="/players">
                 Players
             </Menu.Item>
 
-            <Menu.Item href="/add-player" active={page === "add-player"}>
+            <Menu.Item href="/add-player">
                 Add Player
             </Menu.Item>
 
-            <Menu.Item href="/games" active={page === "games"}>
+            <Menu.Item href="/games">
                 Games
             </Menu.Item>
 
-            <Menu.Item href="/add-game" active={page === "add-game"}>
+            <Menu.Item href="/add-game">
                 Add Game
             </Menu.Item>
 
-            <Menu.Item href="/results" active={page === "results"}>
+            <Menu.Item href="/results">
                 Results
             </Menu.Item>
 
-            <Menu.Item href="/add-result" active={page === "add-result"}>
+            <Menu.Item href="/add-result">
                 Add Result
             </Menu.Item>
         </Menu>
