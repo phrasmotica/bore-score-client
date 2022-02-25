@@ -11,6 +11,7 @@ export interface Game {
     minPlayers: number
     maxPlayers: number
     winMethod: WinMethodName
+    imageLink: string
     links: Link[]
 }
 

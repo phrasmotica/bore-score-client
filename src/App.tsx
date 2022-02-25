@@ -1,4 +1,4 @@
-import { Icon, Menu, Segment } from "semantic-ui-react"
+import { Icon, Menu } from "semantic-ui-react"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 
 import { AddGamePage } from "./AddGamePage/AddGamePage"

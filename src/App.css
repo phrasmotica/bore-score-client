@@ -104,19 +104,37 @@
   width: 100%;
 }
 
-.game-details .game-synopsis {
+.game-details .content {
+  display: flex;
+  margin-bottom: 0.5rem;
+}
+
+.game-details .content .left {
+  padding-right: 0.5rem;
+  margin-right: 0.5rem;
+  border-right: 1px solid rgba(34, 36, 38, 0.15);
+}
+
+.game-details .content .left button.ui.button+button.ui.button {
+  margin-top: 0.5rem;
+}
+
+.game-details .content .image {
+  height: 300px;
+  width: 300px;
+  object-fit: contain;
+  margin-bottom: 0.5rem;
+}
+
+.game-details .display-name-header {
+  text-align: start;
   margin-top: 0rem;
-}
-
-.game-details .action-buttons {
   margin-bottom: 0.5rem;
 }
 
-.game-details .show-details-button {
-  margin-bottom: 0.5rem;
-}
-
-.game-details .game-details-container {
+.game-details .game-synopsis {
+  text-align: start;
+  margin-top: 0rem;
   margin-bottom: 0.5rem;
 }
 

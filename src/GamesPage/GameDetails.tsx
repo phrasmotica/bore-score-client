@@ -1,7 +1,7 @@
 import moment from "moment"
 import { useState } from "react"
 import { useNavigate } from "react-router"
-import { Button, Header, Icon, Modal, Table } from "semantic-ui-react"
+import { Button, Header, Icon, Image, Modal, Table } from "semantic-ui-react"
 
 import { displayDateValue } from "../MomentHelpers"
 
@@ -17,7 +17,6 @@ interface GameDetailsProps {
 }
 
 export const GameDetails = (props: GameDetailsProps) => {
-    const [showDetails, setShowDetails] = useState(false)
     const [showDeletePrompt, setShowDeletePrompt] = useState(false)
 
     let navigate = useNavigate()
@@ -68,20 +67,21 @@ export const GameDetails = (props: GameDetailsProps) => {
         </Modal>
     )
 
+    let imageSrc = game.imageLink || "https://e.snmc.io/i/600/s/9f6d3d17acac6ce20993eb158c203e4b/5662600/godspeed-you-black-emperor-lift-yr-skinny-fists-like-antennas-to-heaven-cover-art.jpg"
+
     return (
         <div className="game-details">
             {renderDeletePrompt()}
 
-            <h3>{game.displayName}</h3>
+            <div className="content">
+                <div className="left">
+                    <div className="image">
+                        <Image src={imageSrc} />
+                    </div>
 
-            {game.synopsis.length > 0 && <h5 className="game-synopsis">
-                {game.synopsis}
-            </h5>}
-
-            <div className="action-buttons">
-                <Button.Group widths={2}>
                     <Button
                         icon
+                        fluid
                         color="teal"
                         onClick={submitResult}>
                         <span>Submit Result&nbsp;</span>
@@ -90,59 +90,63 @@ export const GameDetails = (props: GameDetailsProps) => {
 
                     <Button
                         icon
+                        fluid
                         color="red"
                         onClick={() => setShowDeletePrompt(true)}>
                         <span>Delete Game&nbsp;</span>
                         <Icon name="remove" />
                     </Button>
-                </Button.Group>
-            </div>
+                </div>
 
-            <div className="show-details-button">
-                <Button
-                    fluid
-                    color="blue"
-                    onClick={() => setShowDetails(!showDetails)}>
-                    {showDetails ? "Hide Details" : "Show Details"}
-                </Button>
-            </div>
+                <div>
+                    <h3 className="display-name-header">
+                        {game.displayName}
+                    </h3>
 
-            <div className="game-details-container">
-                {showDetails && game.description.length > 0 && <p className="description">
-                    {game.description}
-                </p>}
+                    {game.synopsis.length > 0 && <h5 className="game-synopsis">
+                        {game.synopsis}
+                    </h5>}
 
-                {showDetails && <div className="links">
-                    {game.links.map((l, i) => {
-                        let linkType = props.linkTypes.find(lt => lt.name === l.type)!.displayName
+                    <p className="description">
+                        {game.description}
+                    </p>
 
-                        return (
-                            <div key={i}>
-                                <em><a href={l.link} target="_blank">{linkType}</a></em>
-                            </div>
-                        )
-                    })}
-                </div>}
+                    <div className="links">
+                        {game.links.map((l, i) => {
+                            let linkType = props.linkTypes.find(lt => lt.name === l.type)!.displayName
 
-                {showDetails && <p className="time-created">
-                    <em>Added: {displayDateValue(moment.unix(game.timeCreated))}</em>
-                </p>}
+                            return (
+                                <div key={i}>
+                                    <em>
+                                        <a href={l.link} target="_blank" rel="noreferrer">
+                                            {linkType}
+                                        </a>
+                                    </em>
+                                </div>
+                            )
+                        })}
+                    </div>
 
-                {showDetails && <Table celled color="blue">
-                    <Table.Header>
-                        <Table.Row>
-                            <Table.HeaderCell width={8}>Players</Table.HeaderCell>
-                            <Table.HeaderCell width={8}>Win Method</Table.HeaderCell>
-                        </Table.Row>
-                    </Table.Header>
+                    <p className="time-created">
+                        <em>Added: {displayDateValue(moment.unix(game.timeCreated))}</em>
+                    </p>
 
-                    <Table.Body>
-                        <Table.Row>
-                            <Table.Cell>{playersStr}</Table.Cell>
-                            <Table.Cell>{props.winMethod.displayName}</Table.Cell>
-                        </Table.Row>
-                    </Table.Body>
-                </Table>}
+                    <Table celled color="blue">
+                        <Table.Header>
+                            <Table.Row>
+                                <Table.HeaderCell width={8}>Players</Table.HeaderCell>
+                                <Table.HeaderCell width={8}>Win Method</Table.HeaderCell>
+                            </Table.Row>
+                        </Table.Header>
+
+                        <Table.Body>
+                            <Table.Row>
+                                <Table.Cell>{playersStr}</Table.Cell>
+                                <Table.Cell>{props.winMethod.displayName}</Table.Cell>
+                            </Table.Row>
+                        </Table.Body>
+                    </Table>
+                </div>
             </div>
         </div>
     )
