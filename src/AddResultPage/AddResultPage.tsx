@@ -6,6 +6,7 @@ import moment from "moment"
 import { CommonForm } from "./CommonForm"
 import { IndividualWinnerForm } from "./IndividualWinnerForm"
 import { PlayerScoreForm } from "./PlayerScoreForm"
+import { GameImage } from "../GameImage"
 
 import { fetchGames, fetchPlayers } from "../FetchHelpers"
 import { submitValue } from "../MomentHelpers"
@@ -84,18 +85,28 @@ export const AddResultPage = () => {
             .then(() => navigate("/results"))
     }
 
+    let imageSrc = game?.imageLink || "https://e.snmc.io/i/600/s/9f6d3d17acac6ce20993eb158c203e4b/5662600/godspeed-you-black-emperor-lift-yr-skinny-fists-like-antennas-to-heaven-cover-art.jpg"
+
     return (
         <div className="add-result-page">
             <h2>Add Result</h2>
 
-            <CommonForm
-                games={games}
-                selectedGame={game}
-                setSelectedGame={setGame}
-                timestamp={timestamp}
-                setTimestamp={setTimestamp} />
+            <div className="add-result-page-body">
+                <div className="left">
+                    <GameImage imageSrc={imageSrc} />
+                </div>
 
-            {renderGameForm()}
+                <div className="right">
+                    <CommonForm
+                        games={games}
+                        selectedGame={game}
+                        setSelectedGame={setGame}
+                        timestamp={timestamp}
+                        setTimestamp={setTimestamp} />
+
+                    {renderGameForm()}
+                </div>
+            </div>
         </div>
     )
 }

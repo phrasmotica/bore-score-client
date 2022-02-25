@@ -115,15 +115,13 @@
   border-right: 1px solid rgba(34, 36, 38, 0.15);
 }
 
-.game-details .content .left button.ui.button+button.ui.button {
+.game-details .content .left button.ui.button {
   margin-top: 0.5rem;
 }
 
-.game-details .content .image {
-  height: 300px;
+.game-image {
   width: 300px;
   object-fit: contain;
-  margin-bottom: 0.5rem;
 }
 
 .game-details .display-name-header {
@@ -224,9 +222,18 @@
   flex: 1 1 auto;
 }
 
-.add-result-page .sidebar  {
-  text-align: end;
-  margin-right: 1rem;
+.add-result-page-body  {
+  display: flex;
+}
+
+.add-result-page-body .left {
+  padding-right: 0.5rem;
+  margin-right: 0.5rem;
+  border-right: 1px solid rgba(34, 36, 38, 0.15);
+}
+
+.add-result-page-body .right {
+  flex-grow: 1;
 }
 
 .add-result-page .fields.common-form > .field.game-picker {

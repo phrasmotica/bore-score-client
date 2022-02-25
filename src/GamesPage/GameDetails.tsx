@@ -1,7 +1,9 @@
 import moment from "moment"
 import { useState } from "react"
 import { useNavigate } from "react-router"
-import { Button, Header, Icon, Image, Modal, Table } from "semantic-ui-react"
+import { Button, Header, Icon, Modal, Table } from "semantic-ui-react"
+
+import { GameImage } from "../GameImage"
 
 import { displayDateValue } from "../MomentHelpers"
 
@@ -75,9 +77,7 @@ export const GameDetails = (props: GameDetailsProps) => {
 
             <div className="content">
                 <div className="left">
-                    <div className="image">
-                        <Image src={imageSrc} />
-                    </div>
+                    <GameImage imageSrc={imageSrc} />
 
                     <Button
                         icon
