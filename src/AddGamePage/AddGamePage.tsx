@@ -84,7 +84,7 @@ export const AddGamePage = () => {
                     <GamesList games={games} />
                 </div>
 
-                <div>
+                <div className="add-game-page-form">
                     <Form>
                         <Form.Input
                             error={!displayNameIsAvailable()}

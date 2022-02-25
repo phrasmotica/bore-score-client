@@ -50,36 +50,32 @@ const App = () => {
     )
 
     return (
-        <div className="App">
-            <header className="App-header">
-                <div className="app-container">
-                    <BrowserRouter>
-                        <Routes>
-                            <Route path="/" element={renderMenu("")} />
-                            <Route path="/players" element={renderMenu("players")} />
-                            <Route path="/add-player" element={renderMenu("add-player")} />
-                            <Route path="/games" element={renderMenu("games")} />
-                            <Route path="/add-game" element={renderMenu("add-game")} />
-                            <Route path="/results" element={renderMenu("results")} />
-                            <Route path="/add-result" element={renderMenu("add-result")} />
-                        </Routes>
-                    </BrowserRouter>
+        <div className="app-container">
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={renderMenu("")} />
+                    <Route path="/players" element={renderMenu("players")} />
+                    <Route path="/add-player" element={renderMenu("add-player")} />
+                    <Route path="/games" element={renderMenu("games")} />
+                    <Route path="/add-game" element={renderMenu("add-game")} />
+                    <Route path="/results" element={renderMenu("results")} />
+                    <Route path="/add-result" element={renderMenu("add-result")} />
+                </Routes>
+            </BrowserRouter>
 
-                    <Segment>
-                        <BrowserRouter>
-                            <Routes>
-                                <Route path="/" element={<HomePage />} />
-                                <Route path="/players" element={<PlayersPage />} />
-                                <Route path="/add-player" element={<AddPlayerPage />} />
-                                <Route path="/games" element={<GamesPage />} />
-                                <Route path="/add-game" element={<AddGamePage />} />
-                                <Route path="/results" element={<ResultsPage />} />
-                                <Route path="/add-result" element={<AddResultPage />} />
-                            </Routes>
-                        </BrowserRouter>
-                    </Segment>
-                </div>
-            </header>
+            <div className="content">
+                <BrowserRouter>
+                    <Routes>
+                        <Route path="/" element={<HomePage />} />
+                        <Route path="/players" element={<PlayersPage />} />
+                        <Route path="/add-player" element={<AddPlayerPage />} />
+                        <Route path="/games" element={<GamesPage />} />
+                        <Route path="/add-game" element={<AddGamePage />} />
+                        <Route path="/results" element={<ResultsPage />} />
+                        <Route path="/add-result" element={<AddResultPage />} />
+                    </Routes>
+                </BrowserRouter>
+            </div>
         </div>
     )
 }

@@ -27,15 +27,17 @@ export const ResultsPage = () => {
 
     return (
         <div className="results-page">
-            <h2>Results</h2>
+            <div className="sidebar">
+                <GameFilterMenu
+                    games={games}
+                    results={results}
+                    selectedGame={selectedGame}
+                    setSelectedGame={setSelectedGame} />
+            </div>
 
             <div className="results-page-body">
-                <div className="sidebar">
-                    <GameFilterMenu
-                        games={games}
-                        results={results}
-                        selectedGame={selectedGame}
-                        setSelectedGame={setSelectedGame} />
+                <div className="header">
+                    <h2>Results</h2>
                 </div>
 
                 <ResultsList

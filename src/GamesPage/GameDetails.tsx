@@ -131,8 +131,8 @@ export const GameDetails = (props: GameDetailsProps) => {
                 {showDetails && <Table celled color="blue">
                     <Table.Header>
                         <Table.Row>
-                            <Table.HeaderCell>Players</Table.HeaderCell>
-                            <Table.HeaderCell>Win Method</Table.HeaderCell>
+                            <Table.HeaderCell width={8}>Players</Table.HeaderCell>
+                            <Table.HeaderCell width={8}>Win Method</Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>
 
