@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Button, Form, Icon, Table } from "semantic-ui-react"
+import { Button, Icon, Input, Table } from "semantic-ui-react"
 
 import { PlayerCountWarning } from "./PlayerCountWarning"
 import { PlayerDropdown } from "./PlayerDropdown"
@@ -107,9 +107,9 @@ export const PlayerScoreForm = (props: PlayerScoreFormProps) => {
             <Table color="yellow">
                 <Table.Header>
                     <Table.Row>
-                        <Table.HeaderCell>Player</Table.HeaderCell>
-                        <Table.HeaderCell>Score</Table.HeaderCell>
-                        <Table.HeaderCell></Table.HeaderCell>
+                        <Table.HeaderCell width={6}>Player</Table.HeaderCell>
+                        <Table.HeaderCell width={2}>Score</Table.HeaderCell>
+                        <Table.HeaderCell width={8}></Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
 
@@ -125,7 +125,7 @@ export const PlayerScoreForm = (props: PlayerScoreFormProps) => {
                             </Table.Cell>
 
                             <Table.Cell>
-                                <Form.Input
+                                <Input
                                     fluid
                                     type="number"
                                     value={playerScores[i]}

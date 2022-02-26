@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Button, Form, Icon, Table } from "semantic-ui-react"
+import { Button, Checkbox, Icon, Table } from "semantic-ui-react"
 
 import { PlayerCountWarning } from "./PlayerCountWarning"
 import { PlayerDropdown } from "./PlayerDropdown"
@@ -96,9 +96,9 @@ export const IndividualWinnerForm = (props: IndividualWinnerFormProps) => {
             <Table color="yellow">
                 <Table.Header>
                     <Table.Row>
-                        <Table.HeaderCell>Player</Table.HeaderCell>
-                        <Table.HeaderCell>Winner</Table.HeaderCell>
-                        <Table.HeaderCell></Table.HeaderCell>
+                        <Table.HeaderCell width={6}>Player</Table.HeaderCell>
+                        <Table.HeaderCell width={2}>Winner</Table.HeaderCell>
+                        <Table.HeaderCell width={8}></Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
 
@@ -114,7 +114,7 @@ export const IndividualWinnerForm = (props: IndividualWinnerFormProps) => {
                             </Table.Cell>
 
                             <Table.Cell>
-                                <Form.Checkbox
+                                <Checkbox
                                     radio
                                     checked={i === winnerIndex}
                                     onChange={() => setWinnerIndex(i)} />
