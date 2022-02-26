@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react"
-import { Button, Form, Icon } from "semantic-ui-react"
-
-import { LinkInput } from "./LinkInput"
+import { Form, Input } from "semantic-ui-react"
 
 import { fetchLinkTypes } from "../FetchHelpers"
-import { replaceDuplicatesWithComparator } from "../Helpers"
 
 import { Link } from "../models/Game"
-import { LinkType, LinkTypeName } from "../models/LinkType"
+import { LinkType } from "../models/LinkType"
 
 interface LinkFormProps {
     links: Link[]
@@ -22,83 +19,40 @@ export const LinkForm = (props: LinkFormProps) => {
             .then(setLinkTypes)
     }, [])
 
-    const addLink = () => {
-        let newLink = {
-            // name of first unused link type
-            type: linkTypes.find(t => !props.links.map(l => l.type).includes(t.name))!.name,
+    useEffect(() => {
+        props.setLinks(linkTypes.map(l => ({
+            type: l.name,
             link: "",
-        }
+        })))
+    }, [linkTypes])
 
-        props.setLinks([...props.links, newLink])
-    }
-
-    const setLink = (type: LinkTypeName, link: string, index: number) => {
-        let newLinks = props.links.map((l, i) => {
+    const setLink = (link: string, index: number) => {
+        props.setLinks(props.links.map((l, i) => {
             if (i === index) {
                 return {
-                    type: type,
+                    type: l.type,
                     link: link
                 }
             }
 
             return l
-        })
-
-        // if we have a duplicate of the new link type elsewhere in the list
-        // then replace the duplicates with link types from the previous set that are now unused
-        let unusedLinks = props.links.filter(l => !newLinks.map(nl => nl.type).includes(l.type))
-        let deduplicatedLinks = replaceDuplicatesWithComparator(newLinks, index, unusedLinks, (l, m) => l.type === m.type)
-
-        props.setLinks(deduplicatedLinks)
+        }))
     }
-
-    const removeLink = (index: number) => {
-        let newLinks = [...props.links]
-        newLinks.splice(index, 1)
-        props.setLinks(newLinks)
-    }
-
-    let createLinkTypeOptions = () => linkTypes.map(l => ({
-        key: l.name,
-        text: l.displayName,
-        value: l.name,
-    }))
 
     return (
         <div className="link-form">
-            <div className="add-link-button">
-                <Button
-                    icon
-                    fluid
-                    color="yellow"
-                    onClick={addLink}
-                    disabled={props.links.length >= linkTypes.length}>
-                    <span>Add Link&nbsp;</span>
-                    <Icon name="chain" />
-                </Button>
-            </div>
-
-            <Form>
-                {props.links.map((l, i) => {
-                    return (
-                        <div key={i} className="link-input-removable">
-                            <LinkInput
-                                key={i}
-                                link={l}
-                                setLink={(type, link) => setLink(type, link, i)}
-                                linkTypeOptions={createLinkTypeOptions()} />
-
-                            <Button
-                                icon
-                                inverted
-                                color="red"
-                                onClick={() => removeLink(i)}>
-                                <Icon name="minus" />
-                            </Button>
-                        </div>
-                    )
-                })}
-            </Form>
+            {props.links.map((l, i) => {
+                let labelContent = linkTypes.find(lt => lt.name === l.type)?.displayName ?? l.type
+                return (
+                    <Input
+                        key={l.type}
+                        fluid
+                        label={{ color: "yellow", content: labelContent }}
+                        placeholder="URL"
+                        value={props.links[i].link}
+                        onChange={(e, { value }) => setLink(value, i)} />
+                )
+            })}
         </div>
     )
 }

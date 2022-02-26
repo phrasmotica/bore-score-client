@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { Form, Icon } from "semantic-ui-react"
+import { Form, Icon, Input } from "semantic-ui-react"
 
 import { LinkForm } from "./LinkForm"
 
@@ -123,15 +123,16 @@ export const AddGamePage = () => {
                                 value={winMethod}
                                 onChange={(e, { value }) => setWinMethod(String(value))} />
                         </Form.Group>
-
-                        <Form.Group widths="equal">
-                            <Form.Input
-                                label="Image link"
-                                placeholder="Image link"
-                                value={imageLink}
-                                onChange={(e, { value }) => setImageLink(value)} />
-                        </Form.Group>
                     </Form>
+
+                    <div className="image-link">
+                        <Input
+                            fluid
+                            label={{ color: "blue", content: "Image" }}
+                            placeholder="URL"
+                            value={imageLink}
+                            onChange={(e, { value }) => setImageLink(value)} />
+                    </div>
 
                     <LinkForm
                         links={links}
