@@ -4,6 +4,7 @@ import { useSearchParams } from "react-router-dom"
 import moment from "moment"
 
 import { CommonForm } from "./CommonForm"
+import { CooperativeScoreForm } from "./CooperativeScoreForm"
 import { IndividualWinnerForm } from "./IndividualWinnerForm"
 import { PlayerScoreForm } from "./PlayerScoreForm"
 import { GameImage } from "../GameImage"
@@ -56,6 +57,15 @@ export const AddResultPage = () => {
             case WinMethodName.IndividualWinner:
                 return (
                     <IndividualWinnerForm
+                        players={players}
+                        minPlayerCount={game.minPlayers}
+                        maxPlayerCount={game.maxPlayers}
+                        submit={submit} />
+                )
+
+            case WinMethodName.CooperativeScore:
+                return (
+                    <CooperativeScoreForm
                         players={players}
                         minPlayerCount={game.minPlayers}
                         maxPlayerCount={game.maxPlayers}

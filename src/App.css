@@ -270,3 +270,8 @@
 .add-result-form > .ui.form {
   margin-right: 1rem;
 }
+
+.cooperative-score-input {
+  border-left: 1px solid rgba(34, 36, 38, 0.15);
+  border-right: 1px solid rgba(34, 36, 38, 0.15);
+}
