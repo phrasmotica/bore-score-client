@@ -6,49 +6,49 @@ import { Summary } from "./models/Summary"
 import { WinMethod } from "./models/WinMethod"
 
 export const fetchSummary = () => {
-    return fetch("http://localhost:8000/summary")
+    return fetch(`${process.env.REACT_APP_API_URL}/summary`)
         .then(res => res.json())
         .catch(err => console.error(err))
         .then((summary: Summary) => summary)
 }
 
 export const fetchPlayers = () => {
-    return fetch("http://localhost:8000/players")
+    return fetch(`${process.env.REACT_APP_API_URL}/players`)
         .then(res => res.json())
         .catch(err => console.error(err))
         .then((players: Player[]) => players)
 }
 
 export const fetchGames = () => {
-    return fetch("http://localhost:8000/games")
+    return fetch(`${process.env.REACT_APP_API_URL}/games`)
         .then(res => res.json())
         .catch(err => console.error(err))
         .then((games: Game[]) => games)
 }
 
 export const fetchGame = (name: string) => {
-    return fetch(`http://localhost:8000/games/${name}`)
+    return fetch(`${process.env.REACT_APP_API_URL}/games/${name}`)
         .then(res => res.json())
         .catch(err => console.error(err))
         .then((game: Game) => game)
 }
 
 export const fetchLinkTypes = () => {
-    return fetch("http://localhost:8000/linkTypes")
+    return fetch(`${process.env.REACT_APP_API_URL}/linkTypes`)
         .then(res => res.json())
         .catch(err => console.error(err))
         .then((linkTypes: LinkType[]) => linkTypes)
 }
 
 export const fetchWinMethods = () => {
-    return fetch("http://localhost:8000/winMethods")
+    return fetch(`${process.env.REACT_APP_API_URL}/winMethods`)
         .then(res => res.json())
         .catch(err => console.error(err))
         .then((winMethods: WinMethod[]) => winMethods)
 }
 
 export const fetchResults = () => {
-    return fetch("http://localhost:8000/results")
+    return fetch(`${process.env.REACT_APP_API_URL}/results`)
         .then(res => res.json())
         .catch(err => console.error(err))
         .then((results: Result[]) => results)
