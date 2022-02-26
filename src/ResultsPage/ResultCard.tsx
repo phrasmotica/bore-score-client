@@ -55,7 +55,7 @@ export const ResultCard = (props: ResultCardProps) => {
         return (
             <List.Content>
                 <List.Header>
-                    <a href={`/games?game=${game.name}`}>
+                    <a href={`/games/${game.name}`}>
                         {game.displayName ?? r.gameName}
                     </a>
                 </List.Header>

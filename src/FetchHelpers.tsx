@@ -26,6 +26,13 @@ export const fetchGames = () => {
         .then((games: Game[]) => games)
 }
 
+export const fetchGame = (name: string) => {
+    return fetch(`http://localhost:8000/games/${name}`)
+        .then(res => res.json())
+        .catch(err => console.error(err))
+        .then((game: Game) => game)
+}
+
 export const fetchLinkTypes = () => {
     return fetch("http://localhost:8000/linkTypes")
         .then(res => res.json())

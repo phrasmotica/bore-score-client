@@ -68,7 +68,7 @@ export const AddGamePage = () => {
         })
             .then(res => res.json())
             .then((newGame: Game) => newGame)
-            .then(newGame => navigate(`/games?game=${newGame.name}`))
+            .then(newGame => navigate(`/games/${newGame.name}`))
     }
 
     const createWinMethodOptions = () => winMethods.map(w => ({
