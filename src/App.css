@@ -46,8 +46,26 @@
 
 .player-details .content {
   display: flex;
-  justify-content: space-between;
   margin-bottom: 0.5rem;
+}
+
+.player-details .content .left {
+  padding-right: 0.5rem;
+  margin-right: 0.5rem;
+  border-right: 1px solid rgba(34, 36, 38, 0.15);
+}
+
+.player-details .content .left button.ui.button {
+  margin-top: 0.5rem;
+}
+
+.player-image {
+  width: 300px;
+  object-fit: contain;
+}
+
+.player-image > .ui.image {
+  border-radius: calc(2rem / 7);
 }
 
 .player-details .display-name-header {

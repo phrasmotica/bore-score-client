@@ -1,6 +1,8 @@
 import moment from "moment"
 import { useState } from "react"
-import { Button, Header, Icon, Image, Modal } from "semantic-ui-react"
+import { Button, Header, Icon, Modal } from "semantic-ui-react"
+
+import { PlayerImage } from "../PlayerImage"
 
 import { displayDateValue } from "../MomentHelpers"
 
@@ -56,11 +58,26 @@ export const PlayerDetails = (props: PlayerDetailsProps) => {
         return null
     }
 
+    let imageSrc = "https://e.snmc.io/i/600/s/9f6d3d17acac6ce20993eb158c203e4b/5662600/godspeed-you-black-emperor-lift-yr-skinny-fists-like-antennas-to-heaven-cover-art.jpg"
+
     return (
         <div className="player-details">
             {renderDeletePrompt(player)}
 
             <div className="content">
+                <div className="left">
+                    <PlayerImage imageSrc={imageSrc} />
+
+                    <Button
+                        icon
+                        fluid
+                        color="red"
+                        onClick={() => setShowDeletePrompt(true)}>
+                        <span>Delete Player&nbsp;</span>
+                        <Icon name="remove" />
+                    </Button>
+                </div>
+
                 <div>
                     <h3 className="display-name-header">
                         {player.displayName}
@@ -74,22 +91,7 @@ export const PlayerDetails = (props: PlayerDetailsProps) => {
                         <em>Active since {displayDateValue(moment.unix(player.timeCreated))}</em>
                     </p>
                 </div>
-
-                <div>
-                    <Image
-                        src="https://e.snmc.io/i/600/s/9f6d3d17acac6ce20993eb158c203e4b/5662600/godspeed-you-black-emperor-lift-yr-skinny-fists-like-antennas-to-heaven-cover-art.jpg"
-                        size="small" />
-                </div>
             </div>
-
-            <Button
-                icon
-                fluid
-                color="red"
-                onClick={() => setShowDeletePrompt(true)}>
-                <span>Delete Player&nbsp;</span>
-                <Icon name="remove" />
-            </Button>
         </div>
     )
 }
