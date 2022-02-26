@@ -206,7 +206,7 @@
 .add-game-page-body .ui.fluid.labeled.input > .ui.label.label {
   display: flex;
   align-items: center;
-  justify-content: end;
+  justify-content: flex-end;
   width: max(150px, 10vw);
 }
 

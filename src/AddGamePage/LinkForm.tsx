@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Form, Input } from "semantic-ui-react"
+import { Input } from "semantic-ui-react"
 
 import { fetchLinkTypes } from "../FetchHelpers"
 
