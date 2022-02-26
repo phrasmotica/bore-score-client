@@ -124,6 +124,10 @@
   object-fit: contain;
 }
 
+.game-image > .ui.image {
+  border-radius: calc(2rem / 7);
+}
+
 .game-details .display-name-header {
   text-align: start;
   margin-top: 0rem;
