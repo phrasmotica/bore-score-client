@@ -104,7 +104,7 @@ export const PlayerScoreForm = (props: PlayerScoreFormProps) => {
                 playerCount={props.players.length}
                 maxPlayerCount={props.maxPlayerCount} />}
 
-            <Table>
+            <Table color="yellow">
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell>Player</Table.HeaderCell>
