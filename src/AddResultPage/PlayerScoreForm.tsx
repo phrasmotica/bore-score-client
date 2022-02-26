@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
-import { Button, Form, Icon } from "semantic-ui-react"
+import { Button, Form, Icon, Table } from "semantic-ui-react"
 
 import { PlayerCountWarning } from "./PlayerCountWarning"
-import { PlayerScoreInput } from "./PlayerScoreInput"
+import { PlayerDropdown } from "./PlayerDropdown"
+import { RemovePlayerButton } from "./RemovePlayerButton"
 
 import { getPlayersToUse, replaceDuplicates } from "../Helpers"
 
@@ -103,29 +104,44 @@ export const PlayerScoreForm = (props: PlayerScoreFormProps) => {
                 playerCount={props.players.length}
                 maxPlayerCount={props.maxPlayerCount} />}
 
-            <Form>
-                {players.map((username, i) => (
-                    <div key={i} className="player-score-input-removable">
-                        <PlayerScoreInput
-                            key={i}
-                            label={`Player ${i + 1}`}
-                            playerOptions={playerOptions}
-                            player={username}
-                            setPlayer={username => setPlayer(i, username)}
-                            score={playerScores[i]}
-                            setScore={score => setPlayerScore(i, score)} />
+            <Table>
+                <Table.Header>
+                    <Table.Row>
+                        <Table.HeaderCell>Player</Table.HeaderCell>
+                        <Table.HeaderCell>Score</Table.HeaderCell>
+                        <Table.HeaderCell></Table.HeaderCell>
+                    </Table.Row>
+                </Table.Header>
 
-                        <Button
-                            icon
-                            inverted
-                            color="red"
-                            onClick={() => removePlayer(i)}
-                            disabled={i < props.minPlayerCount}>
-                            <Icon name="minus" />
-                        </Button>
-                    </div>
-                ))}
-            </Form>
+                <Table.Body>
+                    {players.map((username, i) => (
+                        <Table.Row key={username}>
+                            <Table.Cell>
+                                <PlayerDropdown
+                                    placeholder={`Player ${i + 1}`}
+                                    options={playerOptions}
+                                    player={username}
+                                    setPlayer={player => setPlayer(i, player)} />
+                            </Table.Cell>
+
+                            <Table.Cell>
+                                <Form.Input
+                                    fluid
+                                    type="number"
+                                    value={playerScores[i]}
+                                    min={0}
+                                    onChange={(e, { value }) => setPlayerScore(i, Number(value))} />
+                            </Table.Cell>
+
+                            <Table.Cell>
+                                <RemovePlayerButton
+                                    removePlayer={() => removePlayer(i)}
+                                    isDisabled={i < props.minPlayerCount} />
+                            </Table.Cell>
+                        </Table.Row>
+                    ))}
+                </Table.Body>
+            </Table>
         </div>
     )
 }

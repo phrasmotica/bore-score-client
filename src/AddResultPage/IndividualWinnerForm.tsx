@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
-import { Button, Form, Icon } from "semantic-ui-react"
+import { Button, Form, Icon, Table } from "semantic-ui-react"
 
 import { PlayerCountWarning } from "./PlayerCountWarning"
-import { PlayerWinnerInput } from "./PlayerWinnerInput"
+import { PlayerDropdown } from "./PlayerDropdown"
+import { RemovePlayerButton } from "./RemovePlayerButton"
 
 import { getPlayersToUse, replaceDuplicates } from "../Helpers"
 
@@ -92,29 +93,42 @@ export const IndividualWinnerForm = (props: IndividualWinnerFormProps) => {
                 playerCount={props.players.length}
                 maxPlayerCount={props.maxPlayerCount} />}
 
-            <Form>
-                {players.map((username, i) => (
-                    <div key={i} className="player-winner-input-removable">
-                        <PlayerWinnerInput
-                            key={i}
-                            label={`Player ${i + 1}`}
-                            playerOptions={playerOptions}
-                            player={username}
-                            setPlayer={username => setPlayer(i, username)}
-                            isWinner={i === winnerIndex}
-                            setIsWinner={() => setWinnerIndex(i)} />
+            <Table>
+                <Table.Header>
+                    <Table.Row>
+                        <Table.HeaderCell>Player</Table.HeaderCell>
+                        <Table.HeaderCell>Winner</Table.HeaderCell>
+                        <Table.HeaderCell></Table.HeaderCell>
+                    </Table.Row>
+                </Table.Header>
 
-                        <Button
-                            icon
-                            inverted
-                            color="red"
-                            onClick={() => removePlayer(i)}
-                            disabled={i < props.minPlayerCount}>
-                            <Icon name="minus" />
-                        </Button>
-                    </div>
-                ))}
-            </Form>
+                <Table.Body>
+                    {players.map((username, i) => (
+                        <Table.Row key={username}>
+                            <Table.Cell>
+                                <PlayerDropdown
+                                    placeholder={`Player ${i + 1}`}
+                                    options={playerOptions}
+                                    player={username}
+                                    setPlayer={player => setPlayer(i, player)} />
+                            </Table.Cell>
+
+                            <Table.Cell>
+                                <Form.Checkbox
+                                    radio
+                                    checked={i === winnerIndex}
+                                    onChange={() => setWinnerIndex(i)} />
+                            </Table.Cell>
+
+                            <Table.Cell>
+                                <RemovePlayerButton
+                                    removePlayer={() => removePlayer(i)}
+                                    isDisabled={i < props.minPlayerCount} />
+                            </Table.Cell>
+                        </Table.Row>
+                    ))}
+                </Table.Body>
+            </Table>
         </div>
     )
 }

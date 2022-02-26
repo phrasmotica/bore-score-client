@@ -236,12 +236,12 @@
   flex-grow: 1;
 }
 
-.add-result-page .fields.common-form > .field.game-picker {
-  flex-grow: 1;
+.add-result-page-body .right .table {
+  text-align: center;
 }
 
-.add-result-page .ui.buttons {
-  margin-bottom: 1rem;
+.add-result-page .fields.common-form > .field.game-picker {
+  flex-grow: 1;
 }
 
 .add-result-form > .ui.form {
