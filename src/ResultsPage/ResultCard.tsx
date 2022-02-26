@@ -53,6 +53,18 @@ export const ResultCard = (props: ResultCardProps) => {
                         <List.Description>{winnerStr}</List.Description>
                     </List.Content>
                 )
+
+            case WinMethodName.CooperativeScore:
+                let playersStr = playersWithScores.slice(0, -1).map(s => s.player).join(", ")
+                playersStr += ` & ${playersWithScores.at(-1)?.player}`
+
+                return (
+                    <List.Content>
+                        <List.Header>{game?.displayName ?? r.gameName}</List.Header>
+                        <List.Description>{displayDateTimeValue(moment.unix(r.timestamp))}</List.Description>
+                        <List.Description>{playersStr}: {r.cooperativeScore}</List.Description>
+                    </List.Content>
+                )
         }
 
         return null

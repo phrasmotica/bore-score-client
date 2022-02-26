@@ -2,6 +2,7 @@ export interface Result {
     id: string
     gameName: string
     timestamp: number
+    cooperativeScore: number
     scores: PlayerScore[]
 }
 
