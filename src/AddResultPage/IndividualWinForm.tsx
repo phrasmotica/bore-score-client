@@ -123,7 +123,7 @@ export const IndividualWinForm = (props: IndividualWinFormProps) => {
                             <Table.Cell>
                                 <RemovePlayerButton
                                     removePlayer={() => removePlayer(i)}
-                                    isDisabled={i < props.minPlayerCount} />
+                                    isDisabled={players.length <= props.minPlayerCount} />
                             </Table.Cell>
                         </Table.Row>
                     ))}
