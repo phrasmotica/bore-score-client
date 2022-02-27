@@ -57,6 +57,8 @@ export const ResultCard = (props: ResultCardProps) => {
                 break
         }
 
+        let notes = r.notes.length > 0 ? <List.Description>{r.notes}</List.Description> : null
+
         return (
             <List.Content>
                 <List.Header>
@@ -66,6 +68,7 @@ export const ResultCard = (props: ResultCardProps) => {
                 </List.Header>
                 <List.Description>{displayDateTimeValue(moment.unix(r.timestamp))}</List.Description>
                 <List.Description>{scoreStr}</List.Description>
+                {notes}
             </List.Content>
         )
     }
