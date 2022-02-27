@@ -1,31 +1,15 @@
-import { useEffect, useState } from "react"
 import { Input } from "semantic-ui-react"
-
-import { fetchLinkTypes } from "../FetchHelpers"
 
 import { Link } from "../models/Game"
 import { LinkType } from "../models/LinkType"
 
 interface LinkFormProps {
+    linkTypes: LinkType[]
     links: Link[]
     setLinks: (links: Link[]) => void
 }
 
 export const LinkForm = (props: LinkFormProps) => {
-    const [linkTypes, setLinkTypes] = useState<LinkType[]>([])
-
-    useEffect(() => {
-        fetchLinkTypes()
-            .then(setLinkTypes)
-    }, [])
-
-    useEffect(() => {
-        props.setLinks(linkTypes.map(l => ({
-            type: l.name,
-            link: "",
-        })))
-    }, [linkTypes])
-
     const setLink = (link: string, index: number) => {
         props.setLinks(props.links.map((l, i) => {
             if (i === index) {
@@ -42,7 +26,7 @@ export const LinkForm = (props: LinkFormProps) => {
     return (
         <div className="link-form">
             {props.links.map((l, i) => {
-                let labelContent = linkTypes.find(lt => lt.name === l.type)?.displayName ?? l.type
+                let labelContent = props.linkTypes.find(lt => lt.name === l.type)?.displayName ?? l.type
                 return (
                     <Input
                         key={l.type}

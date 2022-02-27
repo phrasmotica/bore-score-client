@@ -4,14 +4,16 @@ import { Form, Icon, Input } from "semantic-ui-react"
 
 import { LinkForm } from "./LinkForm"
 
-import { fetchGames, fetchWinMethods } from "../FetchHelpers"
+import { fetchGames, fetchLinkTypes, fetchWinMethods } from "../FetchHelpers"
 import { GamesList } from "../GamesList"
 
 import { Game, Link } from "../models/Game"
+import { LinkType } from "../models/LinkType"
 import { WinMethod } from "../models/WinMethod"
 
 export const AddGamePage = () => {
     const [games, setGames] = useState<Game[]>([])
+    const [linkTypes, setLinkTypes] = useState<LinkType[]>([])
     const [winMethods, setWinMethods] = useState<WinMethod[]>([])
 
     const [displayName, setDisplayName] = useState("")
@@ -29,6 +31,9 @@ export const AddGamePage = () => {
         fetchGames()
             .then(setGames)
 
+        fetchLinkTypes()
+            .then(setLinkTypes)
+
         fetchWinMethods()
             .then(setWinMethods)
     }, [])
@@ -38,6 +43,13 @@ export const AddGamePage = () => {
             setWinMethod(winMethods[0].name)
         }
     }, [winMethods])
+
+    useEffect(() => {
+        setLinks(linkTypes.map(l => ({
+            type: l.name,
+            link: "",
+        })))
+    }, [setLinks, linkTypes])
 
     const displayNameIsAvailable = () => !games.map(g => g.displayName).includes(displayName)
 
@@ -135,6 +147,7 @@ export const AddGamePage = () => {
                     </div>
 
                     <LinkForm
+                        linkTypes={linkTypes}
                         links={links}
                         setLinks={setLinks} />
 
