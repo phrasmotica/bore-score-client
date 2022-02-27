@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Button, Icon, Input, Table } from "semantic-ui-react"
+import { Button, Checkbox, Icon, Table } from "semantic-ui-react"
 
 import { PlayerCountWarning } from "./PlayerCountWarning"
 import { PlayerDropdown } from "./PlayerDropdown"
@@ -9,23 +9,21 @@ import { getPlayersToUse, replaceDuplicates } from "../Helpers"
 
 import { Player } from "../models/Player"
 
-interface PlayerScoreFormProps {
+interface IndividualWinFormProps {
     players: Player[]
     minPlayerCount: number
     maxPlayerCount: number
     submit: (formData: any) => void
 }
 
-export const PlayerScoreForm = (props: PlayerScoreFormProps) => {
+export const IndividualWinForm = (props: IndividualWinFormProps) => {
     const [players, setPlayers] = useState<string[]>([])
-    const [playerScores, setPlayerScores] = useState<number[]>([])
+    const [winnerIndex, setWinnerIndex] = useState(0)
 
     useEffect(() => {
         // fill current player inputs with first N (<= minPlayerCount) players
         let playersToUse = getPlayersToUse(props.players.map(p => p.username), props.minPlayerCount)
-
         setPlayers(playersToUse)
-        setPlayerScores(playersToUse.map(_ => 0))
     }, [props.players, props.minPlayerCount])
 
     const formIsComplete = () => players.length > 0 && new Set(players).size === players.length
@@ -33,7 +31,7 @@ export const PlayerScoreForm = (props: PlayerScoreFormProps) => {
     const getFormData = () => ({
         scores: players.map((username, i) => ({
             username: username,
-            score: playerScores[i],
+            isWinner: i === winnerIndex,
         }))
     })
 
@@ -54,26 +52,17 @@ export const PlayerScoreForm = (props: PlayerScoreFormProps) => {
         setPlayers(deduplicatedPlayers)
     }
 
-    const setPlayerScore = (index: number, newScore: number) => {
-        setPlayerScores(playerScores.map((score, i) => (i === index) ? newScore : score))
-    }
-
     const canAddPlayer = () => players.length < Math.min(props.players.length, props.maxPlayerCount)
 
     const addPlayer = () => {
         let nextPlayer = props.players.find(p => !players.includes(p.username))?.username ?? ""
         setPlayers([...players, nextPlayer])
-        setPlayerScores([...playerScores, 0])
     }
 
     const removePlayer = (index: number) => {
         let newPlayers = [...players]
         newPlayers.splice(index, 1)
         setPlayers(newPlayers)
-
-        let newPlayerScores = [...playerScores]
-        newPlayerScores.splice(index, 1)
-        setPlayerScores(newPlayerScores)
     }
 
     return (
@@ -108,7 +97,7 @@ export const PlayerScoreForm = (props: PlayerScoreFormProps) => {
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell width={6}>Player</Table.HeaderCell>
-                        <Table.HeaderCell width={2}>Score</Table.HeaderCell>
+                        <Table.HeaderCell width={2}>Winner</Table.HeaderCell>
                         <Table.HeaderCell width={8}></Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
@@ -125,12 +114,10 @@ export const PlayerScoreForm = (props: PlayerScoreFormProps) => {
                             </Table.Cell>
 
                             <Table.Cell>
-                                <Input
-                                    fluid
-                                    type="number"
-                                    value={playerScores[i]}
-                                    min={0}
-                                    onChange={(e, { value }) => setPlayerScore(i, Number(value))} />
+                                <Checkbox
+                                    radio
+                                    checked={i === winnerIndex}
+                                    onChange={() => setWinnerIndex(i)} />
                             </Table.Cell>
 
                             <Table.Cell>

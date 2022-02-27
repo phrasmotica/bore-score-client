@@ -6,8 +6,8 @@ import moment from "moment"
 import { CommonForm } from "./CommonForm"
 import { CooperativeScoreForm } from "./CooperativeScoreForm"
 import { CooperativeWinForm } from "./CooperativeWinForm"
-import { IndividualWinnerForm } from "./IndividualWinnerForm"
-import { PlayerScoreForm } from "./PlayerScoreForm"
+import { IndividualScoreForm } from "./IndividualScoreForm"
+import { IndividualWinForm } from "./IndividualWinForm"
 import { GameImage } from "../GameImage"
 
 import { fetchGames, fetchPlayers } from "../FetchHelpers"
@@ -48,16 +48,16 @@ export const AddResultPage = () => {
         switch (game?.winMethod) {
             case WinMethodName.IndividualScore:
                 return (
-                    <PlayerScoreForm
+                    <IndividualScoreForm
                         players={players}
                         minPlayerCount={game.minPlayers}
                         maxPlayerCount={game.maxPlayers}
                         submit={submit} />
                 )
 
-            case WinMethodName.IndividualWinner:
+            case WinMethodName.IndividualWin:
                 return (
-                    <IndividualWinnerForm
+                    <IndividualWinForm
                         players={players}
                         minPlayerCount={game.minPlayers}
                         maxPlayerCount={game.maxPlayers}

@@ -42,7 +42,7 @@ export const ResultCard = (props: ResultCardProps) => {
                 scoreStr = playersWithScores.map(s => `${s.player}: ${s.score}`).join(", ")
                 break
 
-            case WinMethodName.IndividualWinner:
+            case WinMethodName.IndividualWin:
                 scoreStr = playersWithScores.map(s => `${s.player} ${s.isWinner ? "won" : "lost"}`).join(", ")
                 break
 

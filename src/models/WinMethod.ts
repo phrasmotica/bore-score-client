@@ -7,7 +7,7 @@ export interface WinMethod {
 
 export enum WinMethodName {
     IndividualScore = "individual-score",
-    IndividualWinner = "individual-winner",
+    IndividualWin = "individual-win",
     CooperativeScore = "cooperative-score",
     CooperativeWin = "cooperative-win",
 }
