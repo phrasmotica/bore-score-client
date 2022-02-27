@@ -241,8 +241,16 @@
   margin-bottom: 1rem;
 }
 
-.results-list {
-  flex: 1 1 auto;
+.results-table .game-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+}
+
+.results-table .ui.table td .game-image .image {
+  max-width: 100px;
+  max-height: 100px;
 }
 
 .add-result-page-body  {

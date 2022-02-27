@@ -1,5 +1,7 @@
-import { List } from "semantic-ui-react"
+import { Table } from "semantic-ui-react"
 import moment from "moment"
+
+import { GameImage } from "../GameImage"
 
 import { displayDateTimeValue } from "../MomentHelpers"
 
@@ -30,52 +32,55 @@ export const ResultCard = (props: ResultCardProps) => {
         }
     })
 
-    const renderContent = () => {
-        if (game === undefined) {
-            return null
-        }
+    if (game === undefined) {
+        return null
+    }
 
-        let scoreStr = ""
+    let scoreStr = ""
 
-        switch (game?.winMethod) {
-            case WinMethodName.IndividualScore:
-                scoreStr = playersWithScores.map(s => `${s.player}: ${s.score}`).join(", ")
-                break
+    switch (game?.winMethod) {
+        case WinMethodName.IndividualScore:
+            scoreStr = playersWithScores.map(s => `${s.player}: ${s.score}`).join(", ")
+            break
 
-            case WinMethodName.IndividualWin:
-                scoreStr = playersWithScores.map(s => `${s.player} ${s.isWinner ? "won" : "lost"}`).join(", ")
-                break
+        case WinMethodName.IndividualWin:
+            scoreStr = playersWithScores.map(s => `${s.player} ${s.isWinner ? "won" : "lost"}`).join(", ")
+            break
 
-            case WinMethodName.CooperativeScore:
-                scoreStr = playersWithScores.slice(0, -1).map(s => s.player).join(", ")
-                scoreStr += ` & ${playersWithScores.at(-1)?.player}: ${r.cooperativeScore}`
-                break
+        case WinMethodName.CooperativeScore:
+            scoreStr = playersWithScores.slice(0, -1).map(s => s.player).join(", ")
+            scoreStr += ` & ${playersWithScores.at(-1)?.player}: ${r.cooperativeScore}`
+            break
 
-            case WinMethodName.CooperativeWin:
-                scoreStr = playersWithScores.slice(0, -1).map(s => s.player).join(", ")
-                scoreStr += ` & ${playersWithScores.at(-1)?.player} ${r.cooperativeWin ? "won" : "lost"}`
-                break
-        }
-
-        let notes = r.notes.length > 0 ? <List.Description>{r.notes}</List.Description> : null
-
-        return (
-            <List.Content>
-                <List.Header>
-                    <a href={`/games/${game.name}`}>
-                        {game.displayName ?? r.gameName}
-                    </a>
-                </List.Header>
-                <List.Description>{displayDateTimeValue(moment.unix(r.timestamp))}</List.Description>
-                <List.Description>{scoreStr}</List.Description>
-                {notes}
-            </List.Content>
-        )
+        case WinMethodName.CooperativeWin:
+            scoreStr = playersWithScores.slice(0, -1).map(s => s.player).join(", ")
+            scoreStr += ` & ${playersWithScores.at(-1)?.player} ${r.cooperativeWin ? "won" : "lost"}`
+            break
     }
 
     return (
-        <List.Item key={r.id}>
-            {renderContent()}
-        </List.Item>
+        <Table.Row>
+            <Table.Cell>
+                <GameImage imageSrc={game.imageLink} />
+            </Table.Cell>
+
+            <Table.Cell>
+                <a href={`/games/${game.name}`}>
+                    {game.displayName}
+                </a>
+            </Table.Cell>
+
+            <Table.Cell>
+                {scoreStr}
+            </Table.Cell>
+
+            <Table.Cell>
+                {displayDateTimeValue(moment.unix(r.timestamp))}
+            </Table.Cell>
+
+            <Table.Cell>
+                {r.notes}
+            </Table.Cell>
+        </Table.Row>
     )
 }

@@ -1,4 +1,4 @@
-import { List } from "semantic-ui-react"
+import { Table } from "semantic-ui-react"
 
 import { ResultCard } from "./ResultCard"
 
@@ -20,12 +20,27 @@ export const ResultsList = (props: ResultsListProps) => {
     }
 
     return (
-        <div className="results-list">
-            <List divided relaxed>
-                {resultsToShow.map(r => (
-                    <ResultCard key={r.id} result={r} games={props.games} players={props.players} />
-                ))}
-            </List>
+        <div className="results-table">
+            <Table celled color="teal">
+                <Table.Header>
+                    <Table.Row>
+                        <Table.HeaderCell colSpan={2} width={3}>Game</Table.HeaderCell>
+                        <Table.HeaderCell width={3}>Result</Table.HeaderCell>
+                        <Table.HeaderCell width={3}>Time</Table.HeaderCell>
+                        <Table.HeaderCell width={7}>Notes</Table.HeaderCell>
+                    </Table.Row>
+                </Table.Header>
+
+                <Table.Body>
+                    {resultsToShow.map(r => (
+                        <ResultCard
+                            key={r.id}
+                            result={r}
+                            games={props.games}
+                            players={props.players} />
+                    ))}
+                </Table.Body>
+            </Table>
         </div>
     )
 }
