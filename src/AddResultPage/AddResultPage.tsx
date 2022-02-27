@@ -5,6 +5,7 @@ import moment from "moment"
 
 import { CommonForm } from "./CommonForm"
 import { CooperativeScoreForm } from "./CooperativeScoreForm"
+import { CooperativeWinForm } from "./CooperativeWinForm"
 import { IndividualWinnerForm } from "./IndividualWinnerForm"
 import { PlayerScoreForm } from "./PlayerScoreForm"
 import { GameImage } from "../GameImage"
@@ -66,6 +67,15 @@ export const AddResultPage = () => {
             case WinMethodName.CooperativeScore:
                 return (
                     <CooperativeScoreForm
+                        players={players}
+                        minPlayerCount={game.minPlayers}
+                        maxPlayerCount={game.maxPlayers}
+                        submit={submit} />
+                )
+
+            case WinMethodName.CooperativeWin:
+                return (
+                    <CooperativeWinForm
                         players={players}
                         minPlayerCount={game.minPlayers}
                         maxPlayerCount={game.maxPlayers}

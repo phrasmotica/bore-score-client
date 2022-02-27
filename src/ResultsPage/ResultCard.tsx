@@ -50,6 +50,11 @@ export const ResultCard = (props: ResultCardProps) => {
                 scoreStr = playersWithScores.slice(0, -1).map(s => s.player).join(", ")
                 scoreStr += ` & ${playersWithScores.at(-1)?.player}: ${r.cooperativeScore}`
                 break
+
+            case WinMethodName.CooperativeWin:
+                scoreStr = playersWithScores.slice(0, -1).map(s => s.player).join(", ")
+                scoreStr += ` & ${playersWithScores.at(-1)?.player} ${r.cooperativeWin ? "won" : "lost"}`
+                break
         }
 
         return (

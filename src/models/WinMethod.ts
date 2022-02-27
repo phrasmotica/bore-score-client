@@ -9,4 +9,5 @@ export enum WinMethodName {
     IndividualScore = "individual-score",
     IndividualWinner = "individual-winner",
     CooperativeScore = "cooperative-score",
+    CooperativeWin = "cooperative-win",
 }
