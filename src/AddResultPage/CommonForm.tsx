@@ -11,6 +11,8 @@ interface CommonFormProps {
     setSelectedGame: (id: Game | undefined) => void
     timestamp: moment.Moment
     setTimestamp: (timestamp: moment.Moment) => void
+    notes: string
+    setNotes: (notes: string) => void
 }
 
 export const CommonForm = (props: CommonFormProps) => {
@@ -49,8 +51,8 @@ export const CommonForm = (props: CommonFormProps) => {
     }
 
     return (
-        <Form>
-            <Form.Group className="common-form">
+        <Form className="common-form">
+            <Form.Group>
                 <Form.Dropdown
                     className="game-picker"
                     search
@@ -72,6 +74,15 @@ export const CommonForm = (props: CommonFormProps) => {
                     label="Time"
                     value={timeValue(props.timestamp)}
                     onChange={(e, { value }) => setNewTime(value)} />
+            </Form.Group>
+
+            <Form.Group>
+                <Form.TextArea
+                    className="notes-input"
+                    label="Notes"
+                    placeholder="Notes"
+                    value={props.notes}
+                    onChange={(e, { value }) => props.setNotes(String(value))} />
             </Form.Group>
         </Form>
     )

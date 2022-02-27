@@ -25,6 +25,7 @@ export const AddResultPage = () => {
 
     const [game, setGame] = useState<Game>()
     const [timestamp, setTimestamp] = useState(moment())
+    const [notes, setNotes] = useState("")
 
     useEffect(() => {
         fetchGames()
@@ -96,6 +97,7 @@ export const AddResultPage = () => {
             body: JSON.stringify({
                 gameName: game.name,
                 timestamp: submitValue(timestamp),
+                notes: notes,
                 ...formData
             }),
             headers: {
@@ -122,7 +124,9 @@ export const AddResultPage = () => {
                         selectedGame={game}
                         setSelectedGame={setGame}
                         timestamp={timestamp}
-                        setTimestamp={setTimestamp} />
+                        setTimestamp={setTimestamp}
+                        notes={notes}
+                        setNotes={setNotes} />
 
                     {renderGameForm()}
                 </div>
