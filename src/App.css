@@ -109,17 +109,21 @@
   width: 100%;
 }
 
-.games-page-body {
+.games-table .game-image {
   display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
 }
 
-.games-page .sidebar {
-  text-align: end;
-  margin-right: 1rem;
+.games-table .ui.table td .game-image .image {
+  max-width: 100px;
+  max-height: 100px;
 }
 
-.game-details {
-  width: 100%;
+.game-details-page .header {
+  text-align: start;
+  margin-bottom: 0.5em;
 }
 
 .game-details .content {

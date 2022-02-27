@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 
-import { GameDetails } from "../GamesPage/GameDetails"
+import { GameDetails } from "./GameDetails"
 
 import { fetchGame, fetchLinkTypes, fetchWinMethods } from "../FetchHelpers"
 
@@ -49,6 +49,12 @@ export const GameDetailsPage = (props: GameDetailsPageProps) => {
 
     return (
         <div className="game-details-page">
+            <div className="header">
+                <a href="/games">
+                    <span>&larr;&nbsp;Back to games list</span>
+                </a>
+            </div>
+
             <GameDetails
                 game={game}
                 linkTypes={linkTypes}
