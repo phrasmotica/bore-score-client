@@ -1,4 +1,5 @@
 import { Game } from "./models/Game"
+import { Group } from "./models/Group"
 import { LinkType } from "./models/LinkType"
 import { Player } from "./models/Player"
 import { Result } from "./models/Result"
@@ -31,6 +32,13 @@ export const fetchGame = (name: string) => {
         .then(res => res.json())
         .catch(err => console.error(err))
         .then((game: Game) => game)
+}
+
+export const fetchGroups = () => {
+    return fetch(`${process.env.REACT_APP_API_URL}/groups`)
+        .then(res => res.json())
+        .catch(err => console.error(err))
+        .then((groups: Group[]) => groups)
 }
 
 export const fetchLinkTypes = () => {

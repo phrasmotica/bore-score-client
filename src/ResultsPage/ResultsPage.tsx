@@ -2,14 +2,16 @@ import { useEffect, useState } from "react"
 
 import { GameFilterMenu } from "./GameFilterMenu"
 import { ResultsList } from "./ResultsList"
-import { fetchGames, fetchPlayers, fetchResults } from "../FetchHelpers"
+import { fetchGames, fetchGroups, fetchPlayers, fetchResults } from "../FetchHelpers"
 
 import { Game } from "../models/Game"
+import { Group } from "../models/Group"
 import { Player } from "../models/Player"
 import { Result } from "../models/Result"
 
 export const ResultsPage = () => {
     const [games, setGames] = useState<Game[]>([])
+    const [groups, setGroups] = useState<Group[]>([])
     const [players, setPlayers] = useState<Player[]>([])
     const [results, setResults] = useState<Result[]>([])
     const [selectedGame, setSelectedGame] = useState("")
@@ -17,6 +19,9 @@ export const ResultsPage = () => {
     useEffect(() => {
         fetchGames()
             .then(setGames)
+
+        fetchGroups()
+            .then(setGroups)
 
         fetchPlayers()
             .then(setPlayers)
@@ -42,6 +47,7 @@ export const ResultsPage = () => {
 
                 <ResultsList
                     games={games}
+                    groups={groups}
                     results={results}
                     players={players}
                     selectedGame={selectedGame} />

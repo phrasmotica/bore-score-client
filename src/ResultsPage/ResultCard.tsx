@@ -6,6 +6,7 @@ import { GameImage } from "../GameImage"
 import { displayDateTimeValue } from "../MomentHelpers"
 
 import { Game } from "../models/Game"
+import { Group } from "../models/Group"
 import { Player } from "../models/Player"
 import { Result } from "../models/Result"
 import { WinMethodName } from "../models/WinMethod"
@@ -13,6 +14,7 @@ import { WinMethodName } from "../models/WinMethod"
 interface ResultCardProps {
     result: Result
     games: Game[]
+    groups: Group[]
     players: Player[]
 }
 
@@ -58,6 +60,8 @@ export const ResultCard = (props: ResultCardProps) => {
             break
     }
 
+    let group = props.groups.find(gr => gr.name === r.groupName)
+
     return (
         <Table.Row>
             <Table.Cell>
@@ -72,6 +76,10 @@ export const ResultCard = (props: ResultCardProps) => {
 
             <Table.Cell>
                 {scoreStr}
+            </Table.Cell>
+
+            <Table.Cell>
+                {group?.displayName ?? r.groupName}
             </Table.Cell>
 
             <Table.Cell>
