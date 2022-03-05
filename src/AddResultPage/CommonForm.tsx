@@ -1,14 +1,22 @@
 import moment from "moment"
 import { Form } from "semantic-ui-react"
 
+import { NoAttachedGroupWarning } from "./NoAttachedGroupWarning"
+
 import { dateValue, momentFromDate, momentFromTime, timeValue } from "../MomentHelpers"
 
 import { Game } from "../models/Game"
+import { Group } from "../models/Group"
 
 interface CommonFormProps {
     games: Game[]
+    groups: Group[]
     selectedGame: Game | undefined
     setSelectedGame: (id: Game | undefined) => void
+    useGroup: boolean
+    setUseGroup: (useGroup: boolean) => void
+    group: string
+    setGroup: (group: string) => void
     timestamp: moment.Moment
     setTimestamp: (timestamp: moment.Moment) => void
     notes: string
@@ -20,6 +28,12 @@ export const CommonForm = (props: CommonFormProps) => {
         key: g.name,
         text: g.displayName,
         value: g.name,
+    }))
+
+    let groupOptions = props.groups.map(gr => ({
+        key: gr.name,
+        text: `${gr.displayName} (${gr.type})`,
+        value: gr.name,
     }))
 
     const setSelectedGame = (name: string) => {
@@ -75,6 +89,26 @@ export const CommonForm = (props: CommonFormProps) => {
                     value={timeValue(props.timestamp)}
                     onChange={(e, { value }) => setNewTime(value)} />
             </Form.Group>
+
+            <Form.Group className="group-picker-container">
+                <Form.Checkbox
+                    label="Attach to a group?"
+                    checked={props.useGroup}
+                    onChange={(e, { checked }) => props.setUseGroup(checked ?? false)} />
+
+                <Form.Dropdown
+                    className="group-picker"
+                    search
+                    selection
+                    label="Group"
+                    placeholder="Select group..."
+                    options={groupOptions}
+                    value={props.group}
+                    disabled={!props.useGroup}
+                    onChange={(e, { value }) => props.setGroup(String(value))} />
+            </Form.Group>
+
+            {!props.useGroup && <NoAttachedGroupWarning />}
 
             <Form.Group>
                 <Form.TextArea

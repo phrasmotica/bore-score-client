@@ -10,10 +10,11 @@ import { IndividualScoreForm } from "./IndividualScoreForm"
 import { IndividualWinForm } from "./IndividualWinForm"
 import { GameImage } from "../GameImage"
 
-import { fetchGames, fetchPlayers } from "../FetchHelpers"
+import { fetchGames, fetchGroups, fetchPlayers } from "../FetchHelpers"
 import { submitValue } from "../MomentHelpers"
 
 import { Game } from "../models/Game"
+import { Group } from "../models/Group"
 import { Player } from "../models/Player"
 import { WinMethodName } from "../models/WinMethod"
 
@@ -21,15 +22,21 @@ export const AddResultPage = () => {
     const [searchParams] = useSearchParams()
 
     const [games, setGames] = useState<Game[]>([])
+    const [groups, setGroups] = useState<Group[]>([])
     const [players, setPlayers] = useState<Player[]>([])
 
     const [game, setGame] = useState<Game>()
+    const [useGroup, setUseGroup] = useState(false)
+    const [group, setGroup] = useState("")
     const [timestamp, setTimestamp] = useState(moment())
     const [notes, setNotes] = useState("")
 
     useEffect(() => {
         fetchGames()
             .then(setGames)
+
+        fetchGroups()
+            .then(setGroups)
 
         fetchPlayers()
             .then(setPlayers)
@@ -42,6 +49,12 @@ export const AddResultPage = () => {
             setGame(defaultGame)
         }
     }, [games, searchParams])
+
+    useEffect(() => {
+        if (groups.length > 0) {
+            setGroup(groups[0].name)
+        }
+    }, [groups])
 
     const navigate = useNavigate()
 
@@ -96,6 +109,7 @@ export const AddResultPage = () => {
             method: "POST",
             body: JSON.stringify({
                 gameName: game.name,
+                groupName: useGroup ? group : "",
                 timestamp: submitValue(timestamp),
                 notes: notes,
                 ...formData
@@ -118,16 +132,23 @@ export const AddResultPage = () => {
                     <GameImage imageSrc={imageSrc} />
                 </div>
 
-                <div className="right">
+                <div className="middle">
                     <CommonForm
                         games={games}
+                        groups={groups}
                         selectedGame={game}
                         setSelectedGame={setGame}
+                        useGroup={useGroup}
+                        setUseGroup={setUseGroup}
+                        group={group}
+                        setGroup={setGroup}
                         timestamp={timestamp}
                         setTimestamp={setTimestamp}
                         notes={notes}
                         setNotes={setNotes} />
+                </div>
 
+                <div className="right">
                     {renderGameForm()}
                 </div>
             </div>
