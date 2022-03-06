@@ -302,8 +302,9 @@
   display: block;
 }
 
-.add-result-page .form.common-form .field.notes-input {
-  flex-grow: 1;
+.add-result-page .form.common-form .field.notes-input > textarea {
+  min-height: 5em;
+  max-height: 10em;
 }
 
 .add-result-form > .ui.form {
