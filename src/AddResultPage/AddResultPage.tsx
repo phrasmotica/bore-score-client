@@ -31,6 +31,9 @@ export const AddResultPage = () => {
     const [timestamp, setTimestamp] = useState(moment())
     const [notes, setNotes] = useState("")
 
+    const [formData, setFormData] = useState<any>()
+    const [formIsComplete, setFormIsComplete] = useState(false)
+
     useEffect(() => {
         fetchGames()
             .then(setGames)
@@ -58,6 +61,11 @@ export const AddResultPage = () => {
 
     const navigate = useNavigate()
 
+    const updateFormData = (isComplete: boolean, formData: any) => {
+        setFormIsComplete(isComplete)
+        setFormData(formData)
+    }
+
     const renderGameForm = () => {
         switch (game?.winMethod) {
             case WinMethodName.IndividualScore:
@@ -66,7 +74,7 @@ export const AddResultPage = () => {
                         players={players}
                         minPlayerCount={game.minPlayers}
                         maxPlayerCount={game.maxPlayers}
-                        submit={submit} />
+                        updateFormData={updateFormData} />
                 )
 
             case WinMethodName.IndividualWin:
@@ -75,7 +83,7 @@ export const AddResultPage = () => {
                         players={players}
                         minPlayerCount={game.minPlayers}
                         maxPlayerCount={game.maxPlayers}
-                        submit={submit} />
+                        updateFormData={updateFormData} />
                 )
 
             case WinMethodName.CooperativeScore:
@@ -84,7 +92,7 @@ export const AddResultPage = () => {
                         players={players}
                         minPlayerCount={game.minPlayers}
                         maxPlayerCount={game.maxPlayers}
-                        submit={submit} />
+                        updateFormData={updateFormData} />
                 )
 
             case WinMethodName.CooperativeWin:
@@ -93,14 +101,14 @@ export const AddResultPage = () => {
                         players={players}
                         minPlayerCount={game.minPlayers}
                         maxPlayerCount={game.maxPlayers}
-                        submit={submit} />
+                        updateFormData={updateFormData} />
                 )
         }
 
         return null
     }
 
-    const submit = (formData: any) => {
+    const submit = () => {
         if (game === undefined) {
             return
         }
@@ -145,7 +153,9 @@ export const AddResultPage = () => {
                         timestamp={timestamp}
                         setTimestamp={setTimestamp}
                         notes={notes}
-                        setNotes={setNotes} />
+                        setNotes={setNotes}
+                        formIsComplete={formIsComplete}
+                        submit={submit} />
                 </div>
 
                 <div className="right">

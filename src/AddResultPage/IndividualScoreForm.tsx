@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { Button, Icon, Input, Table } from "semantic-ui-react"
 
 import { PlayerCountWarning } from "./PlayerCountWarning"
@@ -13,7 +13,7 @@ interface IndividualScoreFormProps {
     players: Player[]
     minPlayerCount: number
     maxPlayerCount: number
-    submit: (formData: any) => void
+    updateFormData: (isComplete: boolean, formData: any) => void
 }
 
 export const IndividualScoreForm = (props: IndividualScoreFormProps) => {
@@ -28,14 +28,18 @@ export const IndividualScoreForm = (props: IndividualScoreFormProps) => {
         setPlayerScores(playersToUse.map(_ => 0))
     }, [props.players, props.minPlayerCount])
 
-    const formIsComplete = () => players.length > 0 && new Set(players).size === players.length
+    const formIsComplete = useCallback(() => players.length > 0 && new Set(players).size === players.length, [players])
 
-    const getFormData = () => ({
+    const getFormData = useCallback(() => ({
         scores: players.map((username, i) => ({
             username: username,
             score: playerScores[i],
         }))
-    })
+    }), [players, playerScores])
+
+    useEffect(() => {
+        props.updateFormData(formIsComplete(), getFormData())
+    }, [formIsComplete, getFormData, players, playerScores])
 
     let playerOptions = props.players.map(p => ({
         key: p.username,
@@ -78,27 +82,16 @@ export const IndividualScoreForm = (props: IndividualScoreFormProps) => {
 
     return (
         <div>
-            <Button.Group widths={2}>
-                <Button
-                    icon
-                    className="add-player-button"
-                    color="yellow"
-                    disabled={!canAddPlayer()}
-                    onClick={addPlayer}>
-                    <span>Add Player&nbsp;</span>
-                    <Icon name="plus" />
-                </Button>
-
-                <Button
-                    icon
-                    className="submit-button"
-                    color="teal"
-                    disabled={!formIsComplete()}
-                    onClick={() => props.submit(getFormData())}>
-                    <span>Submit&nbsp;</span>
-                    <Icon name="check" />
-                </Button>
-            </Button.Group>
+            <Button
+                icon
+                fluid
+                className="add-player-button"
+                color="yellow"
+                disabled={!canAddPlayer()}
+                onClick={addPlayer}>
+                <span>Add Player&nbsp;</span>
+                <Icon name="plus" />
+            </Button>
 
             {props.players.length < props.maxPlayerCount && <PlayerCountWarning
                 playerCount={props.players.length}

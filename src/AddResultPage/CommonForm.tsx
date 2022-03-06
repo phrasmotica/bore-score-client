@@ -1,5 +1,5 @@
 import moment from "moment"
-import { Form } from "semantic-ui-react"
+import { Form, Icon } from "semantic-ui-react"
 
 import { NoAttachedGroupWarning } from "./NoAttachedGroupWarning"
 
@@ -21,6 +21,8 @@ interface CommonFormProps {
     setTimestamp: (timestamp: moment.Moment) => void
     notes: string
     setNotes: (notes: string) => void
+    formIsComplete: boolean
+    submit: () => void
 }
 
 export const CommonForm = (props: CommonFormProps) => {
@@ -65,7 +67,17 @@ export const CommonForm = (props: CommonFormProps) => {
     }
 
     return (
-        <Form className="common-form">
+        <Form className="common-form" onSubmit={props.submit}>
+            <Form.Button
+                icon
+                fluid
+                className="submit-button"
+                color="teal"
+                disabled={!props.formIsComplete}>
+                <span>Submit&nbsp;</span>
+                <Icon name="check" />
+            </Form.Button>
+
             <Form.Group>
                 <Form.Dropdown
                     className="game-picker"

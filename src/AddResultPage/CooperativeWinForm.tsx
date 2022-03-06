@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { Button, Checkbox, Icon, Table } from "semantic-ui-react"
 
 import { PlayerCountWarning } from "./PlayerCountWarning"
@@ -13,7 +13,7 @@ interface CooperativeWinFormProps {
     players: Player[]
     minPlayerCount: number
     maxPlayerCount: number
-    submit: (formData: any) => void
+    updateFormData: (isComplete: boolean, formData: any) => void
 }
 
 export const CooperativeWinForm = (props: CooperativeWinFormProps) => {
@@ -26,14 +26,18 @@ export const CooperativeWinForm = (props: CooperativeWinFormProps) => {
         setPlayers(playersToUse)
     }, [props.players, props.minPlayerCount])
 
-    const formIsComplete = () => players.length > 0 && new Set(players).size === players.length
+    const formIsComplete = useCallback(() => players.length > 0 && new Set(players).size === players.length, [players])
 
-    const getFormData = () => ({
+    const getFormData = useCallback(() => ({
         cooperativeWin: isWin,
         scores: players.map(username => ({
             username: username,
         }))
-    })
+    }), [players, isWin])
+
+    useEffect(() => {
+        props.updateFormData(formIsComplete(), getFormData())
+    }, [formIsComplete, getFormData, players, isWin])
 
     let playerOptions = props.players.map(p => ({
         key: p.username,
@@ -67,27 +71,16 @@ export const CooperativeWinForm = (props: CooperativeWinFormProps) => {
 
     return (
         <div>
-            <Button.Group widths={2}>
-                <Button
-                    icon
-                    className="add-player-button"
-                    color="yellow"
-                    disabled={!canAddPlayer()}
-                    onClick={addPlayer}>
-                    <span>Add Player&nbsp;</span>
-                    <Icon name="plus" />
-                </Button>
-
-                <Button
-                    icon
-                    className="submit-button"
-                    color="teal"
-                    disabled={!formIsComplete()}
-                    onClick={() => props.submit(getFormData())}>
-                    <span>Submit&nbsp;</span>
-                    <Icon name="check" />
-                </Button>
-            </Button.Group>
+            <Button
+                icon
+                fluid
+                className="add-player-button"
+                color="yellow"
+                disabled={!canAddPlayer()}
+                onClick={addPlayer}>
+                <span>Add Player&nbsp;</span>
+                <Icon name="plus" />
+            </Button>
 
             {props.players.length < props.maxPlayerCount && <PlayerCountWarning
                 playerCount={props.players.length}
