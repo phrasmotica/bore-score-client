@@ -23,7 +23,7 @@ export const ResultsList = (props: ResultsListProps) => {
 
     return (
         <div className="results-table">
-            <Table celled color="teal">
+            <Table compact celled color="teal">
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell colSpan={2} width={3}>Game</Table.HeaderCell>

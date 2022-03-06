@@ -16,7 +16,7 @@ export const GamesTable = (props: GamesTableProps) => {
 
     return (
         <div className="games-table">
-            <Table celled color="teal">
+            <Table compact celled color="teal">
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell colSpan={2} width={3}>Game</Table.HeaderCell>
