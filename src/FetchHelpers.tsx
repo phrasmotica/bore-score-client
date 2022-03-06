@@ -34,6 +34,13 @@ export const fetchGame = (name: string) => {
         .then((game: Game) => game)
 }
 
+export const fetchAllGroups = () => {
+    return fetch(`${process.env.REACT_APP_API_URL}/groups/all`)
+        .then(res => res.json())
+        .catch(err => console.error(err))
+        .then((groups: Group[]) => groups)
+}
+
 export const fetchGroups = () => {
     return fetch(`${process.env.REACT_APP_API_URL}/groups`)
         .then(res => res.json())

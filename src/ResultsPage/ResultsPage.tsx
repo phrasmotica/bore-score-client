@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 
 import { GameFilterMenu } from "./GameFilterMenu"
 import { ResultsList } from "./ResultsList"
-import { fetchGames, fetchGroups, fetchPlayers, fetchResults } from "../FetchHelpers"
+import { fetchAllGroups, fetchGames, fetchPlayers, fetchResults } from "../FetchHelpers"
 
 import { Game } from "../models/Game"
 import { Group } from "../models/Group"
@@ -20,7 +20,7 @@ export const ResultsPage = () => {
         fetchGames()
             .then(setGames)
 
-        fetchGroups()
+        fetchAllGroups()
             .then(setGroups)
 
         fetchPlayers()
