@@ -122,14 +122,12 @@ export const CommonForm = (props: CommonFormProps) => {
 
             {!props.useGroup && <NoAttachedGroupWarning />}
 
-            <Form.Group>
-                <Form.TextArea
-                    className="notes-input"
-                    label="Notes"
-                    placeholder="Notes"
-                    value={props.notes}
-                    onChange={(e, { value }) => props.setNotes(String(value))} />
-            </Form.Group>
+            <Form.TextArea
+                className="notes-input"
+                label="Notes"
+                placeholder="Notes"
+                value={props.notes}
+                onChange={(e, { value }) => props.setNotes(String(value))} />
         </Form>
     )
 }
