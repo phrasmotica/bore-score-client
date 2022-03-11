@@ -50,7 +50,7 @@ export const useGame = (name: string | undefined) => {
 }
 
 export const useAllGroups = () => {
-    let fetch = useFetch<Group[]>(`${process.env.REACT_APP_API_URL}/groups/all`, [])
+    let fetch = useFetch<Group[]>(`${process.env.REACT_APP_API_URL}/groups-all`, [])
 
     return {
         isLoadingGroups: fetch.isLoading,
