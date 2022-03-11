@@ -17,8 +17,8 @@ interface CommonFormProps {
     setUseGroup: (useGroup: boolean) => void
     group: string
     setGroup: (group: string) => void
-    timestamp: moment.Moment
-    setTimestamp: (timestamp: moment.Moment) => void
+    timePlayed: moment.Moment
+    setTimePlayed: (timePlayed: moment.Moment) => void
     notes: string
     setNotes: (notes: string) => void
     formIsComplete: boolean
@@ -46,24 +46,24 @@ export const CommonForm = (props: CommonFormProps) => {
     const setNewDate = (input: string) => {
         let newDate = momentFromDate(input)
 
-        let newTimestamp = props.timestamp
+        let newTimestamp = props.timePlayed
             .clone()
             .year(newDate.year())
             .month(newDate.month())
             .date(newDate.date())
 
-        props.setTimestamp(newTimestamp)
+        props.setTimePlayed(newTimestamp)
     }
 
     const setNewTime = (input: string) => {
         let newTime = momentFromTime(input)
 
-        let newTimestamp = props.timestamp
+        let newTimestamp = props.timePlayed
             .clone()
             .hour(newTime.hour())
             .minute(newTime.minute())
 
-        props.setTimestamp(newTimestamp)
+        props.setTimePlayed(newTimestamp)
     }
 
     return (
@@ -92,13 +92,13 @@ export const CommonForm = (props: CommonFormProps) => {
                 <Form.Input
                     type="date"
                     label="Date"
-                    value={dateValue(props.timestamp)}
+                    value={dateValue(props.timePlayed)}
                     onChange={(e, { value }) => setNewDate(value)} />
 
                 <Form.Input
                     type="time"
                     label="Time"
-                    value={timeValue(props.timestamp)}
+                    value={timeValue(props.timePlayed)}
                     onChange={(e, { value }) => setNewTime(value)} />
             </Form.Group>
 

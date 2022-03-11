@@ -26,7 +26,7 @@ export const AddResultPage = () => {
     const [game, setGame] = useState<Game>()
     const [useGroup, setUseGroup] = useState(false)
     const [group, setGroup] = useState("")
-    const [timestamp, setTimestamp] = useState(moment())
+    const [timePlayed, setTimePlayed] = useState(moment())
     const [notes, setNotes] = useState("")
 
     const [formData, setFormData] = useState<any>()
@@ -105,7 +105,7 @@ export const AddResultPage = () => {
             body: JSON.stringify({
                 gameName: game.name,
                 groupName: useGroup ? group : "",
-                timestamp: submitValue(timestamp),
+                timePlayed: submitValue(timePlayed),
                 notes: notes,
                 ...formData
             }),
@@ -137,8 +137,8 @@ export const AddResultPage = () => {
                         setUseGroup={setUseGroup}
                         group={group}
                         setGroup={setGroup}
-                        timestamp={timestamp}
-                        setTimestamp={setTimestamp}
+                        timePlayed={timePlayed}
+                        setTimePlayed={setTimePlayed}
                         notes={notes}
                         setNotes={setNotes}
                         formIsComplete={formIsComplete}
