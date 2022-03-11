@@ -1,24 +1,20 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { Form, Icon } from "semantic-ui-react"
 
 import { PlayersList } from "../PlayersList"
 
+import { usePlayers } from "../FetchHelpers"
+
 import { Player } from "../models/Player"
-import { fetchPlayers } from "../FetchHelpers"
 
 export const AddPlayerPage = () => {
-    const [players, setPlayers] = useState<Player[]>([])
+    const { players } = usePlayers()
 
     const [username, setUsername] = useState("")
     const [displayName, setDisplayName] = useState("")
 
     const navigate = useNavigate()
-
-    useEffect(() => {
-        fetchPlayers()
-            .then(setPlayers)
-    }, [])
 
     const usernameIsAvailable = () => !players.map(p => p.username).includes(username)
 

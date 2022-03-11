@@ -1,24 +1,12 @@
-import { useEffect, useState } from "react"
 import { Statistic } from "semantic-ui-react"
 
-import { fetchSummary } from "../FetchHelpers"
-
-import { Summary } from "../models/Summary"
+import { useSummary } from "../FetchHelpers"
 
 export const HomePage = () => {
-    const [summary, setSummary] = useState<Summary>()
-    const [loadingSummary, setLoadingSummary] = useState(false)
-
-    useEffect(() => {
-        setLoadingSummary(true)
-
-        fetchSummary()
-            .then(setSummary)
-            .then(() => setLoadingSummary(false))
-    }, [])
+    const { isLoadingSummary, summary } = useSummary()
 
     const renderSummary = () => {
-        if (loadingSummary) {
+        if (isLoadingSummary) {
             return <h2>Loading...</h2>
         }
 

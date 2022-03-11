@@ -1,23 +1,15 @@
 import { useCallback, useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 
-import { fetchPlayers } from "../FetchHelpers"
+import { usePlayers } from "../FetchHelpers"
 import { PlayerDetails } from "./PlayerDetails"
 import { SelectablePlayersList } from "./SelectablePlayersList"
-
-import { Player } from "../models/Player"
 
 export const PlayersPage = () => {
     const [searchParams, setSearchParams] = useSearchParams()
 
-    const [players, setPlayers] = useState<Player[]>([])
+    const { players } = usePlayers()
     const [selectedPlayer, setSelectedPlayer] = useState<string>()
-
-    const fetchAndSetPlayers = () => {
-        fetchPlayers().then(setPlayers)
-    }
-
-    useEffect(fetchAndSetPlayers, [])
 
     const findPlayer = useCallback((username: string | null) => {
         return players.find(p => p.username === username)
@@ -34,7 +26,7 @@ export const PlayersPage = () => {
         searchParams.delete("player")
         setSearchParams(searchParams)
 
-        fetchAndSetPlayers()
+        // fetchAndSetPlayers()
     }
 
     const renderDetails = () => {

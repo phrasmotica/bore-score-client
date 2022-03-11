@@ -3,18 +3,16 @@ import { useNavigate } from "react-router-dom"
 import { Form, Icon, Input } from "semantic-ui-react"
 
 import { LinkForm } from "./LinkForm"
-
-import { fetchGames, fetchLinkTypes, fetchWinMethods } from "../FetchHelpers"
 import { GamesList } from "../GamesList"
 
+import { useGames, useLinkTypes, useWinMethods } from "../FetchHelpers"
+
 import { Game, Link } from "../models/Game"
-import { LinkType } from "../models/LinkType"
-import { WinMethod } from "../models/WinMethod"
 
 export const AddGamePage = () => {
-    const [games, setGames] = useState<Game[]>([])
-    const [linkTypes, setLinkTypes] = useState<LinkType[]>([])
-    const [winMethods, setWinMethods] = useState<WinMethod[]>([])
+    const { games } = useGames()
+    const { linkTypes } = useLinkTypes()
+    const { winMethods } = useWinMethods()
 
     const [displayName, setDisplayName] = useState("")
     const [synopsis, setSynopsis] = useState("")
@@ -26,17 +24,6 @@ export const AddGamePage = () => {
     const [links, setLinks] = useState<Link[]>([])
 
     const navigate = useNavigate()
-
-    useEffect(() => {
-        fetchGames()
-            .then(setGames)
-
-        fetchLinkTypes()
-            .then(setLinkTypes)
-
-        fetchWinMethods()
-            .then(setWinMethods)
-    }, [])
 
     useEffect(() => {
         if (winMethods.length > 0) {

@@ -10,20 +10,18 @@ import { IndividualScoreForm } from "./IndividualScoreForm"
 import { IndividualWinForm } from "./IndividualWinForm"
 import { GameImage } from "../GameImage"
 
-import { fetchGames, fetchGroups, fetchPlayers } from "../FetchHelpers"
+import { useGames, useGroups, usePlayers } from "../FetchHelpers"
 import { submitValue } from "../MomentHelpers"
 
 import { Game } from "../models/Game"
-import { Group } from "../models/Group"
-import { Player } from "../models/Player"
 import { WinMethodName } from "../models/WinMethod"
 
 export const AddResultPage = () => {
     const [searchParams] = useSearchParams()
 
-    const [games, setGames] = useState<Game[]>([])
-    const [groups, setGroups] = useState<Group[]>([])
-    const [players, setPlayers] = useState<Player[]>([])
+    const { games } = useGames()
+    const { groups } = useGroups()
+    const { players } = usePlayers()
 
     const [game, setGame] = useState<Game>()
     const [useGroup, setUseGroup] = useState(false)
@@ -33,17 +31,6 @@ export const AddResultPage = () => {
 
     const [formData, setFormData] = useState<any>()
     const [formIsComplete, setFormIsComplete] = useState(false)
-
-    useEffect(() => {
-        fetchGames()
-            .then(setGames)
-
-        fetchGroups()
-            .then(setGroups)
-
-        fetchPlayers()
-            .then(setPlayers)
-    }, [])
 
     useEffect(() => {
         if (games.length > 0) {
