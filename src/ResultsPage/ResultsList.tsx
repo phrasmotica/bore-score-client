@@ -28,8 +28,9 @@ export const ResultsList = (props: ResultsListProps) => {
                     <Table.Row>
                         <Table.HeaderCell colSpan={2} width={3}>Game</Table.HeaderCell>
                         <Table.HeaderCell width={3}>Result</Table.HeaderCell>
-                        <Table.HeaderCell width={3}>Group</Table.HeaderCell>
-                        <Table.HeaderCell width={3}>Time</Table.HeaderCell>
+                        <Table.HeaderCell width={2}>Group</Table.HeaderCell>
+                        <Table.HeaderCell width={2}>Played</Table.HeaderCell>
+                        <Table.HeaderCell width={2}>Submitted</Table.HeaderCell>
                         <Table.HeaderCell width={4}>Notes</Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>

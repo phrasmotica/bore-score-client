@@ -2,7 +2,8 @@ export interface Result {
     id: string
     gameName: string
     groupName: string
-    timestamp: number
+    timeCreated: number
+    timePlayed: number
     notes: string
     cooperativeScore: number
     cooperativeWin: boolean

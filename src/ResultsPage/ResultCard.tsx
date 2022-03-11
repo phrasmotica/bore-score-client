@@ -83,7 +83,11 @@ export const ResultCard = (props: ResultCardProps) => {
             </Table.Cell>
 
             <Table.Cell>
-                {displayDateTimeValue(moment.unix(r.timestamp))}
+                {displayDateTimeValue(moment.unix(r.timePlayed))}
+            </Table.Cell>
+
+            <Table.Cell>
+                {displayDateTimeValue(moment.unix(r.timeCreated))}
             </Table.Cell>
 
             <Table.Cell>
