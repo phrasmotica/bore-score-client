@@ -1,9 +1,13 @@
 import { Statistic } from "semantic-ui-react"
 
-import { useSummary } from "../FetchHelpers"
+import { useGames, useResults, useSummary } from "../FetchHelpers"
+import { GameImage } from "../GameImage"
+import { sortResultsByRecent } from "../models/Result"
 
 export const HomePage = () => {
     const { isLoadingSummary, summary } = useSummary()
+    const { games } = useGames()
+    const { results } = useResults()
 
     const renderSummary = () => {
         if (isLoadingSummary) {
@@ -34,6 +38,23 @@ export const HomePage = () => {
         )
     }
 
+    const renderGamesOfRecentResults = () => {
+        let lastResults = sortResultsByRecent(results)
+        let gameNames = [...new Set(lastResults.map(r => r.gameName))].slice(0, 5)
+        let gamesToShow = gameNames.map(n => games.find(g => g.name === n)!)
+
+        return (
+            <div className="games-carousel">
+                {gamesToShow.map(g => (
+                    <GameImage
+                        key={g.name}
+                        link={`/games/${g.name}`}
+                        imageSrc={g.imageLink} />
+                ))}
+            </div>
+        )
+    }
+
     return (
         <div className="home-page">
             <h1>Welcome to BoreScore!</h1>
@@ -44,6 +65,10 @@ export const HomePage = () => {
                 <h3>Now serving:</h3>
 
                 {renderSummary()}
+
+                <h3>Users are playing:</h3>
+
+                {renderGamesOfRecentResults()}
             </div>
         </div>
     )

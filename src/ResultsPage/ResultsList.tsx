@@ -5,7 +5,7 @@ import { ResultCard } from "./ResultCard"
 import { Game } from "../models/Game"
 import { Group } from "../models/Group"
 import { Player } from "../models/Player"
-import { Result } from "../models/Result"
+import { Result, sortResultsByRecent } from "../models/Result"
 
 interface ResultsListProps {
     games: Game[]
@@ -16,7 +16,7 @@ interface ResultsListProps {
 }
 
 export const ResultsList = (props: ResultsListProps) => {
-    let resultsToShow = props.results
+    let resultsToShow = sortResultsByRecent(props.results)
     if (props.selectedGame.length > 0) {
         resultsToShow = resultsToShow.filter(r => r.gameName === props.selectedGame)
     }

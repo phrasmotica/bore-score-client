@@ -15,3 +15,10 @@ interface PlayerScore {
     score: number
     isWinner: boolean
 }
+
+export const sortResultsByRecent = (results: Result[]) => {
+    let sortedResults = [...results]
+    sortedResults.sort((a, b) => b.timeCreated - a.timeCreated)
+    sortedResults.sort((a, b) => b.timePlayed - a.timePlayed)
+    return sortedResults
+}

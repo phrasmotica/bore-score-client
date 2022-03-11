@@ -27,6 +27,31 @@
   margin: 0 1.5em 1em;
 }
 
+.home-page-content .games-carousel {
+  display: flex;
+  margin-top: 1em;
+}
+
+.game-image {
+  width: 300px;
+  object-fit: contain;
+}
+
+.game-image .ui.image {
+  border-radius: calc(2rem / 7);
+}
+
+.home-page-content .games-carousel .game-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+}
+
+.home-page-content .games-carousel .game-image .image {
+  max-height: 200px;
+}
+
 .ui.modal > .ui.icon.header {
   border-radius: calc(2rem / 7);
 }
@@ -139,15 +164,6 @@
 
 .game-details .content .left button.ui.button {
   margin-top: 0.5rem;
-}
-
-.game-image {
-  width: 300px;
-  object-fit: contain;
-}
-
-.game-image > .ui.image {
-  border-radius: calc(2rem / 7);
 }
 
 .game-details .display-name-header {
