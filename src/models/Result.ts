@@ -18,7 +18,16 @@ interface PlayerScore {
 
 export const sortResultsByRecent = (results: Result[]) => {
     let sortedResults = [...results]
-    sortedResults.sort((a, b) => b.timeCreated - a.timeCreated)
-    sortedResults.sort((a, b) => b.timePlayed - a.timePlayed)
+    sortedResults.sort(sortResultsByTimeDescending)
     return sortedResults
+}
+
+// sorts the results in descending order, first by the time they were created,
+// then by the time they were played if necessary
+const sortResultsByTimeDescending = (a: Result, b: Result) => {
+    if (b.timeCreated === a.timeCreated) {
+        return b.timePlayed - a.timePlayed
+    }
+
+    return b.timeCreated - a.timeCreated
 }
