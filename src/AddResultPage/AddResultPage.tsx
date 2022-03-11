@@ -42,7 +42,15 @@ export const AddResultPage = () => {
 
     useEffect(() => {
         if (groups.length > 0) {
-            setGroup(groups[0].name)
+            let groupParam = searchParams.get("group")
+
+            let groupFromParam = groups.find(g => g.name === groupParam)
+            let defaultGroup = groupFromParam ?? groups[0]
+            setGroup(defaultGroup.name)
+
+            if (groupFromParam !== undefined) {
+                setUseGroup(true)
+            }
         }
     }, [groups])
 

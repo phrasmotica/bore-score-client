@@ -6,6 +6,7 @@ import { AddPlayerPage } from "./AddPlayerPage/AddPlayerPage"
 import { AddResultPage } from "./AddResultPage/AddResultPage"
 import { GameDetailsPage } from "./GameDetailsPage/GameDetailsPage"
 import { GamesPage } from "./GamesPage/GamesPage"
+import { GroupDetailsPage } from "./GroupDetailsPage/GroupDetailsPage"
 import { HomePage } from "./HomePage/HomePage"
 import { PlayersPage } from "./PlayersPage/PlayersPage"
 import { ResultsPage } from "./ResultsPage/ResultsPage"
@@ -50,6 +51,8 @@ const App = () => {
         </Menu>
     )
 
+    // TODO: implement groups page
+
     return (
         <div className="app-container">
             {renderMenu()}
@@ -63,6 +66,7 @@ const App = () => {
                         <Route path="/games/:name" element={<GameDetailsPage />} />
                         <Route path="/games" element={<GamesPage />} />
                         <Route path="/add-game" element={<AddGamePage />} />
+                        <Route path="/groups/:name" element={<GroupDetailsPage />} />
                         <Route path="/results" element={<ResultsPage />} />
                         <Route path="/add-result" element={<AddResultPage />} />
                     </Routes>

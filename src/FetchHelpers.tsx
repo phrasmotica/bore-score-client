@@ -67,6 +67,20 @@ export const useGroups = () => {
     }
 }
 
+export const useGroup = (name: string | undefined) => {
+    let endpoint = ""
+    if (name !== undefined && name.length > 0) {
+        endpoint = `${process.env.REACT_APP_API_URL}/groups/${name}`
+    }
+
+    let fetch = useFetch<Group | undefined>(endpoint, undefined)
+
+    return {
+        isLoadingGroup: fetch.isLoading,
+        group: fetch.data,
+    }
+}
+
 export const useLinkTypes = () => {
     let fetch = useFetch<LinkType[]>(`${process.env.REACT_APP_API_URL}/linkTypes`, [])
 

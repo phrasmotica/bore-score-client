@@ -79,7 +79,9 @@ export const ResultCard = (props: ResultCardProps) => {
             </Table.Cell>
 
             <Table.Cell>
-                {group?.displayName ?? r.groupName}
+                <a href={`/groups/${r.groupName}`}>
+                    {group?.displayName ?? r.groupName}
+                </a>
             </Table.Cell>
 
             <Table.Cell>
