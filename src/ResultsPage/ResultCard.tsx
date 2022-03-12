@@ -23,41 +23,64 @@ export const ResultCard = (props: ResultCardProps) => {
 
     let game = props.games.find(g => g.name === r.gameName)
 
+    if (game === undefined) {
+        return null
+    }
+
     // players who were in the game
+    let bestScore = r.scores.reduce((a, b) => a.score > b.score ? a : b).score
+
     let playersWithScores = r.scores.map(s => {
         let player = props.players.find(p => p.username === s.username)
 
         return {
             player: player?.displayName ?? "(unknown player)",
-            score: s.score,
-            isWinner: s.isWinner,
+            hasBestScore: s.score === bestScore,
+            ...s
         }
     })
 
-    if (game === undefined) {
+    const renderScoresSummary = () => {
+        switch (game?.winMethod) {
+            case WinMethodName.IndividualScore:
+                return playersWithScores.map(s => {
+                    let content = <span>{s.player}: {s.score}</span>
+                    if (s.hasBestScore) {
+                        content = <b>{content}</b>
+                    }
+
+                    return <div key={s.username}>{content}</div>
+                })
+
+            case WinMethodName.IndividualWin:
+                return playersWithScores.map(s => {
+                    let content = <span>{s.player} {s.isWinner ? "won" : "lost"}</span>
+                    if (s.isWinner) {
+                        content = <b>{content}</b>
+                    }
+
+                    return <div key={s.username}>{content}</div>
+                })
+
+            case WinMethodName.CooperativeScore:
+                let scoreStr = playersWithScores.slice(0, -1).map(s => s.player).join(", ")
+                scoreStr += ` & ${playersWithScores.at(-1)?.player}: ${r.cooperativeScore}`
+
+                return <div><b><span>{scoreStr}</span></b></div>
+
+            case WinMethodName.CooperativeWin:
+                let winStr = playersWithScores.slice(0, -1).map(s => s.player).join(", ")
+                winStr += ` & ${playersWithScores.at(-1)?.player} ${r.cooperativeWin ? "won" : "lost"}`
+
+                let content = <span>{winStr}</span>
+                if (r.cooperativeWin) {
+                    content = <b>{content}</b>
+                }
+
+                return <div>{content}</div>
+        }
+
         return null
-    }
-
-    let scoreStr = ""
-
-    switch (game?.winMethod) {
-        case WinMethodName.IndividualScore:
-            scoreStr = playersWithScores.map(s => `${s.player}: ${s.score}`).join(", ")
-            break
-
-        case WinMethodName.IndividualWin:
-            scoreStr = playersWithScores.map(s => `${s.player} ${s.isWinner ? "won" : "lost"}`).join(", ")
-            break
-
-        case WinMethodName.CooperativeScore:
-            scoreStr = playersWithScores.slice(0, -1).map(s => s.player).join(", ")
-            scoreStr += ` & ${playersWithScores.at(-1)?.player}: ${r.cooperativeScore}`
-            break
-
-        case WinMethodName.CooperativeWin:
-            scoreStr = playersWithScores.slice(0, -1).map(s => s.player).join(", ")
-            scoreStr += ` & ${playersWithScores.at(-1)?.player} ${r.cooperativeWin ? "won" : "lost"}`
-            break
     }
 
     let group = props.groups.find(gr => gr.name === r.groupName)
@@ -75,7 +98,7 @@ export const ResultCard = (props: ResultCardProps) => {
             </Table.Cell>
 
             <Table.Cell>
-                {scoreStr}
+                {renderScoresSummary()}
             </Table.Cell>
 
             <Table.Cell>
