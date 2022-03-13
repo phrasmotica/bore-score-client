@@ -1,7 +1,9 @@
 import { useState } from "react"
 
 import { GameFilterDropdown } from "./GameFilterDropdown"
+import { GroupFilterDropdown } from "./GroupFilterDropdown"
 import { ResultsList } from "./ResultsList"
+
 import { useAllGroups, useGames, usePlayers, useResults } from "../FetchHelpers"
 
 export const ResultsPage = () => {
@@ -11,6 +13,7 @@ export const ResultsPage = () => {
     const { results } = useResults()
 
     const [selectedGames, setSelectedGames] = useState<string[]>([])
+    const [selectedGroups, setSelectedGroups] = useState<string[]>([])
 
     return (
         <div className="results-page">
@@ -21,8 +24,15 @@ export const ResultsPage = () => {
 
                 <GameFilterDropdown
                     games={games}
+                    results={results}
                     selectedGames={selectedGames}
                     setSelectedGames={setSelectedGames} />
+
+                <GroupFilterDropdown
+                    groups={groups}
+                    results={results}
+                    selectedGroups={selectedGroups}
+                    setSelectedGroups={setSelectedGroups} />
             </div>
 
             <div className="results-page-body">
@@ -35,7 +45,8 @@ export const ResultsPage = () => {
                     groups={groups}
                     results={results}
                     players={players}
-                    selectedGames={selectedGames} />
+                    selectedGames={selectedGames}
+                    selectedGroups={selectedGroups} />
             </div>
         </div>
     )

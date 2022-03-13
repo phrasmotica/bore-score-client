@@ -13,12 +13,18 @@ interface ResultsListProps {
     results: Result[]
     players: Player[]
     selectedGames: string[]
+    selectedGroups: string[]
 }
 
 export const ResultsList = (props: ResultsListProps) => {
     let resultsToShow = sortResultsByRecent(props.results)
+
     if (props.selectedGames.length > 0) {
         resultsToShow = resultsToShow.filter(r => props.selectedGames.includes(r.gameName))
+    }
+
+    if (props.selectedGroups.length > 0) {
+        resultsToShow = resultsToShow.filter(r => props.selectedGroups.includes(r.groupName))
     }
 
     return (

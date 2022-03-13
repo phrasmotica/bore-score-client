@@ -1,18 +1,23 @@
 import { Dropdown } from "semantic-ui-react"
 
 import { Game } from "../models/Game"
+import { Result } from "../models/Result"
 
 interface GameFilterDropdownProps {
     games: Game[]
+    results: Result[]
     selectedGames: string[]
     setSelectedGames: (names: string[]) => void
 }
 
 export const GameFilterDropdown = (props: GameFilterDropdownProps) => {
+    const getCount = (name: string) => props.results.filter(r => r.gameName === name).length
+
     const options = props.games.map(g => ({
         key: g.name,
-        text: g.displayName,
+        text: g.displayName + ` (${getCount(g.name)})`,
         value: g.name,
+        disabled: getCount(g.name) <= 0,
     }))
 
     return (
@@ -20,7 +25,9 @@ export const GameFilterDropdown = (props: GameFilterDropdownProps) => {
             <Dropdown
                 fluid
                 multiple
+                clearable
                 selection
+                search
                 placeholder="Filter by game"
                 onChange={(_, data) => props.setSelectedGames(data.value as string[])}
                 options={options} />
