@@ -25,10 +25,6 @@ const App = () => {
                 Home
             </Menu.Item>
 
-            <Menu.Item href="/players">
-                Players
-            </Menu.Item>
-
             <Menu.Item href="/add-player">
                 Add Player
             </Menu.Item>
