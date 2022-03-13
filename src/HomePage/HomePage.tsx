@@ -44,6 +44,10 @@ export const HomePage = () => {
     }
 
     const renderGamesOfRecentResults = () => {
+        if (games.length <= 0) {
+            return null
+        }
+
         let lastResults = sortResultsByRecent(results)
         let gameNames = [...new Set(lastResults.map(r => r.gameName))].slice(0, 5)
         let gamesToShow = gameNames.map(n => games.find(g => g.name === n)!)
