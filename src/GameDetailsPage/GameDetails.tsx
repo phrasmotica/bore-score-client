@@ -113,6 +113,10 @@ export const GameDetails = (props: GameDetailsProps) => {
 
                     <div className="links">
                         {game.links.map((l, i) => {
+                            if (l.link.length <= 0) {
+                                return null
+                            }
+
                             let linkType = props.linkTypes.find(lt => lt.name === l.type)!.displayName
 
                             return (
