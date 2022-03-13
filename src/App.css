@@ -279,18 +279,21 @@
   display: flex;
 }
 
+.results-page .header {
+  text-align: center;
+  flex: 0 1 auto;
+  margin-bottom: 1rem;
+}
+
 .results-page .sidebar  {
   text-align: end;
   margin-right: 1rem;
+  min-width: 15vw;
+  max-width: 15vw;
 }
 
 .results-page-body {
   flex-grow: 1;
-}
-
-.results-page-body .header {
-  flex: 0 1 auto;
-  margin-bottom: 1rem;
 }
 
 .results-table .game-image {

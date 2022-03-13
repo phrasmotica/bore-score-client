@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-import { GameFilterMenu } from "./GameFilterMenu"
+import { GameFilterDropdown } from "./GameFilterDropdown"
 import { ResultsList } from "./ResultsList"
 import { useAllGroups, useGames, usePlayers, useResults } from "../FetchHelpers"
 
@@ -10,16 +10,19 @@ export const ResultsPage = () => {
     const { players } = usePlayers()
     const { results } = useResults()
 
-    const [selectedGame, setSelectedGame] = useState("")
+    const [selectedGames, setSelectedGames] = useState<string[]>([])
 
     return (
         <div className="results-page">
             <div className="sidebar">
-                <GameFilterMenu
+                <div className="header">
+                    <h2>Filters</h2>
+                </div>
+
+                <GameFilterDropdown
                     games={games}
-                    results={results}
-                    selectedGame={selectedGame}
-                    setSelectedGame={setSelectedGame} />
+                    selectedGames={selectedGames}
+                    setSelectedGames={setSelectedGames} />
             </div>
 
             <div className="results-page-body">
@@ -32,7 +35,7 @@ export const ResultsPage = () => {
                     groups={groups}
                     results={results}
                     players={players}
-                    selectedGame={selectedGame} />
+                    selectedGames={selectedGames} />
             </div>
         </div>
     )
