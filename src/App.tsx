@@ -8,7 +8,7 @@ import { GameDetailsPage } from "./GameDetailsPage/GameDetailsPage"
 import { GamesPage } from "./GamesPage/GamesPage"
 import { GroupDetailsPage } from "./GroupDetailsPage/GroupDetailsPage"
 import { HomePage } from "./HomePage/HomePage"
-import { PlayersPage } from "./PlayersPage/PlayersPage"
+import { PlayerDetailsPage } from "./PlayerDetailsPage/PlayerDetailsPage"
 import { ResultsPage } from "./ResultsPage/ResultsPage"
 
 import "./App.css"
@@ -61,7 +61,7 @@ const App = () => {
                 <BrowserRouter>
                     <Routes>
                         <Route path="/" element={<HomePage />} />
-                        <Route path="/players" element={<PlayersPage />} />
+                        <Route path="/players/:username" element={<PlayerDetailsPage />} />
                         <Route path="/add-player" element={<AddPlayerPage />} />
                         <Route path="/games/:name" element={<GameDetailsPage />} />
                         <Route path="/games" element={<GamesPage />} />

@@ -26,6 +26,20 @@ export const usePlayers = () => {
     }
 }
 
+export const usePlayer = (name: string | undefined) => {
+    let endpoint = ""
+    if (name !== undefined && name.length > 0) {
+        endpoint = `${process.env.REACT_APP_API_URL}/players/${name}`
+    }
+
+    let fetch = useFetch<Player | undefined>(endpoint, undefined)
+
+    return {
+        isLoadingPlayer: fetch.isLoading,
+        player: fetch.data,
+    }
+}
+
 export const useGames = () => {
     let fetch = useFetch<Game[]>(`${process.env.REACT_APP_API_URL}/games`, [])
 
