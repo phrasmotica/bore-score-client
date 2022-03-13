@@ -9,10 +9,17 @@ import { WinMethod } from "../models/WinMethod"
 interface GamesTableProps {
     games: Game[]
     winMethods: WinMethod[]
+    selectedWinMethods: string[]
 }
 
 export const GamesTable = (props: GamesTableProps) => {
     const navigate = useNavigate()
+
+    let gamesToShow = [...props.games]
+
+    if (props.selectedWinMethods.length > 0) {
+        gamesToShow = gamesToShow.filter(g => props.selectedWinMethods.includes(g.winMethod))
+    }
 
     return (
         <div className="games-table">
@@ -28,7 +35,7 @@ export const GamesTable = (props: GamesTableProps) => {
                 </Table.Header>
 
                 <Table.Body>
-                    {props.games.map(g => {
+                    {gamesToShow.map(g => {
                         let playersStr = `${g.minPlayers}-${g.maxPlayers}`
                         if (g.minPlayers === g.maxPlayers) {
                             playersStr = g.minPlayers.toString()

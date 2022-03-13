@@ -134,6 +134,27 @@
   width: 100%;
 }
 
+.games-page {
+  display: flex;
+}
+
+.games-page .header {
+  text-align: center;
+  flex: 0 1 auto;
+  margin-bottom: 1rem;
+}
+
+.games-page .sidebar  {
+  text-align: end;
+  margin-right: 1rem;
+  min-width: 15vw;
+  max-width: 15vw;
+}
+
+.games-page-body {
+  flex-grow: 1;
+}
+
 .games-table .game-image {
   display: flex;
   align-items: center;
