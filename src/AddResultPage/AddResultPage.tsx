@@ -52,7 +52,7 @@ export const AddResultPage = () => {
                 setUseGroup(true)
             }
         }
-    }, [groups])
+    }, [groups, searchParams])
 
     const navigate = useNavigate()
 
