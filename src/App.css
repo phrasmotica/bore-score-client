@@ -144,11 +144,16 @@
   margin-bottom: 1rem;
 }
 
-.games-page .sidebar  {
+.games-page .sidebar {
   text-align: end;
-  margin-right: 1rem;
   min-width: 15vw;
   max-width: 15vw;
+}
+
+.games-page .sidebar .filters {
+  padding-right: 0.5rem;
+  margin-right: 0.5rem;
+  border-right: 1px solid rgba(34, 36, 38, 0.15);
 }
 
 .player-count-picker-container {
@@ -325,11 +330,16 @@
   margin-bottom: 1rem;
 }
 
-.results-page .sidebar  {
+.results-page .sidebar {
   text-align: end;
-  margin-right: 1rem;
   min-width: 15vw;
   max-width: 15vw;
+}
+
+.results-page .sidebar .filters {
+  padding-right: 0.5rem;
+  margin-right: 0.5rem;
+  border-right: 1px solid rgba(34, 36, 38, 0.15);
 }
 
 .results-page .group-filter-dropdown  {

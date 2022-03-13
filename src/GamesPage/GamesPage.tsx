@@ -25,25 +25,27 @@ export const GamesPage = () => {
                     <h2>Filters</h2>
                 </div>
 
-                <WinMethodFilterDropdown
-                    winMethods={winMethods}
-                    games={games}
-                    selectedWinMethods={selectedWinMethods}
-                    setSelectedWinMethods={setSelectedWinMethods} />
+                <div className="filters">
+                    <WinMethodFilterDropdown
+                        winMethods={winMethods}
+                        games={games}
+                        selectedWinMethods={selectedWinMethods}
+                        setSelectedWinMethods={setSelectedWinMethods} />
 
-                <PlayerCountFilter
-                    label="Minimum players"
-                    enabled={filterByMinPlayers}
-                    setEnabled={setFilterByMinPlayers}
-                    value={minPlayers}
-                    setValue={setMinPlayers} />
+                    <PlayerCountFilter
+                        label="Minimum players"
+                        enabled={filterByMinPlayers}
+                        setEnabled={setFilterByMinPlayers}
+                        value={minPlayers}
+                        setValue={setMinPlayers} />
 
-                <PlayerCountFilter
-                    label="Maximum players"
-                    enabled={filterByMaxPlayers}
-                    setEnabled={setFilterByMaxPlayers}
-                    value={maxPlayers}
-                    setValue={setMaxPlayers} />
+                    <PlayerCountFilter
+                        label="Maximum players"
+                        enabled={filterByMaxPlayers}
+                        setEnabled={setFilterByMaxPlayers}
+                        value={maxPlayers}
+                        setValue={setMaxPlayers} />
+                </div>
             </div>
 
             <div className="games-page-body">

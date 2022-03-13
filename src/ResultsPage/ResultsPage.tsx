@@ -22,17 +22,19 @@ export const ResultsPage = () => {
                     <h2>Filters</h2>
                 </div>
 
-                <GameFilterDropdown
-                    games={games}
-                    results={results}
-                    selectedGames={selectedGames}
-                    setSelectedGames={setSelectedGames} />
+                <div className="filters">
+                    <GameFilterDropdown
+                        games={games}
+                        results={results}
+                        selectedGames={selectedGames}
+                        setSelectedGames={setSelectedGames} />
 
-                <GroupFilterDropdown
-                    groups={groups}
-                    results={results}
-                    selectedGroups={selectedGroups}
-                    setSelectedGroups={setSelectedGroups} />
+                    <GroupFilterDropdown
+                        groups={groups}
+                        results={results}
+                        selectedGroups={selectedGroups}
+                        setSelectedGroups={setSelectedGroups} />
+                </div>
             </div>
 
             <div className="results-page-body">
