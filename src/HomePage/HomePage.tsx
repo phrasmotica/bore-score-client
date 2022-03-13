@@ -20,9 +20,14 @@ export const HomePage = () => {
 
         return (
             <Statistic.Group>
-                <Statistic color="green">
+                <Statistic color="olive">
                     <Statistic.Value>{summary.gameCount}</Statistic.Value>
                     <Statistic.Label><a href="/games">Games</a></Statistic.Label>
+                </Statistic>
+
+                <Statistic color="green">
+                    <Statistic.Value>{summary.groupCount}</Statistic.Value>
+                    <Statistic.Label><a href="/groups">Groups</a></Statistic.Label>
                 </Statistic>
 
                 <Statistic color="teal">
