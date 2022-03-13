@@ -10,6 +10,10 @@ interface GamesTableProps {
     games: Game[]
     winMethods: WinMethod[]
     selectedWinMethods: string[]
+    useMinPlayers: boolean
+    minPlayers: number
+    useMaxPlayers: boolean
+    maxPlayers: number
 }
 
 export const GamesTable = (props: GamesTableProps) => {
@@ -19,6 +23,14 @@ export const GamesTable = (props: GamesTableProps) => {
 
     if (props.selectedWinMethods.length > 0) {
         gamesToShow = gamesToShow.filter(g => props.selectedWinMethods.includes(g.winMethod))
+    }
+
+    if (props.useMinPlayers) {
+        gamesToShow = gamesToShow.filter(g => g.minPlayers >= props.minPlayers)
+    }
+
+    if (props.useMaxPlayers) {
+        gamesToShow = gamesToShow.filter(g => g.maxPlayers <= props.maxPlayers)
     }
 
     return (
@@ -46,7 +58,7 @@ export const GamesTable = (props: GamesTableProps) => {
                         const submitResult = () => navigate(`/add-result?game=${g.name}`)
 
                         return (
-                            <Table.Row>
+                            <Table.Row key={g.name}>
                                 <Table.Cell>
                                     <GameImage imageSrc={g.imageLink} />
                                 </Table.Cell>

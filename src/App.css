@@ -151,6 +151,25 @@
   max-width: 15vw;
 }
 
+.player-count-picker-container {
+  margin-top: 1em;
+}
+
+.player-count-picker-container > .fields {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.games-page .sidebar .ui.form .fields > .field.player-count-checkbox {
+  flex: 0 1 auto;
+}
+
+.games-page .sidebar .ui.form .fields > .field.player-count-picker {
+  flex: 1 1 auto;
+  max-width: 5vw;
+}
+
 .games-page-body {
   flex-grow: 1;
 }

@@ -1,6 +1,7 @@
 import { useState } from "react"
 
 import { GamesTable } from "./GamesTable"
+import { PlayerCountFilter } from "./PlayerCountFilter"
 import { WinMethodFilterDropdown } from "./WinMethodFilterDropdown"
 
 import { useGames, useWinMethods } from "../FetchHelpers"
@@ -10,6 +11,12 @@ export const GamesPage = () => {
     const { winMethods } = useWinMethods()
 
     const [selectedWinMethods, setSelectedWinMethods] = useState<string[]>([])
+
+    const [filterByMinPlayers, setFilterByMinPlayers] = useState(false)
+    const [minPlayers, setMinPlayers] = useState(1)
+
+    const [filterByMaxPlayers, setFilterByMaxPlayers] = useState(false)
+    const [maxPlayers, setMaxPlayers] = useState(2)
 
     return (
         <div className="games-page">
@@ -23,6 +30,20 @@ export const GamesPage = () => {
                     games={games}
                     selectedWinMethods={selectedWinMethods}
                     setSelectedWinMethods={setSelectedWinMethods} />
+
+                <PlayerCountFilter
+                    label="Minimum players"
+                    enabled={filterByMinPlayers}
+                    setEnabled={setFilterByMinPlayers}
+                    value={minPlayers}
+                    setValue={setMinPlayers} />
+
+                <PlayerCountFilter
+                    label="Maximum players"
+                    enabled={filterByMaxPlayers}
+                    setEnabled={setFilterByMaxPlayers}
+                    value={maxPlayers}
+                    setValue={setMaxPlayers} />
             </div>
 
             <div className="games-page-body">
@@ -31,7 +52,11 @@ export const GamesPage = () => {
                 <GamesTable
                     games={games}
                     winMethods={winMethods}
-                    selectedWinMethods={selectedWinMethods} />
+                    selectedWinMethods={selectedWinMethods}
+                    useMinPlayers={filterByMinPlayers}
+                    minPlayers={minPlayers}
+                    useMaxPlayers={filterByMaxPlayers}
+                    maxPlayers={maxPlayers} />
             </div>
         </div>
     )
