@@ -1,6 +1,11 @@
 import { Table } from "semantic-ui-react"
 import moment from "moment"
 
+import { CooperativeScoreCard } from "./CooperativeScoreCard"
+import { CooperativeWinCard } from "./CooperativeWinCard"
+import { IndividualScoreCard } from "./IndividualScoreCard"
+import { IndividualWinnerCard } from "./IndividualWinnerCard"
+
 import { GameImage } from "../GameImage"
 
 import { displayDateTimeValue } from "../MomentHelpers"
@@ -27,14 +32,14 @@ export const ResultCard = (props: ResultCardProps) => {
         return null
     }
 
-    // players who were in the game
     let bestScore = r.scores.reduce((a, b) => a.score > b.score ? a : b).score
 
-    let playersWithScores = r.scores.map(s => {
+    // players who were in the game
+    let playersWithNames = r.scores.map(s => {
         let player = props.players.find(p => p.username === s.username)
 
         return {
-            player: player?.displayName ?? "(unknown player)",
+            displayName: player?.displayName ?? "(unknown player)",
             hasBestScore: s.score === bestScore,
             ...s
         }
@@ -43,41 +48,16 @@ export const ResultCard = (props: ResultCardProps) => {
     const renderScoresSummary = () => {
         switch (game?.winMethod) {
             case WinMethodName.IndividualScore:
-                return playersWithScores.map(s => {
-                    let content = <span>{s.player}: {s.score}</span>
-                    if (s.hasBestScore) {
-                        content = <b>{content}</b>
-                    }
-
-                    return <div key={s.username}>{content}</div>
-                })
+                return <IndividualScoreCard players={playersWithNames} />
 
             case WinMethodName.IndividualWin:
-                return playersWithScores.map(s => {
-                    let content = <span>{s.player} {s.isWinner ? "won" : "lost"}</span>
-                    if (s.isWinner) {
-                        content = <b>{content}</b>
-                    }
-
-                    return <div key={s.username}>{content}</div>
-                })
+                return <IndividualWinnerCard players={playersWithNames} />
 
             case WinMethodName.CooperativeScore:
-                let scoreStr = playersWithScores.slice(0, -1).map(s => s.player).join(", ")
-                scoreStr += ` & ${playersWithScores.at(-1)?.player}: ${r.cooperativeScore}`
-
-                return <div><b><span>{scoreStr}</span></b></div>
+                return <CooperativeScoreCard players={playersWithNames} score={r.cooperativeScore} />
 
             case WinMethodName.CooperativeWin:
-                let winStr = playersWithScores.slice(0, -1).map(s => s.player).join(", ")
-                winStr += ` & ${playersWithScores.at(-1)?.player} ${r.cooperativeWin ? "won" : "lost"}`
-
-                let content = <span>{winStr}</span>
-                if (r.cooperativeWin) {
-                    content = <b>{content}</b>
-                }
-
-                return <div>{content}</div>
+                return <CooperativeWinCard players={playersWithNames} isWin={r.cooperativeWin} />
         }
 
         return null
