@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 
+import { ComputedName } from "./models/ComputedName"
 import { Game } from "./models/Game"
 import { Group } from "./models/Group"
 import { LinkType } from "./models/LinkType"
@@ -122,8 +123,22 @@ export const useResults = () => {
     }
 }
 
-// adapted from https://www.smashingmagazine.com/2020/07/custom-react-hook-fetch-cache-data/
-const useFetch = <T,>(url: string, initial: T) => {
+export const useComputedName = (displayName: string, fetchDelayMs = 0) => {
+    let endpoint = ""
+    if (displayName.length > 0) {
+        endpoint = `${process.env.REACT_APP_API_URL}/admin/game-name/${displayName}`
+    }
+
+    let fetch = useFetch<ComputedName | undefined>(endpoint, undefined, fetchDelayMs)
+
+    return {
+        isLoadingComputedName: fetch.isLoading,
+        computedName: fetch.data,
+        setComputedName: fetch.setData
+    }
+}
+
+const useFetch = <T,>(url: string, initial: T, fetchDelayMs = 0) => {
     const [isLoading, setIsLoading] = useState(false)
     const [data, setData] = useState(initial)
 
@@ -141,10 +156,11 @@ const useFetch = <T,>(url: string, initial: T) => {
                 .finally(() => setIsLoading(false))
         }
 
-        fetchData()
-    }, [url])
+        let timeout = setTimeout(fetchData, fetchDelayMs)
+        return () => clearTimeout(timeout)
+    }, [url, fetchDelayMs])
 
-    return { isLoading, data }
+    return { isLoading, data, setData }
 }
 
 const fetchWithResilience = <T,>(url: string) => {

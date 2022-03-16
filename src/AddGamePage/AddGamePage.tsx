@@ -5,7 +5,7 @@ import { Form, Icon, Input } from "semantic-ui-react"
 import { LinkForm } from "./LinkForm"
 import { GamesList } from "../GamesList"
 
-import { useGames, useLinkTypes, useWinMethods } from "../FetchHelpers"
+import { useComputedName, useGames, useLinkTypes, useWinMethods } from "../FetchHelpers"
 
 import { Game, Link } from "../models/Game"
 
@@ -23,7 +23,18 @@ export const AddGamePage = () => {
     const [imageLink, setImageLink] = useState("")
     const [links, setLinks] = useState<Link[]>([])
 
+    const { computedName, setComputedName } = useComputedName(displayName, 1000)
+
     const navigate = useNavigate()
+
+    useEffect(() => {
+        if (displayName.length <= 0) {
+            setComputedName({
+                displayName: "",
+                name: "",
+            })
+        }
+    }, [displayName, setComputedName])
 
     useEffect(() => {
         if (winMethods.length > 0) {
@@ -93,6 +104,10 @@ export const AddGamePage = () => {
                             placeholder="Display name"
                             value={displayName}
                             onChange={(e, { value }) => setDisplayName(value)} />
+
+                        <div className="game-name-info">
+                            <p>Will be saved as: {computedName?.name ?? ""}</p>
+                        </div>
 
                         <Form.Input
                             label="Synopsis"
