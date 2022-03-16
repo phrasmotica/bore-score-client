@@ -137,7 +137,8 @@ const useFetch = <T,>(url: string, initial: T) => {
 
             fetchWithResilience<T>(url)
                 .then(setData)
-                .then(() => setIsLoading(false))
+                .catch(err => console.error(err))
+                .finally(() => setIsLoading(false))
         }
 
         fetchData()
@@ -148,7 +149,14 @@ const useFetch = <T,>(url: string, initial: T) => {
 
 const fetchWithResilience = <T,>(url: string) => {
     return fetch(url)
-        .then(res => res.json())
-        .catch(err => console.error(err))
+        .then(handleResponse)
         .then((data: T) => data)
+}
+
+const handleResponse = (res: Response) => {
+    if (res.ok) {
+        return res.json()
+    }
+
+    throw new Error(`Response from ${res.url} returned error ${res.status} (${res.statusText})`)
 }
