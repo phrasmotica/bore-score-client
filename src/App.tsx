@@ -43,12 +43,6 @@ const App = () => {
                     Results
                 </Link>
             </Menu.Item>
-
-            <Menu.Item>
-                <Link to="/add-result">
-                    Add Result
-                </Link>
-            </Menu.Item>
         </Menu>
     )
 

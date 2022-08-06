@@ -1,4 +1,6 @@
 import { useState } from "react"
+import { useNavigate } from "react-router"
+import { Button, Icon } from "semantic-ui-react"
 
 import { GameFilterDropdown } from "./GameFilterDropdown"
 import { GroupFilterDropdown } from "./GroupFilterDropdown"
@@ -7,8 +9,12 @@ import { ResultsList } from "./ResultsList"
 import { useAllGroups, useGames, usePlayers, useResults } from "../FetchHelpers"
 import { useTitle } from "../Hooks"
 
+import "./ResultsPage.css"
+
 export const ResultsPage = () => {
     useTitle("Results")
+
+    const navigate = useNavigate()
 
     const { games } = useGames()
     const { groups } = useAllGroups()
@@ -43,6 +49,14 @@ export const ResultsPage = () => {
             <div className="results-page-body">
                 <div className="header">
                     <h2>Results</h2>
+
+                    <Button
+                        icon
+                        color="yellow"
+                        onClick={() => navigate("/add-result")}>
+                        <span>Add New Result&nbsp;</span>
+                        <Icon name="plus" />
+                    </Button>
                 </div>
 
                 <ResultsList
