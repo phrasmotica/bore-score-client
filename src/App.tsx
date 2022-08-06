@@ -58,8 +58,6 @@ const App = () => {
         </Menu>
     )
 
-    // TODO: implement groups page
-
     return (
         <div className="app-container">
             <div className="content">
@@ -70,6 +68,7 @@ const App = () => {
                         <Route path="/" element={<HomePage />} />
                         <Route path="/players/:username" element={<PlayerDetailsPage />} />
                         <Route path="/add-player" element={<AddPlayerPage />} />
+                        <Route path="/groups/:name" element={<GroupDetailsPage />} />
                         <Route path="/games/:name" element={<GameDetailsPage />} />
                         <Route path="/games" element={<GamesPage />} />
                         <Route path="/add-game" element={<AddGamePage />} />

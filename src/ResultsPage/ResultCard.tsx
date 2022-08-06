@@ -68,6 +68,21 @@ export const ResultCard = (props: ResultCardProps) => {
 
     let group = props.groups.find(gr => gr.name === r.groupName)
 
+    const renderGroupName = () => {
+        let groupNameElement = <span>{group?.displayName ?? r.groupName}</span>
+
+        let linkToGroup = r.groupName.length > 0 && r.groupName !== "all"
+        if (linkToGroup) {
+            return (
+                <Link to={`/groups/${r.groupName}`}>
+                    {groupNameElement}
+                </Link>
+            )
+        }
+
+        return groupNameElement
+    }
+
     return (
         <Table.Row>
             <Table.Cell className="game-image-cell">
@@ -85,7 +100,7 @@ export const ResultCard = (props: ResultCardProps) => {
             </Table.Cell>
 
             <Table.Cell>
-                {group?.displayName ?? r.groupName}
+                {renderGroupName()}
             </Table.Cell>
 
             <Table.Cell>
