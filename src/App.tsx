@@ -1,4 +1,4 @@
-import { Icon, Menu } from "semantic-ui-react"
+import { Menu } from "semantic-ui-react"
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom"
 
 import { AddGamePage } from "./AddGamePage/AddGamePage"
@@ -17,7 +17,6 @@ const App = () => {
     const renderMenu = () => (
         <Menu fluid>
             <Menu.Item header>
-                <Icon name="calculator" />
                 BoreScore
             </Menu.Item>
 
@@ -80,6 +79,12 @@ const App = () => {
                     </Routes>
                 </BrowserRouter>
             </div>
+
+            <footer>
+                <a href="https://www.flaticon.com/free-icons/dice" title="dice icons">
+                    Dice icons created by juicy_fish - Flaticon
+                </a>
+            </footer>
         </div>
     )
 }
