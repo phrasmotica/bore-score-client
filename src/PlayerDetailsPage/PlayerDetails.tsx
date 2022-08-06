@@ -29,7 +29,7 @@ export const PlayerDetails = (props: PlayerDetailsProps) => {
     }, [player])
 
     const deletePlayer = () => {
-        fetch(`http://localhost:8000/players/${player.username}`, {
+        fetch(`${process.env.REACT_APP_API_URL}/players/${player.username}`, {
             method: "DELETE"
         })
             .then(props.onDeletedPlayer)

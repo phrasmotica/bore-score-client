@@ -24,7 +24,7 @@ export const AddPlayerPage = () => {
     const formIsComplete = () => username.length > 0 && usernameIsAvailable() && displayName.length > 0
 
     const submit = () => {
-        fetch("http://localhost:8000/players", {
+        fetch(`${process.env.REACT_APP_API_URL}/players`, {
             method: "POST",
             body: JSON.stringify({
                 username: username,

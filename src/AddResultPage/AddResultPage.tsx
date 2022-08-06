@@ -111,7 +111,7 @@ export const AddResultPage = () => {
             return
         }
 
-        fetch("http://localhost:8000/results", {
+        fetch(`${process.env.REACT_APP_API_URL}/results`, {
             method: "POST",
             body: JSON.stringify({
                 gameName: game.name,

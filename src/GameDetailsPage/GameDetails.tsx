@@ -28,7 +28,7 @@ export const GameDetails = (props: GameDetailsProps) => {
     const submitResult = () => navigate(`/add-result?game=${game.name}`)
 
     const deleteGame = () => {
-        fetch(`http://localhost:8000/games/${game.name}`, {
+        fetch(`${process.env.REACT_APP_API_URL}/games/${game.name}`, {
             method: "DELETE"
         })
             .then(props.onDeletedGame)

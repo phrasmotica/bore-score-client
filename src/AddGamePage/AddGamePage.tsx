@@ -63,7 +63,7 @@ export const AddGamePage = () => {
     }
 
     const submit = () => {
-        fetch("http://localhost:8000/games", {
+        fetch(`${process.env.REACT_APP_API_URL}/games`, {
             method: "POST",
             body: JSON.stringify({
                 displayName: displayName,
