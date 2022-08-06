@@ -15,7 +15,6 @@ interface GameDetailsProps {
     game: Game
     linkTypes: LinkType[]
     winMethod: WinMethod
-    onDeletedGame: () => void
 }
 
 export const GameDetails = (props: GameDetailsProps) => {
@@ -31,8 +30,7 @@ export const GameDetails = (props: GameDetailsProps) => {
         fetch(`${process.env.REACT_APP_API_URL}/games/${game.name}`, {
             method: "DELETE"
         })
-            .then(props.onDeletedGame)
-            .then(() => setShowDeletePrompt(false))
+            .then(() => navigate("/games"))
     }
 
     let playersStr = `${game.minPlayers}-${game.maxPlayers}`

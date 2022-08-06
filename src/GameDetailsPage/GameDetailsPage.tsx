@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { Link, useNavigate, useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 
 import { GameDetails } from "./GameDetails"
 
@@ -26,8 +26,6 @@ export const GameDetailsPage = (props: GameDetailsPageProps) => {
         }
     }, [game])
 
-    const navigate = useNavigate()
-
     if (game === undefined || linkTypes.length <= 0) {
         return null
     }
@@ -49,8 +47,7 @@ export const GameDetailsPage = (props: GameDetailsPageProps) => {
             <GameDetails
                 game={game}
                 linkTypes={linkTypes}
-                winMethod={winMethod}
-                onDeletedGame={() => navigate("/games")} />
+                winMethod={winMethod} />
         </div>
     )
 }
