@@ -18,8 +18,6 @@ export const PlayerDetailsPage = (props: PlayerDetailsPageProps) => {
     const onDeletedPlayer = () => {
         searchParams.delete("player")
         setSearchParams(searchParams)
-
-        // fetchAndSetPlayers()
     }
 
     if (player === undefined) {
@@ -28,12 +26,6 @@ export const PlayerDetailsPage = (props: PlayerDetailsPageProps) => {
 
     return (
         <div className="player-details-page">
-            <div className="header">
-                <a href="/players">
-                    <span>&larr;&nbsp;Back to players list</span>
-                </a>
-            </div>
-
             <PlayerDetails player={player} onDeletedPlayer={onDeletedPlayer} />
         </div>
     )

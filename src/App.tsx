@@ -17,10 +17,8 @@ const App = () => {
     const renderMenu = () => (
         <Menu fluid>
             <Menu.Item header>
-                <Link to="/">
-                    <Icon name="calculator" />
-                    BoreScore
-                </Link>
+                <Icon name="calculator" />
+                BoreScore
             </Menu.Item>
 
             <Menu.Item>

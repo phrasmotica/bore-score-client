@@ -15,6 +15,7 @@ import { Group } from "../models/Group"
 import { Player } from "../models/Player"
 import { Result } from "../models/Result"
 import { WinMethodName } from "../models/WinMethod"
+import { Link } from "react-router-dom"
 
 interface ResultCardProps {
     result: Result
@@ -72,9 +73,9 @@ export const ResultCard = (props: ResultCardProps) => {
             </Table.Cell>
 
             <Table.Cell>
-                <a href={`/games/${game.name}`}>
+                <Link to={`/games/${game.name}`}>
                     {game.displayName}
-                </a>
+                </Link>
             </Table.Cell>
 
             <Table.Cell>
@@ -82,9 +83,7 @@ export const ResultCard = (props: ResultCardProps) => {
             </Table.Cell>
 
             <Table.Cell>
-                <a href={`/groups/${r.groupName}`}>
-                    {group?.displayName ?? r.groupName}
-                </a>
+                {group?.displayName ?? r.groupName}
             </Table.Cell>
 
             <Table.Cell>

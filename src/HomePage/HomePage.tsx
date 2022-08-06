@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import { Statistic } from "semantic-ui-react"
 
 import { useGames, useResults, useSummary } from "../FetchHelpers"
@@ -22,22 +23,22 @@ export const HomePage = () => {
             <Statistic.Group>
                 <Statistic color="olive">
                     <Statistic.Value>{summary.gameCount}</Statistic.Value>
-                    <Statistic.Label><a href="/games">Games</a></Statistic.Label>
+                    <Statistic.Label><Link to="/games">Games</Link></Statistic.Label>
                 </Statistic>
 
                 <Statistic color="green">
                     <Statistic.Value>{summary.groupCount}</Statistic.Value>
-                    <Statistic.Label><a href="/groups">Groups</a></Statistic.Label>
+                    <Statistic.Label>Groups</Statistic.Label>
                 </Statistic>
 
                 <Statistic color="teal">
                     <Statistic.Value>{summary.playerCount}</Statistic.Value>
-                    <Statistic.Label><a href="/players">Players</a></Statistic.Label>
+                    <Statistic.Label>Players</Statistic.Label>
                 </Statistic>
 
                 <Statistic color="blue">
                     <Statistic.Value>{summary.resultCount}</Statistic.Value>
-                    <Statistic.Label><a href="/results">Results</a></Statistic.Label>
+                    <Statistic.Label><Link to="/results">Results</Link></Statistic.Label>
                 </Statistic>
             </Statistic.Group>
         )

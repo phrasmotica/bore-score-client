@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 
 import { GameDetails } from "./GameDetails"
 
@@ -30,9 +30,9 @@ export const GameDetailsPage = (props: GameDetailsPageProps) => {
     return (
         <div className="game-details-page">
             <div className="header">
-                <a href="/games">
+                <Link to="/games">
                     <span>&larr;&nbsp;Back to games list</span>
-                </a>
+                </Link>
             </div>
 
             <GameDetails

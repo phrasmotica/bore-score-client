@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import { ScoreCardProps } from "./ScoreCardProps"
 
 export const IndividualScoreCard = (props: ScoreCardProps) => (
@@ -5,9 +6,9 @@ export const IndividualScoreCard = (props: ScoreCardProps) => (
         {props.players.map(s => {
             let content = (
                 <span>
-                    <a href={`/players/${s.username}`}>
+                    <Link to={`/players/${s.username}`}>
                         {s.displayName}
-                    </a>
+                    </Link>
                     : {s.score}
                 </span>
             )

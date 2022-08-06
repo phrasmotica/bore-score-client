@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import { ScoreCardProps } from "./ScoreCardProps"
 
 interface CooperativeScoreCardProps {
@@ -6,9 +7,9 @@ interface CooperativeScoreCardProps {
 
 export const CooperativeScoreCard = (props: ScoreCardProps & CooperativeScoreCardProps) => {
     let playerLinks = props.players.map((s, i) => (
-        <a key={i} href={`/players/${s.username}`}>
+        <Link key={i} to={`/players/${s.username}`}>
             {s.displayName}
-        </a>
+        </Link>
     ))
 
     let content = (

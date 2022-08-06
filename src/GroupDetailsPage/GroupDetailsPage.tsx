@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 
 import { GroupDetails } from "./GroupDetails"
 
@@ -20,9 +20,9 @@ export const GroupDetailsPage = (props: GroupDetailsPageProps) => {
     return (
         <div className="group-details-page">
             <div className="header">
-                <a href="/groups">
+                <Link to="/groups">
                     <span>&larr;&nbsp;Back to groups list</span>
-                </a>
+                </Link>
             </div>
 
             <GroupDetails group={group} />

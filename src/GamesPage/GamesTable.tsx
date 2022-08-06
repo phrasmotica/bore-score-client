@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router"
+import { Link } from "react-router-dom"
 import { Button, Icon, Table } from "semantic-ui-react"
 
 import { GameImage } from "../GameImage"
@@ -64,9 +65,9 @@ export const GamesTable = (props: GamesTableProps) => {
                                 </Table.Cell>
 
                                 <Table.Cell>
-                                    <a href={`/games/${g.name}`}>
+                                    <Link to={`/games/${g.name}`}>
                                         {g.displayName}
-                                    </a>
+                                    </Link>
                                 </Table.Cell>
 
                                 <Table.Cell>

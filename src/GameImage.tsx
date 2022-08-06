@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import { Image } from "semantic-ui-react"
 
 interface GameImageProps {
@@ -8,7 +9,7 @@ interface GameImageProps {
 export const GameImage = (props: GameImageProps) => {
     let content = <Image src={props.imageSrc} />
     if (props.link) {
-        content = <a href={props.link}>{content}</a>
+        content = <Link to={props.link}>{content}</Link>
     }
 
     return (
