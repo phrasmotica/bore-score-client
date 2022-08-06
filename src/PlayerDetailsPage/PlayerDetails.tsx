@@ -1,5 +1,6 @@
 import moment from "moment"
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router"
 import { Button, Header, Icon, Modal } from "semantic-ui-react"
 
 import { PlayerImage } from "../PlayerImage"
@@ -11,11 +12,12 @@ import { Player } from "../models/Player"
 
 interface PlayerDetailsProps {
     player: Player
-    onDeletedPlayer: () => void
 }
 
 export const PlayerDetails = (props: PlayerDetailsProps) => {
     const [showDeletePrompt, setShowDeletePrompt] = useState(false)
+
+    const navigate = useNavigate()
 
     let player = props.player
 
@@ -32,7 +34,7 @@ export const PlayerDetails = (props: PlayerDetailsProps) => {
         fetch(`${process.env.REACT_APP_API_URL}/players/${player.username}`, {
             method: "DELETE"
         })
-            .then(props.onDeletedPlayer)
+            .then(() => navigate("/"))
     }
 
     const renderDeletePrompt = (player: Player) => (
