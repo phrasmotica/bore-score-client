@@ -23,7 +23,7 @@ export const usePlayers = () => {
 
     return {
         isLoadingPlayers: fetch.isLoading,
-        players: fetch.data,
+        players: fetch.data || [],
     }
 }
 
@@ -46,7 +46,7 @@ export const useGames = () => {
 
     return {
         isLoadingGames: fetch.isLoading,
-        games: fetch.data,
+        games: fetch.data || [],
     }
 }
 
@@ -69,7 +69,7 @@ export const useAllGroups = () => {
 
     return {
         isLoadingGroups: fetch.isLoading,
-        groups: fetch.data,
+        groups: fetch.data || [],
     }
 }
 
@@ -78,7 +78,7 @@ export const useGroups = () => {
 
     return {
         isLoadingGroups: fetch.isLoading,
-        groups: fetch.data,
+        groups: fetch.data || [],
     }
 }
 
@@ -101,7 +101,7 @@ export const useLinkTypes = () => {
 
     return {
         isLoadingLinkTypes: fetch.isLoading,
-        linkTypes: fetch.data,
+        linkTypes: fetch.data || [],
     }
 }
 
@@ -110,7 +110,7 @@ export const useWinMethods = () => {
 
     return {
         isLoadingWinMethods: fetch.isLoading,
-        winMethods: fetch.data,
+        winMethods: fetch.data || [],
     }
 }
 
@@ -119,7 +119,7 @@ export const useResults = () => {
 
     return {
         isLoadingResults: fetch.isLoading,
-        results: fetch.data,
+        results: fetch.data || [],
     }
 }
 
