@@ -11,12 +11,15 @@ import { IndividualWinForm } from "./IndividualWinForm"
 import { GameImage } from "../GameImage"
 
 import { useGames, useGroups, usePlayers } from "../FetchHelpers"
+import { useTitle } from "../Hooks"
 import { submitValue } from "../MomentHelpers"
 
 import { Game } from "../models/Game"
 import { WinMethodName } from "../models/WinMethod"
 
 export const AddResultPage = () => {
+    useTitle("Add Result")
+
     const [searchParams] = useSearchParams()
 
     const { games } = useGames()

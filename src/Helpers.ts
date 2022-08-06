@@ -1,3 +1,7 @@
+export const setTitle = (title: string) => document.title = title
+
+export const resetTitle = () => setTitle("BoreScore")
+
 export const replaceDuplicates = <T>(source: T[], index: number, replacements: T[]) => {
     return replaceDuplicatesWithComparator(source, index, replacements, (first, second) => first === second)
 }

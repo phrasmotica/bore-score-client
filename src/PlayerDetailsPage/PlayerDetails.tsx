@@ -1,9 +1,10 @@
 import moment from "moment"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button, Header, Icon, Modal } from "semantic-ui-react"
 
 import { PlayerImage } from "../PlayerImage"
 
+import { resetTitle, setTitle } from "../Helpers"
 import { displayDateValue } from "../MomentHelpers"
 
 import { Player } from "../models/Player"
@@ -17,6 +18,15 @@ export const PlayerDetails = (props: PlayerDetailsProps) => {
     const [showDeletePrompt, setShowDeletePrompt] = useState(false)
 
     let player = props.player
+
+    useEffect(() => {
+        if (player?.displayName) {
+            setTitle("BoreScore - " + player.displayName)
+        }
+        else {
+            resetTitle()
+        }
+    }, [player])
 
     const deletePlayer = () => {
         fetch(`http://localhost:8000/players/${player.username}`, {

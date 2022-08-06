@@ -5,8 +5,11 @@ import { PlayerCountFilter } from "./PlayerCountFilter"
 import { WinMethodFilterDropdown } from "./WinMethodFilterDropdown"
 
 import { useGames, useWinMethods } from "../FetchHelpers"
+import { useTitle } from "../Hooks"
 
 export const GamesPage = () => {
+    useTitle("Games")
+
     const { games } = useGames()
     const { winMethods } = useWinMethods()
 

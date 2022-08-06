@@ -5,8 +5,11 @@ import { GroupFilterDropdown } from "./GroupFilterDropdown"
 import { ResultsList } from "./ResultsList"
 
 import { useAllGroups, useGames, usePlayers, useResults } from "../FetchHelpers"
+import { useTitle } from "../Hooks"
 
 export const ResultsPage = () => {
+    useTitle("Results")
+
     const { games } = useGames()
     const { groups } = useAllGroups()
     const { players } = usePlayers()

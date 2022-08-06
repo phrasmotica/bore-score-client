@@ -5,10 +5,13 @@ import { Form, Icon } from "semantic-ui-react"
 import { PlayersList } from "../PlayersList"
 
 import { usePlayers } from "../FetchHelpers"
+import { useTitle } from "../Hooks"
 
 import { Player } from "../models/Player"
 
 export const AddPlayerPage = () => {
+    useTitle("Add Player")
+
     const { players } = usePlayers()
 
     const [username, setUsername] = useState("")

@@ -3,9 +3,13 @@ import { Statistic } from "semantic-ui-react"
 
 import { useGames, useResults, useSummary } from "../FetchHelpers"
 import { GameImage } from "../GameImage"
+import { useTitle } from "../Hooks"
+
 import { sortResultsByRecent } from "../models/Result"
 
 export const HomePage = () => {
+    useTitle("Home")
+
     const { isLoadingSummary, summary } = useSummary()
     const { games } = useGames()
     const { results } = useResults()

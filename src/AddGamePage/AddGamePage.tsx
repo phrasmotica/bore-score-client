@@ -6,10 +6,13 @@ import { LinkForm } from "./LinkForm"
 import { GamesList } from "../GamesList"
 
 import { useComputedName, useGames, useLinkTypes, useWinMethods } from "../FetchHelpers"
+import { useTitle } from "../Hooks"
 
 import { Game, Link } from "../models/Game"
 
 export const AddGamePage = () => {
+    useTitle("Add Game")
+
     const { games } = useGames()
     const { linkTypes } = useLinkTypes()
     const { winMethods } = useWinMethods()

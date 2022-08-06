@@ -1,8 +1,10 @@
+import { useEffect } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 
 import { GameDetails } from "./GameDetails"
 
 import { useGame, useLinkTypes, useWinMethods } from "../FetchHelpers"
+import { resetTitle, setTitle } from "../Helpers"
 
 interface GameDetailsPageProps {
 
@@ -14,6 +16,15 @@ export const GameDetailsPage = (props: GameDetailsPageProps) => {
     const { game } = useGame(name)
     const { linkTypes } = useLinkTypes()
     const { winMethods } = useWinMethods()
+
+    useEffect(() => {
+        if (game?.displayName) {
+            setTitle("BoreScore - " + game.displayName)
+        }
+        else {
+            resetTitle()
+        }
+    }, [game])
 
     const navigate = useNavigate()
 
