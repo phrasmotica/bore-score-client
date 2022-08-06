@@ -1,5 +1,5 @@
 import { Icon, Menu } from "semantic-ui-react"
-import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { BrowserRouter, Link, Route, Routes } from "react-router-dom"
 
 import { AddGamePage } from "./AddGamePage/AddGamePage"
 import { AddPlayerPage } from "./AddPlayerPage/AddPlayerPage"
@@ -16,33 +16,47 @@ import "./App.css"
 const App = () => {
     const renderMenu = () => (
         <Menu fluid>
-            <Menu.Item header href="/">
-                <Icon name="calculator" />
-                BoreScore
+            <Menu.Item header>
+                <Link to="/">
+                    <Icon name="calculator" />
+                    BoreScore
+                </Link>
             </Menu.Item>
 
-            <Menu.Item href="/">
-                Home
+            <Menu.Item>
+                <Link to="/">
+                    Home
+                </Link>
             </Menu.Item>
 
-            <Menu.Item href="/add-player">
-                Add Player
+            <Menu.Item>
+                <Link to="/add-player">
+                    Add Player
+                </Link>
             </Menu.Item>
 
-            <Menu.Item href="/games">
-                Games
+            <Menu.Item>
+                <Link to="/games">
+                    Games
+                </Link>
             </Menu.Item>
 
-            <Menu.Item href="/add-game">
-                Add Game
+            <Menu.Item>
+                <Link to="/add-game">
+                    Add Game
+                </Link>
             </Menu.Item>
 
-            <Menu.Item href="/results">
-                Results
+            <Menu.Item>
+                <Link to="/results">
+                    Results
+                </Link>
             </Menu.Item>
 
-            <Menu.Item href="/add-result">
-                Add Result
+            <Menu.Item>
+                <Link to="/add-result">
+                    Add Result
+                </Link>
             </Menu.Item>
         </Menu>
     )
@@ -51,10 +65,10 @@ const App = () => {
 
     return (
         <div className="app-container">
-            {renderMenu()}
-
             <div className="content">
                 <BrowserRouter>
+                    {renderMenu()}
+
                     <Routes>
                         <Route path="/" element={<HomePage />} />
                         <Route path="/players/:username" element={<PlayerDetailsPage />} />
