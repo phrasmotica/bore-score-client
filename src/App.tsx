@@ -39,12 +39,6 @@ const App = () => {
             </Menu.Item>
 
             <Menu.Item>
-                <Link to="/add-game">
-                    Add Game
-                </Link>
-            </Menu.Item>
-
-            <Menu.Item>
                 <Link to="/results">
                     Results
                 </Link>

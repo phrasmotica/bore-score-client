@@ -1,4 +1,6 @@
 import { useState } from "react"
+import { useNavigate } from "react-router"
+import { Button, Icon } from "semantic-ui-react"
 
 import { GamesTable } from "./GamesTable"
 import { PlayerCountFilter } from "./PlayerCountFilter"
@@ -7,8 +9,12 @@ import { WinMethodFilterDropdown } from "./WinMethodFilterDropdown"
 import { useGames, useWinMethods } from "../FetchHelpers"
 import { useTitle } from "../Hooks"
 
+import "./GamesPage.css"
+
 export const GamesPage = () => {
     useTitle("Games")
+
+    const navigate = useNavigate()
 
     const { games } = useGames()
     const { winMethods } = useWinMethods()
@@ -52,7 +58,17 @@ export const GamesPage = () => {
             </div>
 
             <div className="games-page-body">
-                <h2>Games</h2>
+                <div className="header">
+                    <h2>Games</h2>
+
+                    <Button
+                        icon
+                        color="yellow"
+                        onClick={() => navigate("/add-game")}>
+                        <span>Add New Game&nbsp;</span>
+                        <Icon name="plus" />
+                    </Button>
+                </div>
 
                 <GamesTable
                     games={games}
