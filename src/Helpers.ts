@@ -27,8 +27,9 @@ export const replaceDuplicatesWithComparator = <T>(source: T[], index: number, r
 
 export const getPlayersToUse = (players: string[], minCount: number) => {
     if (minCount > players.length) {
-        // pad out remaining space with empty usernames, i.e. no player selected
-        return players.concat(new Array(minCount - players.length).fill(""))
+        // pad out remaining space with placeholder usernames
+        let padding = new Array(minCount - players.length).map((_, i) => "player" + i)
+        return players.concat(padding)
     }
 
     // restrict to effectiveCount at most
