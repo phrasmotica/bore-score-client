@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import { Table } from "semantic-ui-react"
 import moment from "moment"
 
@@ -15,7 +16,8 @@ import { Group } from "../models/Group"
 import { Player } from "../models/Player"
 import { Result } from "../models/Result"
 import { WinMethodName } from "../models/WinMethod"
-import { Link } from "react-router-dom"
+
+import "./ResultCard.css"
 
 interface ResultCardProps {
     result: Result
@@ -68,7 +70,7 @@ export const ResultCard = (props: ResultCardProps) => {
 
     return (
         <Table.Row>
-            <Table.Cell>
+            <Table.Cell className="game-image-cell">
                 <GameImage imageSrc={game.imageLink} />
             </Table.Cell>
 

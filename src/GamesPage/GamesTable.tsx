@@ -60,7 +60,7 @@ export const GamesTable = (props: GamesTableProps) => {
 
                         return (
                             <Table.Row key={g.name}>
-                                <Table.Cell>
+                                <Table.Cell className="game-image-cell">
                                     <GameImage imageSrc={g.imageLink} />
                                 </Table.Cell>
 
