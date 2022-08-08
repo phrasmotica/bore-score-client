@@ -3,4 +3,5 @@ export interface Player {
     timeCreated: number
     username: string
     displayName: string
+    profilePicture: string
 }
