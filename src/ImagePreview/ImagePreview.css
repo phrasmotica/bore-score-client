@@ -1,0 +1,22 @@
+.image-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 200px;
+    padding: 2px;
+    border: 2px dashed lightgrey;
+    border-radius: calc(2rem / 7);
+}
+
+.image-preview.filled {
+    border: 2px dashed black;
+}
+
+.image-preview i.icon {
+    color: lightgrey;
+}
+
+.image-preview > .ui.image {
+    border-radius: calc(2rem / 7);
+}

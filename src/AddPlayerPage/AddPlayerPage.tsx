@@ -1,7 +1,8 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { Form, Icon, Input } from "semantic-ui-react"
+import { Button, Icon, Input } from "semantic-ui-react"
 
+import { ImagePreview } from "../ImagePreview/ImagePreview"
 import { PlayersList } from "../PlayersList"
 
 import { usePlayers } from "../FetchHelpers"
@@ -42,8 +43,6 @@ export const AddPlayerPage = () => {
             .then((newPlayer: Player) => navigate(`/players/${newPlayer.username}`))
     }
 
-    // TODO: render all fields in a <Form>, or don't use a <Form> at all
-
     return (
         <div className="add-player-page">
             <h2>Add Player</h2>
@@ -53,44 +52,45 @@ export const AddPlayerPage = () => {
                     <PlayersList players={players} />
                 </div>
 
-                <Form onSubmit={submit}>
-                    <Form.Group widths="equal">
-                        <Form.Input
-                            fluid
-                            error={!usernameIsAvailable()}
-                            label="Username"
-                            placeholder="Username"
-                            value={username}
-                            onChange={(e, { value }) => setUsername(value)} />
+                <div className="add-player-form">
+                    <div className="add-player-form-inputs">
+                        <div className="add-player-form-fields">
+                            <Input
+                                fluid
+                                error={!usernameIsAvailable()}
+                                label="Username"
+                                placeholder="Username"
+                                value={username}
+                                onChange={(e, { value }) => setUsername(value)} />
 
-                        <Form.Input
-                            fluid
-                            label="Display name"
-                            placeholder="Display name"
-                            value={displayName}
-                            onChange={(e, { value }) => setDisplayName(value)} />
-                    </Form.Group>
+                            <Input
+                                fluid
+                                label="Display name"
+                                placeholder="Display name"
+                                value={displayName}
+                                onChange={(e, { value }) => setDisplayName(value)} />
 
-                    <div className="image-link">
-                        <Input
-                            fluid
-                            label={{ color: "blue", content: "Profile Picture" }}
-                            placeholder="URL"
-                            value={profilePicture}
-                            onChange={(e, { value }) => setProfilePicture(value)} />
+                            <Input
+                                fluid
+                                label={{ color: "blue", content: "Profile Picture" }}
+                                placeholder="URL"
+                                value={profilePicture}
+                                onChange={(e, { value }) => setProfilePicture(value)} />
+                        </div>
 
-                        {/* TODO: render picture preview if link is present */}
+                        <ImagePreview imageLink={profilePicture} />
                     </div>
 
-                    <Form.Button
+                    <Button
                         icon
                         fluid
                         color="teal"
-                        disabled={!formIsComplete()}>
+                        disabled={!formIsComplete()}
+                        onClick={submit}>
                         <span>Add Player&nbsp;</span>
                         <Icon name="add user" />
-                    </Form.Button>
-                </Form>
+                    </Button>
+                </div>
             </div>
         </div>
     )
