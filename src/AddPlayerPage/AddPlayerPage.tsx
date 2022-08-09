@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { Form, Icon } from "semantic-ui-react"
+import { Form, Icon, Input } from "semantic-ui-react"
 
 import { PlayersList } from "../PlayersList"
 
@@ -9,6 +9,8 @@ import { useTitle } from "../Hooks"
 
 import { Player } from "../models/Player"
 
+import "./AddPlayerPage.css"
+
 export const AddPlayerPage = () => {
     useTitle("Add Player")
 
@@ -16,6 +18,7 @@ export const AddPlayerPage = () => {
 
     const [username, setUsername] = useState("")
     const [displayName, setDisplayName] = useState("")
+    const [profilePicture, setProfilePicture] = useState("")
 
     const navigate = useNavigate()
 
@@ -29,6 +32,7 @@ export const AddPlayerPage = () => {
             body: JSON.stringify({
                 username: username,
                 displayName: displayName,
+                profilePicture: profilePicture,
             }),
             headers: {
                 "Content-Type": "application/json"
@@ -37,6 +41,8 @@ export const AddPlayerPage = () => {
             .then(res => res.json())
             .then((newPlayer: Player) => navigate(`/players/${newPlayer.username}`))
     }
+
+    // TODO: render all fields in a <Form>, or don't use a <Form> at all
 
     return (
         <div className="add-player-page">
@@ -64,6 +70,17 @@ export const AddPlayerPage = () => {
                             value={displayName}
                             onChange={(e, { value }) => setDisplayName(value)} />
                     </Form.Group>
+
+                    <div className="image-link">
+                        <Input
+                            fluid
+                            label={{ color: "blue", content: "Profile Picture" }}
+                            placeholder="URL"
+                            value={profilePicture}
+                            onChange={(e, { value }) => setProfilePicture(value)} />
+
+                        {/* TODO: render picture preview if link is present */}
+                    </div>
 
                     <Form.Button
                         icon
