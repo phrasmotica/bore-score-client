@@ -17,8 +17,6 @@ import { Player } from "../models/Player"
 import { Result } from "../models/Result"
 import { WinMethodName } from "../models/WinMethod"
 
-import "./ResultCard.css"
-
 interface ResultCardProps {
     result: Result
     games: Game[]
@@ -85,7 +83,7 @@ export const ResultCard = (props: ResultCardProps) => {
 
     return (
         <Table.Row>
-            <Table.Cell className="game-image-cell">
+            <Table.Cell>
                 <GameImage imageSrc={game.imageLink} />
             </Table.Cell>
 
