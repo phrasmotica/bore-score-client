@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
 import { useSearchParams } from "react-router-dom"
 import moment from "moment"
+import { Form } from "semantic-ui-react"
 
 import { CommonForm } from "./CommonForm"
 import { CooperativeScoreForm } from "./CooperativeScoreForm"
@@ -129,6 +130,17 @@ export const AddResultPage = () => {
 
     let imageSrc = game?.imageLink || "https://e.snmc.io/i/600/s/9f6d3d17acac6ce20993eb158c203e4b/5662600/godspeed-you-black-emperor-lift-yr-skinny-fists-like-antennas-to-heaven-cover-art.jpg"
 
+    let gameOptions = games.map(g => ({
+        key: g.name,
+        text: g.displayName,
+        value: g.name,
+    }))
+
+    const setSelectedGame = (name: string) => {
+        let game = games.find(g => g.name === name)
+        setGame(game)
+    }
+
     return (
         <div className="add-result-page">
             <h2>Add Result</h2>
@@ -139,6 +151,22 @@ export const AddResultPage = () => {
                 </div>
 
                 <div className="middle">
+                    <Form>
+                        <Form.Dropdown
+                            className="game-picker"
+                            search
+                            selection
+                            label="Game"
+                            placeholder="Select game..."
+                            options={gameOptions}
+                            value={game?.name ?? ""}
+                            onChange={(e, { value }) => setSelectedGame(String(value))} />
+                    </Form>
+
+                    {renderGameForm()}
+                </div>
+
+                <div className="right">
                     <CommonForm
                         games={games}
                         groups={groups}
@@ -154,10 +182,6 @@ export const AddResultPage = () => {
                         setNotes={setNotes}
                         formIsComplete={formIsComplete}
                         submit={submit} />
-                </div>
-
-                <div className="right">
-                    {renderGameForm()}
                 </div>
             </div>
         </div>
