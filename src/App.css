@@ -316,6 +316,10 @@
   flex-grow: 1;
 }
 
+.add-result-page-body .middle > :not(:first-child) {
+  margin-top: 1rem;
+}
+
 .add-result-page-body .right {
   flex-grow: 1;
 }
@@ -328,7 +332,7 @@
   flex-grow: 1;
 }
 
-.add-result-page .form.common-form .group-picker-container {
+.add-result-page .form.common-form .setting-container {
   display: flex;
   align-items: center;
 }
