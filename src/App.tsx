@@ -1,5 +1,5 @@
 import { Menu } from "semantic-ui-react"
-import { BrowserRouter, Link, Route, Routes } from "react-router-dom"
+import { HashRouter, Link, Route, Routes } from "react-router-dom"
 
 import { AddGamePage } from "./AddGamePage/AddGamePage"
 import { AddPlayerPage } from "./AddPlayerPage/AddPlayerPage"
@@ -49,7 +49,7 @@ const App = () => {
     return (
         <div className="app-container">
             <div className="content">
-                <BrowserRouter>
+                <HashRouter basename="/">
                     {renderMenu()}
 
                     <Routes>
@@ -64,7 +64,7 @@ const App = () => {
                         <Route path="/results" element={<ResultsPage />} />
                         <Route path="/add-result" element={<AddResultPage />} />
                     </Routes>
-                </BrowserRouter>
+                </HashRouter>
             </div>
 
             <footer>
