@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
-import { useSearchParams } from "react-router-dom"
-import { Form } from "semantic-ui-react"
+import { useNavigate, useSearchParams } from "react-router-dom"
+import { Button, Form, Icon } from "semantic-ui-react"
 
 import { CooperativeScoreForm } from "../AddResultPage/CooperativeScoreForm"
 import { CooperativeWinForm } from "../AddResultPage/CooperativeWinForm"
@@ -20,6 +20,8 @@ export const ScorecardPage = () => {
     useTitle("Scorecard")
 
     const [searchParams] = useSearchParams()
+
+    let navigate = useNavigate()
 
     const { games } = useGames()
     const { groups } = useGroups()
@@ -117,7 +119,8 @@ export const ScorecardPage = () => {
         setGame(game)
     }
 
-    // TODO: add "Save as result" button
+    // TODO: pop up result submission modal instead once it's been made
+    const submitResult = () => navigate(`/add-result?game=${game?.name}`)
 
     return (
         <div className="scorecard-page">
@@ -140,6 +143,15 @@ export const ScorecardPage = () => {
                             value={game?.name ?? ""}
                             onChange={(e, { value }) => setSelectedGame(String(value))} />
                     </Form>
+
+                    <Button
+                        icon
+                        fluid
+                        color="teal"
+                        onClick={submitResult}>
+                        <span>Save As Result&nbsp;</span>
+                        <Icon name="edit" />
+                    </Button>
 
                     {renderGameForm()}
                 </div>
