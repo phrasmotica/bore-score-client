@@ -26,22 +26,11 @@ interface CommonFormProps {
 }
 
 export const CommonForm = (props: CommonFormProps) => {
-    let gameOptions = props.games.map(g => ({
-        key: g.name,
-        text: g.displayName,
-        value: g.name,
-    }))
-
     let groupOptions = props.groups.map(gr => ({
         key: gr.name,
         text: `${gr.displayName} (${gr.type})`,
         value: gr.name,
     }))
-
-    const setSelectedGame = (name: string) => {
-        let game = props.games.find(g => g.name === name)
-        props.setSelectedGame(game)
-    }
 
     const setNewDate = (input: string) => {
         let newDate = momentFromDate(input)
@@ -78,17 +67,7 @@ export const CommonForm = (props: CommonFormProps) => {
                 <Icon name="check" />
             </Form.Button>
 
-            <Form.Group>
-                <Form.Dropdown
-                    className="game-picker"
-                    search
-                    selection
-                    label="Game"
-                    placeholder="Select game..."
-                    options={gameOptions}
-                    value={props.selectedGame?.name ?? ""}
-                    onChange={(e, { value }) => setSelectedGame(String(value))} />
-
+            <Form.Group className="setting-container">
                 <Form.Input
                     type="date"
                     label="Date"
@@ -100,9 +79,7 @@ export const CommonForm = (props: CommonFormProps) => {
                     label="Time"
                     value={timeValue(props.timePlayed)}
                     onChange={(e, { value }) => setNewTime(value)} />
-            </Form.Group>
 
-            <Form.Group className="group-picker-container">
                 <Form.Checkbox
                     label="Attach to a group?"
                     checked={props.useGroup}

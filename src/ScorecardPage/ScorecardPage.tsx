@@ -1,27 +1,27 @@
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router"
-import { useSearchParams } from "react-router-dom"
-import moment from "moment"
-import { Form } from "semantic-ui-react"
+import { useNavigate, useSearchParams } from "react-router-dom"
+import { Button, Form, Icon } from "semantic-ui-react"
 
-import { CommonForm } from "./CommonForm"
-import { CooperativeScoreForm } from "./CooperativeScoreForm"
-import { CooperativeWinForm } from "./CooperativeWinForm"
-import { IndividualScoreForm } from "./IndividualScoreForm"
-import { IndividualWinForm } from "./IndividualWinForm"
+import { CooperativeScoreForm } from "../AddResultPage/CooperativeScoreForm"
+import { CooperativeWinForm } from "../AddResultPage/CooperativeWinForm"
+import { IndividualScoreForm } from "../AddResultPage/IndividualScoreForm"
+import { IndividualWinForm } from "../AddResultPage/IndividualWinForm"
 import { GameImage } from "../GameImage"
 
 import { useGames, useGroups, usePlayers } from "../FetchHelpers"
 import { useTitle } from "../Hooks"
-import { submitValue } from "../MomentHelpers"
 
 import { Game } from "../models/Game"
 import { WinMethodName } from "../models/WinMethod"
 
-export const AddResultPage = () => {
-    useTitle("Add Result")
+import "./ScorecardPage.css"
+
+export const ScorecardPage = () => {
+    useTitle("Scorecard")
 
     const [searchParams] = useSearchParams()
+
+    let navigate = useNavigate()
 
     const { games } = useGames()
     const { groups } = useGroups()
@@ -30,8 +30,6 @@ export const AddResultPage = () => {
     const [game, setGame] = useState<Game>()
     const [useGroup, setUseGroup] = useState(false)
     const [group, setGroup] = useState("")
-    const [timePlayed, setTimePlayed] = useState(moment())
-    const [notes, setNotes] = useState("")
 
     const [formData, setFormData] = useState<any>()
     const [formIsComplete, setFormIsComplete] = useState(false)
@@ -58,12 +56,13 @@ export const AddResultPage = () => {
         }
     }, [groups, searchParams])
 
-    const navigate = useNavigate()
-
     const updateFormData = (isComplete: boolean, formData: any) => {
         setFormIsComplete(isComplete)
         setFormData(formData)
     }
+
+    // TODO: create better forms for tracking score.
+    // Add buttons for increasing score by 10/100/1000, etc
 
     const renderGameForm = () => {
         switch (game?.winMethod) {
@@ -107,27 +106,6 @@ export const AddResultPage = () => {
         return null
     }
 
-    const submit = () => {
-        if (game === undefined) {
-            return
-        }
-
-        fetch(`${process.env.REACT_APP_API_URL}/results`, {
-            method: "POST",
-            body: JSON.stringify({
-                gameName: game.name,
-                groupName: useGroup ? group : "",
-                timePlayed: submitValue(timePlayed),
-                notes: notes,
-                ...formData
-            }),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then(() => navigate("/results"))
-    }
-
     let imageSrc = game?.imageLink || "https://e.snmc.io/i/600/s/9f6d3d17acac6ce20993eb158c203e4b/5662600/godspeed-you-black-emperor-lift-yr-skinny-fists-like-antennas-to-heaven-cover-art.jpg"
 
     let gameOptions = games.map(g => ({
@@ -141,11 +119,14 @@ export const AddResultPage = () => {
         setGame(game)
     }
 
-    return (
-        <div className="add-result-page">
-            <h2>Add Result</h2>
+    // TODO: pop up result submission modal instead once it's been made
+    const submitResult = () => navigate(`/add-result?game=${game?.name}`)
 
-            <div className="add-result-page-body">
+    return (
+        <div className="scorecard-page">
+            <h2>Scorecard</h2>
+
+            <div className="scorecard-page-body">
                 <div className="left">
                     <GameImage imageSrc={imageSrc} />
                 </div>
@@ -163,25 +144,16 @@ export const AddResultPage = () => {
                             onChange={(e, { value }) => setSelectedGame(String(value))} />
                     </Form>
 
-                    {renderGameForm()}
-                </div>
+                    <Button
+                        icon
+                        fluid
+                        color="teal"
+                        onClick={submitResult}>
+                        <span>Save As Result&nbsp;</span>
+                        <Icon name="edit" />
+                    </Button>
 
-                <div className="right">
-                    <CommonForm
-                        games={games}
-                        groups={groups}
-                        selectedGame={game}
-                        setSelectedGame={setGame}
-                        useGroup={useGroup}
-                        setUseGroup={setUseGroup}
-                        group={group}
-                        setGroup={setGroup}
-                        timePlayed={timePlayed}
-                        setTimePlayed={setTimePlayed}
-                        notes={notes}
-                        setNotes={setNotes}
-                        formIsComplete={formIsComplete}
-                        submit={submit} />
+                    {renderGameForm()}
                 </div>
             </div>
         </div>

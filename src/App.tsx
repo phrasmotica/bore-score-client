@@ -10,6 +10,7 @@ import { GroupDetailsPage } from "./GroupDetailsPage/GroupDetailsPage"
 import { HomePage } from "./HomePage/HomePage"
 import { PlayerDetailsPage } from "./PlayerDetailsPage/PlayerDetailsPage"
 import { ResultsPage } from "./ResultsPage/ResultsPage"
+import { ScorecardPage } from "./ScorecardPage/ScorecardPage"
 
 import "./App.css"
 
@@ -43,6 +44,12 @@ const App = () => {
                     Results
                 </Link>
             </Menu.Item>
+
+            <Menu.Item>
+                <Link to="/scorecard">
+                    Scorecard
+                </Link>
+            </Menu.Item>
         </Menu>
     )
 
@@ -63,6 +70,7 @@ const App = () => {
                         <Route path="/groups/:name" element={<GroupDetailsPage />} />
                         <Route path="/results" element={<ResultsPage />} />
                         <Route path="/add-result" element={<AddResultPage />} />
+                        <Route path="/scorecard" element={<ScorecardPage />} />
                     </Routes>
                 </HashRouter>
             </div>
