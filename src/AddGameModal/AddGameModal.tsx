@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
+import removeAccents from "remove-accents"
 import { Button, Form, Header, Icon, Input, Modal } from "semantic-ui-react"
 
 import { LinkForm } from "./LinkForm"
+import { ImagePreview } from "../ImagePreview/ImagePreview"
 
-import { useComputedName, useGames, useLinkTypes, useWinMethods } from "../FetchHelpers"
+import { useGames, useLinkTypes, useWinMethods } from "../FetchHelpers"
 
 import { Link, Game } from "../models/Game"
 
 import "./AddGameModal.css"
-import { ImagePreview } from "../ImagePreview/ImagePreview"
 
 interface AddGameModalProps {
     open: boolean
@@ -24,6 +25,7 @@ export const AddGameModal = (props: AddGameModalProps) => {
     const { winMethods } = useWinMethods()
 
     const [displayName, setDisplayName] = useState("")
+    const [name, setName] = useState("")
     const [synopsis, setSynopsis] = useState("")
     const [description, setDescription] = useState("")
     const [minPlayers, setMinPlayers] = useState(1)
@@ -32,18 +34,11 @@ export const AddGameModal = (props: AddGameModalProps) => {
     const [imageLink, setImageLink] = useState("")
     const [links, setLinks] = useState<Link[]>([])
 
-    const { computedName, setComputedName } = useComputedName(displayName, 1000)
-
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (displayName.length <= 0) {
-            setComputedName({
-                displayName: "",
-                name: "",
-            })
-        }
-    }, [displayName, setComputedName])
+        setName(displayName.length > 0 ? computeName(displayName): "")
+    }, [displayName])
 
     useEffect(() => {
         if (winMethods.length > 0) {
@@ -57,6 +52,29 @@ export const AddGameModal = (props: AddGameModalProps) => {
             link: "",
         })))
     }, [setLinks, linkTypes])
+
+    const computeName = (displayName: string) => {
+        // remove diacritic marks
+        let computedName = removeAccents(displayName)
+
+        // remove apostrophes
+        computedName = computedName.replaceAll("'", "")
+
+        // set to lower case
+        computedName = computedName.toLowerCase()
+
+        // restrict to alphanumeric
+        computedName = computedName.replaceAll(/[^a-zA-Z0-9 ]+/g, " ")
+
+        // trim leading/trailing whitespace
+        computedName = computedName.trim()
+
+        // replace each block of spaces with a hyphen
+        computedName = computedName.replaceAll(/\s+/g, "-")
+
+        // limit to 100 chars
+        return computedName.substring(0, 100)
+    }
 
     const displayNameIsAvailable = () => !games.map(g => g.displayName).includes(displayName)
 
@@ -74,6 +92,7 @@ export const AddGameModal = (props: AddGameModalProps) => {
             method: "POST",
             body: JSON.stringify({
                 displayName: displayName,
+                name: name,
                 synopsis: synopsis,
                 description: description,
                 minPlayers: minPlayers,
@@ -117,10 +136,10 @@ export const AddGameModal = (props: AddGameModalProps) => {
                                 onChange={(e, { value }) => setDisplayName(value)} />
 
                             <Form.Input
-                                disabled
                                 label="Name"
                                 placeholder="Name"
-                                value={computedName?.name ?? ""} />
+                                value={name}
+                                onChange={(e, { value }) => setName(value)} />
                         </Form.Group>
 
                         <Form.Input
