@@ -1,20 +1,22 @@
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { Button, Icon, Input } from "semantic-ui-react"
-
-import { ImagePreview } from "../ImagePreview/ImagePreview"
-import { PlayersList } from "../PlayersList"
+import { useNavigate } from "react-router"
+import { Button, Header, Icon, Input, Modal } from "semantic-ui-react"
 
 import { usePlayers } from "../FetchHelpers"
-import { useTitle } from "../Hooks"
+import { ImagePreview } from "../ImagePreview/ImagePreview"
 
 import { Player } from "../models/Player"
 
-import "./AddPlayerPage.css"
+import "./AddPlayerModal.css"
 
-export const AddPlayerPage = () => {
-    useTitle("Add Player")
+interface AddPlayerModalProps {
+    open: boolean
+    setOpen: (open: boolean) => void
+    game?: string
+    group?: string
+}
 
+export const AddPlayerModal = (props: AddPlayerModalProps) => {
     const { players } = usePlayers()
 
     const [username, setUsername] = useState("")
@@ -39,19 +41,20 @@ export const AddPlayerPage = () => {
                 "Content-Type": "application/json"
             }
         })
-            .then(res => res.json())
-            .then((newPlayer: Player) => navigate(`/players/${newPlayer.username}`))
+        .then(res => res.json())
+        .then((newPlayer: Player) => navigate(`/players/${newPlayer.username}`))
     }
 
     return (
-        <div className="add-player-page">
-            <h2>Add Player</h2>
-
-            <div className="add-player-page-body">
-                <div className="sidebar">
-                    <PlayersList players={players} />
-                </div>
-
+        <Modal
+            className="add-player-modal"
+            onClose={() => props.setOpen(false)}
+            open={props.open}>
+            <Header>
+                <Icon name="add user" />
+                Add Player
+            </Header>
+            <Modal.Content>
                 <div className="add-player-form">
                     <div className="add-player-form-inputs">
                         <div className="add-player-form-fields">
@@ -80,18 +83,22 @@ export const AddPlayerPage = () => {
 
                         <ImagePreview imageLink={profilePicture} />
                     </div>
-
-                    <Button
-                        icon
-                        fluid
-                        color="teal"
-                        disabled={!formIsComplete()}
-                        onClick={submit}>
-                        <span>Add Player&nbsp;</span>
-                        <Icon name="add user" />
-                    </Button>
                 </div>
-            </div>
-        </div>
+            </Modal.Content>
+            <Modal.Actions>
+                <Button
+                    color="green"
+                    disabled={!formIsComplete()}
+                    onClick={submit}>
+                    <Icon name="checkmark" />
+                    Submit
+                </Button>
+
+                <Button color="red" onClick={() => props.setOpen(false)}>
+                    <Icon name="remove" />
+                    Cancel
+                </Button>
+            </Modal.Actions>
+        </Modal>
     )
 }

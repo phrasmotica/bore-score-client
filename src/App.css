@@ -101,11 +101,6 @@
   margin-bottom: 0.5rem;
 }
 
-.add-player-page .sidebar  {
-  text-align: end;
-  margin-right: 1rem;
-}
-
 /* next two classes from here: https://stackoverflow.com/a/25545957 */
 .players-list .ui.menu .item span.username {
   color: grey;
@@ -117,18 +112,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.add-player-page-body {
-  display: flex;
-}
-
-.add-player-page-body > .ui.form {
-  width: 100%;
-}
-
-.add-player {
-  width: 100%;
 }
 
 .player-count-picker-container {

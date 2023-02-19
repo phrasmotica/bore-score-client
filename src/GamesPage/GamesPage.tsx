@@ -60,14 +60,6 @@ export const GamesPage = () => {
             <div className="games-page-body">
                 <div className="header">
                     <h2>Games</h2>
-
-                    <Button
-                        icon
-                        color="yellow"
-                        onClick={() => navigate("/add-game")}>
-                        <span>Add New Game&nbsp;</span>
-                        <Icon name="plus" />
-                    </Button>
                 </div>
 
                 <GamesTable
