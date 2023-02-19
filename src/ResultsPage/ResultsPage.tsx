@@ -5,6 +5,7 @@ import { GameFilterDropdown } from "./GameFilterDropdown"
 import { GroupFilterDropdown } from "./GroupFilterDropdown"
 import { ResultsList } from "./ResultsList"
 
+import { AddPlayerModal } from "../AddPlayerModal/AddPlayerModal"
 import { AddResultModal } from "../AddResultModal/AddResultModal"
 import { useAllGroups, useGames, usePlayers, useResults } from "../FetchHelpers"
 import { useTitle } from "../Hooks"
@@ -14,6 +15,7 @@ import "./ResultsPage.css"
 export const ResultsPage = () => {
     useTitle("Results")
 
+    const [showAddPlayerModal, setShowAddPlayerModal] = useState(false)
     const [showAddResultModal, setShowAddResultModal] = useState(false)
 
     const { games } = useGames()
@@ -26,6 +28,7 @@ export const ResultsPage = () => {
 
     return (
         <div className="results-page">
+            <AddPlayerModal open={showAddPlayerModal} setOpen={setShowAddPlayerModal} />
             <AddResultModal open={showAddResultModal} setOpen={setShowAddResultModal} />
 
             <div className="sidebar">
@@ -51,6 +54,14 @@ export const ResultsPage = () => {
             <div className="results-page-body">
                 <div className="header">
                     <h2>Results</h2>
+
+                    <Button
+                        icon
+                        color="yellow"
+                        onClick={() => setShowAddPlayerModal(true)}>
+                        <span>Add New Player&nbsp;</span>
+                        <Icon name="plus" />
+                    </Button>
 
                     <Button
                         icon
