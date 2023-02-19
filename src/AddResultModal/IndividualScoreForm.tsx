@@ -92,7 +92,7 @@ export const IndividualScoreForm = (props: IndividualScoreFormProps) => {
             <Table color="yellow">
                 <Table.Header>
                     <Table.Row>
-                        <Table.HeaderCell width={6}>Name</Table.HeaderCell>
+                        <Table.HeaderCell width={8}>Name</Table.HeaderCell>
                         <Table.HeaderCell width={4}>Score</Table.HeaderCell>
                         <Table.HeaderCell></Table.HeaderCell>
                     </Table.Row>

@@ -17,7 +17,6 @@ export const ScoreInput = (props: ScoreInputProps) => {
             <ButtonGroup>
                 <Button
                     className="inc-button"
-                    icon
                     color="blue"
                     onClick={() => props.setScore(Math.max(0, props.score - 10))}>
                     <span>-10</span>
@@ -25,7 +24,6 @@ export const ScoreInput = (props: ScoreInputProps) => {
 
                 <Button
                     className="inc-button"
-                    icon
                     color="teal"
                     onClick={() => props.setScore(props.score + 10)}>
                     <span>+10</span>

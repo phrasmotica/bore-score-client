@@ -157,26 +157,30 @@ export const AddResultModal = (props: AddResultModalProps) => {
             </Header>
             <Modal.Content>
                 <div className="add-result-form">
-                    <div className="left">
-                        <Form>
-                            <Form.Dropdown
-                                className="game-picker"
-                                search
-                                selection
-                                label="Game"
-                                placeholder="Select game..."
-                                options={gameOptions}
-                                value={game?.name ?? ""}
-                                onChange={(e, { value }) => setSelectedGame(String(value))} />
-                        </Form>
+                    <div className="game">
+                        <div className="form-header">
+                            <Form>
+                                <Form.Dropdown
+                                    className="game-picker"
+                                    search
+                                    selection
+                                    label="Game"
+                                    placeholder="Select game..."
+                                    options={gameOptions}
+                                    value={game?.name ?? ""}
+                                    onChange={(e, { value }) => setSelectedGame(String(value))} />
+                            </Form>
+                        </div>
 
                         <GameImage imageSrc={imageSrc} />
                     </div>
 
-                    <div className="middle">
-                        <DateTimeForm
-                            timePlayed={timePlayed}
-                            setTimePlayed={setTimePlayed} />
+                    <div className="details">
+                        <div className="form-header">
+                            <DateTimeForm
+                                timePlayed={timePlayed}
+                                setTimePlayed={setTimePlayed} />
+                        </div>
 
                         <Accordion styled fluid>
                             <Accordion.Title active={showPlayers} onClick={() => setShowPlayers(s => !s)}>
