@@ -1,11 +1,11 @@
 import { useState } from "react"
-import { useNavigate } from "react-router"
 import { Button, Icon } from "semantic-ui-react"
 
 import { GameFilterDropdown } from "./GameFilterDropdown"
 import { GroupFilterDropdown } from "./GroupFilterDropdown"
 import { ResultsList } from "./ResultsList"
 
+import { AddResultModal } from "../AddResultModal/AddResultModal"
 import { useAllGroups, useGames, usePlayers, useResults } from "../FetchHelpers"
 import { useTitle } from "../Hooks"
 
@@ -14,7 +14,7 @@ import "./ResultsPage.css"
 export const ResultsPage = () => {
     useTitle("Results")
 
-    const navigate = useNavigate()
+    const [showAddResultModal, setShowAddResultModal] = useState(false)
 
     const { games } = useGames()
     const { groups } = useAllGroups()
@@ -26,6 +26,8 @@ export const ResultsPage = () => {
 
     return (
         <div className="results-page">
+            <AddResultModal open={showAddResultModal} setOpen={setShowAddResultModal} />
+
             <div className="sidebar">
                 <div className="header">
                     <h2>Filters</h2>
@@ -53,7 +55,7 @@ export const ResultsPage = () => {
                     <Button
                         icon
                         color="yellow"
-                        onClick={() => navigate("/add-result")}>
+                        onClick={() => setShowAddResultModal(true)}>
                         <span>Add New Result&nbsp;</span>
                         <Icon name="plus" />
                     </Button>

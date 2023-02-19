@@ -1,0 +1,106 @@
+.add-result-form {
+    display: flex;
+}
+
+.add-result-form > .game {
+    width: 200px;
+}
+
+.field.game-picker > .selection.dropdown {
+    width: 200px !important;
+}
+
+.add-result-form > :not(:first-child) {
+    margin-left: 1rem;
+}
+
+.add-result-form > .game > :not(:first-child) {
+    margin-top: 1rem;
+}
+
+.add-result-form > .details {
+    flex-grow: 1;
+    height: 600px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.add-result-form > .details > :not(:first-child) {
+    margin-top: 1rem;
+}
+
+.add-result-form .form-header {
+    height: 65px;
+}
+
+.add-result-form .game-image {
+    width: 100%;
+}
+
+.add-result-form .datetime-container {
+    display: flex;
+    align-items: center;
+}
+
+.add-result-form .field.notes-input > textarea {
+    min-height: 5em;
+    max-height: 15em;
+}
+
+.add-result-form .ui.styled.accordion {
+    border: 1px solid rgb(34 36 38 / 15%);
+    box-shadow: 0 1px 2px 0 rgb(34 36 38 / 15%);
+}
+
+.add-result-form .ui.styled.accordion > .title {
+    display: flex;
+    align-items: center;
+}
+
+.add-result-form .group-container {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 1rem;
+}
+
+.add-result-form .group-container > * {
+    width: 50%;
+}
+
+.add-result-form .group-picker {
+    margin-right: 0.5rem!important;
+}
+
+.add-result-form .ui.message {
+    margin-top: 0rem!important;
+}
+
+.score-input {
+    display: flex;
+    justify-content: space-between;
+}
+
+.score-input > .ui.input {
+    width: 100px;
+}
+
+.score-input > :not(:first-child) {
+    margin-left: 0.5rem!important;
+}
+
+/* Chrome, Safari, Edge, Opera */
+.score-input input::-webkit-outer-spin-button,
+.score-input input::-webkit-inner-spin-button {
+    /* -webkit-appearance: none;
+    margin: 0; */
+}
+
+/* Firefox */
+.score-input input[type=number] {
+    /* -moz-appearance: textfield; */
+}
+
+.score-input .inc-button {
+    width: 66px;
+    /* padding: 2px!important; */
+}

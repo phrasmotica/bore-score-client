@@ -2,10 +2,11 @@ import { useEffect, useState } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import { Button, Form, Icon } from "semantic-ui-react"
 
-import { CooperativeScoreForm } from "../AddResultPage/CooperativeScoreForm"
-import { CooperativeWinForm } from "../AddResultPage/CooperativeWinForm"
-import { IndividualScoreForm } from "../AddResultPage/IndividualScoreForm"
-import { IndividualWinForm } from "../AddResultPage/IndividualWinForm"
+import { AddResultModal } from "../AddResultModal/AddResultModal"
+import { CooperativeScoreForm } from "../AddResultModal/CooperativeScoreForm"
+import { CooperativeWinForm } from "../AddResultModal/CooperativeWinForm"
+import { IndividualScoreForm } from "../AddResultModal/IndividualScoreForm"
+import { IndividualWinForm } from "../AddResultModal/IndividualWinForm"
 import { GameImage } from "../GameImage"
 
 import { useGames, useGroups, usePlayers } from "../FetchHelpers"
@@ -19,9 +20,9 @@ import "./ScorecardPage.css"
 export const ScorecardPage = () => {
     useTitle("Scorecard")
 
-    const [searchParams] = useSearchParams()
+    const [showAddResultModal, setShowAddResultModal] = useState(false)
 
-    let navigate = useNavigate()
+    const [searchParams] = useSearchParams()
 
     const { games } = useGames()
     const { groups } = useGroups()
@@ -119,11 +120,16 @@ export const ScorecardPage = () => {
         setGame(game)
     }
 
-    // TODO: pop up result submission modal instead once it's been made
-    const submitResult = () => navigate(`/add-result?game=${game?.name}`)
+    const saveAsResult = () => setShowAddResultModal(true)
 
     return (
         <div className="scorecard-page">
+            <AddResultModal
+                open={showAddResultModal}
+                setOpen={setShowAddResultModal}
+                game={game?.name}
+                group={group} />
+
             <h2>Scorecard</h2>
 
             <div className="scorecard-page-body">
@@ -148,7 +154,7 @@ export const ScorecardPage = () => {
                         icon
                         fluid
                         color="teal"
-                        onClick={submitResult}>
+                        onClick={saveAsResult}>
                         <span>Save As Result&nbsp;</span>
                         <Icon name="edit" />
                     </Button>
