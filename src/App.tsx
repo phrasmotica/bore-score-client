@@ -3,7 +3,6 @@ import { HashRouter, Link, Route, Routes } from "react-router-dom"
 
 import { AddGamePage } from "./AddGamePage/AddGamePage"
 import { AddPlayerPage } from "./AddPlayerPage/AddPlayerPage"
-import { AddResultPage } from "./AddResultPage/AddResultPage"
 import { GameDetailsPage } from "./GameDetailsPage/GameDetailsPage"
 import { GamesPage } from "./GamesPage/GamesPage"
 import { GroupDetailsPage } from "./GroupDetailsPage/GroupDetailsPage"
@@ -69,7 +68,6 @@ const App = () => {
                         <Route path="/add-game" element={<AddGamePage />} />
                         <Route path="/groups/:name" element={<GroupDetailsPage />} />
                         <Route path="/results" element={<ResultsPage />} />
-                        <Route path="/add-result" element={<AddResultPage />} />
                         <Route path="/scorecard" element={<ScorecardPage />} />
                     </Routes>
                 </HashRouter>

@@ -299,60 +299,6 @@
   margin-top: 1rem;
 }
 
-.add-result-page-body  {
-  display: flex;
-}
-
-.add-result-page-body .left {
-  padding-right: 0.5rem;
-  margin-right: 0.5rem;
-  border-right: 1px solid rgba(34, 36, 38, 0.15);
-}
-
-.add-result-page-body .middle {
-  padding-right: 0.5rem;
-  margin-right: 0.5rem;
-  border-right: 1px solid rgba(34, 36, 38, 0.15);
-  flex-grow: 1;
-}
-
-.add-result-page-body .middle > :not(:first-child) {
-  margin-top: 1rem;
-}
-
-.add-result-page-body .right {
-  flex-grow: 1;
-}
-
-.add-result-page-body .right .table {
-  text-align: center;
-}
-
-.add-result-page .form.common-form .field.game-picker {
-  flex-grow: 1;
-}
-
-.add-result-page .form.common-form .setting-container {
-  display: flex;
-  align-items: center;
-}
-
-.add-result-page .form.common-form .field.group-picker {
-  padding-left: 0.5rem;
-  margin-left: 0.5rem;
-  border-left: 1px solid rgba(34, 36, 38, 0.15);
-  flex-grow: 1;
-}
-
-.add-result-page .ui.form .error.message, .ui.form .success.message, .ui.form .warning.message.no-attached-group-warning {
-  display: block;
-}
-
-.add-result-page .form.common-form .field.notes-input > textarea {
-  min-height: 5em;
-  max-height: 10em;
-}
-
 .add-result-form > .ui.form {
   margin-right: 1rem;
 }
