@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from "react"
-import { Button, Icon, Input, Table } from "semantic-ui-react"
+import { Button, Icon, Table } from "semantic-ui-react"
 
 import { PlayerCountWarning } from "./PlayerCountWarning"
 import { PlayerDropdown } from "./PlayerDropdown"
+import { ScoreInput } from "./ScoreInput"
 import { RemovePlayerButton } from "../AddResultModal/RemovePlayerButton"
 
 import { getPlayersToUse, replaceDuplicates } from "../Helpers"
@@ -91,7 +92,7 @@ export const IndividualScoreForm = (props: IndividualScoreFormProps) => {
             <Table color="yellow">
                 <Table.Header>
                     <Table.Row>
-                        <Table.HeaderCell width={6}>Player</Table.HeaderCell>
+                        <Table.HeaderCell width={6}>Name</Table.HeaderCell>
                         <Table.HeaderCell width={4}>Score</Table.HeaderCell>
                         <Table.HeaderCell></Table.HeaderCell>
                     </Table.Row>
@@ -109,12 +110,9 @@ export const IndividualScoreForm = (props: IndividualScoreFormProps) => {
                             </Table.Cell>
 
                             <Table.Cell>
-                                <Input
-                                    fluid
-                                    type="number"
-                                    value={playerScores[i]}
-                                    min={0}
-                                    onChange={(e, { value }) => setPlayerScore(i, Number(value))} />
+                                <ScoreInput
+                                    score={playerScores[i]}
+                                    setScore={s => setPlayerScore(i, s)} />
                             </Table.Cell>
 
                             <Table.Cell style={{ width: "0.1%" }}>

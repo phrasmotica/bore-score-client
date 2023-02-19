@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from "react"
-import { Button, Icon, Input, Table } from "semantic-ui-react"
+import { Button, Icon, Table } from "semantic-ui-react"
 
 import { PlayerCountWarning } from "./PlayerCountWarning"
 import { PlayerDropdown } from "./PlayerDropdown"
+import { ScoreInput } from "./ScoreInput"
 import { RemovePlayerButton } from "../AddResultModal/RemovePlayerButton"
 
 import { getPlayersToUse, replaceDuplicates } from "../Helpers"
@@ -98,12 +99,9 @@ export const CooperativeScoreForm = (props: CooperativeScoreFormProps) => {
                             {i === 0 && <Table.Cell
                                 className="cooperative-score-input"
                                 rowSpan={players.length}>
-                                <Input
-                                    fluid
-                                    type="number"
-                                    value={score}
-                                    min={0}
-                                    onChange={(e, { value }) => setScore(Number(value))} />
+                                <ScoreInput
+                                    score={score}
+                                    setScore={setScore} />
                             </Table.Cell>}
 
                             <Table.Cell style={{ width: "0.1%" }}>
