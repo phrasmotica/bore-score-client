@@ -201,55 +201,6 @@
   text-align: center;
 }
 
-.add-game-page .sidebar  {
-  text-align: end;
-  margin-right: 1rem;
-}
-
-.add-game-page-body {
-  display: flex;
-}
-
-.add-game-page-form {
-  flex: 1 1 auto;
-}
-
-.add-game-page-form .game-name-info > p {
-  text-align: start;
-}
-
-.add-game-page-body > .ui.form {
-  width: 100%;
-}
-
-.add-game-page-body .image-link {
-  margin-bottom: 0.5em;
-}
-
-.add-game-page-body .link-form {
-  margin-bottom: 1em;
-}
-
-.add-game-page-body .ui.fluid.labeled.input > .ui.label.label {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  width: max(150px, 10vw);
-}
-
-.add-game-page-body .link-form .ui.fluid.labeled.input+.ui.fluid.labeled.input {
-  margin-top: 0.5em;
-}
-
-.add-game-page-body .ui.table {
-  text-align: center;
-}
-
-.add-game-page-body .ui.form textarea {
-  min-height: 10vh;
-  max-height: 15vh;
-}
-
 .group-details-page .header {
   text-align: start;
   margin-bottom: 0.5em;

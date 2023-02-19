@@ -1,6 +1,4 @@
 import { useState } from "react"
-import { useNavigate } from "react-router"
-import { Button, Icon } from "semantic-ui-react"
 
 import { GamesTable } from "./GamesTable"
 import { PlayerCountFilter } from "./PlayerCountFilter"
@@ -13,8 +11,6 @@ import "./GamesPage.css"
 
 export const GamesPage = () => {
     useTitle("Games")
-
-    const navigate = useNavigate()
 
     const { games } = useGames()
     const { winMethods } = useWinMethods()
