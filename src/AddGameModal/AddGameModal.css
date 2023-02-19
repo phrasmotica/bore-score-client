@@ -6,12 +6,12 @@
     width: 100%;
 }
 
-.add-game-form .image-link {
-    margin-bottom: 0.5em;
+.add-game-form .link-form {
+    margin-top: 0.5rem;
 }
 
-.add-game-form .link-form {
-    margin-bottom: 1em;
+.add-game-form .link-form > :not(:first-child) {
+    margin-top: 0.5rem;
 }
 
 .add-game-form .ui.fluid.labeled.input > .ui.label.label {

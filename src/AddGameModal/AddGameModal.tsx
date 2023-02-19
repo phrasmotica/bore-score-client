@@ -9,6 +9,7 @@ import { useComputedName, useGames, useLinkTypes, useWinMethods } from "../Fetch
 import { Link, Game } from "../models/Game"
 
 import "./AddGameModal.css"
+import { ImagePreview } from "../ImagePreview/ImagePreview"
 
 interface AddGameModalProps {
     open: boolean
@@ -152,19 +153,26 @@ export const AddGameModal = (props: AddGameModalProps) => {
                         </Form.Group>
                     </Form>
 
-                    <div className="image-link">
-                        <Input
-                            fluid
-                            label={{ color: "blue", content: "Image" }}
-                            placeholder="URL"
-                            value={imageLink}
-                            onChange={(e, { value }) => setImageLink(value)} />
+                    <div style={{ display: "flex", }}>
+                        <div style={{ flexGrow: 1, }}>
+                            <Input
+                                fluid
+                                label={{ color: "blue", content: "Image" }}
+                                placeholder="URL"
+                                value={imageLink}
+                                onChange={(e, { value }) => setImageLink(value)} />
+
+                            <LinkForm
+                                linkTypes={linkTypes}
+                                links={links}
+                                setLinks={setLinks} />
+                        </div>
+
+                        <div style={{ marginLeft: "0.5rem", }}>
+                            <ImagePreview imageLink={imageLink} />
+                        </div>
                     </div>
 
-                    <LinkForm
-                        linkTypes={linkTypes}
-                        links={links}
-                        setLinks={setLinks} />
 
                     <Form>
                         <Form.TextArea

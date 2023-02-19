@@ -6,6 +6,7 @@ interface ImagePreviewProps {
     imageLink: string
 }
 
+// TODO: shrink images that are taller than they are wide
 export const ImagePreview = (props: ImagePreviewProps) => {
     let imageLink = props.imageLink
 
