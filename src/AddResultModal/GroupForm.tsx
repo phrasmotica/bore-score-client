@@ -1,10 +1,11 @@
-import { Form } from "semantic-ui-react"
+import { Button, ButtonGroup, Dropdown } from "semantic-ui-react"
 
+import { AttachedGroupMessage } from "./AttachedGroupMessage"
 import { NoAttachedGroupWarning } from "./NoAttachedGroupWarning"
 
 import { Group } from "../models/Group"
 
-interface CommonFormProps {
+interface GroupFormProps {
     groups: Group[]
     useGroup: boolean
     setUseGroup: (useGroup: boolean) => void
@@ -12,7 +13,7 @@ interface CommonFormProps {
     setGroup: (group: string) => void
 }
 
-export const GroupForm = (props: CommonFormProps) => {
+export const GroupForm = (props: GroupFormProps) => {
     let groupOptions = props.groups.map(gr => ({
         key: gr.name,
         text: `${gr.displayName} (${gr.type})`,
@@ -20,26 +21,37 @@ export const GroupForm = (props: CommonFormProps) => {
     }))
 
     return (
-        <Form className="common-form">
-            <Form.Group widths="equal" className="setting-container">
-                <Form.Checkbox
-                    label="Attach to a group?"
-                    checked={props.useGroup}
-                    onChange={(e, { checked }) => props.setUseGroup(checked ?? false)} />
+        <div>
+            <ButtonGroup fluid widths={2}>
+                <Button
+                    positive={!props.useGroup}
+                    onClick={() => props.setUseGroup(false)}>
+                    Standalone
+                </Button>
 
-                <Form.Dropdown
+                <Button.Or />
+
+                <Button
+                    positive={props.useGroup}
+                    onClick={() => props.setUseGroup(true)}>
+                    Attached to a group
+                </Button>
+            </ButtonGroup>
+
+            <div className="group-container">
+                <Dropdown
                     className="group-picker"
                     search
                     selection
-                    label="Group"
                     placeholder="Select group..."
                     options={groupOptions}
                     value={props.group}
                     disabled={!props.useGroup}
                     onChange={(e, { value }) => props.setGroup(String(value))} />
-            </Form.Group>
 
-            {!props.useGroup && <NoAttachedGroupWarning />}
-        </Form>
+                {!props.useGroup && <NoAttachedGroupWarning />}
+                {props.useGroup && <AttachedGroupMessage />}
+            </div>
+        </div>
     )
 }

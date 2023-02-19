@@ -38,6 +38,39 @@
     align-items: center;
 }
 
+.add-result-form .field.notes-input > textarea {
+    min-height: 5em;
+    max-height: 15em;
+}
+
+.add-result-form .ui.styled.accordion {
+    border: 1px solid rgb(34 36 38 / 15%);
+    box-shadow: 0 1px 2px 0 rgb(34 36 38 / 15%);
+}
+
+.add-result-form .ui.styled.accordion > .title {
+    display: flex;
+    align-items: center;
+}
+
+.add-result-form .group-container {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 1rem;
+}
+
+.add-result-form .group-container > * {
+    width: 50%;
+}
+
+.add-result-form .group-container > :not(:first-child) {
+    margin-left: 1rem!important;
+}
+
+.add-result-form .ui.message {
+    margin-top: 0rem!important;
+}
+
 .score-input {
     display: flex;
 }

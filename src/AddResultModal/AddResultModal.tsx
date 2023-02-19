@@ -31,7 +31,7 @@ export const AddResultModal = (props: AddResultModalProps) => {
     const { groups } = useGroups()
     const { players } = usePlayers()
 
-    const [showPlayers, setShowPlayers] = useState(false)
+    const [showPlayers, setShowPlayers] = useState(true)
     const [showGroup, setShowGroup] = useState(false)
 
     const [game, setGame] = useState<Game>()
