@@ -1,4 +1,4 @@
-import { Button } from "semantic-ui-react"
+import { Button, Icon } from "semantic-ui-react"
 
 interface RemovePlayerButtonProps {
     removePlayer: () => void
@@ -7,11 +7,11 @@ interface RemovePlayerButtonProps {
 
 export const RemovePlayerButton = (props: RemovePlayerButtonProps) => (
     <Button
-        fluid
+        icon
         inverted
         color="red"
         onClick={props.removePlayer}
         disabled={props.isDisabled}>
-        Remove player
+        <Icon name="trash" />
     </Button>
 )

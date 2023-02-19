@@ -4,16 +4,15 @@ import { useSearchParams } from "react-router-dom"
 import moment from "moment"
 import { Form } from "semantic-ui-react"
 
-import { CommonForm } from "./CommonForm"
-import { CooperativeScoreForm } from "./CooperativeScoreForm"
-import { CooperativeWinForm } from "./CooperativeWinForm"
-import { IndividualScoreForm } from "./IndividualScoreForm"
-import { IndividualWinForm } from "./IndividualWinForm"
+import { CommonForm } from "../AddResultModal/CommonForm"
+import { CooperativeScoreForm } from "../AddResultModal/CooperativeScoreForm"
+import { CooperativeWinForm } from "../AddResultModal/CooperativeWinForm"
+import { IndividualScoreForm } from "../AddResultModal/IndividualScoreForm"
+import { IndividualWinForm } from "../AddResultModal/IndividualWinForm"
 import { GameImage } from "../GameImage"
 
 import { useGames, useGroups, usePlayers } from "../FetchHelpers"
 import { useTitle } from "../Hooks"
-import { submitValue } from "../MomentHelpers"
 
 import { Game } from "../models/Game"
 import { WinMethodName } from "../models/WinMethod"
@@ -107,27 +106,6 @@ export const AddResultPage = () => {
         return null
     }
 
-    const submit = () => {
-        if (game === undefined) {
-            return
-        }
-
-        fetch(`${process.env.REACT_APP_API_URL}/results`, {
-            method: "POST",
-            body: JSON.stringify({
-                gameName: game.name,
-                groupName: useGroup ? group : "",
-                timePlayed: submitValue(timePlayed),
-                notes: notes,
-                ...formData
-            }),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then(() => navigate("/results"))
-    }
-
     let imageSrc = game?.imageLink || "https://e.snmc.io/i/600/s/9f6d3d17acac6ce20993eb158c203e4b/5662600/godspeed-you-black-emperor-lift-yr-skinny-fists-like-antennas-to-heaven-cover-art.jpg"
 
     let gameOptions = games.map(g => ({
@@ -179,9 +157,7 @@ export const AddResultPage = () => {
                         timePlayed={timePlayed}
                         setTimePlayed={setTimePlayed}
                         notes={notes}
-                        setNotes={setNotes}
-                        formIsComplete={formIsComplete}
-                        submit={submit} />
+                        setNotes={setNotes} />
                 </div>
             </div>
         </div>

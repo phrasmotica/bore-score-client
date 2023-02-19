@@ -3,43 +3,41 @@ import { Button, Icon, Input, Table } from "semantic-ui-react"
 
 import { PlayerCountWarning } from "./PlayerCountWarning"
 import { PlayerDropdown } from "./PlayerDropdown"
-import { RemovePlayerButton } from "./RemovePlayerButton"
+import { RemovePlayerButton } from "../AddResultModal/RemovePlayerButton"
 
 import { getPlayersToUse, replaceDuplicates } from "../Helpers"
 
 import { Player } from "../models/Player"
 
-interface IndividualScoreFormProps {
+interface CooperativeScoreFormProps {
     players: Player[]
     minPlayerCount: number
     maxPlayerCount: number
     updateFormData: (isComplete: boolean, formData: any) => void
 }
 
-export const IndividualScoreForm = (props: IndividualScoreFormProps) => {
+export const CooperativeScoreForm = (props: CooperativeScoreFormProps) => {
     const [players, setPlayers] = useState<string[]>([])
-    const [playerScores, setPlayerScores] = useState<number[]>([])
+    const [score, setScore] = useState(0)
 
     useEffect(() => {
         // fill current player inputs with first N (<= minPlayerCount) players
         let playersToUse = getPlayersToUse(props.players.map(p => p.username), props.minPlayerCount)
-
         setPlayers(playersToUse)
-        setPlayerScores(playersToUse.map(_ => 0))
     }, [props.players, props.minPlayerCount])
 
     const formIsComplete = useCallback(() => players.length > 0 && new Set(players).size === players.length, [players])
 
     const getFormData = useCallback(() => ({
-        scores: players.map((username, i) => ({
+        cooperativeScore: score,
+        scores: players.map(username => ({
             username: username,
-            score: playerScores[i],
         }))
-    }), [players, playerScores])
+    }), [players, score])
 
     useEffect(() => {
         props.updateFormData(formIsComplete(), getFormData())
-    }, [formIsComplete, getFormData, players, playerScores])
+    }, [formIsComplete, getFormData, players, score])
 
     let playerOptions = props.players.map(p => ({
         key: p.username,
@@ -58,41 +56,21 @@ export const IndividualScoreForm = (props: IndividualScoreFormProps) => {
         setPlayers(deduplicatedPlayers)
     }
 
-    const setPlayerScore = (index: number, newScore: number) => {
-        setPlayerScores(playerScores.map((score, i) => (i === index) ? newScore : score))
-    }
-
     const canAddPlayer = () => players.length < Math.min(props.players.length, props.maxPlayerCount)
 
     const addPlayer = () => {
         let nextPlayer = props.players.find(p => !players.includes(p.username))?.username ?? ""
         setPlayers([...players, nextPlayer])
-        setPlayerScores([...playerScores, 0])
     }
 
     const removePlayer = (index: number) => {
         let newPlayers = [...players]
         newPlayers.splice(index, 1)
         setPlayers(newPlayers)
-
-        let newPlayerScores = [...playerScores]
-        newPlayerScores.splice(index, 1)
-        setPlayerScores(newPlayerScores)
     }
 
     return (
         <div>
-            <Button
-                icon
-                fluid
-                className="add-player-button"
-                color="yellow"
-                disabled={!canAddPlayer()}
-                onClick={addPlayer}>
-                <span>Add Player&nbsp;</span>
-                <Icon name="plus" />
-            </Button>
-
             {props.players.length < props.maxPlayerCount && <PlayerCountWarning
                 playerCount={props.players.length}
                 maxPlayerCount={props.maxPlayerCount} />}
@@ -100,9 +78,9 @@ export const IndividualScoreForm = (props: IndividualScoreFormProps) => {
             <Table color="yellow">
                 <Table.Header>
                     <Table.Row>
-                        <Table.HeaderCell width={6}>Player</Table.HeaderCell>
-                        <Table.HeaderCell width={2}>Score</Table.HeaderCell>
-                        <Table.HeaderCell width={8}></Table.HeaderCell>
+                        <Table.HeaderCell width={8}>Player</Table.HeaderCell>
+                        <Table.HeaderCell width={4}>Score</Table.HeaderCell>
+                        <Table.HeaderCell></Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
 
@@ -117,22 +95,38 @@ export const IndividualScoreForm = (props: IndividualScoreFormProps) => {
                                     setPlayer={player => setPlayer(i, player)} />
                             </Table.Cell>
 
-                            <Table.Cell>
+                            {i === 0 && <Table.Cell
+                                className="cooperative-score-input"
+                                rowSpan={players.length}>
                                 <Input
                                     fluid
                                     type="number"
-                                    value={playerScores[i]}
+                                    value={score}
                                     min={0}
-                                    onChange={(e, { value }) => setPlayerScore(i, Number(value))} />
-                            </Table.Cell>
+                                    onChange={(e, { value }) => setScore(Number(value))} />
+                            </Table.Cell>}
 
-                            <Table.Cell>
+                            <Table.Cell style={{ width: "0.1%" }}>
                                 <RemovePlayerButton
                                     removePlayer={() => removePlayer(i)}
                                     isDisabled={players.length <= props.minPlayerCount} />
                             </Table.Cell>
                         </Table.Row>
                     ))}
+
+                    {canAddPlayer() && <Table.Row>
+                        <Table.Cell colSpan={3}>
+                            <Button
+                                icon
+                                fluid
+                                className="add-player-button"
+                                color="yellow"
+                                onClick={addPlayer}>
+                                <span>Add Player&nbsp;</span>
+                                <Icon name="add user" />
+                            </Button>
+                        </Table.Cell>
+                    </Table.Row>}
                 </Table.Body>
             </Table>
         </div>

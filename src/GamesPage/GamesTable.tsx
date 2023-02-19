@@ -1,7 +1,8 @@
-import { useNavigate } from "react-router"
+import { useState } from "react"
 import { Link } from "react-router-dom"
 import { Button, Icon, Table } from "semantic-ui-react"
 
+import { AddResultModal } from "../AddResultModal/AddResultModal"
 import { GameImage } from "../GameImage"
 
 import { Game } from "../models/Game"
@@ -18,7 +19,8 @@ interface GamesTableProps {
 }
 
 export const GamesTable = (props: GamesTableProps) => {
-    const navigate = useNavigate()
+    const [selectedGame, setSelectedGame] = useState("")
+    const [showAddResultModal, setShowAddResultModal] = useState(false)
 
     let gamesToShow = [...props.games]
 
@@ -36,6 +38,8 @@ export const GamesTable = (props: GamesTableProps) => {
 
     return (
         <div className="games-table">
+            <AddResultModal game={selectedGame} open={showAddResultModal} setOpen={setShowAddResultModal} />
+
             <Table compact celled color="teal">
                 <Table.Header>
                     <Table.Row>
@@ -56,7 +60,10 @@ export const GamesTable = (props: GamesTableProps) => {
 
                         let winMethod = props.winMethods.find(w => w.name === g.winMethod)
 
-                        const submitResult = () => navigate(`/add-result?game=${g.name}`)
+                        const addResult = () => {
+                            setSelectedGame(g.name)
+                            setShowAddResultModal(true)
+                        }
 
                         return (
                             <Table.Row key={g.name}>
@@ -87,7 +94,7 @@ export const GamesTable = (props: GamesTableProps) => {
                                         icon
                                         fluid
                                         color="teal"
-                                        onClick={submitResult}>
+                                        onClick={addResult}>
                                         <span>Submit Result&nbsp;</span>
                                         <Icon name="edit" />
                                     </Button>

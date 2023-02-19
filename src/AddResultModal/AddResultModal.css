@@ -1,0 +1,39 @@
+.add-result-form {
+    display: flex;
+}
+
+.add-result-form > .left {
+    width: 200px;
+}
+
+.field.game-picker > .selection.dropdown {
+    width: 200px !important;
+}
+
+.add-result-form > :not(:first-child) {
+    margin-left: 1rem;
+}
+
+.add-result-form > .left > :not(:first-child) {
+    margin-top: 1rem;
+}
+
+.add-result-form > .middle {
+    flex-grow: 1;
+    height: 600px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.add-result-form > .middle > :not(:first-child) {
+    margin-top: 1rem;
+}
+
+.add-result-form .game-image {
+    width: 100%;
+}
+
+.add-result-form .datetime-container {
+    display: flex;
+    align-items: center;
+}
