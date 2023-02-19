@@ -85,7 +85,7 @@ export const IndividualScoreForm = (props: IndividualScoreFormProps) => {
 
     return (
         <div>
-            {props.players.length < props.maxPlayerCount && <PlayerCountWarning
+            {props.players.length < props.maxPlayerCount && !canAddPlayer() && <PlayerCountWarning
                 playerCount={props.players.length}
                 maxPlayerCount={props.maxPlayerCount} />}
 

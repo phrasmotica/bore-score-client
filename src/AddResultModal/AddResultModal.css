@@ -63,8 +63,8 @@
     width: 50%;
 }
 
-.add-result-form .group-container > :not(:first-child) {
-    margin-left: 1rem!important;
+.add-result-form .group-picker {
+    margin-right: 0.5rem!important;
 }
 
 .add-result-form .ui.message {

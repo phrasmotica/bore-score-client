@@ -71,14 +71,14 @@ export const IndividualWinForm = (props: IndividualWinFormProps) => {
 
     return (
         <div>
-            {props.players.length < props.maxPlayerCount && <PlayerCountWarning
+            {props.players.length < props.maxPlayerCount && !canAddPlayer() && <PlayerCountWarning
                 playerCount={props.players.length}
                 maxPlayerCount={props.maxPlayerCount} />}
 
             <Table color="yellow">
                 <Table.Header>
                     <Table.Row>
-                        <Table.HeaderCell width={8}>Player</Table.HeaderCell>
+                        <Table.HeaderCell width={8}>Name</Table.HeaderCell>
                         <Table.HeaderCell width={2}>Winner</Table.HeaderCell>
                         <Table.HeaderCell></Table.HeaderCell>
                     </Table.Row>

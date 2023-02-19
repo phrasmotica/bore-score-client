@@ -33,6 +33,7 @@ export const AddResultModal = (props: AddResultModalProps) => {
 
     const [showPlayers, setShowPlayers] = useState(true)
     const [showGroup, setShowGroup] = useState(false)
+    const [showNotes, setShowNotes] = useState(false)
 
     const [game, setGame] = useState<Game>()
     const [useGroup, setUseGroup] = useState(false)
@@ -177,14 +178,6 @@ export const AddResultModal = (props: AddResultModalProps) => {
                             timePlayed={timePlayed}
                             setTimePlayed={setTimePlayed} />
 
-                        <Form>
-                            <Form.TextArea
-                                className="notes-input"
-                                placeholder="Notes"
-                                value={notes}
-                                onChange={(e, { value }) => setNotes(String(value))} />
-                        </Form>
-
                         <Accordion styled fluid>
                             <Accordion.Title active={showPlayers} onClick={() => setShowPlayers(s => !s)}>
                                 Players
@@ -205,6 +198,20 @@ export const AddResultModal = (props: AddResultModalProps) => {
                                     setUseGroup={setUseGroup}
                                     group={group}
                                     setGroup={setGroup} />
+                            </Accordion.Content>
+
+                            <Accordion.Title active={showNotes} onClick={() => setShowNotes(s => !s)}>
+                                Notes
+                                <Icon name="dropdown" />
+                            </Accordion.Title>
+                            <Accordion.Content active={showNotes}>
+                                <Form>
+                                    <Form.TextArea
+                                        className="notes-input"
+                                        placeholder="Notes"
+                                        value={notes}
+                                        onChange={(e, { value }) => setNotes(String(value))} />
+                                </Form>
                             </Accordion.Content>
                         </Accordion>
                     </div>

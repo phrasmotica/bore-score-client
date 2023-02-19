@@ -39,15 +39,17 @@ export const GroupForm = (props: GroupFormProps) => {
             </ButtonGroup>
 
             <div className="group-container">
-                <Dropdown
-                    className="group-picker"
-                    search
-                    selection
-                    placeholder="Select group..."
-                    options={groupOptions}
-                    value={props.group}
-                    disabled={!props.useGroup}
-                    onChange={(e, { value }) => props.setGroup(String(value))} />
+                <div style={{ display: "flex", }}>
+                    <Dropdown
+                        className="group-picker"
+                        search
+                        selection
+                        placeholder="Select group..."
+                        options={groupOptions}
+                        value={props.group}
+                        disabled={!props.useGroup}
+                        onChange={(e, { value }) => props.setGroup(String(value))} />
+                </div>
 
                 {!props.useGroup && <NoAttachedGroupWarning />}
                 {props.useGroup && <AttachedGroupMessage />}
