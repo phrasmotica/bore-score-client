@@ -2,6 +2,7 @@ import { Menu } from "semantic-ui-react"
 import { HashRouter, Link, Route, Routes } from "react-router-dom"
 
 import { AddGamePage } from "./AddGamePage/AddGamePage"
+import { AdminPage } from "./AdminPage/AdminPage"
 import { GameDetailsPage } from "./GameDetailsPage/GameDetailsPage"
 import { GamesPage } from "./GamesPage/GamesPage"
 import { GroupDetailsPage } from "./GroupDetailsPage/GroupDetailsPage"
@@ -22,6 +23,12 @@ const App = () => {
             <Menu.Item>
                 <Link to="/">
                     Home
+                </Link>
+            </Menu.Item>
+
+            <Menu.Item>
+                <Link to="/admin">
+                    Admin
                 </Link>
             </Menu.Item>
 
@@ -53,6 +60,7 @@ const App = () => {
 
                     <Routes>
                         <Route path="/" element={<HomePage />} />
+                        <Route path="/admin" element={<AdminPage />} />
                         <Route path="/players/:username" element={<PlayerDetailsPage />} />
                         <Route path="/groups/:name" element={<GroupDetailsPage />} />
                         <Route path="/games/:name" element={<GameDetailsPage />} />
