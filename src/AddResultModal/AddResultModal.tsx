@@ -3,9 +3,10 @@ import { useNavigate } from "react-router"
 import moment from "moment"
 import { Accordion, Button, Form, Header, Icon, Modal } from "semantic-ui-react"
 
-import { CommonForm } from "./CommonForm"
+import { GroupForm } from "./GroupForm"
 import { CooperativeScoreForm } from "./CooperativeScoreForm"
 import { CooperativeWinForm } from "./CooperativeWinForm"
+import { DateTimeForm } from "./DateTimeForm"
 import { IndividualScoreForm } from "./IndividualScoreForm"
 import { IndividualWinForm } from "./IndividualWinForm"
 import { GameImage } from "../GameImage"
@@ -31,6 +32,7 @@ export const AddResultModal = (props: AddResultModalProps) => {
     const { players } = usePlayers()
 
     const [showPlayers, setShowPlayers] = useState(false)
+    const [showGroup, setShowGroup] = useState(false)
 
     const [game, setGame] = useState<Game>()
     const [useGroup, setUseGroup] = useState(false)
@@ -171,19 +173,17 @@ export const AddResultModal = (props: AddResultModalProps) => {
                     </div>
 
                     <div className="middle">
-                        <CommonForm
-                            games={games}
-                            groups={groups}
-                            selectedGame={game}
-                            setSelectedGame={setGame}
-                            useGroup={useGroup}
-                            setUseGroup={setUseGroup}
-                            group={group}
-                            setGroup={setGroup}
+                        <DateTimeForm
                             timePlayed={timePlayed}
-                            setTimePlayed={setTimePlayed}
-                            notes={notes}
-                            setNotes={setNotes} />
+                            setTimePlayed={setTimePlayed} />
+
+                        <Form>
+                            <Form.TextArea
+                                className="notes-input"
+                                placeholder="Notes"
+                                value={notes}
+                                onChange={(e, { value }) => setNotes(String(value))} />
+                        </Form>
 
                         <Accordion styled fluid>
                             <Accordion.Title active={showPlayers} onClick={() => setShowPlayers(s => !s)}>
@@ -192,6 +192,19 @@ export const AddResultModal = (props: AddResultModalProps) => {
                             </Accordion.Title>
                             <Accordion.Content active={showPlayers}>
                                 {renderGameForm()}
+                            </Accordion.Content>
+
+                            <Accordion.Title active={showGroup} onClick={() => setShowGroup(s => !s)}>
+                                Group
+                                <Icon name="dropdown" />
+                            </Accordion.Title>
+                            <Accordion.Content active={showGroup}>
+                                <GroupForm
+                                    groups={groups}
+                                    useGroup={useGroup}
+                                    setUseGroup={setUseGroup}
+                                    group={group}
+                                    setGroup={setGroup} />
                             </Accordion.Content>
                         </Accordion>
                     </div>

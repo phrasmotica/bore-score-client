@@ -4,7 +4,7 @@ import { useSearchParams } from "react-router-dom"
 import moment from "moment"
 import { Form } from "semantic-ui-react"
 
-import { CommonForm } from "../AddResultModal/CommonForm"
+import { GroupForm } from "../AddResultModal/GroupForm"
 import { CooperativeScoreForm } from "../AddResultModal/CooperativeScoreForm"
 import { CooperativeWinForm } from "../AddResultModal/CooperativeWinForm"
 import { IndividualScoreForm } from "../AddResultModal/IndividualScoreForm"
@@ -16,6 +16,7 @@ import { useTitle } from "../Hooks"
 
 import { Game } from "../models/Game"
 import { WinMethodName } from "../models/WinMethod"
+import { DateTimeForm } from "../AddResultModal/DateTimeForm"
 
 export const AddResultPage = () => {
     useTitle("Add Result")
@@ -56,8 +57,6 @@ export const AddResultPage = () => {
             }
         }
     }, [groups, searchParams])
-
-    const navigate = useNavigate()
 
     const updateFormData = (isComplete: boolean, formData: any) => {
         setFormIsComplete(isComplete)
@@ -145,19 +144,16 @@ export const AddResultPage = () => {
                 </div>
 
                 <div className="right">
-                    <CommonForm
-                        games={games}
+                    <DateTimeForm
+                        timePlayed={timePlayed}
+                        setTimePlayed={setTimePlayed} />
+
+                    <GroupForm
                         groups={groups}
-                        selectedGame={game}
-                        setSelectedGame={setGame}
                         useGroup={useGroup}
                         setUseGroup={setUseGroup}
                         group={group}
-                        setGroup={setGroup}
-                        timePlayed={timePlayed}
-                        setTimePlayed={setTimePlayed}
-                        notes={notes}
-                        setNotes={setNotes} />
+                        setGroup={setGroup} />
                 </div>
             </div>
         </div>
