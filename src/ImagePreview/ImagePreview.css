@@ -12,7 +12,7 @@
 }
 
 .image-preview.filled {
-    border: 2px dashed black;
+    border: none;
 }
 
 .image-preview i.icon {
@@ -20,5 +20,8 @@
 }
 
 .image-preview > .ui.image {
+    max-height: 200px;
+    padding: 2px;
+    border: 2px dashed black;
     border-radius: calc(2rem / 7);
 }
