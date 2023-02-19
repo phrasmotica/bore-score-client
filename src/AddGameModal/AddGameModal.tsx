@@ -1,18 +1,23 @@
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { Form, Icon, Input } from "semantic-ui-react"
+import { useNavigate } from "react-router"
+import { Button, Form, Header, Icon, Input, Modal } from "semantic-ui-react"
 
-import { LinkForm } from "../AddGameModal/LinkForm"
-import { GamesList } from "../GamesList"
+import { LinkForm } from "./LinkForm"
 
 import { useComputedName, useGames, useLinkTypes, useWinMethods } from "../FetchHelpers"
-import { useTitle } from "../Hooks"
 
-import { Game, Link } from "../models/Game"
+import { Link, Game } from "../models/Game"
 
-export const AddGamePage = () => {
-    useTitle("Add Game")
+import "./AddGameModal.css"
 
+interface AddGameModalProps {
+    open: boolean
+    setOpen: (open: boolean) => void
+    game?: string
+    group?: string
+}
+
+export const AddGameModal = (props: AddGameModalProps) => {
     const { games } = useGames()
     const { linkTypes } = useLinkTypes()
     const { winMethods } = useWinMethods()
@@ -62,6 +67,7 @@ export const AddGamePage = () => {
             && winMethod.length > 0
     }
 
+    // TODO: handle errors, e.g. game already exists
     const submit = () => {
         fetch(`${process.env.REACT_APP_API_URL}/games`, {
             method: "POST",
@@ -79,9 +85,8 @@ export const AddGamePage = () => {
                 "Content-Type": "application/json"
             }
         })
-            .then(res => res.json())
-            .then((newGame: Game) => newGame)
-            .then(newGame => navigate(`/games/${newGame.name}`))
+        .then(res => res.json())
+        .then((newGame: Game) => navigate(`/games/${newGame.name}`))
     }
 
     const createWinMethodOptions = () => winMethods.map(w => ({
@@ -91,26 +96,31 @@ export const AddGamePage = () => {
     }))
 
     return (
-        <div className="add-game-page">
-            <h2>Add Game</h2>
-
-            <div className="add-game-page-body">
-                <div className="sidebar">
-                    <GamesList games={games} />
-                </div>
-
-                <div className="add-game-page-form">
+        <Modal
+            className="add-game-modal"
+            onClose={() => props.setOpen(false)}
+            open={props.open}>
+            <Header>
+                <Icon name="add user" />
+                Add Game
+            </Header>
+            <Modal.Content>
+                <div className="add-game-form">
                     <Form>
-                        <Form.Input
-                            error={!displayNameIsAvailable()}
-                            label="Display name"
-                            placeholder="Display name"
-                            value={displayName}
-                            onChange={(e, { value }) => setDisplayName(value)} />
+                        <Form.Group widths="equal">
+                            <Form.Input
+                                error={!displayNameIsAvailable()}
+                                label="Display Name"
+                                placeholder="Display Name"
+                                value={displayName}
+                                onChange={(e, { value }) => setDisplayName(value)} />
 
-                        <div className="game-name-info">
-                            <p>Will be saved as: {computedName?.name ?? ""}</p>
-                        </div>
+                            <Form.Input
+                                disabled
+                                label="Name"
+                                placeholder="Name"
+                                value={computedName?.name ?? ""} />
+                        </Form.Group>
 
                         <Form.Input
                             label="Synopsis"
@@ -156,24 +166,29 @@ export const AddGamePage = () => {
                         links={links}
                         setLinks={setLinks} />
 
-                    <Form onSubmit={submit}>
+                    <Form>
                         <Form.TextArea
                             label="Description"
                             placeholder="Description"
                             value={description}
                             onChange={(e, { value }) => setDescription(String(value))} />
-
-                        <Form.Button
-                            icon
-                            fluid
-                            color="teal"
-                            disabled={!formIsComplete()}>
-                            <span>Add Game&nbsp;</span>
-                            <Icon name="check" />
-                        </Form.Button>
                     </Form>
                 </div>
-            </div>
-        </div>
+            </Modal.Content>
+            <Modal.Actions>
+                <Button
+                    color="green"
+                    disabled={!formIsComplete()}
+                    onClick={submit}>
+                    <Icon name="checkmark" />
+                    Submit
+                </Button>
+
+                <Button color="red" onClick={() => props.setOpen(false)}>
+                    <Icon name="remove" />
+                    Cancel
+                </Button>
+            </Modal.Actions>
+        </Modal>
     )
 }

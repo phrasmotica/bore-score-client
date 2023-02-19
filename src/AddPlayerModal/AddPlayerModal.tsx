@@ -29,6 +29,7 @@ export const AddPlayerModal = (props: AddPlayerModalProps) => {
 
     const formIsComplete = () => username.length > 0 && usernameIsAvailable() && displayName.length > 0
 
+    // TODO: handle errors, e.g. player already exists
     const submit = () => {
         fetch(`${process.env.REACT_APP_API_URL}/players`, {
             method: "POST",
