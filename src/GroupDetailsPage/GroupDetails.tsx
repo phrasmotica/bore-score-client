@@ -1,7 +1,8 @@
+import { useState } from "react"
 import moment from "moment"
-import { useNavigate } from "react-router"
 import { Button, Icon } from "semantic-ui-react"
 
+import { AddResultModal } from "../AddResultModal/AddResultModal"
 import { GameImage } from "../GameImage"
 
 import { displayDateValue } from "../MomentHelpers"
@@ -13,16 +14,14 @@ interface GroupDetailsProps {
 }
 
 export const GroupDetails = (props: GroupDetailsProps) => {
-    let navigate = useNavigate()
-
-    let group = props.group
-
-    const submitResult = () => navigate(`/add-result?group=${group.name}`)
+    const [showAddResultModal, setShowAddResultModal] = useState(false)
 
     let imageSrc = "https://e.snmc.io/i/600/s/9f6d3d17acac6ce20993eb158c203e4b/5662600/godspeed-you-black-emperor-lift-yr-skinny-fists-like-antennas-to-heaven-cover-art.jpg"
 
     return (
         <div className="group-details">
+            <AddResultModal group={props.group.name} open={showAddResultModal} setOpen={setShowAddResultModal} />
+
             <div className="content">
                 <div className="left">
                     <GameImage imageSrc={imageSrc} />
@@ -31,7 +30,7 @@ export const GroupDetails = (props: GroupDetailsProps) => {
                         icon
                         fluid
                         color="teal"
-                        onClick={submitResult}>
+                        onClick={() => setShowAddResultModal(true)}>
                         <span>Submit Result&nbsp;</span>
                         <Icon name="edit" />
                     </Button>
@@ -39,15 +38,15 @@ export const GroupDetails = (props: GroupDetailsProps) => {
 
                 <div>
                     <h3 className="display-name-header">
-                        {group.displayName}
+                        {props.group.displayName}
                     </h3>
 
                     <p className="description">
-                        {group.description}
+                        {props.group.description}
                     </p>
 
                     <p className="time-created">
-                        <em>Added: {displayDateValue(moment.unix(group.timeCreated))}</em>
+                        <em>Added: {displayDateValue(moment.unix(props.group.timeCreated))}</em>
                     </p>
                 </div>
             </div>

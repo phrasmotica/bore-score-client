@@ -59,6 +59,7 @@ export const AddResultModal = (props: AddResultModalProps) => {
 
             if (groupFromParam !== undefined) {
                 setUseGroup(true)
+                setShowGroup(true)
             }
         }
     }, [groups, props.group])

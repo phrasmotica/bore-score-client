@@ -3,6 +3,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router"
 import { Button, Header, Icon, Modal, Table } from "semantic-ui-react"
 
+import { AddResultModal } from "../AddResultModal/AddResultModal"
 import { GameImage } from "../GameImage"
 
 import { displayDateValue } from "../MomentHelpers"
@@ -18,13 +19,12 @@ interface GameDetailsProps {
 }
 
 export const GameDetails = (props: GameDetailsProps) => {
+    const [showAddResultModal, setShowAddResultModal] = useState(false)
     const [showDeletePrompt, setShowDeletePrompt] = useState(false)
 
     let navigate = useNavigate()
 
     let game = props.game
-
-    const submitResult = () => navigate(`/add-result?game=${game.name}`)
 
     const deleteGame = () => {
         fetch(`${process.env.REACT_APP_API_URL}/games/${game.name}`, {
@@ -71,6 +71,7 @@ export const GameDetails = (props: GameDetailsProps) => {
 
     return (
         <div className="game-details">
+            <AddResultModal game={props.game.name} open={showAddResultModal} setOpen={setShowAddResultModal} />
             {renderDeletePrompt()}
 
             <div className="content">
@@ -81,7 +82,7 @@ export const GameDetails = (props: GameDetailsProps) => {
                         icon
                         fluid
                         color="teal"
-                        onClick={submitResult}>
+                        onClick={() => setShowAddResultModal(true)}>
                         <span>Submit Result&nbsp;</span>
                         <Icon name="edit" />
                     </Button>
