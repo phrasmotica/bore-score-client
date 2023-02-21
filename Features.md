@@ -16,6 +16,7 @@
 - return 403 if group is private and user is not a member ("You do not have permission to view this page" or similar)
 - show group name, image, list of members, creation date
 - show delete button (if admin user)
+  - show modal that redirects to Groups page (similar to Delete button on player details page)
 - show button/link to view league tables (if user is part of the group)
 
 ### League tables for a group
@@ -32,6 +33,10 @@
   - TODO: figure out specifics of this
 
 ## API
+
+### Endpoints
+
+- endpoint for deleting a group, given its internal name
 
 ### Users, passwords, logins, etc
 
