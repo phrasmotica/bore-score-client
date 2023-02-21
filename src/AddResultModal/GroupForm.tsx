@@ -16,7 +16,7 @@ interface GroupFormProps {
 export const GroupForm = (props: GroupFormProps) => {
     let groupOptions = props.groups.map(gr => ({
         key: gr.name,
-        text: `${gr.displayName} (${gr.type})`,
+        text: `${gr.displayName} (${gr.visibility})`,
         value: gr.name,
     }))
 

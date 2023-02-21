@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
-import removeAccents from "remove-accents"
 import { Button, Form, Header, Icon, Input, Modal } from "semantic-ui-react"
 
 import { LinkForm } from "./LinkForm"
 import { ImagePreview } from "../ImagePreview/ImagePreview"
 
 import { useGames, useLinkTypes, useWinMethods } from "../FetchHelpers"
+import { computeName } from "../Helpers"
 
 import { Link, Game } from "../models/Game"
 
@@ -53,29 +53,6 @@ export const AddGameModal = (props: AddGameModalProps) => {
         })))
     }, [setLinks, linkTypes])
 
-    const computeName = (displayName: string) => {
-        // remove diacritic marks
-        let computedName = removeAccents(displayName)
-
-        // remove apostrophes
-        computedName = computedName.replaceAll("'", "")
-
-        // set to lower case
-        computedName = computedName.toLowerCase()
-
-        // restrict to alphanumeric
-        computedName = computedName.replaceAll(/[^a-zA-Z0-9 ]+/g, " ")
-
-        // trim leading/trailing whitespace
-        computedName = computedName.trim()
-
-        // replace each block of spaces with a hyphen
-        computedName = computedName.replaceAll(/\s+/g, "-")
-
-        // limit to 100 chars
-        return computedName.substring(0, 100)
-    }
-
     const displayNameIsAvailable = () => !games.map(g => g.displayName).includes(displayName)
 
     const formIsComplete = () => {
@@ -121,7 +98,7 @@ export const AddGameModal = (props: AddGameModalProps) => {
             onClose={() => props.setOpen(false)}
             open={props.open}>
             <Header>
-                <Icon name="add user" />
+                <Icon name="game" />
                 Add Game
             </Header>
             <Modal.Content>

@@ -16,7 +16,7 @@ interface GroupDetailsProps {
 export const GroupDetails = (props: GroupDetailsProps) => {
     const [showAddResultModal, setShowAddResultModal] = useState(false)
 
-    let imageSrc = "https://e.snmc.io/i/600/s/9f6d3d17acac6ce20993eb158c203e4b/5662600/godspeed-you-black-emperor-lift-yr-skinny-fists-like-antennas-to-heaven-cover-art.jpg"
+    let imageSrc = props.group.profilePicture || "https://e.snmc.io/i/600/s/9f6d3d17acac6ce20993eb158c203e4b/5662600/godspeed-you-black-emperor-lift-yr-skinny-fists-like-antennas-to-heaven-cover-art.jpg"
 
     return (
         <div className="group-details">
