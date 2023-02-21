@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/bore-score-client/static/css/main.1d690562.css",
-    "main.js": "/bore-score-client/static/js/main.43a30cea.js",
+    "main.css": "/bore-score-client/static/css/main.9f01c2a6.css",
+    "main.js": "/bore-score-client/static/js/main.8c38466d.js",
     "static/js/787.5111443c.chunk.js": "/bore-score-client/static/js/787.5111443c.chunk.js",
     "index.html": "/bore-score-client/index.html",
-    "main.1d690562.css.map": "/bore-score-client/static/css/main.1d690562.css.map",
-    "main.43a30cea.js.map": "/bore-score-client/static/js/main.43a30cea.js.map",
+    "main.9f01c2a6.css.map": "/bore-score-client/static/css/main.9f01c2a6.css.map",
+    "main.8c38466d.js.map": "/bore-score-client/static/js/main.8c38466d.js.map",
     "787.5111443c.chunk.js.map": "/bore-score-client/static/js/787.5111443c.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.1d690562.css",
-    "static/js/main.43a30cea.js"
+    "static/css/main.9f01c2a6.css",
+    "static/js/main.8c38466d.js"
   ]
 }
