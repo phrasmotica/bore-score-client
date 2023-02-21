@@ -2,12 +2,13 @@ export interface Group {
     id: string
     name: string
     timeCreated: number
-    type: GroupTypeName
     displayName: string
     description: string
+    profilePicture: string
+    visibility: GroupVisibilityName
 }
 
-export enum GroupTypeName {
+export enum GroupVisibilityName {
     Public = "public",
     Global = "global",
     Private = "private",

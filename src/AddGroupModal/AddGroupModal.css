@@ -1,0 +1,57 @@
+.add-group-modal .labelled-input {
+    display: flex;
+}
+
+.add-group-modal .ui.fluid.labeled.input > .ui.label,
+.add-group-modal .labelled-input > .ui.label,
+.add-group-modal .ui.form > .field.description-text > .ui.label {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 1em;
+    width: 150px;
+    margin-right: 0px;
+    border-top-right-radius: 0rem;
+    border-bottom-right-radius: 0rem;
+}
+
+.add-group-modal .labelled-input > .description-text {
+    flex-grow: 1;
+}
+
+.add-group-modal .labelled-input > .ui.buttons {
+    flex-grow: 1;
+}
+
+.add-group-modal .labelled-input > .description-text > textarea {
+    border-top-left-radius: 0rem!important;
+    border-bottom-left-radius: 0rem!important;
+    min-height: 80px;
+    max-height: 200px;
+}
+
+.add-group-modal .labelled-input > .ui.buttons .button:first-child {
+    border-top-left-radius: 0rem!important;
+    border-bottom-left-radius: 0rem!important;
+}
+
+.add-group-form-inputs {
+    display: flex;
+    align-items: center;
+}
+
+.add-group-form-inputs > :not(:first-child) {
+    margin-left: 0.5em;
+}
+
+.add-group-form-inputs .add-group-form-fields {
+    flex-grow: 1;
+}
+
+.add-group-form-inputs .add-group-form-fields > :not(:first-child) {
+    margin-top: 0.5em;
+}
+
+.add-group-form-inputs .ui.message {
+    text-align: center;
+}

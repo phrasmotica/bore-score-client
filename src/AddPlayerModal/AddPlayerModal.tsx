@@ -12,8 +12,6 @@ import "./AddPlayerModal.css"
 interface AddPlayerModalProps {
     open: boolean
     setOpen: (open: boolean) => void
-    game?: string
-    group?: string
 }
 
 export const AddPlayerModal = (props: AddPlayerModalProps) => {
@@ -52,7 +50,7 @@ export const AddPlayerModal = (props: AddPlayerModalProps) => {
             onClose={() => props.setOpen(false)}
             open={props.open}>
             <Header>
-                <Icon name="add user" />
+                <Icon name="user" />
                 Add Player
             </Header>
             <Modal.Content>
