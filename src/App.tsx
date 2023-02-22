@@ -5,6 +5,7 @@ import { AdminPage } from "./AdminPage/AdminPage"
 import { GameDetailsPage } from "./GameDetailsPage/GameDetailsPage"
 import { GamesPage } from "./GamesPage/GamesPage"
 import { GroupDetailsPage } from "./GroupDetailsPage/GroupDetailsPage"
+import { GroupsPage } from "./GroupsPage/GroupsPage"
 import { HomePage } from "./HomePage/HomePage"
 import { PlayerDetailsPage } from "./PlayerDetailsPage/PlayerDetailsPage"
 import { ResultsPage } from "./ResultsPage/ResultsPage"
@@ -44,6 +45,12 @@ const App = () => {
             </Menu.Item>
 
             <Menu.Item>
+                <Link to="/groups">
+                    Groups
+                </Link>
+            </Menu.Item>
+
+            <Menu.Item>
                 <Link to="/scorecard">
                     Scorecard
                 </Link>
@@ -65,6 +72,7 @@ const App = () => {
                         <Route path="/games/:name" element={<GameDetailsPage />} />
                         <Route path="/games" element={<GamesPage />} />
                         <Route path="/groups/:name" element={<GroupDetailsPage />} />
+                        <Route path="/groups" element={<GroupsPage />} />
                         <Route path="/results" element={<ResultsPage />} />
                         <Route path="/scorecard" element={<ScorecardPage />} />
                     </Routes>

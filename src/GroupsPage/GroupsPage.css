@@ -1,0 +1,60 @@
+.groups-page {
+    display: flex;
+}
+
+.groups-page h2 {
+    margin-bottom: 0em;
+}
+
+.groups-page .header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    height: 36px;
+}
+
+.groups-page .header .ui.button {
+    margin: 0em;
+}
+
+.groups-page .sidebar {
+    text-align: end;
+    min-width: 15vw;
+    max-width: 15vw;
+}
+
+.groups-page .sidebar .filters {
+    padding-right: 0.5rem;
+    margin-right: 0.5rem;
+    border-right: 1px solid rgba(34, 36, 38, 0.15);
+}
+
+.groups-page .groups-page-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.groups-table {
+    width: 1200px;
+    min-width: 900px;
+}
+
+.groups-table .ui.table td.image-cell {
+    width: 100px;
+    height: 100px;
+}
+
+.groups-table .ui.table td .game-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+}
+
+.groups-table .ui.table td .game-image .image {
+    max-width: 100px;
+    max-height: 100px;
+}
