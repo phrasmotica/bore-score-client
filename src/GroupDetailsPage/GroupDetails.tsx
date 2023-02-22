@@ -9,6 +9,8 @@ import { displayDateValue } from "../MomentHelpers"
 
 import { Group } from "../models/Group"
 
+import "./GroupDetails.css"
+
 interface GroupDetailsProps {
     group: Group
 }
