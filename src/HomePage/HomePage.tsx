@@ -32,7 +32,7 @@ export const HomePage = () => {
 
                 <Statistic color="green">
                     <Statistic.Value>{summary.groupCount}</Statistic.Value>
-                    <Statistic.Label>Groups</Statistic.Label>
+                    <Statistic.Label><Link to="/groups">Groups</Link></Statistic.Label>
                 </Statistic>
 
                 <Statistic color="teal">
