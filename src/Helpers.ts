@@ -64,3 +64,16 @@ export const computeName = (displayName: string) => {
     // limit to 100 chars
     return computedName.substring(0, 100)
 }
+
+export const handleResponse = async (res: Response) => {
+    if (res.ok) {
+        return res
+    }
+
+    let json = await res.json() as ReqError
+    throw new Error(json.message)
+}
+
+interface ReqError {
+    message: string
+}

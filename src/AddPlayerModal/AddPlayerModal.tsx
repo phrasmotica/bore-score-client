@@ -1,8 +1,8 @@
 import { useState } from "react"
 import { useNavigate } from "react-router"
-import { Button, Header, Icon, Input, Modal } from "semantic-ui-react"
+import { Button, Dimmer, Header, Icon, Input, Loader, Message, Modal } from "semantic-ui-react"
 
-import { usePlayers } from "../FetchHelpers"
+import { handleResponse } from "../Helpers"
 import { ImagePreview } from "../ImagePreview/ImagePreview"
 
 import { Player } from "../models/Player"
@@ -15,20 +15,22 @@ interface AddPlayerModalProps {
 }
 
 export const AddPlayerModal = (props: AddPlayerModalProps) => {
-    const { players } = usePlayers()
-
     const [username, setUsername] = useState("")
     const [displayName, setDisplayName] = useState("")
     const [profilePicture, setProfilePicture] = useState("")
 
+    const [posting, setPosting] = useState(false)
+    const [errorMessage, setErrorMessage] = useState("")
+
     const navigate = useNavigate()
 
-    const usernameIsAvailable = () => !players.map(p => p.username).includes(username)
-
-    const formIsComplete = () => username.length > 0 && usernameIsAvailable() && displayName.length > 0
+    const formIsComplete = () => username.length > 0 && displayName.length > 0
 
     // TODO: handle errors, e.g. player already exists
     const submit = () => {
+        setPosting(true)
+        setErrorMessage("")
+
         fetch(`${process.env.REACT_APP_API_URL}/players`, {
             method: "POST",
             body: JSON.stringify({
@@ -40,8 +42,11 @@ export const AddPlayerModal = (props: AddPlayerModalProps) => {
                 "Content-Type": "application/json"
             }
         })
+        .then(handleResponse)
         .then(res => res.json())
         .then((newPlayer: Player) => navigate(`/players/${newPlayer.username}`))
+        .catch((err: Error) => setErrorMessage(err.message))
+        .finally(() => setPosting(false))
     }
 
     return (
@@ -54,12 +59,13 @@ export const AddPlayerModal = (props: AddPlayerModalProps) => {
                 Add Player
             </Header>
             <Modal.Content>
+                <Dimmer active={posting}><Loader /></Dimmer>
+
                 <div className="add-player-form">
                     <div className="add-player-form-inputs">
                         <div className="add-player-form-fields">
                             <Input
                                 fluid
-                                error={!usernameIsAvailable()}
                                 label="Username"
                                 placeholder="Username"
                                 value={username}
@@ -78,6 +84,8 @@ export const AddPlayerModal = (props: AddPlayerModalProps) => {
                                 placeholder="URL"
                                 value={profilePicture}
                                 onChange={(e, { value }) => setProfilePicture(value)} />
+
+                            {errorMessage && <Message error>{errorMessage}</Message>}
                         </div>
 
                         <ImagePreview imageLink={profilePicture} />
