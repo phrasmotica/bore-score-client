@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router"
 import moment from "moment"
 import { Accordion, Button, Form, Header, Icon, Modal } from "semantic-ui-react"
 import { v4 as newGuid } from "uuid"
@@ -65,8 +64,6 @@ export const AddResultModal = (props: AddResultModalProps) => {
             }
         }
     }, [groups, props.group])
-
-    const navigate = useNavigate()
 
     const updateFormData = (isComplete: boolean, formData: any) => {
         setFormIsComplete(isComplete)
@@ -137,7 +134,11 @@ export const AddResultModal = (props: AddResultModalProps) => {
                 "Content-Type": "application/json"
             }
         })
-            .then(() => navigate("/results"))
+            .then(() => {
+                // TODO: invalidate list of results so they are
+                // refetched - use Tan Stack Query?
+                props.setOpen(false)
+            })
     }
 
     let imageSrc = game?.imageLink || "https://e.snmc.io/i/600/s/9f6d3d17acac6ce20993eb158c203e4b/5662600/godspeed-you-black-emperor-lift-yr-skinny-fists-like-antennas-to-heaven-cover-art.jpg"
