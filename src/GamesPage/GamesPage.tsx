@@ -1,5 +1,6 @@
 import { useState } from "react"
 
+import { GameCards } from "./GameCards"
 import { GamesTable } from "./GamesTable"
 import { PlayerCountFilter } from "./PlayerCountFilter"
 import { WinMethodFilterDropdown } from "./WinMethodFilterDropdown"
@@ -57,6 +58,15 @@ export const GamesPage = () => {
                 <div className="header">
                     <h2>Games</h2>
                 </div>
+
+                {games.length > 0 && <GameCards
+                    games={games}
+                    winMethods={winMethods}
+                    selectedWinMethods={selectedWinMethods}
+                    useMinPlayers={filterByMinPlayers}
+                    minPlayers={minPlayers}
+                    useMaxPlayers={filterByMaxPlayers}
+                    maxPlayers={maxPlayers} />}
 
                 <GamesTable
                     games={games}

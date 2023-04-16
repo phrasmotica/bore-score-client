@@ -1,0 +1,39 @@
+.game-cards .ui.styled.accordion {
+    border: 1px solid rgb(34 36 38 / 15%);
+    box-shadow: 0 1px 2px 0 rgb(34 36 38 / 15%);
+}
+
+.game-cards .ui.styled.accordion .title {
+    display: flex;
+    align-items: center;
+    font-size: 1.2em;
+}
+
+.game-card-content {
+    display: flex;
+}
+
+.game-card-content > :not(:first-child) {
+    margin-left: 0.5em!important;
+}
+
+.game-card-content .game-image {
+    width: 200px;
+}
+
+.game-card-content .text {
+    text-align: start;
+}
+
+.game-card-content .buttons {
+    display: flex;
+}
+
+.game-card-content .buttons > :not(:first-child) {
+    margin-left: 0.5em!important;
+}
+
+.game-card-content a,
+.game-card-content a:hover {
+    color: unset;
+}
