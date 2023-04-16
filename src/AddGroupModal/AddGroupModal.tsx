@@ -1,6 +1,8 @@
+import moment from "moment"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
 import { Button, Form, Header, Icon, Input, Label, Message, Modal } from "semantic-ui-react"
+import { v4 as newGuid } from "uuid"
 
 import { useGroups } from "../FetchHelpers"
 import { computeName } from "../Helpers"
@@ -34,17 +36,21 @@ export const AddGroupModal = (props: AddGroupModalProps) => {
 
     const formIsComplete = () => name.length > 0 && nameIsAvailable() && displayName.length > 0
 
+    const newGroup = {
+        id: newGuid(),
+        timeCreated: moment().unix(),
+        name: name,
+        displayName: displayName,
+        description: description,
+        profilePicture: profilePicture,
+        visibility: visibility,
+    } as Group
+
     // TODO: handle errors, e.g. group already exists
     const submit = () => {
         fetch(`${process.env.REACT_APP_API_URL}/groups`, {
             method: "POST",
-            body: JSON.stringify({
-                name: name,
-                displayName: displayName,
-                description: description,
-                profilePicture: profilePicture,
-                visibility: visibility,
-            }),
+            body: JSON.stringify(newGroup),
             headers: {
                 "Content-Type": "application/json"
             }

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
 import moment from "moment"
 import { Accordion, Button, Form, Header, Icon, Modal } from "semantic-ui-react"
+import { v4 as newGuid } from "uuid"
 
 import { GroupForm } from "./GroupForm"
 import { CooperativeScoreForm } from "./CooperativeScoreForm"
@@ -15,6 +16,7 @@ import { useGames, useGroups, usePlayers } from "../FetchHelpers"
 import { submitValue } from "../MomentHelpers"
 
 import { Game } from "../models/Game"
+import { Result } from "../models/Result"
 import { WinMethodName } from "../models/WinMethod"
 
 import "./AddResultModal.css"
@@ -118,15 +120,19 @@ export const AddResultModal = (props: AddResultModalProps) => {
             return
         }
 
+        const newResult = {
+            id: newGuid(),
+            timeCreated: moment().unix(),
+            gameName: game.name,
+            groupName: useGroup ? group : "",
+            timePlayed: submitValue(timePlayed),
+            notes: notes,
+            ...formData
+        } as Result
+
         fetch(`${process.env.REACT_APP_API_URL}/results`, {
             method: "POST",
-            body: JSON.stringify({
-                gameName: game.name,
-                groupName: useGroup ? group : "",
-                timePlayed: submitValue(timePlayed),
-                notes: notes,
-                ...formData
-            }),
+            body: JSON.stringify(newResult),
             headers: {
                 "Content-Type": "application/json"
             }

@@ -1,6 +1,8 @@
+import moment from "moment"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
 import { Button, Form, Header, Icon, Input, Modal } from "semantic-ui-react"
+import { v4 as newGuid } from "uuid"
 
 import { LinkForm } from "./LinkForm"
 import { ImagePreview } from "../ImagePreview/ImagePreview"
@@ -63,21 +65,25 @@ export const AddGameModal = (props: AddGameModalProps) => {
             && winMethod.length > 0
     }
 
+    const newGame = {
+        id: newGuid(),
+        timeCreated: moment().unix(),
+        displayName: displayName,
+        name: name,
+        synopsis: synopsis,
+        description: description,
+        minPlayers: minPlayers,
+        maxPlayers: maxPlayers,
+        winMethod: winMethod,
+        imageLink: imageLink,
+        links: links
+    } as Game
+
     // TODO: handle errors, e.g. game already exists
     const submit = () => {
         fetch(`${process.env.REACT_APP_API_URL}/games`, {
             method: "POST",
-            body: JSON.stringify({
-                displayName: displayName,
-                name: name,
-                synopsis: synopsis,
-                description: description,
-                minPlayers: minPlayers,
-                maxPlayers: maxPlayers,
-                winMethod: winMethod,
-                imageLink: imageLink,
-                links: links
-            }),
+            body: JSON.stringify(newGame),
             headers: {
                 "Content-Type": "application/json"
             }

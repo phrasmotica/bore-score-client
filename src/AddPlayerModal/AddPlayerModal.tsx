@@ -1,6 +1,8 @@
+import moment from "moment"
 import { useState } from "react"
 import { useNavigate } from "react-router"
 import { Button, Dimmer, Header, Icon, Input, Loader, Message, Modal } from "semantic-ui-react"
+import { v4 as newGuid } from "uuid"
 
 import { handleResponse } from "../Helpers"
 import { ImagePreview } from "../ImagePreview/ImagePreview"
@@ -26,6 +28,14 @@ export const AddPlayerModal = (props: AddPlayerModalProps) => {
 
     const formIsComplete = () => username.length > 0 && displayName.length > 0
 
+    const newPlayer = {
+        id: newGuid(),
+        timeCreated: moment().unix(),
+        username: username,
+        displayName: displayName,
+        profilePicture: profilePicture,
+    } as Player
+
     // TODO: handle errors, e.g. player already exists
     const submit = () => {
         setPosting(true)
@@ -33,11 +43,7 @@ export const AddPlayerModal = (props: AddPlayerModalProps) => {
 
         fetch(`${process.env.REACT_APP_API_URL}/players`, {
             method: "POST",
-            body: JSON.stringify({
-                username: username,
-                displayName: displayName,
-                profilePicture: profilePicture,
-            }),
+            body: JSON.stringify(newPlayer),
             headers: {
                 "Content-Type": "application/json"
             }
