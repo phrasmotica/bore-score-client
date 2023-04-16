@@ -65,6 +65,12 @@ export const AddResultModal = (props: AddResultModalProps) => {
         }
     }, [groups, props.group])
 
+    useEffect(() => {
+        if (props.open) {
+            setTimePlayed(moment())
+        }
+    }, [props.open])
+
     const updateFormData = (isComplete: boolean, formData: any) => {
         setFormIsComplete(isComplete)
         setFormData(formData)
