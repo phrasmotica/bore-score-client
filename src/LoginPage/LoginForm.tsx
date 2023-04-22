@@ -2,8 +2,9 @@ import { useState } from "react"
 import { useNavigate } from "react-router"
 import { Form } from "semantic-ui-react"
 
+import { setToken } from "../Auth"
+
 interface LoginFormProps {
-    setToken: (token: string) => void
     redirect?: string
 }
 
@@ -39,8 +40,11 @@ export const LoginForm = (props: LoginFormProps) => {
         })
         .then(res => res.json())
         .then((res: TokenResponse) => {
-            props.setToken(res.token)
+            setToken(res.token)
             navigate(props.redirect || "/")
+
+            // ensure page reloads after navigation
+            window.dispatchEvent(new Event("storage"))
         })
     }
 

@@ -1,14 +1,12 @@
 import { useSearchParams } from "react-router-dom"
-import { useTitle } from "../Hooks"
+
 import { LoginForm } from "./LoginForm"
+
+import { useTitle } from "../Hooks"
 
 import "./LoginPage.css"
 
-interface LoginPageProps {
-    setToken: (token: string) => void
-}
-
-export const LoginPage = (props: LoginPageProps) => {
+export const LoginPage = () => {
     useTitle("Login")
 
     const [searchParams] = useSearchParams()
@@ -23,7 +21,7 @@ export const LoginPage = (props: LoginPageProps) => {
             <h1>Login</h1>
 
             <div className="login-page-content">
-                <LoginForm setToken={props.setToken} redirect={redirect} />
+                <LoginForm redirect={redirect} />
             </div>
         </div>
     )

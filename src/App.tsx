@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect } from "react"
 import { Button, Menu } from "semantic-ui-react"
 import { HashRouter, Link, Route, Routes } from "react-router-dom"
 
@@ -13,13 +13,26 @@ import { PlayerDetailsPage } from "./PlayerDetailsPage/PlayerDetailsPage"
 import { ResultsPage } from "./ResultsPage/ResultsPage"
 import { ScorecardPage } from "./ScorecardPage/ScorecardPage"
 
+import { getToken, removeToken } from "./Auth"
+
 import "./App.css"
 
 const App = () => {
-    // TODO: store token in a cookie
-    const [token, setToken] = useState("")
+    const token = getToken()
 
-    const logOut = () => setToken("")
+    const logOut = () => {
+        removeToken()
+        window.dispatchEvent(new Event("storage"))
+    }
+
+    useEffect(() => {
+        const handleStorage = () => {
+            window.location.reload()
+        }
+
+        window.addEventListener("storage", handleStorage)
+        return () => window.removeEventListener("storage", handleStorage)
+    }, [])
 
     const renderMenu = () => (
         <Menu fluid>
@@ -65,7 +78,6 @@ const App = () => {
                 </Menu.Item>
             </Menu.Menu>}
 
-            {/* TODO: only show if token is valid */}
             {token && <Menu.Menu position="right">
                 <Menu.Item>
                     <Link to="/admin">
@@ -96,8 +108,8 @@ const App = () => {
 
                     <Routes>
                         <Route path="/" element={<HomePage />} />
-                        <Route path="/login" element={<LoginPage setToken={setToken} />} />
-                        <Route path="/admin" element={<AdminPage token={token} />} />
+                        <Route path="/login" element={<LoginPage />} />
+                        <Route path="/admin" element={<AdminPage />} />
                         <Route path="/players/:username" element={<PlayerDetailsPage />} />
                         <Route path="/groups/:name" element={<GroupDetailsPage />} />
                         <Route path="/games/:name" element={<GameDetailsPage />} />
