@@ -16,6 +16,7 @@ import { ScorecardPage } from "./ScorecardPage/ScorecardPage"
 import "./App.css"
 
 const App = () => {
+    // TODO: store token in a cookie
     const [token, setToken] = useState("")
 
     const logOut = () => setToken("")
@@ -96,7 +97,7 @@ const App = () => {
                     <Routes>
                         <Route path="/" element={<HomePage />} />
                         <Route path="/login" element={<LoginPage setToken={setToken} />} />
-                        <Route path="/admin" element={<AdminPage />} />
+                        <Route path="/admin" element={<AdminPage token={token} />} />
                         <Route path="/players/:username" element={<PlayerDetailsPage />} />
                         <Route path="/groups/:name" element={<GroupDetailsPage />} />
                         <Route path="/games/:name" element={<GameDetailsPage />} />

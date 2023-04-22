@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button, Icon } from "semantic-ui-react"
 
 import { AddGameModal } from "../AddGameModal/AddGameModal"
@@ -6,13 +6,26 @@ import { AddGroupModal } from "../AddGroupModal/AddGroupModal"
 import { AddPlayerModal } from "../AddPlayerModal/AddPlayerModal"
 
 import { useTitle } from "../Hooks"
+import { useNavigate } from "react-router"
 
-export const AdminPage = () => {
+interface AdminPageProps {
+    token: string
+}
+
+export const AdminPage = (props: AdminPageProps) => {
     useTitle("Admin")
 
     const [showAddGameModal, setShowAddGameModal] = useState(false)
     const [showAddGroupModal, setShowAddGroupModal] = useState(false)
     const [showAddPlayerModal, setShowAddPlayerModal] = useState(false)
+
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (!props.token) {
+            navigate("/login?redirect=" + encodeURIComponent("/admin"))
+        }
+    }, [props.token, navigate])
 
     return (
         <div className="admin-page">
