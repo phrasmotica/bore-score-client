@@ -1,4 +1,5 @@
-import { Menu } from "semantic-ui-react"
+import { useState } from "react"
+import { Button, Menu } from "semantic-ui-react"
 import { HashRouter, Link, Route, Routes } from "react-router-dom"
 
 import { AdminPage } from "./AdminPage/AdminPage"
@@ -7,6 +8,7 @@ import { GamesPage } from "./GamesPage/GamesPage"
 import { GroupDetailsPage } from "./GroupDetailsPage/GroupDetailsPage"
 import { GroupsPage } from "./GroupsPage/GroupsPage"
 import { HomePage } from "./HomePage/HomePage"
+import { LoginPage } from "./LoginPage/LoginPage"
 import { PlayerDetailsPage } from "./PlayerDetailsPage/PlayerDetailsPage"
 import { ResultsPage } from "./ResultsPage/ResultsPage"
 import { ScorecardPage } from "./ScorecardPage/ScorecardPage"
@@ -14,6 +16,10 @@ import { ScorecardPage } from "./ScorecardPage/ScorecardPage"
 import "./App.css"
 
 const App = () => {
+    const [token, setToken] = useState("")
+
+    const logOut = () => setToken("")
+
     const renderMenu = () => (
         <Menu fluid>
             <Menu.Item header>
@@ -23,12 +29,6 @@ const App = () => {
             <Menu.Item>
                 <Link to="/">
                     Home
-                </Link>
-            </Menu.Item>
-
-            <Menu.Item>
-                <Link to="/admin">
-                    Admin
                 </Link>
             </Menu.Item>
 
@@ -55,6 +55,35 @@ const App = () => {
                     Scorecard
                 </Link>
             </Menu.Item>
+
+            {!token && <Menu.Menu position="right">
+                <Menu.Item>
+                    <Link to="/login">
+                        Log In
+                    </Link>
+                </Menu.Item>
+            </Menu.Menu>}
+
+            {/* TODO: only show if token is valid */}
+            {token && <Menu.Menu position="right">
+                <Menu.Item>
+                    <Link to="/admin">
+                        Admin
+                    </Link>
+                </Menu.Item>
+
+                <Menu.Item>
+                    <Link to="/me">
+                        <strong>username</strong>
+                    </Link>
+                </Menu.Item>
+
+                <Menu.Item>
+                    <Button color="red" onClick={logOut}>
+                        Log Out
+                    </Button>
+                </Menu.Item>
+            </Menu.Menu>}
         </Menu>
     )
 
@@ -66,6 +95,7 @@ const App = () => {
 
                     <Routes>
                         <Route path="/" element={<HomePage />} />
+                        <Route path="/login" element={<LoginPage setToken={setToken} />} />
                         <Route path="/admin" element={<AdminPage />} />
                         <Route path="/players/:username" element={<PlayerDetailsPage />} />
                         <Route path="/groups/:name" element={<GroupDetailsPage />} />
