@@ -5,6 +5,7 @@ import { Button, Header, Icon, Modal } from "semantic-ui-react"
 
 import { PlayerImage } from "../PlayerImage"
 
+import { getToken } from "../Auth"
 import { resetTitle, setTitle } from "../Helpers"
 import { displayDateValue } from "../MomentHelpers"
 
@@ -20,6 +21,8 @@ export const PlayerDetails = (props: PlayerDetailsProps) => {
     const [showDeletePrompt, setShowDeletePrompt] = useState(false)
 
     const navigate = useNavigate()
+
+    const token = getToken()
 
     let player = props.player
 
@@ -74,20 +77,20 @@ export const PlayerDetails = (props: PlayerDetailsProps) => {
 
     return (
         <div className="player-details">
-            {renderDeletePrompt(player)}
+            {token && renderDeletePrompt(player)}
 
             <div className="content">
                 <div className="left">
                     <PlayerImage imageSrc={player.profilePicture || DEFAULT_IMAGE} />
 
-                    <Button
+                    {token && <Button
                         icon
                         fluid
                         color="red"
                         onClick={() => setShowDeletePrompt(true)}>
                         <span>Delete Player&nbsp;</span>
                         <Icon name="remove" />
-                    </Button>
+                    </Button>}
                 </div>
 
                 <div>
