@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react"
 
+import { getHeaders } from "./Auth"
+
 import { ComputedName } from "./models/ComputedName"
 import { Game } from "./models/Game"
 import { Group } from "./models/Group"
@@ -164,7 +166,9 @@ const useFetch = <T,>(url: string, initial: T, fetchDelayMs = 0) => {
 }
 
 const fetchWithResilience = <T,>(url: string) => {
-    return fetch(url)
+    return fetch(url, {
+        headers: getHeaders(),
+    })
         .then(handleResponse)
         .then((data: T) => data)
 }

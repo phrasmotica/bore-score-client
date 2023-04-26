@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router"
 import { Form } from "semantic-ui-react"
 
-import { setToken } from "../Auth"
+import { getHeaders, setToken } from "../Auth"
 
 interface LoginFormProps {
     redirect?: string
@@ -31,12 +31,13 @@ export const LoginForm = (props: LoginFormProps) => {
             password: password,
         } as TokenRequest
 
+        const headers = getHeaders()
+        headers.set("Content-Type", "application/json")
+
         fetch(`${process.env.REACT_APP_API_URL}/token`, {
             method: "POST",
             body: JSON.stringify(request),
-            headers: {
-                "Content-Type": "application/json"
-            }
+            headers: headers,
         })
         .then(res => res.json())
         .then((res: TokenResponse) => {

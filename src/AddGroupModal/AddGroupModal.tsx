@@ -4,6 +4,7 @@ import { useNavigate } from "react-router"
 import { Button, Form, Header, Icon, Input, Label, Message, Modal } from "semantic-ui-react"
 import { v4 as newGuid } from "uuid"
 
+import { getHeaders } from "../Auth"
 import { useGroups } from "../FetchHelpers"
 import { computeName } from "../Helpers"
 import { ImagePreview } from "../ImagePreview/ImagePreview"
@@ -48,12 +49,13 @@ export const AddGroupModal = (props: AddGroupModalProps) => {
 
     // TODO: handle errors, e.g. group already exists
     const submit = () => {
+        const headers = getHeaders()
+        headers.set("Content-Type", "application/json")
+
         fetch(`${process.env.REACT_APP_API_URL}/groups`, {
             method: "POST",
             body: JSON.stringify(newGroup),
-            headers: {
-                "Content-Type": "application/json"
-            }
+            headers: headers,
         })
         .then(res => res.json())
         .then((newGroup: Group) => navigate(`/groups/${newGroup.name}`))

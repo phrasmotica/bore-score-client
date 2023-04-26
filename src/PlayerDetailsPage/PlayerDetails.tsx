@@ -5,7 +5,7 @@ import { Button, Header, Icon, Modal } from "semantic-ui-react"
 
 import { PlayerImage } from "../PlayerImage"
 
-import { getToken } from "../Auth"
+import { getHeaders, getToken } from "../Auth"
 import { resetTitle, setTitle } from "../Helpers"
 import { displayDateValue } from "../MomentHelpers"
 
@@ -37,7 +37,8 @@ export const PlayerDetails = (props: PlayerDetailsProps) => {
 
     const deletePlayer = () => {
         fetch(`${process.env.REACT_APP_API_URL}/players/${player.username}`, {
-            method: "DELETE"
+            method: "DELETE",
+            headers: getHeaders(),
         })
             .then(() => navigate("/"))
     }
