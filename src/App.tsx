@@ -72,6 +72,7 @@ const App = () => {
 
             {!token && <Menu.Menu position="right">
                 <Menu.Item>
+                    {/* TODO: redirect to current page */}
                     <Link to="/login">
                         Log In
                     </Link>
