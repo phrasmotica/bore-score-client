@@ -3,8 +3,10 @@ import { useNavigate } from "react-router"
 import { Link } from "react-router-dom"
 import { Button } from "semantic-ui-react"
 
+import { ResultsList } from "../ResultsPage/ResultsList"
+
 import { parseToken } from "../Auth"
-import { useUser } from "../FetchHelpers"
+import { useGames, useResults, useUser } from "../FetchHelpers"
 import { useTitle } from "../Hooks"
 import { PlayerImage } from "../PlayerImage"
 
@@ -17,6 +19,9 @@ export const ProfilePage = () => {
     const username = token?.username || ""
 
     const { user } = useUser(username)
+
+    const { games } = useGames()
+    const { results } = useResults()
 
     const navigate = useNavigate()
 
@@ -31,6 +36,8 @@ export const ProfilePage = () => {
     }
 
     const isCurrentUser = username === user.username
+
+    const resultsToShow = results.filter(r => r.scores.some(s => s.username === username))
 
     return (
         <div className="profile-page">
@@ -49,9 +56,20 @@ export const ProfilePage = () => {
                     </div>}
                 </div>
 
-                <div className="details">
+                <div className="details w-100">
                     <h3>{user.username}</h3>
+
                     {isCurrentUser && <p className="email">{user.email}</p>}
+
+                    <h4>Recent Results</h4>
+
+                    <ResultsList
+                        games={games}
+                        groups={[]}
+                        players={[]}
+                        results={resultsToShow}
+                        selectedGames={[]}
+                        selectedGroups={[]} />
                 </div>
             </div>
         </div>
