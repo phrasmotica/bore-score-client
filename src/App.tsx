@@ -13,12 +13,12 @@ import { PlayerDetailsPage } from "./PlayerDetailsPage/PlayerDetailsPage"
 import { ResultsPage } from "./ResultsPage/ResultsPage"
 import { ScorecardPage } from "./ScorecardPage/ScorecardPage"
 
-import { getToken, removeToken } from "./Auth"
+import { parseToken, removeToken } from "./Auth"
 
 import "./App.css"
 
 const App = () => {
-    const token = getToken()
+    const token = parseToken()
 
     const logOut = () => {
         removeToken()

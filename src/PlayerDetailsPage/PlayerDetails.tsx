@@ -5,7 +5,7 @@ import { Button, Header, Icon, Modal } from "semantic-ui-react"
 
 import { PlayerImage } from "../PlayerImage"
 
-import { getHeaders, getToken } from "../Auth"
+import { getHeaders, parseToken } from "../Auth"
 import { resetTitle, setTitle } from "../Helpers"
 import { displayDateValue } from "../MomentHelpers"
 
@@ -22,7 +22,7 @@ export const PlayerDetails = (props: PlayerDetailsProps) => {
 
     const navigate = useNavigate()
 
-    const token = getToken()
+    const token = parseToken()
 
     let player = props.player
 
