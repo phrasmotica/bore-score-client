@@ -4,6 +4,7 @@ import { useNavigate } from "react-router"
 import { Button, Dimmer, Header, Icon, Input, Loader, Message, Modal } from "semantic-ui-react"
 import { v4 as newGuid } from "uuid"
 
+import { getHeaders } from "../Auth"
 import { handleResponse } from "../Helpers"
 import { ImagePreview } from "../ImagePreview/ImagePreview"
 
@@ -41,12 +42,13 @@ export const AddPlayerModal = (props: AddPlayerModalProps) => {
         setPosting(true)
         setErrorMessage("")
 
+        const headers = getHeaders()
+        headers.set("Content-Type", "application/json")
+
         fetch(`${process.env.REACT_APP_API_URL}/players`, {
             method: "POST",
             body: JSON.stringify(newPlayer),
-            headers: {
-                "Content-Type": "application/json"
-            }
+            headers: headers,
         })
         .then(handleResponse)
         .then(res => res.json())

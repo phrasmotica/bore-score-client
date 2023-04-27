@@ -3,6 +3,7 @@ import moment from "moment"
 import { Accordion, Button, Form, Header, Icon, Modal } from "semantic-ui-react"
 import { v4 as newGuid } from "uuid"
 
+import { getHeaders } from "../Auth"
 import { GroupForm } from "./GroupForm"
 import { CooperativeScoreForm } from "./CooperativeScoreForm"
 import { CooperativeWinForm } from "./CooperativeWinForm"
@@ -133,12 +134,13 @@ export const AddResultModal = (props: AddResultModalProps) => {
             ...formData
         } as Result
 
+        const headers = getHeaders()
+        headers.set("Content-Type", "application/json")
+
         fetch(`${process.env.REACT_APP_API_URL}/results`, {
             method: "POST",
             body: JSON.stringify(newResult),
-            headers: {
-                "Content-Type": "application/json"
-            }
+            headers: headers,
         })
             .then(() => {
                 // TODO: invalidate list of results so they are

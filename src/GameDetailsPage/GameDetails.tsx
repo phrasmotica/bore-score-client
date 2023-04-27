@@ -6,6 +6,7 @@ import { Button, Header, Icon, Modal, Table } from "semantic-ui-react"
 import { AddResultModal } from "../AddResultModal/AddResultModal"
 import { GameImage } from "../GameImage"
 
+import { getHeaders } from "../Auth"
 import { displayDateValue } from "../MomentHelpers"
 
 import { Game } from "../models/Game"
@@ -28,7 +29,8 @@ export const GameDetails = (props: GameDetailsProps) => {
 
     const deleteGame = () => {
         fetch(`${process.env.REACT_APP_API_URL}/games/${game.name}`, {
-            method: "DELETE"
+            method: "DELETE",
+            headers: getHeaders(),
         })
             .then(() => navigate("/games"))
     }

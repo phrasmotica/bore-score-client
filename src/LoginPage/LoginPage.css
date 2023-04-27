@@ -1,0 +1,9 @@
+.ui.form.login-form {
+    width: 600px;
+}
+
+.login-page-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

@@ -7,6 +7,7 @@ import { v4 as newGuid } from "uuid"
 import { LinkForm } from "./LinkForm"
 import { ImagePreview } from "../ImagePreview/ImagePreview"
 
+import { getHeaders } from "../Auth"
 import { useGames, useLinkTypes, useWinMethods } from "../FetchHelpers"
 import { computeName } from "../Helpers"
 
@@ -81,12 +82,13 @@ export const AddGameModal = (props: AddGameModalProps) => {
 
     // TODO: handle errors, e.g. game already exists
     const submit = () => {
+        const headers = getHeaders()
+        headers.set("Content-Type", "application/json")
+
         fetch(`${process.env.REACT_APP_API_URL}/games`, {
             method: "POST",
             body: JSON.stringify(newGame),
-            headers: {
-                "Content-Type": "application/json"
-            }
+            headers: headers,
         })
         .then(res => res.json())
         .then((newGame: Game) => navigate(`/games/${newGame.name}`))

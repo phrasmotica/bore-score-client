@@ -5,6 +5,7 @@ import { Button, Header, Icon, Modal } from "semantic-ui-react"
 
 import { PlayerImage } from "../PlayerImage"
 
+import { getHeaders, getToken } from "../Auth"
 import { resetTitle, setTitle } from "../Helpers"
 import { displayDateValue } from "../MomentHelpers"
 
@@ -21,6 +22,8 @@ export const PlayerDetails = (props: PlayerDetailsProps) => {
 
     const navigate = useNavigate()
 
+    const token = getToken()
+
     let player = props.player
 
     useEffect(() => {
@@ -34,7 +37,8 @@ export const PlayerDetails = (props: PlayerDetailsProps) => {
 
     const deletePlayer = () => {
         fetch(`${process.env.REACT_APP_API_URL}/players/${player.username}`, {
-            method: "DELETE"
+            method: "DELETE",
+            headers: getHeaders(),
         })
             .then(() => navigate("/"))
     }
@@ -74,20 +78,20 @@ export const PlayerDetails = (props: PlayerDetailsProps) => {
 
     return (
         <div className="player-details">
-            {renderDeletePrompt(player)}
+            {token && renderDeletePrompt(player)}
 
             <div className="content">
                 <div className="left">
                     <PlayerImage imageSrc={player.profilePicture || DEFAULT_IMAGE} />
 
-                    <Button
+                    {token && <Button
                         icon
                         fluid
                         color="red"
                         onClick={() => setShowDeletePrompt(true)}>
                         <span>Delete Player&nbsp;</span>
                         <Icon name="remove" />
-                    </Button>
+                    </Button>}
                 </div>
 
                 <div>
