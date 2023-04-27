@@ -9,6 +9,7 @@ import { LinkType } from "./models/LinkType"
 import { Player } from "./models/Player"
 import { Result } from "./models/Result"
 import { Summary } from "./models/Summary"
+import { User } from "./models/User"
 import { WinMethod } from "./models/WinMethod"
 
 export const useSummary = () => {
@@ -104,6 +105,20 @@ export const useLinkTypes = () => {
     return {
         isLoadingLinkTypes: fetch.isLoading,
         linkTypes: fetch.data || [],
+    }
+}
+
+export const useUser = (username: string | undefined) => {
+    let endpoint = ""
+    if (username !== undefined && username.length > 0) {
+        endpoint = `${process.env.REACT_APP_API_URL}/users/${username}`
+    }
+
+    let fetch = useFetch<User | undefined>(endpoint, undefined)
+
+    return {
+        isLoadingUser: fetch.isLoading,
+        user: fetch.data,
     }
 }
 
