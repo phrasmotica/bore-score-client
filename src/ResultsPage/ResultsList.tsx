@@ -27,6 +27,14 @@ export const ResultsList = (props: ResultsListProps) => {
         resultsToShow = resultsToShow.filter(r => props.selectedGroups.includes(r.groupName))
     }
 
+    const renderNoResultsMessage = () => (
+        <Table.Row>
+            <Table.Cell colSpan={16}>
+                <p className="text-center">No results to show.</p>
+            </Table.Cell>
+        </Table.Row>
+    )
+
     return (
         <div className="results-table">
             <Table compact celled color="teal">
@@ -42,7 +50,8 @@ export const ResultsList = (props: ResultsListProps) => {
                 </Table.Header>
 
                 <Table.Body>
-                    {resultsToShow.map(r => (
+                    {resultsToShow.length <= 0 && renderNoResultsMessage()}
+                    {resultsToShow.length > 0 && resultsToShow.map(r => (
                         <ResultCard
                             key={r.id}
                             result={r}
