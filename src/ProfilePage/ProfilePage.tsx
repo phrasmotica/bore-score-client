@@ -6,7 +6,7 @@ import { Button } from "semantic-ui-react"
 import { ResultsList } from "../ResultsPage/ResultsList"
 
 import { parseToken } from "../Auth"
-import { useGames, useResults, useUser } from "../FetchHelpers"
+import { useGames, useGroups, usePlayers, useResults, useUser } from "../FetchHelpers"
 import { useTitle } from "../Hooks"
 import { PlayerImage } from "../PlayerImage"
 
@@ -21,6 +21,8 @@ export const ProfilePage = () => {
     const { user } = useUser(username)
 
     const { games } = useGames()
+    const { groups } = useGroups()
+    const { players } = usePlayers()
     const { results } = useResults()
 
     const navigate = useNavigate()
@@ -65,8 +67,8 @@ export const ProfilePage = () => {
 
                     <ResultsList
                         games={games}
-                        groups={[]}
-                        players={[]}
+                        groups={groups}
+                        players={players}
                         results={resultsToShow}
                         selectedGames={[]}
                         selectedGroups={[]} />
