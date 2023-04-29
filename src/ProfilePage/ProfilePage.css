@@ -12,10 +12,10 @@
     margin-top: 0.5em;
 }
 
-.profile-page .content .details {
-    text-align: left;
+.profile-page .content .left {
+    text-align: end;
 }
 
-.details > .email {
-    color: grey;
+.profile-page .content .details {
+    text-align: start;
 }

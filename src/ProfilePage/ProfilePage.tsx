@@ -50,9 +50,11 @@ export const ProfilePage = () => {
 
             <div className="content">
                 <div className="left">
+                    <h3>{user.username}</h3>
+
                     <PlayerImage />
 
-                    {token && <div>
+                    {isCurrentUser && <div>
                         <Link to="/me-edit">
                             <Button fluid color="teal">
                                 Edit Profile
@@ -62,11 +64,7 @@ export const ProfilePage = () => {
                 </div>
 
                 <div className="details w-100">
-                    <h3>{user.username}</h3>
-
-                    {isCurrentUser && <p className="email">{user.email}</p>}
-
-                    <h4>Recent Results</h4>
+                    <h3>Recent Results</h3>
 
                     <ResultsList
                         games={games}
