@@ -10,6 +10,8 @@ import { useGames, useGroups, usePlayers, useResults, useUser } from "../FetchHe
 import { useTitle } from "../Hooks"
 import { PlayerImage } from "../PlayerImage"
 
+import { sortResultsByRecent } from "../models/Result"
+
 import "./ProfilePage.css"
 
 export const ProfilePage = () => {
@@ -39,7 +41,8 @@ export const ProfilePage = () => {
 
     const isCurrentUser = username === user.username
 
-    const resultsToShow = results.filter(r => r.scores.some(s => s.username === username))
+    let resultsToShow = results.filter(r => r.scores.some(s => s.username === username))
+    resultsToShow = sortResultsByRecent(resultsToShow).slice(0, 5)
 
     return (
         <div className="profile-page">
