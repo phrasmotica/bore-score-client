@@ -131,8 +131,13 @@ export const useWinMethods = () => {
     }
 }
 
-export const useResults = () => {
-    let fetch = useFetch<Result[]>(`${process.env.REACT_APP_API_URL}/results`, [])
+export const useResults = (username?: string) => {
+    let url = `${process.env.REACT_APP_API_URL}/results`
+    if (username) {
+        url += `?username=${username}`
+    }
+
+    let fetch = useFetch<Result[]>(url, [])
 
     return {
         isLoadingResults: fetch.isLoading,

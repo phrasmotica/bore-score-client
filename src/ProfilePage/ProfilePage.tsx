@@ -27,7 +27,7 @@ export const ProfilePage = () => {
     const { games } = useGames()
     const { groups } = useGroups()
     const { players } = usePlayers()
-    const { results } = useResults()
+    const { results } = useResults(username)
 
     const navigate = useNavigate()
 
@@ -43,8 +43,7 @@ export const ProfilePage = () => {
 
     const isCurrentUser = username === user.username
 
-    let resultsToShow = results.filter(r => r.scores.some(s => s.username === username))
-    resultsToShow = sortResultsByRecent(resultsToShow).slice(0, 5)
+    let resultsToShow = sortResultsByRecent(results).slice(0, 5)
 
     return (
         <div className="profile-page">
