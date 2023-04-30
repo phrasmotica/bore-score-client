@@ -6,7 +6,8 @@
     margin-bottom: 0em;
 }
 
-.results-page .header {
+.results-page > .sidebar > .header,
+.results-page > .results-page-body > .header {
     display: flex;
     justify-content: space-between;
     flex: 0 1 auto;

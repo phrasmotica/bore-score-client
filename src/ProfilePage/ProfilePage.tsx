@@ -1,6 +1,7 @@
 import { useEffect } from "react"
 import { useNavigate } from "react-router"
 import { Link } from "react-router-dom"
+import { SemanticToastContainer } from "react-semantic-toasts"
 import { Button } from "semantic-ui-react"
 
 import { ResultsList } from "../ResultsPage/ResultsList"
@@ -12,6 +13,7 @@ import { PlayerImage } from "../PlayerImage"
 
 import { sortResultsByRecent } from "../models/Result"
 
+import "react-semantic-toasts/styles/react-semantic-alert.css"
 import "./ProfilePage.css"
 
 export const ProfilePage = () => {
@@ -75,6 +77,8 @@ export const ProfilePage = () => {
                         selectedGroups={[]} />
                 </div>
             </div>
+
+            <SemanticToastContainer position="bottom-right" maxToasts={3} />
         </div>
     )
 }

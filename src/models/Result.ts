@@ -8,12 +8,19 @@ export interface Result {
     cooperativeScore: number
     cooperativeWin: boolean
     scores: PlayerScore[]
+    approvalState: ApprovalState
 }
 
 interface PlayerScore {
     username: string
     score: number
     isWinner: boolean
+}
+
+export enum ApprovalState {
+    Pending = "pending",
+    Approved = "approved",
+    Rejected = "rejected",
 }
 
 export const sortResultsByRecent = (results: Result[]) => {

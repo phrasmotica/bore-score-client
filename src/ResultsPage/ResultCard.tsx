@@ -1,4 +1,6 @@
+import { useState } from "react"
 import { Link } from "react-router-dom"
+import { toast } from "react-semantic-toasts"
 import { Table } from "semantic-ui-react"
 import moment from "moment"
 
@@ -6,6 +8,7 @@ import { CooperativeScoreCard } from "./CooperativeScoreCard"
 import { CooperativeWinCard } from "./CooperativeWinCard"
 import { IndividualScoreCard } from "./IndividualScoreCard"
 import { IndividualWinnerCard } from "./IndividualWinnerCard"
+import { ResultApprover } from "./ResultApprover"
 
 import { GameImage } from "../GameImage"
 
@@ -14,17 +17,22 @@ import { displayDateTimeValue } from "../MomentHelpers"
 import { Game } from "../models/Game"
 import { Group } from "../models/Group"
 import { Player } from "../models/Player"
-import { Result } from "../models/Result"
+import { Result, ApprovalState } from "../models/Result"
 import { WinMethodName } from "../models/WinMethod"
+
+import "./ResultCard.css"
 
 interface ResultCardProps {
     result: Result
     games: Game[]
     groups: Group[]
     players: Player[]
+    currentUser?: string
 }
 
 export const ResultCard = (props: ResultCardProps) => {
+    const [verificationState, setVerificationState] = useState(ApprovalState.Pending)
+
     let r = props.result
 
     let game = props.games.find(g => g.name === r.gameName)
@@ -81,8 +89,31 @@ export const ResultCard = (props: ResultCardProps) => {
         return groupNameElement
     }
 
+    // TODO: issue approvals/rejections to the database
+    const approve = () => {
+        setVerificationState(ApprovalState.Approved)
+        toast({
+            title: "",
+            description: `You approved the ${game!.displayName} result.`,
+            color: "green",
+            icon: "check circle outline",
+        })
+    }
+
+    const reject = () => {
+        setVerificationState(ApprovalState.Rejected)
+        toast({
+            title: "",
+            description: `You rejected the ${game!.displayName} result!`,
+            color: "red",
+            icon: "times circle outline",
+        })
+    }
+
+    const hasCurrentUser = props.currentUser && r.scores.map(s => s.username).includes(props.currentUser)
+
     return (
-        <Table.Row>
+        <Table.Row className={`result-card ${verificationState}`}>
             <Table.Cell>
                 <GameImage imageSrc={game.imageLink} />
             </Table.Cell>
@@ -111,6 +142,10 @@ export const ResultCard = (props: ResultCardProps) => {
 
             <Table.Cell>
                 {r.notes}
+            </Table.Cell>
+
+            <Table.Cell>
+                {hasCurrentUser && <ResultApprover approve={approve} reject={reject} />}
             </Table.Cell>
         </Table.Row>
     )

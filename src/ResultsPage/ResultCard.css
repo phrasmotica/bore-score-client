@@ -1,0 +1,11 @@
+.result-card.pending > td {
+    background-color: bisque;
+}
+
+.result-card.approved > td {
+    background-color: mediumseagreen;
+}
+
+.result-card.rejected > td {
+    background-color: lightcoral;
+}

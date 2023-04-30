@@ -2,6 +2,8 @@ import { Table } from "semantic-ui-react"
 
 import { ResultCard } from "./ResultCard"
 
+import { parseToken } from "../Auth"
+
 import { Game } from "../models/Game"
 import { Group } from "../models/Group"
 import { Player } from "../models/Player"
@@ -17,6 +19,8 @@ interface ResultsListProps {
 }
 
 export const ResultsList = (props: ResultsListProps) => {
+    const token = parseToken()
+
     let resultsToShow = sortResultsByRecent(props.results)
 
     if (props.selectedGames.length > 0) {
@@ -46,6 +50,7 @@ export const ResultsList = (props: ResultsListProps) => {
                         <Table.HeaderCell width={2}>Played</Table.HeaderCell>
                         <Table.HeaderCell width={2}>Submitted</Table.HeaderCell>
                         <Table.HeaderCell width={4}>Notes</Table.HeaderCell>
+                        <Table.HeaderCell width={4}>Approvals</Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
 
@@ -57,7 +62,8 @@ export const ResultsList = (props: ResultsListProps) => {
                             result={r}
                             games={props.games}
                             groups={props.groups}
-                            players={props.players} />
+                            players={props.players}
+                            currentUser={token?.username} />
                     ))}
                 </Table.Body>
             </Table>
