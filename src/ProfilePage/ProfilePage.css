@@ -18,4 +18,9 @@
 
 .profile-page .content .details {
     text-align: start;
+    width: 100%;
+}
+
+.profile-page .results-table .no-results-message {
+    text-align: center;
 }

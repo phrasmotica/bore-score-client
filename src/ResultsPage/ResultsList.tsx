@@ -34,7 +34,7 @@ export const ResultsList = (props: ResultsListProps) => {
     const renderNoResultsMessage = () => (
         <Table.Row>
             <Table.Cell colSpan={16}>
-                <p className="text-center">No results to show.</p>
+                <p className="no-results-message">No results to show.</p>
             </Table.Cell>
         </Table.Row>
     )

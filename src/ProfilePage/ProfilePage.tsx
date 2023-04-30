@@ -65,7 +65,7 @@ export const ProfilePage = () => {
                     </div>}
                 </div>
 
-                <div className="details w-100">
+                <div className="details">
                     <h3>Recent Results</h3>
 
                     <ResultsList
