@@ -32,10 +32,10 @@ export const ProfilePage = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (!parseToken()) {
+        if (!token) {
             navigate("/login?redirect=" + encodeURIComponent("/me"))
         }
-    }, [navigate])
+    }, [token, navigate])
 
     if (!token || !user) {
         return null
