@@ -109,6 +109,16 @@ export const postGame = (game: Game) => {
     .then((data: Game) => data)
 }
 
+export const deleteGame = (name: string) => {
+    const headers = getHeaders()
+
+    return fetch(`${process.env.REACT_APP_API_URL}/games/${name}`, {
+        method: "DELETE",
+        headers: headers,
+    })
+    .then(handleResponse)
+}
+
 export const getAllGroups = () => {
     const headers = getHeaders()
 

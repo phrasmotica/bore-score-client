@@ -1,3 +1,4 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import moment from "moment"
 import { useState } from "react"
 import { useNavigate } from "react-router"
@@ -6,7 +7,7 @@ import { Button, Header, Icon, Modal, Table } from "semantic-ui-react"
 import { AddResultModal } from "../AddResultModal/AddResultModal"
 import { GameImage } from "../GameImage"
 
-import { getHeaders } from "../Auth"
+import { deleteGame } from "../FetchHelpers"
 import { displayDateValue } from "../MomentHelpers"
 
 import { Game } from "../models/Game"
@@ -20,20 +21,27 @@ interface GameDetailsProps {
 }
 
 export const GameDetails = (props: GameDetailsProps) => {
+    let navigate = useNavigate()
+
+    let queryClient = useQueryClient()
+
+    const { mutate } = useMutation({
+        mutationFn: (game: Game) => deleteGame(game.name),
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ["games"],
+            })
+
+            setShowDeletePrompt(false)
+
+            navigate("/games")
+        },
+    })
+
     const [showAddResultModal, setShowAddResultModal] = useState(false)
     const [showDeletePrompt, setShowDeletePrompt] = useState(false)
 
-    let navigate = useNavigate()
-
     let game = props.game
-
-    const deleteGame = () => {
-        fetch(`${process.env.REACT_APP_API_URL}/games/${game.name}`, {
-            method: "DELETE",
-            headers: getHeaders(),
-        })
-            .then(() => navigate("/games"))
-    }
 
     let playersStr = `${game.minPlayers}-${game.maxPlayers}`
     if (game.minPlayers === game.maxPlayers) {
@@ -56,7 +64,7 @@ export const GameDetails = (props: GameDetailsProps) => {
                 </p>
             </Modal.Content>
             <Modal.Actions>
-                <Button color="green" onClick={deleteGame}>
+                <Button color="green" onClick={() => mutate(game)}>
                     <Icon name="checkmark" />
                     Yes
                 </Button>
