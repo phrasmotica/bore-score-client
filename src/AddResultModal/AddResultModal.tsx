@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
 import moment from "moment"
 import { Accordion, Button, Form, Header, Icon, Modal } from "semantic-ui-react"
@@ -12,7 +13,7 @@ import { IndividualScoreForm } from "./IndividualScoreForm"
 import { IndividualWinForm } from "./IndividualWinForm"
 import { GameImage } from "../GameImage"
 
-import { useGames, useGroups, usePlayers } from "../FetchHelpers"
+import { getPlayers, useGames, useGroups } from "../FetchHelpers"
 import { submitValue } from "../MomentHelpers"
 
 import { Game } from "../models/Game"
@@ -31,7 +32,12 @@ interface AddResultModalProps {
 export const AddResultModal = (props: AddResultModalProps) => {
     const { games } = useGames()
     const { groups } = useGroups()
-    const { players } = usePlayers()
+
+    // TODO: add error handling
+    const { data: players } = useQuery({
+        queryKey: ["players"],
+        queryFn: () => getPlayers(),
+    })
 
     const [showPlayers, setShowPlayers] = useState(true)
     const [showGroup, setShowGroup] = useState(false)
@@ -82,7 +88,7 @@ export const AddResultModal = (props: AddResultModalProps) => {
             case WinMethodName.IndividualScore:
                 return (
                     <IndividualScoreForm
-                        players={players}
+                        players={players ?? []}
                         minPlayerCount={game.minPlayers}
                         maxPlayerCount={game.maxPlayers}
                         updateFormData={updateFormData} />
@@ -91,7 +97,7 @@ export const AddResultModal = (props: AddResultModalProps) => {
             case WinMethodName.IndividualWin:
                 return (
                     <IndividualWinForm
-                        players={players}
+                        players={players ?? []}
                         minPlayerCount={game.minPlayers}
                         maxPlayerCount={game.maxPlayers}
                         updateFormData={updateFormData} />
@@ -100,7 +106,7 @@ export const AddResultModal = (props: AddResultModalProps) => {
             case WinMethodName.CooperativeScore:
                 return (
                     <CooperativeScoreForm
-                        players={players}
+                        players={players ?? []}
                         minPlayerCount={game.minPlayers}
                         maxPlayerCount={game.maxPlayers}
                         updateFormData={updateFormData} />
@@ -109,7 +115,7 @@ export const AddResultModal = (props: AddResultModalProps) => {
             case WinMethodName.CooperativeWin:
                 return (
                     <CooperativeWinForm
-                        players={players}
+                        players={players ?? []}
                         minPlayerCount={game.minPlayers}
                         maxPlayerCount={game.maxPlayers}
                         updateFormData={updateFormData} />

@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query"
 import { useState } from "react"
 import { SemanticToastContainer } from "react-semantic-toasts"
 import { Button, Icon } from "semantic-ui-react"
@@ -7,16 +8,21 @@ import { GroupFilterDropdown } from "./GroupFilterDropdown"
 import { ResultsList } from "./ResultsList"
 
 import { AddResultModal } from "../AddResultModal/AddResultModal"
-import { getResults, useAllGroups, useGames, usePlayers } from "../FetchHelpers"
+import { getPlayers, getResults, useAllGroups, useGames } from "../FetchHelpers"
 import { useTitle } from "../Hooks"
 
 import "./ResultsPage.css"
-import { useQuery } from "@tanstack/react-query"
 
 export const ResultsPage = () => {
     useTitle("Results")
 
     const [showAddResultModal, setShowAddResultModal] = useState(false)
+
+    // TODO: add error handling
+    const { data: players } = useQuery({
+        queryKey: ["players"],
+        queryFn: () => getPlayers(),
+    })
 
     // TODO: add error handling
     const { data: results } = useQuery({
@@ -26,7 +32,6 @@ export const ResultsPage = () => {
 
     const { games } = useGames()
     const { groups } = useAllGroups()
-    const { players } = usePlayers()
 
     const [selectedGames, setSelectedGames] = useState<string[]>([])
     const [selectedGroups, setSelectedGroups] = useState<string[]>([])
@@ -72,7 +77,7 @@ export const ResultsPage = () => {
                     games={games}
                     groups={groups}
                     results={results ?? []}
-                    players={players}
+                    players={players ?? []}
                     selectedGames={selectedGames}
                     selectedGroups={selectedGroups} />
             </div>

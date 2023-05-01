@@ -1,5 +1,6 @@
+import { useQuery } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
-import { useNavigate, useSearchParams } from "react-router-dom"
+import { useSearchParams } from "react-router-dom"
 import { Button, Form, Icon } from "semantic-ui-react"
 
 import { AddResultModal } from "../AddResultModal/AddResultModal"
@@ -9,7 +10,7 @@ import { IndividualScoreForm } from "../AddResultModal/IndividualScoreForm"
 import { IndividualWinForm } from "../AddResultModal/IndividualWinForm"
 import { GameImage } from "../GameImage"
 
-import { useGames, useGroups, usePlayers } from "../FetchHelpers"
+import { getPlayers, useGames, useGroups } from "../FetchHelpers"
 import { useTitle } from "../Hooks"
 
 import { Game } from "../models/Game"
@@ -26,7 +27,12 @@ export const ScorecardPage = () => {
 
     const { games } = useGames()
     const { groups } = useGroups()
-    const { players } = usePlayers()
+
+    // TODO: add error handling
+    const { data: players } = useQuery({
+        queryKey: ["players"],
+        queryFn: () => getPlayers(),
+    })
 
     const [game, setGame] = useState<Game>()
     const [useGroup, setUseGroup] = useState(false)
@@ -70,7 +76,7 @@ export const ScorecardPage = () => {
             case WinMethodName.IndividualScore:
                 return (
                     <IndividualScoreForm
-                        players={players}
+                        players={players ?? []}
                         minPlayerCount={game.minPlayers}
                         maxPlayerCount={game.maxPlayers}
                         updateFormData={updateFormData} />
@@ -79,7 +85,7 @@ export const ScorecardPage = () => {
             case WinMethodName.IndividualWin:
                 return (
                     <IndividualWinForm
-                        players={players}
+                        players={players ?? []}
                         minPlayerCount={game.minPlayers}
                         maxPlayerCount={game.maxPlayers}
                         updateFormData={updateFormData} />
@@ -88,7 +94,7 @@ export const ScorecardPage = () => {
             case WinMethodName.CooperativeScore:
                 return (
                     <CooperativeScoreForm
-                        players={players}
+                        players={players ?? []}
                         minPlayerCount={game.minPlayers}
                         maxPlayerCount={game.maxPlayers}
                         updateFormData={updateFormData} />
@@ -97,7 +103,7 @@ export const ScorecardPage = () => {
             case WinMethodName.CooperativeWin:
                 return (
                     <CooperativeWinForm
-                        players={players}
+                        players={players ?? []}
                         minPlayerCount={game.minPlayers}
                         maxPlayerCount={game.maxPlayers}
                         updateFormData={updateFormData} />

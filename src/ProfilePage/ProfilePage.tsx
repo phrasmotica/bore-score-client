@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query"
 import { useEffect } from "react"
 import { useNavigate } from "react-router"
 import { Link } from "react-router-dom"
@@ -7,7 +8,7 @@ import { Button } from "semantic-ui-react"
 import { ResultsList } from "../ResultsPage/ResultsList"
 
 import { parseToken } from "../Auth"
-import { getResults, useGames, useGroups, usePlayers, useUser } from "../FetchHelpers"
+import { getPlayers, getResults, useGames, useGroups, useUser } from "../FetchHelpers"
 import { useTitle } from "../Hooks"
 import { PlayerImage } from "../PlayerImage"
 
@@ -15,7 +16,6 @@ import { sortResultsByRecent } from "../models/Result"
 
 import "react-semantic-toasts/styles/react-semantic-alert.css"
 import "./ProfilePage.css"
-import { useQuery } from "@tanstack/react-query"
 
 export const ProfilePage = () => {
     useTitle("My Profile")
@@ -27,7 +27,12 @@ export const ProfilePage = () => {
 
     const { games } = useGames()
     const { groups } = useGroups()
-    const { players } = usePlayers()
+
+    // TODO: add error handling
+    const { data: players } = useQuery({
+        queryKey: ["players"],
+        queryFn: () => getPlayers(),
+    })
 
     // TODO: add error handling
     const { data: results } = useQuery({
@@ -77,7 +82,7 @@ export const ProfilePage = () => {
                         approvals
                         games={games}
                         groups={groups}
-                        players={players}
+                        players={players ?? []}
                         results={resultsToShow}
                         selectedGames={[]}
                         selectedGroups={[]} />

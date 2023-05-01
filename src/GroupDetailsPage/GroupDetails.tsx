@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query"
 import { useState } from "react"
 import moment from "moment"
 import { Button, Icon } from "semantic-ui-react"
@@ -6,7 +7,7 @@ import { AddResultModal } from "../AddResultModal/AddResultModal"
 import { GameImage } from "../GameImage"
 import { ResultsList } from "../ResultsPage/ResultsList"
 
-import { useGames, useGroups, usePlayers } from "../FetchHelpers"
+import { getPlayers, useGames, useGroups } from "../FetchHelpers"
 import { displayDateValue } from "../MomentHelpers"
 
 import { Group } from "../models/Group"
@@ -22,7 +23,12 @@ export const GroupDetails = (props: GroupDetailsProps) => {
 
     const { games } = useGames()
     const { groups } = useGroups()
-    const { players } = usePlayers()
+
+    // TODO: add error handling
+    const { data: players } = useQuery({
+        queryKey: ["players"],
+        queryFn: () => getPlayers(),
+    })
 
     // TODO: get results by group
     const { results } = { results: [] }
@@ -65,7 +71,7 @@ export const GroupDetails = (props: GroupDetailsProps) => {
                     <ResultsList
                         games={games}
                         groups={groups}
-                        players={players}
+                        players={players ?? []}
                         results={results}
                         selectedGames={[]}
                         selectedGroups={[]} />

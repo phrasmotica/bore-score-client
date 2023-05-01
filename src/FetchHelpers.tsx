@@ -45,13 +45,14 @@ export const postApproval = (approval: Approval) => {
     .then((data: Approval) => data)
 }
 
-export const usePlayers = () => {
-    let fetch = useFetch<Player[]>(`${process.env.REACT_APP_API_URL}/players`, [])
+export const getPlayers = () => {
+    const headers = getHeaders()
 
-    return {
-        isLoadingPlayers: fetch.isLoading,
-        players: fetch.data || [],
-    }
+    return fetch(`${process.env.REACT_APP_API_URL}/players`, {
+        headers: headers,
+    })
+    .then(res => res.json())
+    .then((data: Player[]) => data)
 }
 
 export const usePlayer = (name: string | undefined) => {
