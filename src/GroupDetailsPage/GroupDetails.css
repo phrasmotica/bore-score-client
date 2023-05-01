@@ -1,3 +1,8 @@
 .group-details .game-image .ui.image {
     width: 100%;
 }
+
+.group-details-page .content .details {
+    text-align: start;
+    width: 100%;
+}
