@@ -101,7 +101,9 @@ export const ResultCard = (props: ResultCardProps) => {
         overallApproval = ApprovalStatus.Approved
     }
 
-    const isRejected = [...approvalMap.values()].some(a => a === ApprovalStatus.Rejected)
+    const rejectedCount = [...approvalMap.values()].filter(a => a === ApprovalStatus.Rejected).length
+
+    const isRejected = rejectedCount === r.scores.length
     if (isRejected) {
         overallApproval = ApprovalStatus.Rejected
     }
