@@ -33,6 +33,7 @@ interface ResultCardProps {
     groups: Group[]
     players: Player[]
     currentUser?: string
+    approvals?: boolean
 }
 
 export const ResultCard = (props: ResultCardProps) => {
@@ -210,13 +211,13 @@ export const ResultCard = (props: ResultCardProps) => {
                 {r.notes}
             </Table.Cell>
 
-            <Table.Cell>
+            {props.approvals && <Table.Cell>
                 {hasCurrentUser && overallApproval === ApprovalStatus.Pending && <ResultApprover
                     approveEnabled={approvalMap.get(props.currentUser!) !== ApprovalStatus.Approved}
                     approve={approve}
                     rejectEnabled={approvalMap.get(props.currentUser!) !== ApprovalStatus.Rejected}
                     reject={reject} />}
-            </Table.Cell>
+            </Table.Cell>}
         </Table.Row>
     )
 }

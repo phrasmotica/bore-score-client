@@ -68,6 +68,7 @@ export const ProfilePage = () => {
                     <h3>Recent Results</h3>
 
                     <ResultsList
+                        approvals
                         games={games}
                         groups={groups}
                         players={players}
