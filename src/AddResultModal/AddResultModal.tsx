@@ -1,10 +1,10 @@
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
 import moment from "moment"
+import { toast } from "react-semantic-toasts"
 import { Accordion, Button, Form, Header, Icon, Modal } from "semantic-ui-react"
 import { v4 as newGuid } from "uuid"
 
-import { getHeaders } from "../Auth"
 import { GroupForm } from "./GroupForm"
 import { CooperativeScoreForm } from "./CooperativeScoreForm"
 import { CooperativeWinForm } from "./CooperativeWinForm"
@@ -13,7 +13,7 @@ import { IndividualScoreForm } from "./IndividualScoreForm"
 import { IndividualWinForm } from "./IndividualWinForm"
 import { GameImage } from "../GameImage"
 
-import { getPlayers, useGames, useGroups } from "../FetchHelpers"
+import { getPlayers, postResult, useGames, useGroups } from "../FetchHelpers"
 import { submitValue } from "../MomentHelpers"
 
 import { Game } from "../models/Game"
@@ -33,10 +33,31 @@ export const AddResultModal = (props: AddResultModalProps) => {
     const { games } = useGames()
     const { groups } = useGroups()
 
+    const queryClient = useQueryClient()
+
     // TODO: add error handling
     const { data: players } = useQuery({
         queryKey: ["players"],
         queryFn: () => getPlayers(),
+    })
+
+    // TODO: add error handling
+    const { mutate: addResult } = useMutation({
+        mutationFn: (r: Result) => postResult(r),
+        onSuccess: () => {
+            props.setOpen(false)
+
+            toast({
+                title: "",
+                description: `Result for ${game!.displayName} added successfully.`,
+                color: "green",
+                icon: "check circle outline",
+            })
+
+            queryClient.invalidateQueries({
+                queryKey: ["results"]
+            })
+        },
     })
 
     const [showPlayers, setShowPlayers] = useState(true)
@@ -130,7 +151,7 @@ export const AddResultModal = (props: AddResultModalProps) => {
             return
         }
 
-        const newResult = {
+        addResult({
             id: newGuid(),
             timeCreated: moment().unix(),
             gameName: game.name,
@@ -138,24 +159,10 @@ export const AddResultModal = (props: AddResultModalProps) => {
             timePlayed: submitValue(timePlayed),
             notes: notes,
             ...formData
-        } as Result
-
-        const headers = getHeaders()
-        headers.set("Content-Type", "application/json")
-
-        fetch(`${process.env.REACT_APP_API_URL}/results`, {
-            method: "POST",
-            body: JSON.stringify(newResult),
-            headers: headers,
         })
-            .then(() => {
-                // TODO: invalidate list of results so they are
-                // refetched - use Tan Stack Query?
-                props.setOpen(false)
-            })
     }
 
-    let imageSrc = game?.imageLink || "https://e.snmc.io/i/600/s/9f6d3d17acac6ce20993eb158c203e4b/5662600/godspeed-you-black-emperor-lift-yr-skinny-fists-like-antennas-to-heaven-cover-art.jpg"
+    let imageSrc = game?.imageLink
 
     let gameOptions = games.map(g => ({
         key: g.name,
@@ -194,7 +201,7 @@ export const AddResultModal = (props: AddResultModalProps) => {
                             </Form>
                         </div>
 
-                        <GameImage imageSrc={imageSrc} />
+                        <GameImage imageSrc={imageSrc || ""} />
                     </div>
 
                     <div className="details">

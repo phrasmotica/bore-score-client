@@ -169,6 +169,19 @@ export const getResults = (username?: string) => {
     .then((data: Result[]) => data)
 }
 
+export const postResult = (result: Result) => {
+    const headers = getHeaders()
+    headers.set("Content-Type", "application/json")
+
+    return fetch(`${process.env.REACT_APP_API_URL}/results`, {
+        method: "POST",
+        body: JSON.stringify(result),
+        headers: headers,
+    })
+    .then(res => res.json())
+    .then((data: Result) => data)
+}
+
 export const useComputedName = (displayName: string, fetchDelayMs = 0) => {
     let endpoint = ""
     if (displayName.length > 0) {
