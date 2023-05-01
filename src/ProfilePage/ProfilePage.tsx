@@ -7,9 +7,9 @@ import { Button } from "semantic-ui-react"
 import { ResultsList } from "../ResultsPage/ResultsList"
 
 import { parseToken } from "../Auth"
-import { useGames, useGroups, usePlayers, useResults, useUser } from "../FetchHelpers"
 import { useTitle } from "../Hooks"
 import { PlayerImage } from "../PlayerImage"
+import { useGames, useGroups, usePlayers, useResults, useUser } from "../QueryHelpers"
 
 import { sortResultsByRecent } from "../models/Result"
 
@@ -22,12 +22,11 @@ export const ProfilePage = () => {
     const token = parseToken()
     const username = token?.username || ""
 
-    const { user } = useUser(username)
-
-    const { games } = useGames()
-    const { groups } = useGroups()
-    const { players } = usePlayers()
-    const { results } = useResults(username)
+    const { data: games } = useGames()
+    const { data: groups } = useGroups()
+    const { data: players } = usePlayers()
+    const { data: results } = useResults(username)
+    const { data: user } = useUser(username)
 
     const navigate = useNavigate()
 
@@ -43,7 +42,7 @@ export const ProfilePage = () => {
 
     const isCurrentUser = username === user.username
 
-    let resultsToShow = sortResultsByRecent(results).slice(0, 5)
+    let resultsToShow = sortResultsByRecent(results ?? []).slice(0, 5)
 
     return (
         <div className="profile-page">
@@ -69,9 +68,9 @@ export const ProfilePage = () => {
 
                     <ResultsList
                         approvals
-                        games={games}
-                        groups={groups}
-                        players={players}
+                        games={games ?? []}
+                        groups={groups ?? []}
+                        players={players ?? []}
                         results={resultsToShow}
                         selectedGames={[]}
                         selectedGroups={[]} />

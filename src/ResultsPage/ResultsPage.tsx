@@ -7,8 +7,8 @@ import { GroupFilterDropdown } from "./GroupFilterDropdown"
 import { ResultsList } from "./ResultsList"
 
 import { AddResultModal } from "../AddResultModal/AddResultModal"
-import { useAllGroups, useGames, usePlayers, useResults } from "../FetchHelpers"
 import { useTitle } from "../Hooks"
+import { useAllGroups, useGames, usePlayers, useResults } from "../QueryHelpers"
 
 import "./ResultsPage.css"
 
@@ -17,10 +17,10 @@ export const ResultsPage = () => {
 
     const [showAddResultModal, setShowAddResultModal] = useState(false)
 
-    const { games } = useGames()
-    const { groups } = useAllGroups()
-    const { players } = usePlayers()
-    const { results } = useResults()
+    const { data: games } = useGames()
+    const { data: groups } = useAllGroups()
+    const { data: players } = usePlayers()
+    const { data: results } = useResults()
 
     const [selectedGames, setSelectedGames] = useState<string[]>([])
     const [selectedGroups, setSelectedGroups] = useState<string[]>([])
@@ -36,14 +36,14 @@ export const ResultsPage = () => {
 
                 <div className="filters">
                     <GameFilterDropdown
-                        games={games}
-                        results={results}
+                        games={games ?? []}
+                        results={results ?? []}
                         selectedGames={selectedGames}
                         setSelectedGames={setSelectedGames} />
 
                     <GroupFilterDropdown
-                        groups={groups}
-                        results={results}
+                        groups={groups ?? []}
+                        results={results ?? []}
                         selectedGroups={selectedGroups}
                         setSelectedGroups={setSelectedGroups} />
                 </div>
@@ -63,10 +63,10 @@ export const ResultsPage = () => {
                 </div>
 
                 <ResultsList
-                    games={games}
-                    groups={groups}
-                    results={results}
-                    players={players}
+                    games={games ?? []}
+                    groups={groups ?? []}
+                    results={results ?? []}
+                    players={players ?? []}
                     selectedGames={selectedGames}
                     selectedGroups={selectedGroups} />
             </div>

@@ -1,53 +1,39 @@
+import { useMutation } from "@tanstack/react-query"
 import { useState } from "react"
 import { useNavigate } from "react-router"
 import { Form } from "semantic-ui-react"
 
-import { getHeaders, setToken } from "../Auth"
+import { setToken } from "../Auth"
+import { requestToken } from "../FetchHelpers"
 
 interface LoginFormProps {
     redirect?: string
 }
 
-interface TokenRequest {
-    email: string
-    password: string
-}
-
-interface TokenResponse {
-    token: string
-}
-
 export const LoginForm = (props: LoginFormProps) => {
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-
     const navigate = useNavigate()
 
-    const formComplete = () => email.length > 0 && password.length > 0
-
-    const submit = () => {
-        const request = {
-            email: email,
-            password: password,
-        } as TokenRequest
-
-        const headers = getHeaders()
-        headers.set("Content-Type", "application/json")
-
-        fetch(`${process.env.REACT_APP_API_URL}/token`, {
-            method: "POST",
-            body: JSON.stringify(request),
-            headers: headers,
-        })
-        .then(res => res.json())
-        .then((res: TokenResponse) => {
-            setToken(res.token)
+    // TODO: use react-query-auth library
+    const { mutate } = useMutation({
+        mutationFn: requestToken,
+        onSuccess: data => {
+            setToken(data.token)
             navigate(props.redirect || "/")
 
             // ensure page reloads after navigation
             window.dispatchEvent(new Event("storage"))
-        })
-    }
+        },
+    })
+
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+
+    const formComplete = () => email.length > 0 && password.length > 0
+
+    const submit = () => mutate({
+        email: email,
+        password: password,
+    })
 
     return (
         <Form className="login-form" onSubmit={submit}>

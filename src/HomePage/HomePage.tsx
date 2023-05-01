@@ -1,18 +1,18 @@
 import { Link } from "react-router-dom"
 import { Statistic } from "semantic-ui-react"
 
-import { useGames, useResults, useSummary } from "../FetchHelpers"
 import { GameImage } from "../GameImage"
 import { useTitle } from "../Hooks"
+import { useGames, useResults, useSummary } from "../QueryHelpers"
 
 import { sortResultsByRecent } from "../models/Result"
 
 export const HomePage = () => {
     useTitle("Home")
 
-    const { isLoadingSummary, summary } = useSummary()
-    const { games } = useGames()
-    const { results } = useResults()
+    const { data: games } = useGames()
+    const { data: results } = useResults()
+    const { isLoading: isLoadingSummary, data: summary } = useSummary()
 
     const renderSummary = () => {
         if (isLoadingSummary) {
@@ -49,11 +49,11 @@ export const HomePage = () => {
     }
 
     const renderGamesOfRecentResults = () => {
-        if (games.length <= 0) {
+        if (!games || games.length <= 0) {
             return null
         }
 
-        let lastResults = sortResultsByRecent(results)
+        let lastResults = sortResultsByRecent(results ?? [])
         let gameNames = [...new Set(lastResults.map(r => r.gameName))].slice(0, 5)
         let gamesToShow = gameNames.map(n => games.find(g => g.name === n)!)
 

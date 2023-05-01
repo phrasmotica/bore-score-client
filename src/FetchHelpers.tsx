@@ -1,9 +1,6 @@
-import { useEffect, useState } from "react"
-
 import { getHeaders } from "./Auth"
 
 import { Approval } from "./models/Approval"
-import { ComputedName } from "./models/ComputedName"
 import { Game } from "./models/Game"
 import { Group } from "./models/Group"
 import { LinkType } from "./models/LinkType"
@@ -13,13 +10,14 @@ import { Summary } from "./models/Summary"
 import { User } from "./models/User"
 import { WinMethod } from "./models/WinMethod"
 
-export const useSummary = () => {
-    let fetch = useFetch<Summary | undefined>(`${process.env.REACT_APP_API_URL}/summary`, undefined)
+export const getSummary = () => {
+    const headers = getHeaders()
 
-    return {
-        isLoadingSummary: fetch.isLoading,
-        summary: fetch.data,
-    }
+    return fetch(`${process.env.REACT_APP_API_URL}/summary`, {
+        headers: headers,
+    })
+    .then(handleResponse)
+    .then((data: Summary) => data)
 }
 
 export const getApprovals = (resultId: string) => {
@@ -28,7 +26,7 @@ export const getApprovals = (resultId: string) => {
     return fetch(`${process.env.REACT_APP_API_URL}/approvals/${resultId}`, {
         headers: headers,
     })
-    .then(res => res.json())
+    .then(handleResponse)
     .then((data: Approval[]) => data)
 }
 
@@ -41,180 +39,206 @@ export const postApproval = (approval: Approval) => {
         body: JSON.stringify(approval),
         headers: headers,
     })
-    .then(res => res.json())
+    .then(handleResponse)
     .then((data: Approval) => data)
 }
 
-export const usePlayers = () => {
-    let fetch = useFetch<Player[]>(`${process.env.REACT_APP_API_URL}/players`, [])
+export const getPlayers = () => {
+    const headers = getHeaders()
 
-    return {
-        isLoadingPlayers: fetch.isLoading,
-        players: fetch.data || [],
-    }
+    return fetch(`${process.env.REACT_APP_API_URL}/players`, {
+        headers: headers,
+    })
+    .then(handleResponse)
+    .then((data: Player[]) => data)
 }
 
-export const usePlayer = (name: string | undefined) => {
-    let endpoint = ""
-    if (name !== undefined && name.length > 0) {
-        endpoint = `${process.env.REACT_APP_API_URL}/players/${name}`
-    }
+export const getPlayer = (username: string) => {
+    const headers = getHeaders()
 
-    let fetch = useFetch<Player | undefined>(endpoint, undefined)
-
-    return {
-        isLoadingPlayer: fetch.isLoading,
-        player: fetch.data,
-    }
+    return fetch(`${process.env.REACT_APP_API_URL}/players/${username}`, {
+        headers: headers,
+    })
+    .then(handleResponse)
+    .then((data: Player) => data)
 }
 
-export const useGames = () => {
-    let fetch = useFetch<Game[]>(`${process.env.REACT_APP_API_URL}/games`, [])
+export const deletePlayer = (username: string) => {
+    const headers = getHeaders()
 
-    return {
-        isLoadingGames: fetch.isLoading,
-        games: fetch.data || [],
-    }
+    // TODO: handle error without parsing response as JSON
+    return fetch(`${process.env.REACT_APP_API_URL}/players/${username}`, {
+        method: "DELETE",
+        headers: headers,
+    })
 }
 
-export const useGame = (name: string | undefined) => {
-    let endpoint = ""
-    if (name !== undefined && name.length > 0) {
-        endpoint = `${process.env.REACT_APP_API_URL}/games/${name}`
-    }
+export const postPlayer = (player: Player) => {
+    const headers = getHeaders()
+    headers.set("Content-Type", "application/json")
 
-    let fetch = useFetch<Game | undefined>(endpoint, undefined)
-
-    return {
-        isLoadingGame: fetch.isLoading,
-        game: fetch.data,
-    }
+    return fetch(`${process.env.REACT_APP_API_URL}/players`, {
+        method: "POST",
+        body: JSON.stringify(player),
+        headers: headers,
+    })
+    .then(handleResponse)
+    .then((data: Player) => data)
 }
 
-export const useAllGroups = () => {
-    let fetch = useFetch<Group[]>(`${process.env.REACT_APP_API_URL}/groups-all`, [])
+export const getGames = () => {
+    const headers = getHeaders()
 
-    return {
-        isLoadingGroups: fetch.isLoading,
-        groups: fetch.data || [],
-    }
+    return fetch(`${process.env.REACT_APP_API_URL}/games`, {
+        headers: headers,
+    })
+    .then(handleResponse)
+    .then((data: Game[]) => data)
 }
 
-export const useGroups = () => {
-    let fetch = useFetch<Group[]>(`${process.env.REACT_APP_API_URL}/groups`, [])
+export const getGame = (name: string) => {
+    const headers = getHeaders()
 
-    return {
-        isLoadingGroups: fetch.isLoading,
-        groups: fetch.data || [],
-    }
+    return fetch(`${process.env.REACT_APP_API_URL}/games/${name}`, {
+        headers: headers,
+    })
+    .then(handleResponse)
+    .then((data: Game) => data)
 }
 
-export const useGroup = (name: string | undefined) => {
-    let endpoint = ""
-    if (name !== undefined && name.length > 0) {
-        endpoint = `${process.env.REACT_APP_API_URL}/groups/${name}`
-    }
+export const postGame = (game: Game) => {
+    const headers = getHeaders()
+    headers.set("Content-Type", "application/json")
 
-    let fetch = useFetch<Group | undefined>(endpoint, undefined)
-
-    return {
-        isLoadingGroup: fetch.isLoading,
-        group: fetch.data,
-    }
+    return fetch(`${process.env.REACT_APP_API_URL}/games`, {
+        method: "POST",
+        body: JSON.stringify(game),
+        headers: headers,
+    })
+    .then(handleResponse)
+    .then((data: Game) => data)
 }
 
-export const useLinkTypes = () => {
-    let fetch = useFetch<LinkType[]>(`${process.env.REACT_APP_API_URL}/linkTypes`, [])
+export const deleteGame = (name: string) => {
+    const headers = getHeaders()
 
-    return {
-        isLoadingLinkTypes: fetch.isLoading,
-        linkTypes: fetch.data || [],
-    }
+    // TODO: handle error without parsing response as JSON
+    return fetch(`${process.env.REACT_APP_API_URL}/games/${name}`, {
+        method: "DELETE",
+        headers: headers,
+    })
 }
 
-export const useUser = (username: string | undefined) => {
-    let endpoint = ""
-    if (username !== undefined && username.length > 0) {
-        endpoint = `${process.env.REACT_APP_API_URL}/users/${username}`
-    }
+export const getAllGroups = () => {
+    const headers = getHeaders()
 
-    let fetch = useFetch<User | undefined>(endpoint, undefined)
-
-    return {
-        isLoadingUser: fetch.isLoading,
-        user: fetch.data,
-    }
+    return fetch(`${process.env.REACT_APP_API_URL}/groups-all`, {
+        headers: headers,
+    })
+    .then(handleResponse)
+    .then((data: Group[]) => data)
 }
 
-export const useWinMethods = () => {
-    let fetch = useFetch<WinMethod[]>(`${process.env.REACT_APP_API_URL}/winMethods`, [])
+export const getGroups = () => {
+    const headers = getHeaders()
 
-    return {
-        isLoadingWinMethods: fetch.isLoading,
-        winMethods: fetch.data || [],
-    }
+    return fetch(`${process.env.REACT_APP_API_URL}/groups`, {
+        headers: headers,
+    })
+    .then(handleResponse)
+    .then((data: Group[]) => data)
 }
 
-export const useResults = (username?: string) => {
+export const getGroup = (name: string) => {
+    const headers = getHeaders()
+
+    return fetch(`${process.env.REACT_APP_API_URL}/groups/${name}`, {
+        headers: headers,
+    })
+    .then(handleResponse)
+    .then((data: Group) => data)
+}
+
+export const postGroup = (group: Group) => {
+    const headers = getHeaders()
+    headers.set("Content-Type", "application/json")
+
+    return fetch(`${process.env.REACT_APP_API_URL}/groups`, {
+        method: "POST",
+        body: JSON.stringify(group),
+        headers: headers,
+    })
+    .then(handleResponse)
+    .then((data: Group) => data)
+}
+
+export const getLinkTypes = () => {
+    const headers = getHeaders()
+
+    return fetch(`${process.env.REACT_APP_API_URL}/linkTypes`, {
+        headers: headers,
+    })
+    .then(handleResponse)
+    .then((data: LinkType[]) => data)
+}
+
+export const getUser = (username: string) => {
+    const headers = getHeaders()
+
+    return fetch(`${process.env.REACT_APP_API_URL}/users/${username}`, {
+        headers: headers,
+    })
+    .then(handleResponse)
+    .then((data: User) => data)
+}
+
+export const getWinMethods = () => {
+    const headers = getHeaders()
+
+    return fetch(`${process.env.REACT_APP_API_URL}/winMethods`, {
+        headers: headers,
+    })
+    .then(handleResponse)
+    .then((data: WinMethod[]) => data)
+}
+
+export const getResults = (username?: string) => {
     let url = `${process.env.REACT_APP_API_URL}/results`
     if (username) {
         url += `?username=${username}`
     }
 
-    let fetch = useFetch<Result[]>(url, [])
-
-    return {
-        isLoadingResults: fetch.isLoading,
-        results: fetch.data || [],
-    }
-}
-
-export const useComputedName = (displayName: string, fetchDelayMs = 0) => {
-    let endpoint = ""
-    if (displayName.length > 0) {
-        endpoint = `${process.env.REACT_APP_API_URL}/admin/game-name/${displayName}`
-    }
-
-    let fetch = useFetch<ComputedName | undefined>(endpoint, undefined, fetchDelayMs)
-
-    return {
-        isLoadingComputedName: fetch.isLoading,
-        computedName: fetch.data,
-        setComputedName: fetch.setData
-    }
-}
-
-const useFetch = <T,>(url: string, initial: T, fetchDelayMs = 0) => {
-    const [isLoading, setIsLoading] = useState(false)
-    const [data, setData] = useState(initial)
-
-    useEffect(() => {
-        if (url.length <= 0) {
-            return
-        }
-
-        const fetchData = () => {
-            setIsLoading(true)
-
-            fetchWithResilience<T>(url)
-                .then(setData)
-                .catch(err => console.error(err))
-                .finally(() => setIsLoading(false))
-        }
-
-        let timeout = setTimeout(fetchData, fetchDelayMs)
-        return () => clearTimeout(timeout)
-    }, [url, fetchDelayMs])
-
-    return { isLoading, data, setData }
-}
-
-const fetchWithResilience = <T,>(url: string) => {
     return fetch(url, {
         headers: getHeaders(),
     })
-        .then(handleResponse)
-        .then((data: T) => data)
+    .then(handleResponse)
+    .then((data: Result[]) => data)
+}
+
+export const postResult = (result: Result) => {
+    const headers = getHeaders()
+    headers.set("Content-Type", "application/json")
+
+    return fetch(`${process.env.REACT_APP_API_URL}/results`, {
+        method: "POST",
+        body: JSON.stringify(result),
+        headers: headers,
+    })
+    .then(handleResponse)
+    .then((data: Result) => data)
+}
+
+export const requestToken = (request: TokenRequest) => {
+    const headers = getHeaders()
+    headers.set("Content-Type", "application/json")
+
+    return fetch(`${process.env.REACT_APP_API_URL}/token`, {
+        method: "POST",
+        body: JSON.stringify(request),
+        headers: headers,
+    })
+    .then(res => res.json())
+    .then((res: TokenResponse) => res)
 }
 
 const handleResponse = (res: Response) => {
@@ -223,4 +247,13 @@ const handleResponse = (res: Response) => {
     }
 
     throw new Error(`Response from ${res.url} returned error ${res.status} (${res.statusText})`)
+}
+
+interface TokenRequest {
+    email: string
+    password: string
+}
+
+interface TokenResponse {
+    token: string
 }

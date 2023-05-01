@@ -1,9 +1,10 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
 import moment from "moment"
+import { toast } from "react-semantic-toasts"
 import { Accordion, Button, Form, Header, Icon, Modal } from "semantic-ui-react"
 import { v4 as newGuid } from "uuid"
 
-import { getHeaders } from "../Auth"
 import { GroupForm } from "./GroupForm"
 import { CooperativeScoreForm } from "./CooperativeScoreForm"
 import { CooperativeWinForm } from "./CooperativeWinForm"
@@ -12,11 +13,11 @@ import { IndividualScoreForm } from "./IndividualScoreForm"
 import { IndividualWinForm } from "./IndividualWinForm"
 import { GameImage } from "../GameImage"
 
-import { useGames, useGroups, usePlayers } from "../FetchHelpers"
+import { postResult } from "../FetchHelpers"
 import { submitValue } from "../MomentHelpers"
+import { useGames, useGroups, usePlayers } from "../QueryHelpers"
 
 import { Game } from "../models/Game"
-import { Result } from "../models/Result"
 import { WinMethodName } from "../models/WinMethod"
 
 import "./AddResultModal.css"
@@ -29,9 +30,31 @@ interface AddResultModalProps {
 }
 
 export const AddResultModal = (props: AddResultModalProps) => {
-    const { games } = useGames()
-    const { groups } = useGroups()
-    const { players } = usePlayers()
+
+    const queryClient = useQueryClient()
+
+    const { data: games } = useGames()
+    const { data: groups } = useGroups()
+    const { data: players } = usePlayers()
+
+    // TODO: add error handling
+    const { mutate: addResult } = useMutation({
+        mutationFn: postResult,
+        onSuccess: () => {
+            props.setOpen(false)
+
+            toast({
+                title: "",
+                description: `Result for ${game!.displayName} added successfully.`,
+                color: "green",
+                icon: "check circle outline",
+            })
+
+            queryClient.invalidateQueries({
+                queryKey: ["results"]
+            })
+        },
+    })
 
     const [showPlayers, setShowPlayers] = useState(true)
     const [showGroup, setShowGroup] = useState(false)
@@ -47,14 +70,14 @@ export const AddResultModal = (props: AddResultModalProps) => {
     const [formIsComplete, setFormIsComplete] = useState(false)
 
     useEffect(() => {
-        if (games.length > 0) {
+        if (games && games.length > 0) {
             let defaultGame = games.find(g => g.name === props.game) ?? games[0]
             setGame(defaultGame)
         }
     }, [games, props.game])
 
     useEffect(() => {
-        if (groups.length > 0) {
+        if (groups && groups.length > 0) {
             let groupFromParam = groups.find(g => g.name === props.group)
             let defaultGroup = groupFromParam ?? groups[0]
             setGroup(defaultGroup.name)
@@ -82,7 +105,7 @@ export const AddResultModal = (props: AddResultModalProps) => {
             case WinMethodName.IndividualScore:
                 return (
                     <IndividualScoreForm
-                        players={players}
+                        players={players ?? []}
                         minPlayerCount={game.minPlayers}
                         maxPlayerCount={game.maxPlayers}
                         updateFormData={updateFormData} />
@@ -91,7 +114,7 @@ export const AddResultModal = (props: AddResultModalProps) => {
             case WinMethodName.IndividualWin:
                 return (
                     <IndividualWinForm
-                        players={players}
+                        players={players ?? []}
                         minPlayerCount={game.minPlayers}
                         maxPlayerCount={game.maxPlayers}
                         updateFormData={updateFormData} />
@@ -100,7 +123,7 @@ export const AddResultModal = (props: AddResultModalProps) => {
             case WinMethodName.CooperativeScore:
                 return (
                     <CooperativeScoreForm
-                        players={players}
+                        players={players ?? []}
                         minPlayerCount={game.minPlayers}
                         maxPlayerCount={game.maxPlayers}
                         updateFormData={updateFormData} />
@@ -109,7 +132,7 @@ export const AddResultModal = (props: AddResultModalProps) => {
             case WinMethodName.CooperativeWin:
                 return (
                     <CooperativeWinForm
-                        players={players}
+                        players={players ?? []}
                         minPlayerCount={game.minPlayers}
                         maxPlayerCount={game.maxPlayers}
                         updateFormData={updateFormData} />
@@ -124,7 +147,7 @@ export const AddResultModal = (props: AddResultModalProps) => {
             return
         }
 
-        const newResult = {
+        addResult({
             id: newGuid(),
             timeCreated: moment().unix(),
             gameName: game.name,
@@ -132,33 +155,19 @@ export const AddResultModal = (props: AddResultModalProps) => {
             timePlayed: submitValue(timePlayed),
             notes: notes,
             ...formData
-        } as Result
-
-        const headers = getHeaders()
-        headers.set("Content-Type", "application/json")
-
-        fetch(`${process.env.REACT_APP_API_URL}/results`, {
-            method: "POST",
-            body: JSON.stringify(newResult),
-            headers: headers,
         })
-            .then(() => {
-                // TODO: invalidate list of results so they are
-                // refetched - use Tan Stack Query?
-                props.setOpen(false)
-            })
     }
 
-    let imageSrc = game?.imageLink || "https://e.snmc.io/i/600/s/9f6d3d17acac6ce20993eb158c203e4b/5662600/godspeed-you-black-emperor-lift-yr-skinny-fists-like-antennas-to-heaven-cover-art.jpg"
+    let imageSrc = game?.imageLink
 
-    let gameOptions = games.map(g => ({
+    let gameOptions = (games ?? []).map(g => ({
         key: g.name,
         text: g.displayName,
         value: g.name,
     }))
 
     const setSelectedGame = (name: string) => {
-        let game = games.find(g => g.name === name)
+        let game = games?.find(g => g.name === name)
         setGame(game)
     }
 
@@ -188,7 +197,7 @@ export const AddResultModal = (props: AddResultModalProps) => {
                             </Form>
                         </div>
 
-                        <GameImage imageSrc={imageSrc} />
+                        <GameImage imageSrc={imageSrc || ""} />
                     </div>
 
                     <div className="details">
@@ -213,7 +222,7 @@ export const AddResultModal = (props: AddResultModalProps) => {
                             </Accordion.Title>
                             <Accordion.Content active={showGroup}>
                                 <GroupForm
-                                    groups={groups}
+                                    groups={groups ?? []}
                                     useGroup={useGroup}
                                     setUseGroup={setUseGroup}
                                     group={group}

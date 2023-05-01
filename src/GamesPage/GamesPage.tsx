@@ -4,16 +4,16 @@ import { GamesTable } from "./GamesTable"
 import { PlayerCountFilter } from "./PlayerCountFilter"
 import { WinMethodFilterDropdown } from "./WinMethodFilterDropdown"
 
-import { useGames, useWinMethods } from "../FetchHelpers"
 import { useTitle } from "../Hooks"
+import { useGames, useWinMethods } from "../QueryHelpers"
 
 import "./GamesPage.css"
 
 export const GamesPage = () => {
     useTitle("Games")
 
-    const { games } = useGames()
-    const { winMethods } = useWinMethods()
+    const { data: games } = useGames()
+    const { data: winMethods } = useWinMethods()
 
     const [selectedWinMethods, setSelectedWinMethods] = useState<string[]>([])
 
@@ -32,8 +32,8 @@ export const GamesPage = () => {
 
                 <div className="filters">
                     <WinMethodFilterDropdown
-                        winMethods={winMethods}
-                        games={games}
+                        winMethods={winMethods ?? []}
+                        games={games ?? []}
                         selectedWinMethods={selectedWinMethods}
                         setSelectedWinMethods={setSelectedWinMethods} />
 
@@ -59,8 +59,8 @@ export const GamesPage = () => {
                 </div>
 
                 <GamesTable
-                    games={games}
-                    winMethods={winMethods}
+                    games={games ?? []}
+                    winMethods={winMethods ?? []}
                     selectedWinMethods={selectedWinMethods}
                     useMinPlayers={filterByMinPlayers}
                     minPlayers={minPlayers}

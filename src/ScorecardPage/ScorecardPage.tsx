@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useNavigate, useSearchParams } from "react-router-dom"
+import { useSearchParams } from "react-router-dom"
 import { Button, Form, Icon } from "semantic-ui-react"
 
 import { AddResultModal } from "../AddResultModal/AddResultModal"
@@ -9,8 +9,8 @@ import { IndividualScoreForm } from "../AddResultModal/IndividualScoreForm"
 import { IndividualWinForm } from "../AddResultModal/IndividualWinForm"
 import { GameImage } from "../GameImage"
 
-import { useGames, useGroups, usePlayers } from "../FetchHelpers"
 import { useTitle } from "../Hooks"
+import { useGames, useGroups, usePlayers } from "../QueryHelpers"
 
 import { Game } from "../models/Game"
 import { WinMethodName } from "../models/WinMethod"
@@ -24,9 +24,9 @@ export const ScorecardPage = () => {
 
     const [searchParams] = useSearchParams()
 
-    const { games } = useGames()
-    const { groups } = useGroups()
-    const { players } = usePlayers()
+    const { data: games } = useGames()
+    const { data: groups } = useGroups()
+    const { data: players } = usePlayers()
 
     const [game, setGame] = useState<Game>()
     const [useGroup, setUseGroup] = useState(false)
@@ -36,7 +36,7 @@ export const ScorecardPage = () => {
     const [formIsComplete, setFormIsComplete] = useState(false)
 
     useEffect(() => {
-        if (games.length > 0) {
+        if (games && games.length > 0) {
             let gameParam = searchParams.get("game")
             let defaultGame = games.find(g => g.name === gameParam) ?? games[0]
             setGame(defaultGame)
@@ -44,7 +44,7 @@ export const ScorecardPage = () => {
     }, [games, searchParams])
 
     useEffect(() => {
-        if (groups.length > 0) {
+        if (groups && groups.length > 0) {
             let groupParam = searchParams.get("group")
 
             let groupFromParam = groups.find(g => g.name === groupParam)
@@ -70,7 +70,7 @@ export const ScorecardPage = () => {
             case WinMethodName.IndividualScore:
                 return (
                     <IndividualScoreForm
-                        players={players}
+                        players={players ?? []}
                         minPlayerCount={game.minPlayers}
                         maxPlayerCount={game.maxPlayers}
                         updateFormData={updateFormData} />
@@ -79,7 +79,7 @@ export const ScorecardPage = () => {
             case WinMethodName.IndividualWin:
                 return (
                     <IndividualWinForm
-                        players={players}
+                        players={players ?? []}
                         minPlayerCount={game.minPlayers}
                         maxPlayerCount={game.maxPlayers}
                         updateFormData={updateFormData} />
@@ -88,7 +88,7 @@ export const ScorecardPage = () => {
             case WinMethodName.CooperativeScore:
                 return (
                     <CooperativeScoreForm
-                        players={players}
+                        players={players ?? []}
                         minPlayerCount={game.minPlayers}
                         maxPlayerCount={game.maxPlayers}
                         updateFormData={updateFormData} />
@@ -97,7 +97,7 @@ export const ScorecardPage = () => {
             case WinMethodName.CooperativeWin:
                 return (
                     <CooperativeWinForm
-                        players={players}
+                        players={players ?? []}
                         minPlayerCount={game.minPlayers}
                         maxPlayerCount={game.maxPlayers}
                         updateFormData={updateFormData} />
@@ -109,14 +109,14 @@ export const ScorecardPage = () => {
 
     let imageSrc = game?.imageLink || "https://e.snmc.io/i/600/s/9f6d3d17acac6ce20993eb158c203e4b/5662600/godspeed-you-black-emperor-lift-yr-skinny-fists-like-antennas-to-heaven-cover-art.jpg"
 
-    let gameOptions = games.map(g => ({
+    let gameOptions = (games ?? []).map(g => ({
         key: g.name,
         text: g.displayName,
         value: g.name,
     }))
 
     const setSelectedGame = (name: string) => {
-        let game = games.find(g => g.name === name)
+        let game = games?.find(g => g.name === name)
         setGame(game)
     }
 

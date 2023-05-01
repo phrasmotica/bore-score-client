@@ -3,8 +3,8 @@ import { useParams } from "react-router-dom"
 
 import { GroupDetails } from "./GroupDetails"
 
-import { useGroup } from "../FetchHelpers"
 import { resetTitle, setTitle } from "../Helpers"
+import { useGroup } from "../QueryHelpers"
 
 interface GroupDetailsPageProps {
 
@@ -13,7 +13,7 @@ interface GroupDetailsPageProps {
 export const GroupDetailsPage = (props: GroupDetailsPageProps) => {
     let { name } = useParams()
 
-    const { group } = useGroup(name)
+    const { data: group } = useGroup(name || "")
 
     useEffect(() => {
         if (group?.displayName) {

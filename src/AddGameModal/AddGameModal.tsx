@@ -1,3 +1,4 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import moment from "moment"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
@@ -7,11 +8,12 @@ import { v4 as newGuid } from "uuid"
 import { LinkForm } from "./LinkForm"
 import { ImagePreview } from "../ImagePreview/ImagePreview"
 
-import { getHeaders } from "../Auth"
-import { useGames, useLinkTypes, useWinMethods } from "../FetchHelpers"
+import { postGame } from "../FetchHelpers"
 import { computeName } from "../Helpers"
+import { useGames, useLinkTypes, useWinMethods } from "../QueryHelpers"
 
 import { Link, Game } from "../models/Game"
+import { WinMethodName } from "../models/WinMethod"
 
 import "./AddGameModal.css"
 
@@ -23,9 +25,22 @@ interface AddGameModalProps {
 }
 
 export const AddGameModal = (props: AddGameModalProps) => {
-    const { games } = useGames()
-    const { linkTypes } = useLinkTypes()
-    const { winMethods } = useWinMethods()
+    const { data: games } = useGames()
+    const { data: linkTypes } = useLinkTypes()
+    const { data: winMethods } = useWinMethods()
+
+    const queryClient = useQueryClient()
+
+    const { mutate: addGame } = useMutation({
+        mutationFn: postGame,
+        onSuccess: (data: Game) => {
+            queryClient.invalidateQueries({
+                queryKey: ["games"]
+            })
+
+            navigate(`/games/${data.name}`)
+        },
+    })
 
     const [displayName, setDisplayName] = useState("")
     const [name, setName] = useState("")
@@ -44,19 +59,19 @@ export const AddGameModal = (props: AddGameModalProps) => {
     }, [displayName])
 
     useEffect(() => {
-        if (winMethods.length > 0) {
+        if (winMethods && winMethods.length > 0) {
             setWinMethod(winMethods[0].name)
         }
     }, [winMethods])
 
     useEffect(() => {
-        setLinks(linkTypes.map(l => ({
+        setLinks((linkTypes ?? []).map(l => ({
             type: l.name,
             link: "",
         })))
     }, [setLinks, linkTypes])
 
-    const displayNameIsAvailable = () => !games.map(g => g.displayName).includes(displayName)
+    const displayNameIsAvailable = () => !(games ?? []).map(g => g.displayName).includes(displayName)
 
     const formIsComplete = () => {
         return displayName.length > 0
@@ -66,7 +81,8 @@ export const AddGameModal = (props: AddGameModalProps) => {
             && winMethod.length > 0
     }
 
-    const newGame = {
+    // TODO: handle errors, e.g. game already exists
+    const submit = () => addGame({
         id: newGuid(),
         timeCreated: moment().unix(),
         displayName: displayName,
@@ -75,26 +91,12 @@ export const AddGameModal = (props: AddGameModalProps) => {
         description: description,
         minPlayers: minPlayers,
         maxPlayers: maxPlayers,
-        winMethod: winMethod,
+        winMethod: winMethod as WinMethodName,
         imageLink: imageLink,
-        links: links
-    } as Game
+        links: links,
+    })
 
-    // TODO: handle errors, e.g. game already exists
-    const submit = () => {
-        const headers = getHeaders()
-        headers.set("Content-Type", "application/json")
-
-        fetch(`${process.env.REACT_APP_API_URL}/games`, {
-            method: "POST",
-            body: JSON.stringify(newGame),
-            headers: headers,
-        })
-        .then(res => res.json())
-        .then((newGame: Game) => navigate(`/games/${newGame.name}`))
-    }
-
-    const createWinMethodOptions = () => winMethods.map(w => ({
+    const createWinMethodOptions = () => (winMethods ?? []).map(w => ({
         key: w.name,
         text: w.displayName,
         value: w.name
@@ -167,7 +169,7 @@ export const AddGameModal = (props: AddGameModalProps) => {
                                 onChange={(e, { value }) => setImageLink(value)} />
 
                             <LinkForm
-                                linkTypes={linkTypes}
+                                linkTypes={linkTypes ?? []}
                                 links={links}
                                 setLinks={setLinks} />
                         </div>
