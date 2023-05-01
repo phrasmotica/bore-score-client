@@ -22,26 +22,27 @@ export const useSummary = () => {
     }
 }
 
-export const useApprovals = (resultId: string) => {
-    let fetch = useFetch<Approval[]>(`${process.env.REACT_APP_API_URL}/approvals/${resultId}`, [])
+export const getApprovals = (resultId: string) => {
+    const headers = getHeaders()
 
-    return {
-        isLoadingApprovals: fetch.isLoading,
-        approvals: fetch.data || [],
-    }
+    return fetch(`${process.env.REACT_APP_API_URL}/approvals/${resultId}`, {
+        headers: headers,
+    })
+    .then(res => res.json())
+    .then((data: Approval[]) => data)
 }
 
-// TODO: add error handling
-export const postApproval = (approval: Approval, onSuccess: () => void) => {
+export const postApproval = (approval: Approval) => {
     const headers = getHeaders()
     headers.set("Content-Type", "application/json")
 
-    fetch(`${process.env.REACT_APP_API_URL}/approvals`, {
+    return fetch(`${process.env.REACT_APP_API_URL}/approvals`, {
         method: "POST",
         body: JSON.stringify(approval),
         headers: headers,
     })
-    .then(onSuccess)
+    .then(res => res.json())
+    .then((data: Approval) => data)
 }
 
 export const usePlayers = () => {

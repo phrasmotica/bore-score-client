@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom"
 import { toast } from "react-semantic-toasts"
-import { Table } from "semantic-ui-react"
+import { SemanticCOLORS, SemanticICONS, Table } from "semantic-ui-react"
 import moment from "moment"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { v4 as newGuid } from "uuid"
 
 import { CooperativeScoreCard } from "./CooperativeScoreCard"
@@ -13,7 +14,7 @@ import { ResultApprover } from "./ResultApprover"
 import { GameImage } from "../GameImage"
 
 import { parseToken } from "../Auth"
-import { postApproval, useApprovals } from "../FetchHelpers"
+import { getApprovals, postApproval } from "../FetchHelpers"
 import { groupBy } from "../Helpers"
 import { displayDateTimeValue } from "../MomentHelpers"
 
@@ -37,10 +38,43 @@ interface ResultCardProps {
 export const ResultCard = (props: ResultCardProps) => {
     let r = props.result
 
-    // TODO: don't do this if no token present
-    const { approvals } = useApprovals(r.id)
-
     const token = parseToken()
+
+    const queryClient = useQueryClient()
+
+    // TODO: add error handling
+    const { data: approvals } = useQuery({
+        queryKey: ["approvals", r.id],
+        queryFn: () => getApprovals(r.id),
+        enabled: token !== null,
+    })
+
+    // TODO: add error handling
+    const { mutate: addApproval } = useMutation({
+        mutationFn: (a: Approval) => postApproval(a),
+        onSuccess: (data: Approval) => {
+            let description = `You approved the ${game!.displayName} result.`
+            let colour = "green"
+            let icon = "check circle outline"
+
+            if (data.approvalStatus === ApprovalStatus.Rejected) {
+                description = `You rejected the ${game!.displayName} result!`
+                colour = "red"
+                icon = "times circle outline"
+            }
+
+            toast({
+                title: "",
+                description: description,
+                color: colour as SemanticCOLORS,
+                icon: icon as SemanticICONS,
+            })
+
+            queryClient.invalidateQueries({
+                queryKey: ["approvals", r.id]
+            })
+        },
+    })
 
     let game = props.games.find(g => g.name === r.gameName)
 
@@ -96,47 +130,25 @@ export const ResultCard = (props: ResultCardProps) => {
         return groupNameElement
     }
 
-    const approve = () => {
-        const newApproval = {
-            id: newGuid(),
-            resultId: r.id,
-            timeCreated: moment().unix(),
-            username: token?.username,
-            approvalStatus: ApprovalStatus.Approved,
-        } as Approval
+    const approve = () => addApproval({
+        id: newGuid(),
+        resultId: r.id,
+        timeCreated: moment().unix(),
+        username: token?.username || "",
+        approvalStatus: ApprovalStatus.Approved,
+    })
 
-        postApproval(newApproval, () =>
-            toast({
-                title: "",
-                description: `You approved the ${game!.displayName} result.`,
-                color: "green",
-                icon: "check circle outline",
-            })
-        )
-    }
-
-    const reject = () => {
-        const newApproval = {
-            id: newGuid(),
-            resultId: r.id,
-            timeCreated: moment().unix(),
-            username: token?.username,
-            approvalStatus: ApprovalStatus.Rejected,
-        } as Approval
-
-        postApproval(newApproval, () =>
-            toast({
-                title: "",
-                description: `You rejected the ${game!.displayName} result!`,
-                color: "red",
-                icon: "times circle outline",
-            })
-        )
-    }
+    const reject = () => addApproval({
+        id: newGuid(),
+        resultId: r.id,
+        timeCreated: moment().unix(),
+        username: token?.username || "",
+        approvalStatus: ApprovalStatus.Rejected,
+    })
 
     const hasCurrentUser = props.currentUser && r.scores.map(s => s.username).includes(props.currentUser)
 
-    const approvalGroups = groupBy(approvals, a => a.username)
+    const approvalGroups = groupBy(approvals ?? [], a => a.username)
     const approvalMap = new Map<string, ApprovalStatus>()
 
     for (let group of approvalGroups) {

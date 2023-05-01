@@ -4,6 +4,7 @@
   "homepage": "https://phrasmotica.github.io/bore-score-client",
   "private": true,
   "dependencies": {
+    "@tanstack/react-query": "^4.29.5",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
@@ -52,6 +53,7 @@
     ]
   },
   "devDependencies": {
+    "@tanstack/eslint-plugin-query": "^4.29.4",
     "@types/uuid": "^9.0.1",
     "gh-pages": "^5.0.0"
   }
