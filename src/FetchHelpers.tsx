@@ -92,7 +92,7 @@ export const postGame = (game: Game) => {
         body: JSON.stringify(game),
         headers: headers,
     })
-    .then(res => res.json())
+    .then(handleResponse)
     .then((data: Game) => data)
 }
 
@@ -120,6 +120,19 @@ export const getGroup = (name: string) => {
     const headers = getHeaders()
 
     return fetch(`${process.env.REACT_APP_API_URL}/groups/${name}`, {
+        headers: headers,
+    })
+    .then(handleResponse)
+    .then((data: Group) => data)
+}
+
+export const postGroup = (group: Group) => {
+    const headers = getHeaders()
+    headers.set("Content-Type", "application/json")
+
+    return fetch(`${process.env.REACT_APP_API_URL}/groups`, {
+        method: "POST",
+        body: JSON.stringify(group),
         headers: headers,
     })
     .then(handleResponse)

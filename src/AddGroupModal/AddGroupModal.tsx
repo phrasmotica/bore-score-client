@@ -1,10 +1,11 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import moment from "moment"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
 import { Button, Form, Header, Icon, Input, Label, Message, Modal } from "semantic-ui-react"
 import { v4 as newGuid } from "uuid"
 
-import { getHeaders } from "../Auth"
+import { postGroup } from "../FetchHelpers"
 import { computeName } from "../Helpers"
 import { ImagePreview } from "../ImagePreview/ImagePreview"
 import { useGroups } from "../QueryHelpers"
@@ -19,15 +20,28 @@ interface AddGroupModalProps {
 }
 
 export const AddGroupModal = (props: AddGroupModalProps) => {
+    const navigate = useNavigate()
+
     const { data: groups } = useGroups()
+
+    const queryClient = useQueryClient()
+
+    const { mutate: addGroup } = useMutation({
+        mutationFn: postGroup,
+        onSuccess: (data: Group) => {
+            queryClient.invalidateQueries({
+                queryKey: ["groups"]
+            })
+
+            navigate(`/groups/${data.name}`)
+        },
+    })
 
     const [name, setName] = useState("")
     const [displayName, setDisplayName] = useState("")
     const [description, setDescription] = useState("")
     const [visibility, setVisibility] = useState(GroupVisibilityName.Public)
     const [profilePicture, setProfilePicture] = useState("")
-
-    const navigate = useNavigate()
 
     useEffect(() => {
         setName(displayName.length > 0 ? computeName(displayName): "")
@@ -37,7 +51,7 @@ export const AddGroupModal = (props: AddGroupModalProps) => {
 
     const formIsComplete = () => name.length > 0 && nameIsAvailable() && displayName.length > 0
 
-    const newGroup = {
+    const submit = () => addGroup({
         id: newGuid(),
         timeCreated: moment().unix(),
         name: name,
@@ -45,21 +59,7 @@ export const AddGroupModal = (props: AddGroupModalProps) => {
         description: description,
         profilePicture: profilePicture,
         visibility: visibility,
-    } as Group
-
-    // TODO: handle errors, e.g. group already exists
-    const submit = () => {
-        const headers = getHeaders()
-        headers.set("Content-Type", "application/json")
-
-        fetch(`${process.env.REACT_APP_API_URL}/groups`, {
-            method: "POST",
-            body: JSON.stringify(newGroup),
-            headers: headers,
-        })
-        .then(res => res.json())
-        .then((newGroup: Group) => navigate(`/groups/${newGroup.name}`))
-    }
+    })
 
     return (
         <Modal
