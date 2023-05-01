@@ -69,13 +69,14 @@ export const usePlayer = (name: string | undefined) => {
     }
 }
 
-export const useGames = () => {
-    let fetch = useFetch<Game[]>(`${process.env.REACT_APP_API_URL}/games`, [])
+export const getGames = () => {
+    const headers = getHeaders()
 
-    return {
-        isLoadingGames: fetch.isLoading,
-        games: fetch.data || [],
-    }
+    return fetch(`${process.env.REACT_APP_API_URL}/games`, {
+        headers: headers,
+    })
+    .then(res => res.json())
+    .then((data: Game[]) => data)
 }
 
 export const useGame = (name: string | undefined) => {

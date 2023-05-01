@@ -8,8 +8,9 @@ import { LinkForm } from "./LinkForm"
 import { ImagePreview } from "../ImagePreview/ImagePreview"
 
 import { getHeaders } from "../Auth"
-import { useGames, useLinkTypes, useWinMethods } from "../FetchHelpers"
+import { useLinkTypes, useWinMethods } from "../FetchHelpers"
 import { computeName } from "../Helpers"
+import { useGames } from "../QueryHelpers"
 
 import { Link, Game } from "../models/Game"
 
@@ -23,7 +24,8 @@ interface AddGameModalProps {
 }
 
 export const AddGameModal = (props: AddGameModalProps) => {
-    const { games } = useGames()
+    const { data: games } = useGames()
+
     const { linkTypes } = useLinkTypes()
     const { winMethods } = useWinMethods()
 
@@ -56,7 +58,7 @@ export const AddGameModal = (props: AddGameModalProps) => {
         })))
     }, [setLinks, linkTypes])
 
-    const displayNameIsAvailable = () => !games.map(g => g.displayName).includes(displayName)
+    const displayNameIsAvailable = () => !(games ?? []).map(g => g.displayName).includes(displayName)
 
     const formIsComplete = () => {
         return displayName.length > 0

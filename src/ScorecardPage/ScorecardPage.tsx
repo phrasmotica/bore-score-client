@@ -9,9 +9,9 @@ import { IndividualScoreForm } from "../AddResultModal/IndividualScoreForm"
 import { IndividualWinForm } from "../AddResultModal/IndividualWinForm"
 import { GameImage } from "../GameImage"
 
-import { useGames, useGroups } from "../FetchHelpers"
+import { useGroups } from "../FetchHelpers"
 import { useTitle } from "../Hooks"
-import { usePlayers } from "../QueryHelpers"
+import { useGames, usePlayers } from "../QueryHelpers"
 
 import { Game } from "../models/Game"
 import { WinMethodName } from "../models/WinMethod"
@@ -25,9 +25,9 @@ export const ScorecardPage = () => {
 
     const [searchParams] = useSearchParams()
 
-    const { games } = useGames()
     const { groups } = useGroups()
 
+    const { data: games } = useGames()
     const { data: players } = usePlayers()
 
     const [game, setGame] = useState<Game>()
@@ -38,7 +38,7 @@ export const ScorecardPage = () => {
     const [formIsComplete, setFormIsComplete] = useState(false)
 
     useEffect(() => {
-        if (games.length > 0) {
+        if (games && games.length > 0) {
             let gameParam = searchParams.get("game")
             let defaultGame = games.find(g => g.name === gameParam) ?? games[0]
             setGame(defaultGame)
@@ -111,14 +111,14 @@ export const ScorecardPage = () => {
 
     let imageSrc = game?.imageLink || "https://e.snmc.io/i/600/s/9f6d3d17acac6ce20993eb158c203e4b/5662600/godspeed-you-black-emperor-lift-yr-skinny-fists-like-antennas-to-heaven-cover-art.jpg"
 
-    let gameOptions = games.map(g => ({
+    let gameOptions = (games ?? []).map(g => ({
         key: g.name,
         text: g.displayName,
         value: g.name,
     }))
 
     const setSelectedGame = (name: string) => {
-        let game = games.find(g => g.name === name)
+        let game = games?.find(g => g.name === name)
         setGame(game)
     }
 

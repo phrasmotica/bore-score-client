@@ -13,9 +13,9 @@ import { IndividualScoreForm } from "./IndividualScoreForm"
 import { IndividualWinForm } from "./IndividualWinForm"
 import { GameImage } from "../GameImage"
 
-import { postResult, useGames, useGroups } from "../FetchHelpers"
+import { postResult, useGroups } from "../FetchHelpers"
 import { submitValue } from "../MomentHelpers"
-import { usePlayers } from "../QueryHelpers"
+import { useGames, usePlayers } from "../QueryHelpers"
 
 import { Game } from "../models/Game"
 import { WinMethodName } from "../models/WinMethod"
@@ -30,11 +30,11 @@ interface AddResultModalProps {
 }
 
 export const AddResultModal = (props: AddResultModalProps) => {
-    const { games } = useGames()
     const { groups } = useGroups()
 
     const queryClient = useQueryClient()
 
+    const { data: games } = useGames()
     const { data: players } = usePlayers()
 
     // TODO: add error handling
@@ -70,7 +70,7 @@ export const AddResultModal = (props: AddResultModalProps) => {
     const [formIsComplete, setFormIsComplete] = useState(false)
 
     useEffect(() => {
-        if (games.length > 0) {
+        if (games && games.length > 0) {
             let defaultGame = games.find(g => g.name === props.game) ?? games[0]
             setGame(defaultGame)
         }
@@ -160,14 +160,14 @@ export const AddResultModal = (props: AddResultModalProps) => {
 
     let imageSrc = game?.imageLink
 
-    let gameOptions = games.map(g => ({
+    let gameOptions = (games ?? []).map(g => ({
         key: g.name,
         text: g.displayName,
         value: g.name,
     }))
 
     const setSelectedGame = (name: string) => {
-        let game = games.find(g => g.name === name)
+        let game = games?.find(g => g.name === name)
         setGame(game)
     }
 
