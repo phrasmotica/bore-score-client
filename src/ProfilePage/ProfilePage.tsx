@@ -7,7 +7,7 @@ import { Button } from "semantic-ui-react"
 import { ResultsList } from "../ResultsPage/ResultsList"
 
 import { parseToken } from "../Auth"
-import { useGames, useGroups, usePlayers, useResults, useUser } from "../FetchHelpers"
+import { getResults, useGames, useGroups, usePlayers, useUser } from "../FetchHelpers"
 import { useTitle } from "../Hooks"
 import { PlayerImage } from "../PlayerImage"
 
@@ -15,6 +15,7 @@ import { sortResultsByRecent } from "../models/Result"
 
 import "react-semantic-toasts/styles/react-semantic-alert.css"
 import "./ProfilePage.css"
+import { useQuery } from "@tanstack/react-query"
 
 export const ProfilePage = () => {
     useTitle("My Profile")
@@ -27,7 +28,12 @@ export const ProfilePage = () => {
     const { games } = useGames()
     const { groups } = useGroups()
     const { players } = usePlayers()
-    const { results } = useResults(username)
+
+    // TODO: add error handling
+    const { data: results } = useQuery({
+        queryKey: ["results"],
+        queryFn: () => getResults(username),
+    })
 
     const navigate = useNavigate()
 
@@ -43,7 +49,7 @@ export const ProfilePage = () => {
 
     const isCurrentUser = username === user.username
 
-    let resultsToShow = sortResultsByRecent(results).slice(0, 5)
+    let resultsToShow = sortResultsByRecent(results ?? []).slice(0, 5)
 
     return (
         <div className="profile-page">

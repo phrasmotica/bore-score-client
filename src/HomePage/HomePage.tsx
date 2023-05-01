@@ -1,18 +1,24 @@
 import { Link } from "react-router-dom"
 import { Statistic } from "semantic-ui-react"
 
-import { useGames, useResults, useSummary } from "../FetchHelpers"
+import { getResults, useGames, useSummary } from "../FetchHelpers"
 import { GameImage } from "../GameImage"
 import { useTitle } from "../Hooks"
 
 import { sortResultsByRecent } from "../models/Result"
+import { useQuery } from "@tanstack/react-query"
 
 export const HomePage = () => {
     useTitle("Home")
 
+    // TODO: add error handling
+    const { data: results } = useQuery({
+        queryKey: ["results"],
+        queryFn: () => getResults(),
+    })
+
     const { isLoadingSummary, summary } = useSummary()
     const { games } = useGames()
-    const { results } = useResults()
 
     const renderSummary = () => {
         if (isLoadingSummary) {
@@ -53,7 +59,7 @@ export const HomePage = () => {
             return null
         }
 
-        let lastResults = sortResultsByRecent(results)
+        let lastResults = sortResultsByRecent(results ?? [])
         let gameNames = [...new Set(lastResults.map(r => r.gameName))].slice(0, 5)
         let gamesToShow = gameNames.map(n => games.find(g => g.name === n)!)
 
