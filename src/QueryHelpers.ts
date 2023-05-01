@@ -28,7 +28,14 @@ export const usePlayers = () => useQuery({
 })
 
 // TODO: add error handling
-export const useResults = () => useQuery({
-    queryKey: ["results"],
-    queryFn: () => getResults(),
-})
+export const useResults = (username?: string) => {
+    let key = ["results"]
+    if (username) {
+        key.push(username)
+    }
+
+    return useQuery({
+        queryKey: key,
+        queryFn: () => getResults(username),
+    })
+}

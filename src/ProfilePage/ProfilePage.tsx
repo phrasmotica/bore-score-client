@@ -28,7 +28,7 @@ export const ProfilePage = () => {
     const { data: games } = useGames()
     const { data: groups } = useGroups()
     const { data: players } = usePlayers()
-    const { data: results } = useResults()
+    const { data: results } = useResults(username)
 
     const navigate = useNavigate()
 
