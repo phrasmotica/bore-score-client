@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { ScoreCardProps } from "./ScoreCardProps"
+import { ScoreCardProps, createIcon } from "./ScoreCardProps"
 
 interface CooperativeScoreCardProps {
     score: number
@@ -7,9 +7,12 @@ interface CooperativeScoreCardProps {
 
 export const CooperativeScoreCard = (props: ScoreCardProps & CooperativeScoreCardProps) => {
     let playerLinks = props.players.map((s, i) => (
-        <Link key={i} to={`/players/${s.username}`}>
-            {s.displayName}
-        </Link>
+        <span>
+            {createIcon(s.approvalStatus)}
+            <Link key={i} to={`/players/${s.username}`}>
+                {s.displayName}
+            </Link>
+        </span>
     ))
 
     let content = (

@@ -5,13 +5,11 @@ import { Button, Header, Icon, Modal } from "semantic-ui-react"
 
 import { PlayerImage } from "../PlayerImage"
 
-import { getHeaders, getToken } from "../Auth"
+import { getHeaders, parseToken } from "../Auth"
 import { resetTitle, setTitle } from "../Helpers"
 import { displayDateValue } from "../MomentHelpers"
 
 import { Player } from "../models/Player"
-
-const DEFAULT_IMAGE = "https://e.snmc.io/i/600/s/9f6d3d17acac6ce20993eb158c203e4b/5662600/godspeed-you-black-emperor-lift-yr-skinny-fists-like-antennas-to-heaven-cover-art.jpg"
 
 interface PlayerDetailsProps {
     player: Player
@@ -22,7 +20,7 @@ export const PlayerDetails = (props: PlayerDetailsProps) => {
 
     const navigate = useNavigate()
 
-    const token = getToken()
+    const token = parseToken()
 
     let player = props.player
 
@@ -82,7 +80,7 @@ export const PlayerDetails = (props: PlayerDetailsProps) => {
 
             <div className="content">
                 <div className="left">
-                    <PlayerImage imageSrc={player.profilePicture || DEFAULT_IMAGE} />
+                    <PlayerImage imageSrc={player.profilePicture} />
 
                     {token && <Button
                         icon

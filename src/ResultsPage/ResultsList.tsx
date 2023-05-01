@@ -2,6 +2,8 @@ import { Table } from "semantic-ui-react"
 
 import { ResultCard } from "./ResultCard"
 
+import { parseToken } from "../Auth"
+
 import { Game } from "../models/Game"
 import { Group } from "../models/Group"
 import { Player } from "../models/Player"
@@ -14,9 +16,12 @@ interface ResultsListProps {
     players: Player[]
     selectedGames: string[]
     selectedGroups: string[]
+    approvals?: boolean
 }
 
 export const ResultsList = (props: ResultsListProps) => {
+    const token = parseToken()
+
     let resultsToShow = sortResultsByRecent(props.results)
 
     if (props.selectedGames.length > 0) {
@@ -26,6 +31,14 @@ export const ResultsList = (props: ResultsListProps) => {
     if (props.selectedGroups.length > 0) {
         resultsToShow = resultsToShow.filter(r => props.selectedGroups.includes(r.groupName))
     }
+
+    const renderNoResultsMessage = () => (
+        <Table.Row>
+            <Table.Cell colSpan={16}>
+                <p className="no-results-message">No results to show.</p>
+            </Table.Cell>
+        </Table.Row>
+    )
 
     return (
         <div className="results-table">
@@ -38,17 +51,21 @@ export const ResultsList = (props: ResultsListProps) => {
                         <Table.HeaderCell width={2}>Played</Table.HeaderCell>
                         <Table.HeaderCell width={2}>Submitted</Table.HeaderCell>
                         <Table.HeaderCell width={4}>Notes</Table.HeaderCell>
+                        {props.approvals && <Table.HeaderCell width={4}>Approvals</Table.HeaderCell>}
                     </Table.Row>
                 </Table.Header>
 
                 <Table.Body>
-                    {resultsToShow.map(r => (
+                    {resultsToShow.length <= 0 && renderNoResultsMessage()}
+                    {resultsToShow.length > 0 && resultsToShow.map(r => (
                         <ResultCard
+                            approvals={props.approvals}
                             key={r.id}
                             result={r}
                             games={props.games}
                             groups={props.groups}
-                            players={props.players} />
+                            players={props.players}
+                            currentUser={token?.username} />
                     ))}
                 </Table.Body>
             </Table>

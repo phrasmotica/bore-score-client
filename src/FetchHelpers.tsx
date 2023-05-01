@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 
 import { getHeaders } from "./Auth"
 
+import { Approval } from "./models/Approval"
 import { ComputedName } from "./models/ComputedName"
 import { Game } from "./models/Game"
 import { Group } from "./models/Group"
@@ -9,6 +10,7 @@ import { LinkType } from "./models/LinkType"
 import { Player } from "./models/Player"
 import { Result } from "./models/Result"
 import { Summary } from "./models/Summary"
+import { User } from "./models/User"
 import { WinMethod } from "./models/WinMethod"
 
 export const useSummary = () => {
@@ -18,6 +20,29 @@ export const useSummary = () => {
         isLoadingSummary: fetch.isLoading,
         summary: fetch.data,
     }
+}
+
+export const getApprovals = (resultId: string) => {
+    const headers = getHeaders()
+
+    return fetch(`${process.env.REACT_APP_API_URL}/approvals/${resultId}`, {
+        headers: headers,
+    })
+    .then(res => res.json())
+    .then((data: Approval[]) => data)
+}
+
+export const postApproval = (approval: Approval) => {
+    const headers = getHeaders()
+    headers.set("Content-Type", "application/json")
+
+    return fetch(`${process.env.REACT_APP_API_URL}/approvals`, {
+        method: "POST",
+        body: JSON.stringify(approval),
+        headers: headers,
+    })
+    .then(res => res.json())
+    .then((data: Approval) => data)
 }
 
 export const usePlayers = () => {
@@ -107,6 +132,20 @@ export const useLinkTypes = () => {
     }
 }
 
+export const useUser = (username: string | undefined) => {
+    let endpoint = ""
+    if (username !== undefined && username.length > 0) {
+        endpoint = `${process.env.REACT_APP_API_URL}/users/${username}`
+    }
+
+    let fetch = useFetch<User | undefined>(endpoint, undefined)
+
+    return {
+        isLoadingUser: fetch.isLoading,
+        user: fetch.data,
+    }
+}
+
 export const useWinMethods = () => {
     let fetch = useFetch<WinMethod[]>(`${process.env.REACT_APP_API_URL}/winMethods`, [])
 
@@ -116,8 +155,13 @@ export const useWinMethods = () => {
     }
 }
 
-export const useResults = () => {
-    let fetch = useFetch<Result[]>(`${process.env.REACT_APP_API_URL}/results`, [])
+export const useResults = (username?: string) => {
+    let url = `${process.env.REACT_APP_API_URL}/results`
+    if (username) {
+        url += `?username=${username}`
+    }
+
+    let fetch = useFetch<Result[]>(url, [])
 
     return {
         isLoadingResults: fetch.isLoading,

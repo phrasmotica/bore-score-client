@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom"
-import { ScoreCardProps } from "./ScoreCardProps"
+import { ScoreCardProps, createIcon } from "./ScoreCardProps"
 
 export const IndividualScoreCard = (props: ScoreCardProps) => (
     <div>
         {props.players.map(s => {
             let content = (
                 <span>
+                    {createIcon(s.approvalStatus)}
                     <Link to={`/players/${s.username}`}>
                         {s.displayName}
                     </Link>

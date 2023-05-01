@@ -10,15 +10,17 @@ import { GroupsPage } from "./GroupsPage/GroupsPage"
 import { HomePage } from "./HomePage/HomePage"
 import { LoginPage } from "./LoginPage/LoginPage"
 import { PlayerDetailsPage } from "./PlayerDetailsPage/PlayerDetailsPage"
+import { ProfilePage } from "./ProfilePage/ProfilePage"
 import { ResultsPage } from "./ResultsPage/ResultsPage"
 import { ScorecardPage } from "./ScorecardPage/ScorecardPage"
 
-import { getToken, removeToken } from "./Auth"
+import { parseToken, removeToken } from "./Auth"
 
 import "./App.css"
 
 const App = () => {
-    const token = getToken()
+    const token = parseToken()
+    const username = token?.username || ""
 
     const logOut = () => {
         removeToken()
@@ -88,7 +90,7 @@ const App = () => {
 
                 <Menu.Item>
                     <Link to="/me">
-                        <strong>username</strong>
+                        <strong>{username}</strong>
                     </Link>
                 </Menu.Item>
 
@@ -110,6 +112,7 @@ const App = () => {
                     <Routes>
                         <Route path="/" element={<HomePage />} />
                         <Route path="/login" element={<LoginPage />} />
+                        <Route path="/me" element={<ProfilePage />} />
                         <Route path="/admin" element={<AdminPage />} />
                         <Route path="/players/:username" element={<PlayerDetailsPage />} />
                         <Route path="/groups/:name" element={<GroupDetailsPage />} />

@@ -1,0 +1,26 @@
+.profile-page .content {
+    display: flex;
+}
+
+.profile-page .content > :not(:first-child) {
+    margin-left: 0.5em;
+    border-left: 1px solid rgba(34, 36, 38, 0.15);
+    padding-left: 0.5em;
+}
+
+.profile-page .content .left > :not(:first-child) {
+    margin-top: 0.5em;
+}
+
+.profile-page .content .left {
+    text-align: end;
+}
+
+.profile-page .content .details {
+    text-align: start;
+    width: 100%;
+}
+
+.results-table .no-results-message {
+    text-align: center;
+}

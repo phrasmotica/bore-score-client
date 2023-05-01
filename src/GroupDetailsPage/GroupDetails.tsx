@@ -4,7 +4,9 @@ import { Button, Icon } from "semantic-ui-react"
 
 import { AddResultModal } from "../AddResultModal/AddResultModal"
 import { GameImage } from "../GameImage"
+import { ResultsList } from "../ResultsPage/ResultsList"
 
+import { useGames, useGroups, usePlayers } from "../FetchHelpers"
 import { displayDateValue } from "../MomentHelpers"
 
 import { Group } from "../models/Group"
@@ -18,7 +20,14 @@ interface GroupDetailsProps {
 export const GroupDetails = (props: GroupDetailsProps) => {
     const [showAddResultModal, setShowAddResultModal] = useState(false)
 
-    let imageSrc = props.group.profilePicture || "https://e.snmc.io/i/600/s/9f6d3d17acac6ce20993eb158c203e4b/5662600/godspeed-you-black-emperor-lift-yr-skinny-fists-like-antennas-to-heaven-cover-art.jpg"
+    const { games } = useGames()
+    const { groups } = useGroups()
+    const { players } = usePlayers()
+
+    // TODO: get results by group
+    const { results } = { results: [] }
+
+    let imageSrc = props.group.profilePicture
 
     return (
         <div className="group-details">
@@ -38,7 +47,7 @@ export const GroupDetails = (props: GroupDetailsProps) => {
                     </Button>
                 </div>
 
-                <div>
+                <div className="details">
                     <h3 className="display-name-header">
                         {props.group.displayName}
                     </h3>
@@ -50,6 +59,16 @@ export const GroupDetails = (props: GroupDetailsProps) => {
                     <p className="time-created">
                         <em>Added: {displayDateValue(moment.unix(props.group.timeCreated))}</em>
                     </p>
+
+                    <h3>Recent Results</h3>
+
+                    <ResultsList
+                        games={games}
+                        groups={groups}
+                        players={players}
+                        results={results}
+                        selectedGames={[]}
+                        selectedGroups={[]} />
                 </div>
             </div>
         </div>

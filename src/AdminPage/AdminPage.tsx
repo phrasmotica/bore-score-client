@@ -6,7 +6,7 @@ import { AddGameModal } from "../AddGameModal/AddGameModal"
 import { AddGroupModal } from "../AddGroupModal/AddGroupModal"
 import { AddPlayerModal } from "../AddPlayerModal/AddPlayerModal"
 
-import { getToken } from "../Auth"
+import { parseToken } from "../Auth"
 import { useTitle } from "../Hooks"
 
 export const AdminPage = () => {
@@ -19,7 +19,7 @@ export const AdminPage = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (!getToken()) {
+        if (!parseToken()) {
             navigate("/login?redirect=" + encodeURIComponent("/admin"))
         }
     }, [navigate])

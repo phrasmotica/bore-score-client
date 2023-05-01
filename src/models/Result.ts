@@ -1,3 +1,5 @@
+import { ApprovalStatus } from "./Approval"
+
 export interface Result {
     id: string
     gameName: string
@@ -8,6 +10,7 @@ export interface Result {
     cooperativeScore: number
     cooperativeWin: boolean
     scores: PlayerScore[]
+    approvalStatus: ApprovalStatus
 }
 
 interface PlayerScore {
