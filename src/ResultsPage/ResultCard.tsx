@@ -209,7 +209,7 @@ export const ResultCard = (props: ResultCardProps) => {
             </Table.Cell>
 
             <Table.Cell>
-                {hasCurrentUser && <ResultApprover
+                {hasCurrentUser && overallApproval === ApprovalStatus.Pending && <ResultApprover
                     approveEnabled={approvalMap.get(props.currentUser!) !== ApprovalStatus.Approved}
                     approve={approve}
                     rejectEnabled={approvalMap.get(props.currentUser!) !== ApprovalStatus.Rejected}
