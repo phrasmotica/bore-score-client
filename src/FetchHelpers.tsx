@@ -63,6 +63,16 @@ export const getPlayer = (username: string) => {
     .then((data: Player) => data)
 }
 
+export const deletePlayer = (username: string) => {
+    const headers = getHeaders()
+
+    // TODO: handle error without parsing response as JSON
+    return fetch(`${process.env.REACT_APP_API_URL}/players/${username}`, {
+        method: "DELETE",
+        headers: headers,
+    })
+}
+
 export const postPlayer = (player: Player) => {
     const headers = getHeaders()
     headers.set("Content-Type", "application/json")
@@ -112,11 +122,11 @@ export const postGame = (game: Game) => {
 export const deleteGame = (name: string) => {
     const headers = getHeaders()
 
+    // TODO: handle error without parsing response as JSON
     return fetch(`${process.env.REACT_APP_API_URL}/games/${name}`, {
         method: "DELETE",
         headers: headers,
     })
-    .then(handleResponse)
 }
 
 export const getAllGroups = () => {

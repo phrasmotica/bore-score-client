@@ -1,3 +1,4 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import moment from "moment"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
@@ -5,7 +6,8 @@ import { Button, Header, Icon, Modal } from "semantic-ui-react"
 
 import { PlayerImage } from "../PlayerImage"
 
-import { getHeaders, parseToken } from "../Auth"
+import { parseToken } from "../Auth"
+import { deletePlayer } from "../FetchHelpers"
 import { resetTitle, setTitle } from "../Helpers"
 import { displayDateValue } from "../MomentHelpers"
 
@@ -16,9 +18,24 @@ interface PlayerDetailsProps {
 }
 
 export const PlayerDetails = (props: PlayerDetailsProps) => {
-    const [showDeletePrompt, setShowDeletePrompt] = useState(false)
-
     const navigate = useNavigate()
+
+    let queryClient = useQueryClient()
+
+    const { mutate } = useMutation({
+        mutationFn: (player: Player) => deletePlayer(player.username),
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ["players"],
+            })
+
+            setShowDeletePrompt(false)
+
+            navigate("/")
+        }
+    })
+
+    const [showDeletePrompt, setShowDeletePrompt] = useState(false)
 
     const token = parseToken()
 
@@ -32,14 +49,6 @@ export const PlayerDetails = (props: PlayerDetailsProps) => {
             resetTitle()
         }
     }, [player])
-
-    const deletePlayer = () => {
-        fetch(`${process.env.REACT_APP_API_URL}/players/${player.username}`, {
-            method: "DELETE",
-            headers: getHeaders(),
-        })
-            .then(() => navigate("/"))
-    }
 
     const renderDeletePrompt = (player: Player) => (
         <Modal
@@ -57,7 +66,7 @@ export const PlayerDetails = (props: PlayerDetailsProps) => {
                 </p>
             </Modal.Content>
             <Modal.Actions>
-                <Button color="green" onClick={deletePlayer}>
+                <Button color="green" onClick={() => mutate(player)}>
                     <Icon name="checkmark" />
                     Yes
                 </Button>
