@@ -82,15 +82,45 @@ export const ResultCard = (props: ResultCardProps) => {
         return null
     }
 
+    const hasCurrentUser = props.currentUser && r.scores.map(s => s.username).includes(props.currentUser)
+
+    const approvalGroups = groupBy(approvals ?? [], a => a.username)
+    const approvalMap = new Map<string, ApprovalStatus>()
+
+    for (let group of approvalGroups) {
+        let latestStatus = sortApprovalsByRecent(group[1])[0]
+        approvalMap.set(group[0], latestStatus.approvalStatus)
+    }
+
+    let overallApproval = ApprovalStatus.Pending
+
+    const approvedCount = [...approvalMap.values()].filter(a => a === ApprovalStatus.Approved).length
+
+    const isApproved = approvedCount === r.scores.length
+    if (isApproved) {
+        overallApproval = ApprovalStatus.Approved
+    }
+
+    const isRejected = [...approvalMap.values()].some(a => a === ApprovalStatus.Rejected)
+    if (isRejected) {
+        overallApproval = ApprovalStatus.Rejected
+    }
+
     let bestScore = r.scores.reduce((a, b) => a.score > b.score ? a : b).score
 
     // players who were in the game
     let playersWithNames = r.scores.map(s => {
         let player = props.players.find(p => p.username === s.username)
 
+        let approvalStatus = ApprovalStatus.Pending
+        if (player) {
+            approvalStatus = approvalMap.get(player.username) ?? ApprovalStatus.Pending
+        }
+
         return {
             displayName: player?.displayName ?? "(unknown player)",
             hasBestScore: s.score === bestScore,
+            approvalStatus: approvalStatus,
             ...s
         }
     })
@@ -146,30 +176,6 @@ export const ResultCard = (props: ResultCardProps) => {
         approvalStatus: ApprovalStatus.Rejected,
     })
 
-    const hasCurrentUser = props.currentUser && r.scores.map(s => s.username).includes(props.currentUser)
-
-    const approvalGroups = groupBy(approvals ?? [], a => a.username)
-    const approvalMap = new Map<string, ApprovalStatus>()
-
-    for (let group of approvalGroups) {
-        let latestStatus = sortApprovalsByRecent(group[1])[0]
-        approvalMap.set(group[0], latestStatus.approvalStatus)
-    }
-
-    let overallApproval = ApprovalStatus.Pending
-
-    const approvedCount = [...approvalMap.values()].filter(a => a === ApprovalStatus.Approved).length
-
-    const isApproved = approvedCount === r.scores.length
-    if (isApproved) {
-        overallApproval = ApprovalStatus.Approved
-    }
-
-    const isRejected = [...approvalMap.values()].some(a => a === ApprovalStatus.Rejected)
-    if (isRejected) {
-        overallApproval = ApprovalStatus.Rejected
-    }
-
     return (
         <Table.Row className={`result-card ${overallApproval}`}>
             <Table.Cell>
@@ -203,11 +209,11 @@ export const ResultCard = (props: ResultCardProps) => {
             </Table.Cell>
 
             <Table.Cell>
-                <span>
-                    {approvedCount}/{r.scores.length}
-                </span>
-
-                {hasCurrentUser && <ResultApprover approve={approve} reject={reject} />}
+                {hasCurrentUser && <ResultApprover
+                    approveEnabled={approvalMap.get(props.currentUser!) !== ApprovalStatus.Approved}
+                    approve={approve}
+                    rejectEnabled={approvalMap.get(props.currentUser!) !== ApprovalStatus.Rejected}
+                    reject={reject} />}
             </Table.Cell>
         </Table.Row>
     )

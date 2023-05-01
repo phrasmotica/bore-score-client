@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { ScoreCardProps } from "./ScoreCardProps"
+import { ScoreCardProps, createIcon } from "./ScoreCardProps"
 
 interface CooperativeWinCardProps {
     isWin: boolean
@@ -7,9 +7,12 @@ interface CooperativeWinCardProps {
 
 export const CooperativeWinCard = (props: ScoreCardProps & CooperativeWinCardProps) => {
     let playerLinks = props.players.map((s, i) => (
-        <Link key={i} to={`/players/${s.username}`}>
-            {s.displayName}
-        </Link>
+        <span>
+            {createIcon(s.approvalStatus)}
+            <Link key={i} to={`/players/${s.username}`}>
+                {s.displayName}
+            </Link>
+        </span>
     ))
 
     let content = (
