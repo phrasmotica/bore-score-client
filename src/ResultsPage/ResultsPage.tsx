@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query"
 import { useState } from "react"
 import { SemanticToastContainer } from "react-semantic-toasts"
 import { Button, Icon } from "semantic-ui-react"
@@ -8,8 +7,9 @@ import { GroupFilterDropdown } from "./GroupFilterDropdown"
 import { ResultsList } from "./ResultsList"
 
 import { AddResultModal } from "../AddResultModal/AddResultModal"
-import { getPlayers, getResults, useAllGroups, useGames } from "../FetchHelpers"
+import { useAllGroups, useGames } from "../FetchHelpers"
 import { useTitle } from "../Hooks"
+import { usePlayers, useResults } from "../QueryHelpers"
 
 import "./ResultsPage.css"
 
@@ -18,17 +18,8 @@ export const ResultsPage = () => {
 
     const [showAddResultModal, setShowAddResultModal] = useState(false)
 
-    // TODO: add error handling
-    const { data: players } = useQuery({
-        queryKey: ["players"],
-        queryFn: () => getPlayers(),
-    })
-
-    // TODO: add error handling
-    const { data: results } = useQuery({
-        queryKey: ["results"],
-        queryFn: () => getResults(),
-    })
+    const { data: players } = usePlayers()
+    const { data: results } = useResults()
 
     const { games } = useGames()
     const { groups } = useAllGroups()

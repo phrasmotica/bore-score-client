@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { Button, Form, Icon } from "semantic-ui-react"
@@ -10,8 +9,9 @@ import { IndividualScoreForm } from "../AddResultModal/IndividualScoreForm"
 import { IndividualWinForm } from "../AddResultModal/IndividualWinForm"
 import { GameImage } from "../GameImage"
 
-import { getPlayers, useGames, useGroups } from "../FetchHelpers"
+import { useGames, useGroups } from "../FetchHelpers"
 import { useTitle } from "../Hooks"
+import { usePlayers } from "../QueryHelpers"
 
 import { Game } from "../models/Game"
 import { WinMethodName } from "../models/WinMethod"
@@ -28,11 +28,7 @@ export const ScorecardPage = () => {
     const { games } = useGames()
     const { groups } = useGroups()
 
-    // TODO: add error handling
-    const { data: players } = useQuery({
-        queryKey: ["players"],
-        queryFn: () => getPlayers(),
-    })
+    const { data: players } = usePlayers()
 
     const [game, setGame] = useState<Game>()
     const [useGroup, setUseGroup] = useState(false)

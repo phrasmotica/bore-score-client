@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import { toast } from "react-semantic-toasts"
 import { SemanticCOLORS, SemanticICONS, Table } from "semantic-ui-react"
 import moment from "moment"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { v4 as newGuid } from "uuid"
 
 import { CooperativeScoreCard } from "./CooperativeScoreCard"
@@ -14,9 +14,10 @@ import { ResultApprover } from "./ResultApprover"
 import { GameImage } from "../GameImage"
 
 import { parseToken } from "../Auth"
-import { getApprovals, postApproval } from "../FetchHelpers"
+import { postApproval } from "../FetchHelpers"
 import { groupBy } from "../Helpers"
 import { displayDateTimeValue } from "../MomentHelpers"
+import { useApprovals } from "../QueryHelpers"
 
 import { Approval, ApprovalStatus, sortApprovalsByRecent } from "../models/Approval"
 import { Game } from "../models/Game"
@@ -43,16 +44,11 @@ export const ResultCard = (props: ResultCardProps) => {
 
     const queryClient = useQueryClient()
 
-    // TODO: add error handling
-    const { data: approvals } = useQuery({
-        queryKey: ["approvals", r.id],
-        queryFn: () => getApprovals(r.id),
-        enabled: token !== null,
-    })
+    const { data: approvals } = useApprovals(r.id, token !== null)
 
     // TODO: add error handling
     const { mutate: addApproval } = useMutation({
-        mutationFn: (a: Approval) => postApproval(a),
+        mutationFn: postApproval,
         onSuccess: (data: Approval) => {
             let description = `You approved the ${game!.displayName} result.`
             let colour = "green"

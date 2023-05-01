@@ -1,22 +1,17 @@
 import { Link } from "react-router-dom"
 import { Statistic } from "semantic-ui-react"
 
-import { getResults, useGames, useSummary } from "../FetchHelpers"
+import { useGames, useSummary } from "../FetchHelpers"
 import { GameImage } from "../GameImage"
 import { useTitle } from "../Hooks"
+import { useResults } from "../QueryHelpers"
 
 import { sortResultsByRecent } from "../models/Result"
-import { useQuery } from "@tanstack/react-query"
 
 export const HomePage = () => {
     useTitle("Home")
 
-    // TODO: add error handling
-    const { data: results } = useQuery({
-        queryKey: ["results"],
-        queryFn: () => getResults(),
-    })
-
+    const { data: results } = useResults()
     const { isLoadingSummary, summary } = useSummary()
     const { games } = useGames()
 

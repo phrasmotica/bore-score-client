@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
 import moment from "moment"
 import { toast } from "react-semantic-toasts"
@@ -13,11 +13,11 @@ import { IndividualScoreForm } from "./IndividualScoreForm"
 import { IndividualWinForm } from "./IndividualWinForm"
 import { GameImage } from "../GameImage"
 
-import { getPlayers, postResult, useGames, useGroups } from "../FetchHelpers"
+import { postResult, useGames, useGroups } from "../FetchHelpers"
 import { submitValue } from "../MomentHelpers"
+import { usePlayers } from "../QueryHelpers"
 
 import { Game } from "../models/Game"
-import { Result } from "../models/Result"
 import { WinMethodName } from "../models/WinMethod"
 
 import "./AddResultModal.css"
@@ -35,15 +35,11 @@ export const AddResultModal = (props: AddResultModalProps) => {
 
     const queryClient = useQueryClient()
 
-    // TODO: add error handling
-    const { data: players } = useQuery({
-        queryKey: ["players"],
-        queryFn: () => getPlayers(),
-    })
+    const { data: players } = usePlayers()
 
     // TODO: add error handling
     const { mutate: addResult } = useMutation({
-        mutationFn: (r: Result) => postResult(r),
+        mutationFn: postResult,
         onSuccess: () => {
             props.setOpen(false)
 

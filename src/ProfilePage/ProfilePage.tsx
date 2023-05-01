@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query"
 import { useEffect } from "react"
 import { useNavigate } from "react-router"
 import { Link } from "react-router-dom"
@@ -8,9 +7,10 @@ import { Button } from "semantic-ui-react"
 import { ResultsList } from "../ResultsPage/ResultsList"
 
 import { parseToken } from "../Auth"
-import { getPlayers, getResults, useGames, useGroups, useUser } from "../FetchHelpers"
+import { useGames, useGroups, useUser } from "../FetchHelpers"
 import { useTitle } from "../Hooks"
 import { PlayerImage } from "../PlayerImage"
+import { usePlayers, useResults } from "../QueryHelpers"
 
 import { sortResultsByRecent } from "../models/Result"
 
@@ -28,17 +28,8 @@ export const ProfilePage = () => {
     const { games } = useGames()
     const { groups } = useGroups()
 
-    // TODO: add error handling
-    const { data: players } = useQuery({
-        queryKey: ["players"],
-        queryFn: () => getPlayers(),
-    })
-
-    // TODO: add error handling
-    const { data: results } = useQuery({
-        queryKey: ["results"],
-        queryFn: () => getResults(username),
-    })
+    const { data: players } = usePlayers()
+    const { data: results } = useResults()
 
     const navigate = useNavigate()
 
