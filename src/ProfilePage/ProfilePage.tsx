@@ -7,10 +7,9 @@ import { Button } from "semantic-ui-react"
 import { ResultsList } from "../ResultsPage/ResultsList"
 
 import { parseToken } from "../Auth"
-import { useUser } from "../FetchHelpers"
 import { useTitle } from "../Hooks"
 import { PlayerImage } from "../PlayerImage"
-import { useGames, useGroups, usePlayers, useResults } from "../QueryHelpers"
+import { useGames, useGroups, usePlayers, useResults, useUser } from "../QueryHelpers"
 
 import { sortResultsByRecent } from "../models/Result"
 
@@ -23,12 +22,11 @@ export const ProfilePage = () => {
     const token = parseToken()
     const username = token?.username || ""
 
-    const { user } = useUser(username)
-
     const { data: games } = useGames()
     const { data: groups } = useGroups()
     const { data: players } = usePlayers()
     const { data: results } = useResults(username)
+    const { data: user } = useUser(username)
 
     const navigate = useNavigate()
 

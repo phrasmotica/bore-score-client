@@ -7,9 +7,8 @@ import { GroupFilterDropdown } from "./GroupFilterDropdown"
 import { ResultsList } from "./ResultsList"
 
 import { AddResultModal } from "../AddResultModal/AddResultModal"
-import { useAllGroups } from "../FetchHelpers"
 import { useTitle } from "../Hooks"
-import { useGames, usePlayers, useResults } from "../QueryHelpers"
+import { useAllGroups, useGames, usePlayers, useResults } from "../QueryHelpers"
 
 import "./ResultsPage.css"
 
@@ -19,10 +18,9 @@ export const ResultsPage = () => {
     const [showAddResultModal, setShowAddResultModal] = useState(false)
 
     const { data: games } = useGames()
+    const { data: groups } = useAllGroups()
     const { data: players } = usePlayers()
     const { data: results } = useResults()
-
-    const { groups } = useAllGroups()
 
     const [selectedGames, setSelectedGames] = useState<string[]>([])
     const [selectedGroups, setSelectedGroups] = useState<string[]>([])
@@ -44,7 +42,7 @@ export const ResultsPage = () => {
                         setSelectedGames={setSelectedGames} />
 
                     <GroupFilterDropdown
-                        groups={groups}
+                        groups={groups ?? []}
                         results={results ?? []}
                         selectedGroups={selectedGroups}
                         setSelectedGroups={setSelectedGroups} />
@@ -66,7 +64,7 @@ export const ResultsPage = () => {
 
                 <ResultsList
                     games={games ?? []}
-                    groups={groups}
+                    groups={groups ?? []}
                     results={results ?? []}
                     players={players ?? []}
                     selectedGames={selectedGames}

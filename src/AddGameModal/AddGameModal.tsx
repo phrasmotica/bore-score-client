@@ -8,9 +8,8 @@ import { LinkForm } from "./LinkForm"
 import { ImagePreview } from "../ImagePreview/ImagePreview"
 
 import { getHeaders } from "../Auth"
-import { useLinkTypes, useWinMethods } from "../FetchHelpers"
 import { computeName } from "../Helpers"
-import { useGames } from "../QueryHelpers"
+import { useGames, useLinkTypes, useWinMethods } from "../QueryHelpers"
 
 import { Link, Game } from "../models/Game"
 
@@ -25,9 +24,8 @@ interface AddGameModalProps {
 
 export const AddGameModal = (props: AddGameModalProps) => {
     const { data: games } = useGames()
-
-    const { linkTypes } = useLinkTypes()
-    const { winMethods } = useWinMethods()
+    const { data: linkTypes } = useLinkTypes()
+    const { data: winMethods } = useWinMethods()
 
     const [displayName, setDisplayName] = useState("")
     const [name, setName] = useState("")
@@ -46,13 +44,13 @@ export const AddGameModal = (props: AddGameModalProps) => {
     }, [displayName])
 
     useEffect(() => {
-        if (winMethods.length > 0) {
+        if (winMethods && winMethods.length > 0) {
             setWinMethod(winMethods[0].name)
         }
     }, [winMethods])
 
     useEffect(() => {
-        setLinks(linkTypes.map(l => ({
+        setLinks((linkTypes ?? []).map(l => ({
             type: l.name,
             link: "",
         })))
@@ -96,7 +94,7 @@ export const AddGameModal = (props: AddGameModalProps) => {
         .then((newGame: Game) => navigate(`/games/${newGame.name}`))
     }
 
-    const createWinMethodOptions = () => winMethods.map(w => ({
+    const createWinMethodOptions = () => (winMethods ?? []).map(w => ({
         key: w.name,
         text: w.displayName,
         value: w.name
@@ -169,7 +167,7 @@ export const AddGameModal = (props: AddGameModalProps) => {
                                 onChange={(e, { value }) => setImageLink(value)} />
 
                             <LinkForm
-                                linkTypes={linkTypes}
+                                linkTypes={linkTypes ?? []}
                                 links={links}
                                 setLinks={setLinks} />
                         </div>

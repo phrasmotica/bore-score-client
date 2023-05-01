@@ -1,10 +1,9 @@
 import { Link } from "react-router-dom"
 import { Statistic } from "semantic-ui-react"
 
-import { useSummary } from "../FetchHelpers"
 import { GameImage } from "../GameImage"
 import { useTitle } from "../Hooks"
-import { useGames, useResults } from "../QueryHelpers"
+import { useGames, useResults, useSummary } from "../QueryHelpers"
 
 import { sortResultsByRecent } from "../models/Result"
 
@@ -13,8 +12,7 @@ export const HomePage = () => {
 
     const { data: games } = useGames()
     const { data: results } = useResults()
-
-    const { isLoadingSummary, summary } = useSummary()
+    const { isLoading: isLoadingSummary, data: summary } = useSummary()
 
     const renderSummary = () => {
         if (isLoadingSummary) {

@@ -3,8 +3,8 @@ import { Link, useParams } from "react-router-dom"
 
 import { GameDetails } from "./GameDetails"
 
-import { useGame, useLinkTypes, useWinMethods } from "../FetchHelpers"
 import { resetTitle, setTitle } from "../Helpers"
+import { useGame, useLinkTypes, useWinMethods } from "../QueryHelpers"
 
 interface GameDetailsPageProps {
 
@@ -13,9 +13,9 @@ interface GameDetailsPageProps {
 export const GameDetailsPage = (props: GameDetailsPageProps) => {
     let { name } = useParams()
 
-    const { game } = useGame(name)
-    const { linkTypes } = useLinkTypes()
-    const { winMethods } = useWinMethods()
+    const { data: game } = useGame(name || "")
+    const { data: linkTypes } = useLinkTypes()
+    const { data: winMethods } = useWinMethods()
 
     useEffect(() => {
         if (game?.displayName) {
@@ -26,12 +26,11 @@ export const GameDetailsPage = (props: GameDetailsPageProps) => {
         }
     }, [game])
 
-    if (game === undefined || linkTypes.length <= 0) {
+    if (game === undefined || !linkTypes || linkTypes.length <= 0) {
         return null
     }
 
-    let winMethod = winMethods.find(w => game.winMethod === w.name)
-
+    let winMethod = winMethods?.find(w => game.winMethod === w.name)
     if (winMethod === undefined) {
         return null
     }
