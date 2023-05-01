@@ -208,10 +208,32 @@ export const postResult = (result: Result) => {
     .then((data: Result) => data)
 }
 
+export const requestToken = (request: TokenRequest) => {
+    const headers = getHeaders()
+    headers.set("Content-Type", "application/json")
+
+    return fetch(`${process.env.REACT_APP_API_URL}/token`, {
+        method: "POST",
+        body: JSON.stringify(request),
+        headers: headers,
+    })
+    .then(res => res.json())
+    .then((res: TokenResponse) => res)
+}
+
 const handleResponse = (res: Response) => {
     if (res.ok) {
         return res.json()
     }
 
     throw new Error(`Response from ${res.url} returned error ${res.status} (${res.statusText})`)
+}
+
+interface TokenRequest {
+    email: string
+    password: string
+}
+
+interface TokenResponse {
+    token: string
 }
