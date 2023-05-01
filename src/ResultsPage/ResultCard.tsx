@@ -1,8 +1,8 @@
-import { useState } from "react"
 import { Link } from "react-router-dom"
 import { toast } from "react-semantic-toasts"
 import { Table } from "semantic-ui-react"
 import moment from "moment"
+import { v4 as newGuid } from "uuid"
 
 import { CooperativeScoreCard } from "./CooperativeScoreCard"
 import { CooperativeWinCard } from "./CooperativeWinCard"
@@ -12,12 +12,16 @@ import { ResultApprover } from "./ResultApprover"
 
 import { GameImage } from "../GameImage"
 
+import { parseToken } from "../Auth"
+import { postApproval, useApprovals } from "../FetchHelpers"
+import { groupBy } from "../Helpers"
 import { displayDateTimeValue } from "../MomentHelpers"
 
+import { Approval, ApprovalStatus, sortApprovalsByRecent } from "../models/Approval"
 import { Game } from "../models/Game"
 import { Group } from "../models/Group"
 import { Player } from "../models/Player"
-import { Result, ApprovalState } from "../models/Result"
+import { Result } from "../models/Result"
 import { WinMethodName } from "../models/WinMethod"
 
 import "./ResultCard.css"
@@ -31,9 +35,12 @@ interface ResultCardProps {
 }
 
 export const ResultCard = (props: ResultCardProps) => {
-    const [verificationState, setVerificationState] = useState(ApprovalState.Pending)
-
     let r = props.result
+
+    // TODO: don't do this if no token present
+    const { approvals } = useApprovals(r.id)
+
+    const token = parseToken()
 
     let game = props.games.find(g => g.name === r.gameName)
 
@@ -89,31 +96,70 @@ export const ResultCard = (props: ResultCardProps) => {
         return groupNameElement
     }
 
-    // TODO: issue approvals/rejections to the database
     const approve = () => {
-        setVerificationState(ApprovalState.Approved)
-        toast({
-            title: "",
-            description: `You approved the ${game!.displayName} result.`,
-            color: "green",
-            icon: "check circle outline",
-        })
+        const newApproval = {
+            id: newGuid(),
+            resultId: r.id,
+            timeCreated: moment().unix(),
+            username: token?.username,
+            approvalStatus: ApprovalStatus.Approved,
+        } as Approval
+
+        postApproval(newApproval, () =>
+            toast({
+                title: "",
+                description: `You approved the ${game!.displayName} result.`,
+                color: "green",
+                icon: "check circle outline",
+            })
+        )
     }
 
     const reject = () => {
-        setVerificationState(ApprovalState.Rejected)
-        toast({
-            title: "",
-            description: `You rejected the ${game!.displayName} result!`,
-            color: "red",
-            icon: "times circle outline",
-        })
+        const newApproval = {
+            id: newGuid(),
+            resultId: r.id,
+            timeCreated: moment().unix(),
+            username: token?.username,
+            approvalStatus: ApprovalStatus.Rejected,
+        } as Approval
+
+        postApproval(newApproval, () =>
+            toast({
+                title: "",
+                description: `You rejected the ${game!.displayName} result!`,
+                color: "red",
+                icon: "times circle outline",
+            })
+        )
     }
 
     const hasCurrentUser = props.currentUser && r.scores.map(s => s.username).includes(props.currentUser)
 
+    const approvalGroups = groupBy(approvals, a => a.username)
+    const approvalMap = new Map<string, ApprovalStatus>()
+
+    for (let group of approvalGroups) {
+        let latestStatus = sortApprovalsByRecent(group[1])[0]
+        approvalMap.set(group[0], latestStatus.approvalStatus)
+    }
+
+    let overallApproval = ApprovalStatus.Pending
+
+    const approvedCount = [...approvalMap.values()].filter(a => a === ApprovalStatus.Approved).length
+
+    const isApproved = approvedCount === r.scores.length
+    if (isApproved) {
+        overallApproval = ApprovalStatus.Approved
+    }
+
+    const isRejected = [...approvalMap.values()].some(a => a === ApprovalStatus.Rejected)
+    if (isRejected) {
+        overallApproval = ApprovalStatus.Rejected
+    }
+
     return (
-        <Table.Row className={`result-card ${verificationState}`}>
+        <Table.Row className={`result-card ${overallApproval}`}>
             <Table.Cell>
                 <GameImage imageSrc={game.imageLink} />
             </Table.Cell>
@@ -145,6 +191,10 @@ export const ResultCard = (props: ResultCardProps) => {
             </Table.Cell>
 
             <Table.Cell>
+                <span>
+                    {approvedCount}/{r.scores.length}
+                </span>
+
                 {hasCurrentUser && <ResultApprover approve={approve} reject={reject} />}
             </Table.Cell>
         </Table.Row>

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 
 import { getHeaders } from "./Auth"
 
+import { Approval } from "./models/Approval"
 import { ComputedName } from "./models/ComputedName"
 import { Game } from "./models/Game"
 import { Group } from "./models/Group"
@@ -19,6 +20,28 @@ export const useSummary = () => {
         isLoadingSummary: fetch.isLoading,
         summary: fetch.data,
     }
+}
+
+export const useApprovals = (resultId: string) => {
+    let fetch = useFetch<Approval[]>(`${process.env.REACT_APP_API_URL}/approvals/${resultId}`, [])
+
+    return {
+        isLoadingApprovals: fetch.isLoading,
+        approvals: fetch.data || [],
+    }
+}
+
+// TODO: add error handling
+export const postApproval = (approval: Approval, onSuccess: () => void) => {
+    const headers = getHeaders()
+    headers.set("Content-Type", "application/json")
+
+    fetch(`${process.env.REACT_APP_API_URL}/approvals`, {
+        method: "POST",
+        body: JSON.stringify(approval),
+        headers: headers,
+    })
+    .then(onSuccess)
 }
 
 export const usePlayers = () => {

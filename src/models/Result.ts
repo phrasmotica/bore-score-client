@@ -1,3 +1,5 @@
+import { ApprovalStatus } from "./Approval"
+
 export interface Result {
     id: string
     gameName: string
@@ -8,19 +10,13 @@ export interface Result {
     cooperativeScore: number
     cooperativeWin: boolean
     scores: PlayerScore[]
-    approvalState: ApprovalState
+    approvalStatus: ApprovalStatus
 }
 
 interface PlayerScore {
     username: string
     score: number
     isWinner: boolean
-}
-
-export enum ApprovalState {
-    Pending = "pending",
-    Approved = "approved",
-    Rejected = "rejected",
 }
 
 export const sortResultsByRecent = (results: Result[]) => {
