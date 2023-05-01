@@ -1,14 +1,13 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import moment from "moment"
 import { useState } from "react"
 import { useNavigate } from "react-router"
 import { Button, Dimmer, Header, Icon, Input, Loader, Message, Modal } from "semantic-ui-react"
 import { v4 as newGuid } from "uuid"
 
-import { getHeaders } from "../Auth"
-import { handleResponse } from "../Helpers"
-import { ImagePreview } from "../ImagePreview/ImagePreview"
+import { postPlayer } from "../FetchHelpers"
 
-import { Player } from "../models/Player"
+import { ImagePreview } from "../ImagePreview/ImagePreview"
 
 import "./AddPlayerModal.css"
 
@@ -18,44 +17,39 @@ interface AddPlayerModalProps {
 }
 
 export const AddPlayerModal = (props: AddPlayerModalProps) => {
+    const navigate = useNavigate()
+
+    const queryClient = useQueryClient()
+
+    // TODO: handle errors, e.g. player already exists
+    const { isLoading: posting, mutate: addPlayer } = useMutation({
+        mutationFn: postPlayer,
+        onMutate: () => setErrorMessage(""),
+        onSuccess: data => {
+            queryClient.invalidateQueries({
+                queryKey: ["players"],
+            })
+
+            navigate(`/players/${data.username}`)
+        },
+        onError: (error: Error) => setErrorMessage(error.message),
+    })
+
     const [username, setUsername] = useState("")
     const [displayName, setDisplayName] = useState("")
     const [profilePicture, setProfilePicture] = useState("")
 
-    const [posting, setPosting] = useState(false)
     const [errorMessage, setErrorMessage] = useState("")
-
-    const navigate = useNavigate()
 
     const formIsComplete = () => username.length > 0 && displayName.length > 0
 
-    const newPlayer = {
+    const submit = () => addPlayer({
         id: newGuid(),
         timeCreated: moment().unix(),
         username: username,
         displayName: displayName,
         profilePicture: profilePicture,
-    } as Player
-
-    // TODO: handle errors, e.g. player already exists
-    const submit = () => {
-        setPosting(true)
-        setErrorMessage("")
-
-        const headers = getHeaders()
-        headers.set("Content-Type", "application/json")
-
-        fetch(`${process.env.REACT_APP_API_URL}/players`, {
-            method: "POST",
-            body: JSON.stringify(newPlayer),
-            headers: headers,
-        })
-        .then(handleResponse)
-        .then(res => res.json())
-        .then((newPlayer: Player) => navigate(`/players/${newPlayer.username}`))
-        .catch((err: Error) => setErrorMessage(err.message))
-        .finally(() => setPosting(false))
-    }
+    })
 
     return (
         <Modal
