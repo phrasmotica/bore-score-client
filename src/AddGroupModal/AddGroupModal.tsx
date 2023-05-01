@@ -5,9 +5,9 @@ import { Button, Form, Header, Icon, Input, Label, Message, Modal } from "semant
 import { v4 as newGuid } from "uuid"
 
 import { getHeaders } from "../Auth"
-import { useGroups } from "../FetchHelpers"
 import { computeName } from "../Helpers"
 import { ImagePreview } from "../ImagePreview/ImagePreview"
+import { useGroups } from "../QueryHelpers"
 
 import { Group, GroupVisibilityName } from "../models/Group"
 
@@ -19,7 +19,7 @@ interface AddGroupModalProps {
 }
 
 export const AddGroupModal = (props: AddGroupModalProps) => {
-    const { groups } = useGroups()
+    const { data: groups } = useGroups()
 
     const [name, setName] = useState("")
     const [displayName, setDisplayName] = useState("")
@@ -33,7 +33,7 @@ export const AddGroupModal = (props: AddGroupModalProps) => {
         setName(displayName.length > 0 ? computeName(displayName): "")
     }, [displayName])
 
-    const nameIsAvailable = () => !groups.map(p => p.name).includes(name)
+    const nameIsAvailable = () => !groups || !groups.map(p => p.name).includes(name)
 
     const formIsComplete = () => name.length > 0 && nameIsAvailable() && displayName.length > 0
 

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 
-import { getApprovals, getGames, getPlayers, getResults } from "./FetchHelpers"
+import { getApprovals, getGames, getGroups, getPlayers, getResults } from "./FetchHelpers"
 
 // TODO: add error handling
 export const useApprovals = (resultId: string, enabled: boolean) => useQuery({
@@ -13,6 +13,12 @@ export const useApprovals = (resultId: string, enabled: boolean) => useQuery({
 export const useGames = () => useQuery({
     queryKey: ["games"],
     queryFn: () => getGames(),
+})
+
+// TODO: add error handling
+export const useGroups = () => useQuery({
+    queryKey: ["groups"],
+    queryFn: () => getGroups(),
 })
 
 // TODO: add error handling

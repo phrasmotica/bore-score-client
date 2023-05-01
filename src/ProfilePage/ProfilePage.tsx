@@ -7,10 +7,10 @@ import { Button } from "semantic-ui-react"
 import { ResultsList } from "../ResultsPage/ResultsList"
 
 import { parseToken } from "../Auth"
-import { useGroups, useUser } from "../FetchHelpers"
+import { useUser } from "../FetchHelpers"
 import { useTitle } from "../Hooks"
 import { PlayerImage } from "../PlayerImage"
-import { useGames, usePlayers, useResults } from "../QueryHelpers"
+import { useGames, useGroups, usePlayers, useResults } from "../QueryHelpers"
 
 import { sortResultsByRecent } from "../models/Result"
 
@@ -25,9 +25,8 @@ export const ProfilePage = () => {
 
     const { user } = useUser(username)
 
-    const { groups } = useGroups()
-
     const { data: games } = useGames()
+    const { data: groups } = useGroups()
     const { data: players } = usePlayers()
     const { data: results } = useResults()
 
@@ -72,7 +71,7 @@ export const ProfilePage = () => {
                     <ResultsList
                         approvals
                         games={games ?? []}
-                        groups={groups}
+                        groups={groups ?? []}
                         players={players ?? []}
                         results={resultsToShow}
                         selectedGames={[]}

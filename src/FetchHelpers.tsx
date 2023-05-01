@@ -102,13 +102,14 @@ export const useAllGroups = () => {
     }
 }
 
-export const useGroups = () => {
-    let fetch = useFetch<Group[]>(`${process.env.REACT_APP_API_URL}/groups`, [])
+export const getGroups = () => {
+    const headers = getHeaders()
 
-    return {
-        isLoadingGroups: fetch.isLoading,
-        groups: fetch.data || [],
-    }
+    return fetch(`${process.env.REACT_APP_API_URL}/groups`, {
+        headers: headers,
+    })
+    .then(res => res.json())
+    .then((data: Group[]) => data)
 }
 
 export const useGroup = (name: string | undefined) => {

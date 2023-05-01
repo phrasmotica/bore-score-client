@@ -9,9 +9,8 @@ import { IndividualScoreForm } from "../AddResultModal/IndividualScoreForm"
 import { IndividualWinForm } from "../AddResultModal/IndividualWinForm"
 import { GameImage } from "../GameImage"
 
-import { useGroups } from "../FetchHelpers"
 import { useTitle } from "../Hooks"
-import { useGames, usePlayers } from "../QueryHelpers"
+import { useGames, useGroups, usePlayers } from "../QueryHelpers"
 
 import { Game } from "../models/Game"
 import { WinMethodName } from "../models/WinMethod"
@@ -25,9 +24,8 @@ export const ScorecardPage = () => {
 
     const [searchParams] = useSearchParams()
 
-    const { groups } = useGroups()
-
     const { data: games } = useGames()
+    const { data: groups } = useGroups()
     const { data: players } = usePlayers()
 
     const [game, setGame] = useState<Game>()
@@ -46,7 +44,7 @@ export const ScorecardPage = () => {
     }, [games, searchParams])
 
     useEffect(() => {
-        if (groups.length > 0) {
+        if (groups && groups.length > 0) {
             let groupParam = searchParams.get("group")
 
             let groupFromParam = groups.find(g => g.name === groupParam)

@@ -6,9 +6,8 @@ import { AddResultModal } from "../AddResultModal/AddResultModal"
 import { GameImage } from "../GameImage"
 import { ResultsList } from "../ResultsPage/ResultsList"
 
-import { useGroups } from "../FetchHelpers"
 import { displayDateValue } from "../MomentHelpers"
-import { useGames, usePlayers } from "../QueryHelpers"
+import { useGames, useGroups, usePlayers } from "../QueryHelpers"
 
 import { Group } from "../models/Group"
 
@@ -21,9 +20,8 @@ interface GroupDetailsProps {
 export const GroupDetails = (props: GroupDetailsProps) => {
     const [showAddResultModal, setShowAddResultModal] = useState(false)
 
-    const { groups } = useGroups()
-
     const { data: games } = useGames()
+    const { data: groups } = useGroups()
     const { data: players } = usePlayers()
 
     // TODO: get results by group
@@ -66,7 +64,7 @@ export const GroupDetails = (props: GroupDetailsProps) => {
 
                     <ResultsList
                         games={games ?? []}
-                        groups={groups}
+                        groups={groups ?? []}
                         players={players ?? []}
                         results={results}
                         selectedGames={[]}

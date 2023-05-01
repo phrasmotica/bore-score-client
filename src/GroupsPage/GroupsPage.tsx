@@ -1,14 +1,14 @@
 import { GroupsTable } from "./GroupsTable"
 
-import { useGroups } from "../FetchHelpers"
 import { useTitle } from "../Hooks"
+import { useGroups } from "../QueryHelpers"
 
 import "./GroupsPage.css"
 
 export const GroupsPage = () => {
     useTitle("Groups")
 
-    const { groups } = useGroups()
+    const { data: groups } = useGroups()
 
     return (
         <div className="groups-page">
@@ -18,7 +18,7 @@ export const GroupsPage = () => {
                 </div>
 
                 <GroupsTable
-                    groups={groups} />
+                    groups={groups ?? []} />
             </div>
         </div>
     )

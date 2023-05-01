@@ -13,9 +13,9 @@ import { IndividualScoreForm } from "./IndividualScoreForm"
 import { IndividualWinForm } from "./IndividualWinForm"
 import { GameImage } from "../GameImage"
 
-import { postResult, useGroups } from "../FetchHelpers"
+import { postResult } from "../FetchHelpers"
 import { submitValue } from "../MomentHelpers"
-import { useGames, usePlayers } from "../QueryHelpers"
+import { useGames, useGroups, usePlayers } from "../QueryHelpers"
 
 import { Game } from "../models/Game"
 import { WinMethodName } from "../models/WinMethod"
@@ -30,11 +30,11 @@ interface AddResultModalProps {
 }
 
 export const AddResultModal = (props: AddResultModalProps) => {
-    const { groups } = useGroups()
 
     const queryClient = useQueryClient()
 
     const { data: games } = useGames()
+    const { data: groups } = useGroups()
     const { data: players } = usePlayers()
 
     // TODO: add error handling
@@ -77,7 +77,7 @@ export const AddResultModal = (props: AddResultModalProps) => {
     }, [games, props.game])
 
     useEffect(() => {
-        if (groups.length > 0) {
+        if (groups && groups.length > 0) {
             let groupFromParam = groups.find(g => g.name === props.group)
             let defaultGroup = groupFromParam ?? groups[0]
             setGroup(defaultGroup.name)
@@ -222,7 +222,7 @@ export const AddResultModal = (props: AddResultModalProps) => {
                             </Accordion.Title>
                             <Accordion.Content active={showGroup}>
                                 <GroupForm
-                                    groups={groups}
+                                    groups={groups ?? []}
                                     useGroup={useGroup}
                                     setUseGroup={setUseGroup}
                                     group={group}
