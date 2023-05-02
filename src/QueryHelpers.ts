@@ -53,10 +53,17 @@ export const useSummary = () => useQuery({
 })
 
 // TODO: add error handling
-export const usePlayers = () => useQuery({
-    queryKey: ["players"],
-    queryFn: () => getPlayers(),
-})
+export const usePlayers = (group?: string) => {
+    let key = ["players"]
+    if (group) {
+        key.push(`group:${group}`)
+    }
+
+    return useQuery({
+        queryKey: key,
+        queryFn: () => getPlayers(group),
+    })
+}
 
 // TODO: add error handling
 export const usePlayer = (username: string) => useQuery({

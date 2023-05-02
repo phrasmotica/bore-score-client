@@ -14,6 +14,7 @@ interface GroupFormProps {
 }
 
 export const GroupForm = (props: GroupFormProps) => {
+    // TODO: disable groups with no members
     let groupOptions = props.groups.map(gr => ({
         key: gr.name,
         text: `${gr.displayName} (${gr.visibility})`,

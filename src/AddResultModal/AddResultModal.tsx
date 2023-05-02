@@ -30,12 +30,10 @@ interface AddResultModalProps {
 }
 
 export const AddResultModal = (props: AddResultModalProps) => {
-
     const queryClient = useQueryClient()
 
     const { data: games } = useGames()
     const { data: groups } = useGroups()
-    const { data: players } = usePlayers()
 
     // TODO: add error handling
     const { mutate: addResult } = useMutation({
@@ -68,6 +66,8 @@ export const AddResultModal = (props: AddResultModalProps) => {
 
     const [formData, setFormData] = useState<any>()
     const [formIsComplete, setFormIsComplete] = useState(false)
+
+    const { data: players } = usePlayers(useGroup ? group : "")
 
     useEffect(() => {
         if (games && games.length > 0) {

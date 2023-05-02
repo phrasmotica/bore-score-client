@@ -43,10 +43,15 @@ export const postApproval = (approval: Approval) => {
     .then((data: Approval) => data)
 }
 
-export const getPlayers = () => {
+export const getPlayers = (group?: string) => {
     const headers = getHeaders()
 
-    return fetch(`${process.env.REACT_APP_API_URL}/players`, {
+    let url = `${process.env.REACT_APP_API_URL}/players`
+    if (group) {
+        url += `?group=${group}`
+    }
+
+    return fetch(url, {
         headers: headers,
     })
     .then(handleResponse)
