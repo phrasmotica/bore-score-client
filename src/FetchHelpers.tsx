@@ -202,10 +202,17 @@ export const getWinMethods = () => {
     .then((data: WinMethod[]) => data)
 }
 
-export const getResults = (username?: string) => {
+export const getResults = (options?: {
+    username?: string, group?: string
+}) => {
     let url = `${process.env.REACT_APP_API_URL}/results`
-    if (username) {
-        url += `?username=${username}`
+
+    // API currently allows only one or the other
+    if (options?.username) {
+        url += `?username=${options.username}`
+    }
+    else if (options?.group) {
+        url += `?group=${options.group}`
     }
 
     return fetch(url, {

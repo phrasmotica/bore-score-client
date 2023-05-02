@@ -7,7 +7,7 @@ import { GameImage } from "../GameImage"
 import { ResultsList } from "../ResultsPage/ResultsList"
 
 import { displayDateValue } from "../MomentHelpers"
-import { useGames, useGroups, usePlayers } from "../QueryHelpers"
+import { useGames, useGroups, usePlayers, useResults } from "../QueryHelpers"
 
 import { Group } from "../models/Group"
 
@@ -23,9 +23,7 @@ export const GroupDetails = (props: GroupDetailsProps) => {
     const { data: games } = useGames()
     const { data: groups } = useGroups()
     const { data: players } = usePlayers()
-
-    // TODO: get results by group
-    const { results } = { results: [] }
+    const { data: results } = useResults({ group: props.group.name })
 
     let imageSrc = props.group.profilePicture
 
@@ -66,7 +64,7 @@ export const GroupDetails = (props: GroupDetailsProps) => {
                         games={games ?? []}
                         groups={groups ?? []}
                         players={players ?? []}
-                        results={results}
+                        results={results ?? []}
                         selectedGames={[]}
                         selectedGroups={[]} />
                 </div>

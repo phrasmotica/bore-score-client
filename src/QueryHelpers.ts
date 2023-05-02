@@ -72,15 +72,21 @@ export const usePlayer = (username: string) => useQuery({
 })
 
 // TODO: add error handling
-export const useResults = (username?: string) => {
+export const useResults = (options?: {
+    username?: string, group?: string
+}) => {
     let key = ["results"]
-    if (username) {
-        key.push(username)
+    if (options?.username) {
+        key.push(`username:${options.username}`)
+    }
+
+    if (options?.group) {
+        key.push(`group:${options?.group}`)
     }
 
     return useQuery({
         queryKey: key,
-        queryFn: () => getResults(username),
+        queryFn: () => getResults(options),
     })
 }
 
