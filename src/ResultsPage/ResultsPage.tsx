@@ -8,7 +8,7 @@ import { ResultsList } from "./ResultsList"
 
 import { AddResultModal } from "../AddResultModal/AddResultModal"
 import { useTitle } from "../Hooks"
-import { useAllGroups, useGames, usePlayers, useResults } from "../QueryHelpers"
+import { useGames, useGroups, usePlayers, useResults } from "../QueryHelpers"
 
 import "./ResultsPage.css"
 
@@ -18,7 +18,7 @@ export const ResultsPage = () => {
     const [showAddResultModal, setShowAddResultModal] = useState(false)
 
     const { data: games } = useGames()
-    const { data: groups } = useAllGroups()
+    const { data: groups } = useGroups(true)
     const { data: players } = usePlayers()
     const { data: results } = useResults()
 

@@ -129,20 +129,15 @@ export const deleteGame = (name: string) => {
     })
 }
 
-export const getAllGroups = () => {
+export const getGroups = (getAll?: boolean) => {
     const headers = getHeaders()
 
-    return fetch(`${process.env.REACT_APP_API_URL}/groups-all`, {
-        headers: headers,
-    })
-    .then(handleResponse)
-    .then((data: Group[]) => data)
-}
+    let url = `${process.env.REACT_APP_API_URL}/groups`
+    if (getAll) {
+        url += "?all=1"
+    }
 
-export const getGroups = () => {
-    const headers = getHeaders()
-
-    return fetch(`${process.env.REACT_APP_API_URL}/groups`, {
+    return fetch(url, {
         headers: headers,
     })
     .then(handleResponse)
