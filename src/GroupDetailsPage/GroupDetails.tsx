@@ -85,7 +85,7 @@ export const GroupDetails = (props: GroupDetailsProps) => {
                     </p>
 
                     <p className="time-created">
-                        <em>Added: {displayDateValue(moment.unix(props.group.timeCreated))}</em>
+                        <em>Created on {displayDateValue(moment.unix(props.group.timeCreated))}</em>
                     </p>
 
                     <h3>Recent Results</h3>
