@@ -1,5 +1,6 @@
 import { useEffect } from "react"
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom"
+import { toast } from "react-semantic-toasts"
 
 import { GroupDetails } from "./GroupDetails"
 
@@ -19,6 +20,11 @@ export const GroupDetailsPage = (props: GroupDetailsPageProps) => {
     const { data: group } = useGroup(name || "", error => {
         if (error.message === "unauthorised") {
             navigate("/login?redirect=" + encodeURIComponent(location.pathname))
+        }
+
+        if (error.message === "not found") {
+            groupNotFoundToast()
+            navigate("/groups")
         }
     })
 
@@ -47,3 +53,10 @@ export const GroupDetailsPage = (props: GroupDetailsPageProps) => {
         </div>
     )
 }
+
+const groupNotFoundToast = () => toast({
+    title: "",
+    description: "That group does not exist.",
+    color: "red",
+    icon: "delete",
+})

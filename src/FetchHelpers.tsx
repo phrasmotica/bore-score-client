@@ -157,6 +157,7 @@ export const getGroup = (name: string) => {
         headers: headers,
     })
     .then(handleUnauthorisedResponse)
+    .then(handleNotFoundResponse)
     .then(handleResponse)
     .then((data: Group) => data)
 }
@@ -277,6 +278,15 @@ const handleUnauthorisedResponse = (res: Response) => {
     // TODO: create a better pattern for things like this
     if (res.status === 401) {
         throw new Error("unauthorised")
+    }
+
+    return res
+}
+
+const handleNotFoundResponse = (res: Response) => {
+    // TODO: create a better pattern for things like this
+    if (res.status === 404) {
+        throw new Error("not found")
     }
 
     return res

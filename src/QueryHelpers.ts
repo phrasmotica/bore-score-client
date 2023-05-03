@@ -111,5 +111,6 @@ export const useWinMethods = () => useQuery({
 })
 
 const shouldRetry = (failureCount: number, error: Error) => {
-    return error.message !== "unauthorised"
+    const persistentErrors = ["unauthorised", "not found"]
+    return !persistentErrors.includes(error.message)
 }

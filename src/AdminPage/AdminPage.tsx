@@ -2,7 +2,6 @@ import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router"
 import { Button, Icon } from "semantic-ui-react"
 
-import { AddGroupModal } from "../AddGroupModal/AddGroupModal"
 import { AddPlayerModal } from "../AddPlayerModal/AddPlayerModal"
 
 import { parseToken } from "../Auth"
