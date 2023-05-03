@@ -6,8 +6,9 @@ import { AddResultModal } from "../AddResultModal/AddResultModal"
 import { GameImage } from "../GameImage"
 import { ResultsList } from "../ResultsPage/ResultsList"
 
+import { parseToken } from "../Auth"
 import { displayDateValue } from "../MomentHelpers"
-import { useGames, useGroups, usePlayers, useResults } from "../QueryHelpers"
+import { useGames, useGroupMemberships, usePlayers, useResults } from "../QueryHelpers"
 
 import { Group } from "../models/Group"
 
@@ -20,12 +21,22 @@ interface GroupDetailsProps {
 export const GroupDetails = (props: GroupDetailsProps) => {
     const [showAddResultModal, setShowAddResultModal] = useState(false)
 
+    const token = parseToken()
+    const username = token?.username || ""
+
     const { data: games } = useGames()
-    const { data: groups } = useGroups()
+    const { data: memberships } = useGroupMemberships(username)
     const { data: players } = usePlayers()
     const { data: results } = useResults({ group: props.group.name })
 
     let imageSrc = props.group.profilePicture
+
+    const isInGroup = memberships && memberships.some(m => m.groupId === props.group.id)
+
+    // TODO: use mutation for this
+    const joinGroup = () => {
+
+    }
 
     return (
         <div className="group-details">
@@ -35,14 +46,23 @@ export const GroupDetails = (props: GroupDetailsProps) => {
                 <div className="left">
                     <GameImage imageSrc={imageSrc} />
 
-                    <Button
+                    {!isInGroup && <Button
+                        icon
+                        fluid
+                        color="yellow"
+                        onClick={joinGroup}>
+                        <span>Join Group&nbsp;</span>
+                        <Icon name="users" />
+                    </Button>}
+
+                    {isInGroup && <Button
                         icon
                         fluid
                         color="teal"
                         onClick={() => setShowAddResultModal(true)}>
                         <span>Submit Result&nbsp;</span>
                         <Icon name="edit" />
-                    </Button>
+                    </Button>}
                 </div>
 
                 <div className="details">
@@ -63,7 +83,7 @@ export const GroupDetails = (props: GroupDetailsProps) => {
                     <ResultsList
                         hideGroups
                         games={games ?? []}
-                        groups={groups ?? []}
+                        groups={[props.group]}
                         players={players ?? []}
                         results={results ?? []}
                         selectedGames={[]}
