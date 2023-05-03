@@ -14,7 +14,7 @@ interface GameDetailsPageProps {
 export const GameDetailsPage = (props: GameDetailsPageProps) => {
     let { name } = useParams()
 
-    let navigate = useNavigate()
+    const navigate = useNavigate()
 
     const { data: game } = useGame(name || "", error => {
         if (error.message === "not found") {

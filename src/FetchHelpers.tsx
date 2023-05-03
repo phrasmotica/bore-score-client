@@ -65,6 +65,7 @@ export const getPlayer = (username: string) => {
     return fetch(`${process.env.REACT_APP_API_URL}/players/${username}`, {
         headers: headers,
     })
+    .then(handleNotFoundResponse)
     .then(handleResponse)
     .then((data: Player) => data)
 }

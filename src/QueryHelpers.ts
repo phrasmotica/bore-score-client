@@ -15,7 +15,7 @@ export const useGames = () => useQuery({
     queryFn: () => getGames(),
 })
 
-export const useGame = (name: string, onError: (error: Error) => void) => useQuery({
+export const useGame = (name: string, onError?: (error: Error) => void) => useQuery({
     queryKey: ["game", name],
     queryFn: () => getGame(name),
     onError,
@@ -35,7 +35,7 @@ export const useGroups = (getAll?: boolean) => {
     })
 }
 
-export const useGroup = (name: string, onError: (error: Error) => void) => useQuery({
+export const useGroup = (name: string, onError?: (error: Error) => void) => useQuery({
     queryKey: ["group", name],
     queryFn: () => getGroup(name),
     onError,
@@ -75,9 +75,11 @@ export const usePlayers = (group?: string) => {
 }
 
 // TODO: add error handling
-export const usePlayer = (username: string) => useQuery({
+export const usePlayer = (username: string, onError?: (error: Error) => void) => useQuery({
     queryKey: ["player", username],
     queryFn: () => getPlayer(username),
+    onError,
+    retry: shouldRetry,
 })
 
 // TODO: add error handling

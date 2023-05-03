@@ -1,4 +1,5 @@
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
+import { toast } from "react-semantic-toasts"
 
 import { PlayerDetails } from "./PlayerDetails"
 
@@ -11,7 +12,14 @@ interface PlayerDetailsPageProps {
 export const PlayerDetailsPage = (props: PlayerDetailsPageProps) => {
     let { username } = useParams()
 
-    const { data: player } = usePlayer(username || "")
+    const navigate = useNavigate()
+
+    const { data: player } = usePlayer(username || "", error => {
+        if (error.message === "not found") {
+            playerNotFoundToast()
+            navigate("/")
+        }
+    })
 
     if (player === undefined) {
         return null
@@ -23,3 +31,10 @@ export const PlayerDetailsPage = (props: PlayerDetailsPageProps) => {
         </div>
     )
 }
+
+const playerNotFoundToast = () => toast({
+    title: "",
+    description: "That player does not exist.",
+    color: "red",
+    icon: "delete",
+})
