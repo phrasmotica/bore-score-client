@@ -3,6 +3,7 @@ import { getHeaders } from "./Auth"
 import { Approval } from "./models/Approval"
 import { Game } from "./models/Game"
 import { Group } from "./models/Group"
+import { GroupMembership } from "./models/GroupMembership"
 import { LinkType } from "./models/LinkType"
 import { Player } from "./models/Player"
 import { Result } from "./models/Result"
@@ -171,6 +172,16 @@ export const postGroup = (group: Group) => {
     })
     .then(handleResponse)
     .then((data: Group) => data)
+}
+
+export const getGroupMemberships = (username: string) => {
+    const headers = getHeaders()
+
+    return fetch(`${process.env.REACT_APP_API_URL}/memberships/${username}`, {
+        headers: headers,
+    })
+    .then(handleResponse)
+    .then((data: GroupMembership[]) => data)
 }
 
 export const getLinkTypes = () => {
