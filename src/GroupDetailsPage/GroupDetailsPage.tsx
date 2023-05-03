@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { useLocation, useNavigate, useParams } from "react-router-dom"
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom"
 
 import { GroupDetails } from "./GroupDetails"
 
@@ -37,6 +37,12 @@ export const GroupDetailsPage = (props: GroupDetailsPageProps) => {
 
     return (
         <div className="group-details-page">
+            <div className="header">
+                <Link to="/groups">
+                    <span>&larr;&nbsp;Back to groups list</span>
+                </Link>
+            </div>
+
             <GroupDetails group={group} />
         </div>
     )
