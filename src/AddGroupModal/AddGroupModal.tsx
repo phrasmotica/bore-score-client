@@ -44,9 +44,10 @@ export const AddGroupModal = (props: AddGroupModalProps) => {
     const [profilePicture, setProfilePicture] = useState("")
 
     useEffect(() => {
-        setName(displayName.length > 0 ? computeName(displayName): "")
+        setName(computeName(displayName))
     }, [displayName])
 
+    // TODO: append "-1" if name is not available on submitting
     const nameIsAvailable = () => !groups || !groups.map(p => p.name).includes(name)
 
     const formIsComplete = () => name.length > 0 && nameIsAvailable() && displayName.length > 0
@@ -80,14 +81,6 @@ export const AddGroupModal = (props: AddGroupModalProps) => {
                                 placeholder="Display Name"
                                 value={displayName}
                                 onChange={(e, { value }) => setDisplayName(value)} />
-
-                            <Input
-                                fluid
-                                error={!nameIsAvailable()}
-                                label="Name"
-                                placeholder="Name"
-                                value={name}
-                                onChange={(e, { value }) => setName(value)} />
 
                             <Form>
                                 <div className="labelled-input">

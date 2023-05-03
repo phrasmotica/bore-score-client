@@ -55,7 +55,7 @@ export const AddGameModal = (props: AddGameModalProps) => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        setName(displayName.length > 0 ? computeName(displayName): "")
+        setName(computeName(displayName))
     }, [displayName])
 
     useEffect(() => {
@@ -114,20 +114,12 @@ export const AddGameModal = (props: AddGameModalProps) => {
             <Modal.Content>
                 <div className="add-game-form">
                     <Form>
-                        <Form.Group widths="equal">
-                            <Form.Input
-                                error={!displayNameIsAvailable()}
-                                label="Display Name"
-                                placeholder="Display Name"
-                                value={displayName}
-                                onChange={(e, { value }) => setDisplayName(value)} />
-
-                            <Form.Input
-                                label="Name"
-                                placeholder="Name"
-                                value={name}
-                                onChange={(e, { value }) => setName(value)} />
-                        </Form.Group>
+                        <Form.Input
+                            error={!displayNameIsAvailable()}
+                            label="Display Name"
+                            placeholder="Display Name"
+                            value={displayName}
+                            onChange={(e, { value }) => setDisplayName(value)} />
 
                         <Form.Input
                             label="Synopsis"
