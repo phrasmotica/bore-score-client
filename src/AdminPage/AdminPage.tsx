@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router"
+import { useLocation, useNavigate } from "react-router"
 import { Button, Icon } from "semantic-ui-react"
 
 import { AddGameModal } from "../AddGameModal/AddGameModal"
@@ -16,13 +16,14 @@ export const AdminPage = () => {
     const [showAddGroupModal, setShowAddGroupModal] = useState(false)
     const [showAddPlayerModal, setShowAddPlayerModal] = useState(false)
 
+    const location = useLocation()
     const navigate = useNavigate()
 
     useEffect(() => {
         if (!parseToken()) {
-            navigate("/login?redirect=" + encodeURIComponent("/admin"))
+            navigate("/login?redirect=" + encodeURIComponent(location.pathname))
         }
-    }, [navigate])
+    }, [navigate, location.pathname])
 
     return (
         <div className="admin-page">

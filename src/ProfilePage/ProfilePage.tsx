@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { useNavigate } from "react-router"
+import { useLocation, useNavigate } from "react-router"
 import { Link } from "react-router-dom"
 import { SemanticToastContainer } from "react-semantic-toasts"
 import { Button } from "semantic-ui-react"
@@ -28,13 +28,14 @@ export const ProfilePage = () => {
     const { data: results } = useResults({ username })
     const { data: user } = useUser(username)
 
+    const location = useLocation()
     const navigate = useNavigate()
 
     useEffect(() => {
         if (!token) {
-            navigate("/login?redirect=" + encodeURIComponent("/me"))
+            navigate("/login?redirect=" + encodeURIComponent(location.pathname))
         }
-    }, [token, navigate])
+    }, [token, navigate, location.pathname])
 
     if (!token || !user) {
         return null
