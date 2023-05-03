@@ -56,7 +56,7 @@ export const GroupDetails = (props: GroupDetailsProps) => {
                 <div className="left">
                     <GameImage imageSrc={imageSrc} />
 
-                    {!isInGroup && <Button
+                    {username && !isInGroup && <Button
                         icon
                         fluid
                         color="yellow"
