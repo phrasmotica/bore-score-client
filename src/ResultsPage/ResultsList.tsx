@@ -17,6 +17,7 @@ interface ResultsListProps {
     selectedGames: string[]
     selectedGroups: string[]
     approvals?: boolean
+    hideGroups?: boolean
 }
 
 export const ResultsList = (props: ResultsListProps) => {
@@ -47,7 +48,7 @@ export const ResultsList = (props: ResultsListProps) => {
                     <Table.Row>
                         <Table.HeaderCell colSpan={2} width={3}>Game</Table.HeaderCell>
                         <Table.HeaderCell width={3}>Result</Table.HeaderCell>
-                        <Table.HeaderCell width={2}>Group</Table.HeaderCell>
+                        {!props.hideGroups && <Table.HeaderCell width={2}>Group</Table.HeaderCell>}
                         <Table.HeaderCell width={2}>Played</Table.HeaderCell>
                         <Table.HeaderCell width={2}>Submitted</Table.HeaderCell>
                         <Table.HeaderCell width={4}>Notes</Table.HeaderCell>
@@ -60,6 +61,7 @@ export const ResultsList = (props: ResultsListProps) => {
                     {resultsToShow.length > 0 && resultsToShow.map(r => (
                         <ResultCard
                             approvals={props.approvals}
+                            hideGroups={props.hideGroups}
                             key={r.id}
                             result={r}
                             games={props.games}

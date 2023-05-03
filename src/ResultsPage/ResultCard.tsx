@@ -35,6 +35,7 @@ interface ResultCardProps {
     players: Player[]
     currentUser?: string
     approvals?: boolean
+    hideGroups?: boolean
 }
 
 export const ResultCard = (props: ResultCardProps) => {
@@ -191,9 +192,9 @@ export const ResultCard = (props: ResultCardProps) => {
                 {renderScoresSummary()}
             </Table.Cell>
 
-            <Table.Cell>
+            {!props.hideGroups && <Table.Cell>
                 {renderGroupName()}
-            </Table.Cell>
+            </Table.Cell>}
 
             <Table.Cell>
                 {displayDateTimeValue(moment.unix(r.timePlayed))}

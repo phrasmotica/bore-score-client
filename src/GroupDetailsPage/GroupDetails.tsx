@@ -61,6 +61,7 @@ export const GroupDetails = (props: GroupDetailsProps) => {
                     <h3>Recent Results</h3>
 
                     <ResultsList
+                        hideGroups
                         games={games ?? []}
                         groups={groups ?? []}
                         players={players ?? []}
