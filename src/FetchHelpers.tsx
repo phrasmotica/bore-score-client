@@ -108,6 +108,7 @@ export const getGame = (name: string) => {
     return fetch(`${process.env.REACT_APP_API_URL}/games/${name}`, {
         headers: headers,
     })
+    .then(handleNotFoundResponse)
     .then(handleResponse)
     .then((data: Game) => data)
 }

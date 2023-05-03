@@ -1,5 +1,6 @@
 import { useEffect } from "react"
-import { Link, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
+import { toast } from "react-semantic-toasts"
 
 import { GameDetails } from "./GameDetails"
 
@@ -13,7 +14,15 @@ interface GameDetailsPageProps {
 export const GameDetailsPage = (props: GameDetailsPageProps) => {
     let { name } = useParams()
 
-    const { data: game } = useGame(name || "")
+    let navigate = useNavigate()
+
+    const { data: game } = useGame(name || "", error => {
+        if (error.message === "not found") {
+            gameNotFoundToast()
+            navigate("/games")
+        }
+    })
+
     const { data: linkTypes } = useLinkTypes()
     const { data: winMethods } = useWinMethods()
 
@@ -50,3 +59,10 @@ export const GameDetailsPage = (props: GameDetailsPageProps) => {
         </div>
     )
 }
+
+const gameNotFoundToast = () => toast({
+    title: "",
+    description: "That game does not exist.",
+    color: "red",
+    icon: "delete",
+})

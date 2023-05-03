@@ -15,10 +15,11 @@ export const useGames = () => useQuery({
     queryFn: () => getGames(),
 })
 
-// TODO: add error handling
-export const useGame = (name: string) => useQuery({
+export const useGame = (name: string, onError: (error: Error) => void) => useQuery({
     queryKey: ["game", name],
     queryFn: () => getGame(name),
+    onError,
+    retry: shouldRetry,
 })
 
 // TODO: add error handling
