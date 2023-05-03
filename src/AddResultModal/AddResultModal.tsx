@@ -15,12 +15,13 @@ import { GameImage } from "../GameImage"
 
 import { postResult } from "../FetchHelpers"
 import { submitValue } from "../MomentHelpers"
-import { useGames, useGroups, usePlayers } from "../QueryHelpers"
+import { useGames, useGroupMemberships, useGroups, usePlayers } from "../QueryHelpers"
 
 import { Game } from "../models/Game"
 import { WinMethodName } from "../models/WinMethod"
 
 import "./AddResultModal.css"
+import { parseToken } from "../Auth"
 
 interface AddResultModalProps {
     open: boolean
@@ -32,8 +33,12 @@ interface AddResultModalProps {
 export const AddResultModal = (props: AddResultModalProps) => {
     const queryClient = useQueryClient()
 
+    const token = parseToken()
+    const username = token?.username || ""
+
     const { data: games } = useGames()
     const { data: groups } = useGroups()
+    const { data: memberships } = useGroupMemberships(username)
 
     // TODO: add error handling
     const { mutate: addResult } = useMutation({
@@ -94,6 +99,8 @@ export const AddResultModal = (props: AddResultModalProps) => {
             setTimePlayed(moment())
         }
     }, [props.open])
+
+    let groupsToShow = (groups ?? []).filter(g => (memberships ?? []).some(m => m.groupId === g.id))
 
     const updateFormData = (isComplete: boolean, formData: any) => {
         setFormIsComplete(isComplete)
@@ -222,7 +229,7 @@ export const AddResultModal = (props: AddResultModalProps) => {
                             </Accordion.Title>
                             <Accordion.Content active={showGroup}>
                                 <GroupForm
-                                    groups={groups ?? []}
+                                    groups={groupsToShow}
                                     useGroup={useGroup}
                                     setUseGroup={setUseGroup}
                                     group={group}
