@@ -30,15 +30,7 @@
 }
 
 .groups-page .groups-page-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-}
-
-.groups-table {
-    width: 1200px;
-    min-width: 900px;
+    flex-grow: 1;
 }
 
 .groups-table .ui.table td.image-cell {
