@@ -7,6 +7,8 @@ import { GroupFilterDropdown } from "./GroupFilterDropdown"
 import { ResultsList } from "./ResultsList"
 
 import { AddResultModal } from "../AddResultModal/AddResultModal"
+
+import { parseToken } from "../Auth"
 import { useTitle } from "../Hooks"
 import { useGames, useGroups, usePlayers, useResults } from "../QueryHelpers"
 
@@ -16,6 +18,8 @@ export const ResultsPage = () => {
     useTitle("Results")
 
     const [showAddResultModal, setShowAddResultModal] = useState(false)
+
+    const token = parseToken()
 
     const { data: games } = useGames()
     const { data: groups } = useGroups(true)
@@ -53,13 +57,13 @@ export const ResultsPage = () => {
                 <div className="header">
                     <h2>Results</h2>
 
-                    <Button
+                    {token && <Button
                         icon
                         color="yellow"
                         onClick={() => setShowAddResultModal(true)}>
                         <span>Add New Result&nbsp;</span>
                         <Icon name="plus" />
-                    </Button>
+                    </Button>}
                 </div>
 
                 <ResultsList

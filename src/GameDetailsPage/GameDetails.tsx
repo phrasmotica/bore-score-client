@@ -7,6 +7,7 @@ import { Button, Header, Icon, Modal, Table } from "semantic-ui-react"
 import { AddResultModal } from "../AddResultModal/AddResultModal"
 import { GameImage } from "../GameImage"
 
+import { parseToken } from "../Auth"
 import { deleteGame } from "../FetchHelpers"
 import { displayDateValue } from "../MomentHelpers"
 
@@ -22,6 +23,8 @@ interface GameDetailsProps {
 
 export const GameDetails = (props: GameDetailsProps) => {
     let navigate = useNavigate()
+
+    const token = parseToken()
 
     let queryClient = useQueryClient()
 
@@ -88,23 +91,23 @@ export const GameDetails = (props: GameDetailsProps) => {
                 <div className="left">
                     <GameImage imageSrc={imageSrc} />
 
-                    <Button
+                    {token && <Button
                         icon
                         fluid
                         color="teal"
                         onClick={() => setShowAddResultModal(true)}>
                         <span>Submit Result&nbsp;</span>
                         <Icon name="edit" />
-                    </Button>
+                    </Button>}
 
-                    <Button
+                    {token && <Button
                         icon
                         fluid
                         color="red"
                         onClick={() => setShowDeletePrompt(true)}>
                         <span>Delete Game&nbsp;</span>
                         <Icon name="remove" />
-                    </Button>
+                    </Button>}
                 </div>
 
                 <div>

@@ -5,6 +5,8 @@ import { Button, Icon, Table } from "semantic-ui-react"
 import { AddResultModal } from "../AddResultModal/AddResultModal"
 import { GameImage } from "../GameImage"
 
+import { parseToken } from "../Auth"
+
 import { Game } from "../models/Game"
 import { WinMethod } from "../models/WinMethod"
 
@@ -21,6 +23,8 @@ interface GamesTableProps {
 export const GamesTable = (props: GamesTableProps) => {
     const [selectedGame, setSelectedGame] = useState("")
     const [showAddResultModal, setShowAddResultModal] = useState(false)
+
+    const token = parseToken()
 
     let gamesToShow = [...props.games]
 
@@ -47,7 +51,7 @@ export const GamesTable = (props: GamesTableProps) => {
                         <Table.HeaderCell width={6}>Synopsis</Table.HeaderCell>
                         <Table.HeaderCell width={2}>Players</Table.HeaderCell>
                         <Table.HeaderCell width={2}>Win Method</Table.HeaderCell>
-                        <Table.HeaderCell width={3}></Table.HeaderCell>
+                        {token && <Table.HeaderCell width={3}></Table.HeaderCell>}
                     </Table.Row>
                 </Table.Header>
 
@@ -89,7 +93,7 @@ export const GamesTable = (props: GamesTableProps) => {
                                     {winMethod?.displayName ?? g.winMethod}
                                 </Table.Cell>
 
-                                <Table.Cell>
+                                {token && <Table.Cell>
                                     <Button
                                         icon
                                         fluid
@@ -98,7 +102,7 @@ export const GamesTable = (props: GamesTableProps) => {
                                         <span>Submit Result&nbsp;</span>
                                         <Icon name="edit" />
                                     </Button>
-                                </Table.Cell>
+                                </Table.Cell>}
                             </Table.Row>
                         )
                     })}

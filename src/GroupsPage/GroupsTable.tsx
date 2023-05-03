@@ -35,7 +35,7 @@ export const GroupsTable = (props: GroupsTableProps) => {
                         <Table.HeaderCell colSpan={2}>Group</Table.HeaderCell>
                         <Table.HeaderCell width={6}>Description</Table.HeaderCell>
                         <Table.HeaderCell width={2}>Visibility</Table.HeaderCell>
-                        <Table.HeaderCell width={2}></Table.HeaderCell>
+                        {token && <Table.HeaderCell width={2}></Table.HeaderCell>}
                     </Table.Row>
                 </Table.Header>
 
@@ -74,7 +74,7 @@ export const GroupsTable = (props: GroupsTableProps) => {
                                     {g.visibility}
                                 </Table.Cell>
 
-                                <Table.Cell>
+                                {token && <Table.Cell>
                                     {!isInGroup && <Button
                                         icon
                                         fluid
@@ -92,7 +92,7 @@ export const GroupsTable = (props: GroupsTableProps) => {
                                         <span>Submit Result&nbsp;</span>
                                         <Icon name="edit" />
                                     </Button>}
-                                </Table.Cell>
+                                </Table.Cell>}
                             </Table.Row>
                         )
                     })}
