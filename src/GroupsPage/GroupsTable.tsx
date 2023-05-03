@@ -5,6 +5,9 @@ import { Button, Icon, Table } from "semantic-ui-react"
 import { AddResultModal } from "../AddResultModal/AddResultModal"
 import { GameImage } from "../GameImage"
 
+import { parseToken } from "../Auth"
+import { useGroupMemberships } from "../QueryHelpers"
+
 import { Group } from "../models/Group"
 
 interface GroupsTableProps {
@@ -14,6 +17,11 @@ interface GroupsTableProps {
 export const GroupsTable = (props: GroupsTableProps) => {
     const [selectedGroup, setSelectedGroup] = useState("")
     const [showAddResultModal, setShowAddResultModal] = useState(false)
+
+    const token = parseToken()
+    const username = token?.username || ""
+
+    const { data: memberships } = useGroupMemberships(username)
 
     let groupsToShow = [...props.groups]
 
@@ -38,6 +46,13 @@ export const GroupsTable = (props: GroupsTableProps) => {
                             setShowAddResultModal(true)
                         }
 
+                        const isInGroup = memberships && memberships.some(m => m.groupId === g.id)
+
+                        // TODO: use mutation for this
+                        const joinGroup = () => {
+
+                        }
+
                         return (
                             <Table.Row key={g.name}>
                                 <Table.Cell className="image-cell">
@@ -60,14 +75,23 @@ export const GroupsTable = (props: GroupsTableProps) => {
                                 </Table.Cell>
 
                                 <Table.Cell>
-                                    <Button
+                                    {!isInGroup && <Button
+                                        icon
+                                        fluid
+                                        color="yellow"
+                                        onClick={joinGroup}>
+                                        <span>Join Group&nbsp;</span>
+                                        <Icon name="users" />
+                                    </Button>}
+
+                                    {isInGroup && <Button
                                         icon
                                         fluid
                                         color="teal"
                                         onClick={addResult}>
                                         <span>Submit Result&nbsp;</span>
                                         <Icon name="edit" />
-                                    </Button>
+                                    </Button>}
                                 </Table.Cell>
                             </Table.Row>
                         )
