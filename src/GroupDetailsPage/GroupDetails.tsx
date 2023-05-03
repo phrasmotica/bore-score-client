@@ -1,6 +1,8 @@
+import { useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
 import moment from "moment"
 import { Button, Icon } from "semantic-ui-react"
+import { v4 as newGuid } from "uuid"
 
 import { AddResultModal } from "../AddResultModal/AddResultModal"
 import { GameImage } from "../GameImage"
@@ -8,6 +10,7 @@ import { ResultsList } from "../ResultsPage/ResultsList"
 
 import { parseToken } from "../Auth"
 import { displayDateValue } from "../MomentHelpers"
+import { useAddGroupMembership } from "../Mutations"
 import { useGames, useGroupMemberships, usePlayers, useResults } from "../QueryHelpers"
 
 import { Group } from "../models/Group"
@@ -29,14 +32,21 @@ export const GroupDetails = (props: GroupDetailsProps) => {
     const { data: players } = usePlayers()
     const { data: results } = useResults({ group: props.group.name })
 
+    const queryClient = useQueryClient()
+
+    const { mutate: addGroupMembership } = useAddGroupMembership(queryClient, props.group, username)
+
     let imageSrc = props.group.profilePicture
 
     const isInGroup = memberships && memberships.some(m => m.groupId === props.group.id)
 
-    // TODO: use mutation for this
-    const joinGroup = () => {
-
-    }
+    const joinGroup = () => addGroupMembership({
+        id: newGuid(),
+        timeCreated: moment().unix(),
+        groupId: props.group.id,
+        username: username,
+        inviterUsername: "",
+    })
 
     return (
         <div className="group-details">

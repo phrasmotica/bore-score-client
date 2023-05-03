@@ -1,6 +1,7 @@
 import { useEffect } from "react"
 import { Button, Menu } from "semantic-ui-react"
 import { HashRouter, Link, Route, Routes } from "react-router-dom"
+import { SemanticToastContainer } from "react-semantic-toasts"
 
 import { AdminPage } from "./AdminPage/AdminPage"
 import { GameDetailsPage } from "./GameDetailsPage/GameDetailsPage"
@@ -125,6 +126,8 @@ const App = () => {
                     </Routes>
                 </HashRouter>
             </div>
+
+            <SemanticToastContainer position="bottom-right" maxToasts={3} />
 
             <footer>
                 <a href="https://www.flaticon.com/free-icons/dice" title="dice icons">

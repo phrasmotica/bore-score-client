@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { SemanticToastContainer } from "react-semantic-toasts"
 import { Button, Icon } from "semantic-ui-react"
 
 import { GameFilterDropdown } from "./GameFilterDropdown"
@@ -74,8 +73,6 @@ export const ResultsPage = () => {
                     selectedGames={selectedGames}
                     selectedGroups={selectedGroups} />
             </div>
-
-            <SemanticToastContainer position="bottom-right" maxToasts={3} />
         </div>
     )
 }

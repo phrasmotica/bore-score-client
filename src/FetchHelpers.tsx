@@ -184,6 +184,19 @@ export const getGroupMemberships = (username: string) => {
     .then((data: GroupMembership[]) => data)
 }
 
+export const postGroupMembership = (membership: GroupMembership) => {
+    const headers = getHeaders()
+    headers.set("Content-Type", "application/json")
+
+    return fetch(`${process.env.REACT_APP_API_URL}/memberships`, {
+        method: "POST",
+        body: JSON.stringify(membership),
+        headers: headers,
+    })
+    .then(handleResponse)
+    .then((data: GroupMembership) => data)
+}
+
 export const getLinkTypes = () => {
     const headers = getHeaders()
 
