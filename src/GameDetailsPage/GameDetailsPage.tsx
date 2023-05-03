@@ -4,6 +4,7 @@ import { toast } from "react-semantic-toasts"
 
 import { GameDetails } from "./GameDetails"
 
+import { PersistentError } from "../FetchHelpers"
 import { resetTitle, setTitle } from "../Helpers"
 import { useGame, useLinkTypes, useWinMethods } from "../QueryHelpers"
 
@@ -17,7 +18,7 @@ export const GameDetailsPage = (props: GameDetailsPageProps) => {
     const navigate = useNavigate()
 
     const { data: game } = useGame(name || "", error => {
-        if (error.message === "not found") {
+        if (error.message === PersistentError.NotFound) {
             gameNotFoundToast()
             navigate("/games")
         }

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 
-import { getApprovals, getGame, getGames, getGroup, getGroupMemberships, getGroups, getLinkTypes, getPlayer, getPlayers, getResults, getSummary, getUser, getWinMethods } from "./FetchHelpers"
+import { PersistentError, getApprovals, getGame, getGames, getGroup, getGroupMemberships, getGroups, getLinkTypes, getPlayer, getPlayers, getResults, getSummary, getUser, getWinMethods } from "./FetchHelpers"
 
 // TODO: add error handling
 export const useApprovals = (resultId: string, enabled: boolean) => useQuery({
@@ -114,6 +114,5 @@ export const useWinMethods = () => useQuery({
 })
 
 const shouldRetry = (failureCount: number, error: Error) => {
-    const persistentErrors = ["unauthorised", "not found"]
-    return !persistentErrors.includes(error.message)
+    return !Object.values(PersistentError).includes(error.message as PersistentError)
 }

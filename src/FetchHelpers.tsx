@@ -11,6 +11,11 @@ import { Summary } from "./models/Summary"
 import { User } from "./models/User"
 import { WinMethod } from "./models/WinMethod"
 
+export enum PersistentError {
+    Unauthorised = "unauthorised",
+    NotFound = "not found",
+}
+
 export const getSummary = () => {
     const headers = getHeaders()
 
@@ -277,18 +282,16 @@ export const requestToken = (request: TokenRequest) => {
 }
 
 const handleUnauthorisedResponse = (res: Response) => {
-    // TODO: create a better pattern for things like this
     if (res.status === 401) {
-        throw new Error("unauthorised")
+        throw new Error(PersistentError.Unauthorised)
     }
 
     return res
 }
 
 const handleNotFoundResponse = (res: Response) => {
-    // TODO: create a better pattern for things like this
     if (res.status === 404) {
-        throw new Error("not found")
+        throw new Error(PersistentError.NotFound)
     }
 
     return res

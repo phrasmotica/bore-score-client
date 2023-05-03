@@ -4,6 +4,7 @@ import { toast } from "react-semantic-toasts"
 
 import { GroupDetails } from "./GroupDetails"
 
+import { PersistentError } from "../FetchHelpers"
 import { resetTitle, setTitle } from "../Helpers"
 import { useGroup } from "../QueryHelpers"
 
@@ -18,11 +19,11 @@ export const GroupDetailsPage = (props: GroupDetailsPageProps) => {
     const navigate = useNavigate()
 
     const { data: group } = useGroup(name || "", error => {
-        if (error.message === "unauthorised") {
+        if (error.message === PersistentError.Unauthorised) {
             navigate("/login?redirect=" + encodeURIComponent(location.pathname))
         }
 
-        if (error.message === "not found") {
+        if (error.message === PersistentError.NotFound) {
             groupNotFoundToast()
             navigate("/groups")
         }
