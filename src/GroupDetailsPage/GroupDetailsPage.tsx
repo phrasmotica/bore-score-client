@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { useParams } from "react-router-dom"
+import { useLocation, useNavigate, useParams } from "react-router-dom"
 
 import { GroupDetails } from "./GroupDetails"
 
@@ -13,7 +13,14 @@ interface GroupDetailsPageProps {
 export const GroupDetailsPage = (props: GroupDetailsPageProps) => {
     let { name } = useParams()
 
-    const { data: group } = useGroup(name || "")
+    const location = useLocation()
+    const navigate = useNavigate()
+
+    const { data: group } = useGroup(name || "", error => {
+        if (error.message === "unauthorised") {
+            navigate("/login?redirect=" + encodeURIComponent(location.pathname))
+        }
+    })
 
     useEffect(() => {
         if (group?.displayName) {

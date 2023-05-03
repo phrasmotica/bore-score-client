@@ -34,10 +34,11 @@ export const useGroups = (getAll?: boolean) => {
     })
 }
 
-// TODO: add error handling
-export const useGroup = (name: string) => useQuery({
+export const useGroup = (name: string, onError: (error: Error) => void) => useQuery({
     queryKey: ["group", name],
     queryFn: () => getGroup(name),
+    onError,
+    retry: shouldRetry,
 })
 
 // TODO: add error handling
@@ -101,3 +102,7 @@ export const useWinMethods = () => useQuery({
     queryKey: ["winMethods"],
     queryFn: () => getWinMethods(),
 })
+
+const shouldRetry = (failureCount: number, error: Error) => {
+    return error.message !== "unauthorised"
+}

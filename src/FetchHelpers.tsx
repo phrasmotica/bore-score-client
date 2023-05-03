@@ -155,6 +155,7 @@ export const getGroup = (name: string) => {
     return fetch(`${process.env.REACT_APP_API_URL}/groups/${name}`, {
         headers: headers,
     })
+    .then(handleUnauthorisedResponse)
     .then(handleResponse)
     .then((data: Group) => data)
 }
@@ -246,6 +247,15 @@ export const requestToken = (request: TokenRequest) => {
     })
     .then(res => res.json())
     .then((res: TokenResponse) => res)
+}
+
+const handleUnauthorisedResponse = (res: Response) => {
+    // TODO: create a better pattern for things like this
+    if (res.status === 401) {
+        throw new Error("unauthorised")
+    }
+
+    return res
 }
 
 const handleResponse = (res: Response) => {
