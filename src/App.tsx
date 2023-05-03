@@ -40,12 +40,8 @@ const App = () => {
     const renderMenu = () => (
         <Menu fluid>
             <Menu.Item header>
-                BoreScore
-            </Menu.Item>
-
-            <Menu.Item>
                 <Link to="/">
-                    Home
+                    BoreScore
                 </Link>
             </Menu.Item>
 
