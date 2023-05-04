@@ -118,7 +118,7 @@ export const ResultCard = (props: ResultCardProps) => {
         }
 
         return {
-            displayName: player?.displayName ?? "(unknown player)",
+            displayName: player?.displayName || "",
             hasBestScore: s.score === bestScore,
             approvalStatus: approvalStatus,
             ...s

@@ -6,14 +6,27 @@ interface CooperativeWinCardProps {
 }
 
 export const CooperativeWinCard = (props: ScoreCardProps & CooperativeWinCardProps) => {
-    let playerLinks = props.players.map((s, i) => (
-        <span>
-            {createIcon(s.approvalStatus)}
-            <Link key={i} to={`/players/${s.username}`}>
-                {s.displayName}
-            </Link>
-        </span>
-    ))
+    let playerLinks = props.players.map((s, i) => {
+        let nameElement = <span>(unknown player)</span>
+        let key = i.toString()
+
+        if (s.displayName) {
+            nameElement = (
+                <Link to={`/players/${s.username}`}>
+                    {s.displayName}
+                </Link>
+            )
+
+            key = s.username
+        }
+
+        return (
+            <span key={key}>
+                {createIcon(s.approvalStatus)}
+                {nameElement}
+            </span>
+        )
+    })
 
     let content = (
         <span>
