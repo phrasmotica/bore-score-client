@@ -6,6 +6,7 @@ import { v4 as newGuid } from "uuid"
 
 import { AddResultModal } from "../AddResultModal/AddResultModal"
 import { GameImage } from "../GameImage"
+import { MemberList } from "./MemberList"
 import { ResultsList } from "../ResultsPage/ResultsList"
 
 import { parseToken } from "../Auth"
@@ -37,6 +38,8 @@ export const GroupDetails = (props: GroupDetailsProps) => {
     const { mutate: addGroupMembership } = useAddGroupMembership(queryClient, props.group, username)
 
     let imageSrc = props.group.profilePicture
+
+    const members = players ?? []
 
     const isInGroup = memberships && memberships.some(m => m.groupId === props.group.id)
 
@@ -88,10 +91,11 @@ export const GroupDetails = (props: GroupDetailsProps) => {
                         <em>Created on {displayDateValue(moment.unix(props.group.timeCreated))}</em>
                     </p>
 
-                    {/* TODO: show member list if user is a member */}
-                    <p className="members-count">
-                        <em>{(players ?? []).length} member(s)</em>
-                    </p>
+                    {(!isInGroup || members.length <= 0) && <p className="members-count">
+                        <em>{members.length} member(s)</em>
+                    </p>}
+
+                    {isInGroup && members.length > 0 && <MemberList members={members} />}
 
                     <h3>Recent Results</h3>
 
