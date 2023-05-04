@@ -96,7 +96,9 @@ export const GroupDetails = (props: GroupDetailsProps) => {
                     </p>}
 
                     {isInGroup && members.length > 0 && <MemberList members={members} />}
+                </div>
 
+                <div className="results">
                     <h3>Recent Results</h3>
 
                     <ResultsList

@@ -1,8 +1,47 @@
+.group-details-page .header {
+    text-align: start;
+    margin-bottom: 0.5em;
+}
+
 .group-details .game-image .ui.image {
     width: 100%;
 }
 
+.group-details .content {
+    display: flex;
+    margin-bottom: 0.5rem;
+}
+
+.group-details .content > :last-child {
+    flex-grow: 1;
+}
+
+.group-details .content .left button.ui.button {
+    margin-top: 0.5rem;
+}
+
+.group-details .display-name-header {
+    text-align: start;
+    margin-top: 0rem;
+    margin-bottom: 0.5rem;
+}
+
+.group-details .description {
+    text-align: start;
+    white-space: pre-line;
+    margin-top: 1rem;
+}
+
 .group-details-page .content .details {
     text-align: start;
-    width: 100%;
+    padding-left: 0.5rem;
+    margin-left: 0.5rem;
+    border-left: 1px solid rgba(34, 36, 38, 0.15);
+}
+
+.group-details-page .content .results {
+    text-align: start;
+    padding-left: 0.5rem;
+    margin-left: 0.5rem;
+    border-left: 1px solid rgba(34, 36, 38, 0.15);
 }
