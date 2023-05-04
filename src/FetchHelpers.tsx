@@ -1,4 +1,6 @@
-import { getHeaders } from "./Auth"
+import moment from "moment"
+
+import { getHeaders, getToken, parseToken, removeToken, setToken } from "./Auth"
 
 import { Approval } from "./models/Approval"
 import { Game } from "./models/Game"
@@ -10,6 +12,36 @@ import { Result } from "./models/Result"
 import { Summary } from "./models/Summary"
 import { User } from "./models/User"
 import { WinMethod } from "./models/WinMethod"
+
+// https://dev.to/snigdho611/react-js-interceptors-with-fetch-api-1oei
+const { fetch: originalFetch } = window
+
+window.fetch = async (...args) => {
+    let [resource, config] = args
+
+    // TODO: currently every request will do this. Do it only once, possibly
+    // with react-query or react-query-auth library?
+    const parsedToken = parseToken()
+    if (parsedToken) {
+        const expiryTime = moment.unix(parsedToken.exp)
+        const now = moment()
+        const secondsLeft = expiryTime.diff(now, "seconds")
+
+        if (secondsLeft <= 0) {
+            removeToken()
+        }
+        else if (secondsLeft < 30) {
+            console.log("Refreshing token, only %d seconds left", secondsLeft)
+            const token = getToken()
+            const tokenRes = await refreshToken({ token })
+            setToken(tokenRes.token)
+        }
+    }
+
+    const response = await originalFetch(resource, config)
+
+    return response
+}
 
 export enum PersistentError {
     Unauthorised = "unauthorised",
@@ -281,6 +313,20 @@ export const requestToken = (request: TokenRequest) => {
     .then((res: TokenResponse) => res)
 }
 
+export const refreshToken = (request: TokenRefreshRequest) => {
+    const headers = getHeaders()
+    headers.set("Content-Type", "application/json")
+
+    // don't make a recursive call to the amended fetch
+    return originalFetch(`${process.env.REACT_APP_API_URL}/token/refresh`, {
+        method: "POST",
+        body: JSON.stringify(request),
+        headers: headers,
+    })
+    .then(res => res.json())
+    .then((res: TokenResponse) => res)
+}
+
 const handleUnauthorisedResponse = (res: Response) => {
     if (res.status === 401) {
         throw new Error(PersistentError.Unauthorised)
@@ -311,5 +357,9 @@ interface TokenRequest {
 }
 
 interface TokenResponse {
+    token: string
+}
+
+interface TokenRefreshRequest {
     token: string
 }

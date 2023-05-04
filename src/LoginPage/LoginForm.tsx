@@ -13,15 +13,11 @@ interface LoginFormProps {
 export const LoginForm = (props: LoginFormProps) => {
     const navigate = useNavigate()
 
-    // TODO: use react-query-auth library
     const { mutate } = useMutation({
         mutationFn: requestToken,
         onSuccess: data => {
             setToken(data.token)
             navigate(props.redirect || "/")
-
-            // ensure page reloads after navigation
-            window.dispatchEvent(new Event("storage"))
         },
     })
 

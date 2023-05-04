@@ -7,7 +7,16 @@ export const removeToken = () => sessionStorage.removeItem("token")
 
 export const parseToken = () => {
     let token = getToken()
-    return token ? jwtDecode<AuthToken>(token) : null
+    if (!token) {
+        return null
+    }
+
+    try {
+        return jwtDecode<AuthToken>(token)
+    }
+    catch {
+        return null
+    }
 }
 
 export const getHeaders = () => {
