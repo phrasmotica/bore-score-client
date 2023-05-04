@@ -47,7 +47,6 @@ export const GamesTable = (props: GamesTableProps) => {
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell colSpan={2}>Game</Table.HeaderCell>
-                        <Table.HeaderCell width={4}>Players</Table.HeaderCell>
                         {token && <Table.HeaderCell width={2}></Table.HeaderCell>}
                     </Table.Row>
                 </Table.Header>

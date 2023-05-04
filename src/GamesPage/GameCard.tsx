@@ -19,20 +19,26 @@ export const GameCard = (props: GameCardProps) => {
 
     let game = props.game
 
-    let playersStr = `${game.minPlayers}-${game.maxPlayers}`
-    if (game.minPlayers === game.maxPlayers) {
-        playersStr = game.minPlayers.toString()
-    }
-
     let winMethod = (winMethods ?? []).find(w => w.name === game.winMethod)
 
     const addResult = () => props.addResult(game.name)
 
     const renderWinMethodLabel = (game: Game) => {
         return (
-            <Label className="win-method-label" color="green">
+            <Label className="win-method-label">
                 {winMethod?.displayName ?? game.winMethod}
             </Label>
+        )
+    }
+
+    const renderPlayersLabel = (game: Game) => {
+        let playersStr = `${game.minPlayers}-${game.maxPlayers}`
+        if (game.minPlayers === game.maxPlayers) {
+            playersStr = game.minPlayers.toString()
+        }
+
+        return (
+            <Label color="green">{playersStr} players</Label>
         )
     }
 
@@ -47,13 +53,13 @@ export const GameCard = (props: GameCardProps) => {
                     <Link to={`/games/${game.name}`}>
                         <h3>{game.displayName}</h3>
                     </Link>
-                    {renderWinMethodLabel(game)}
-                </div>
-                {game.synopsis || game.description || "N/A"}
-            </Table.Cell>
 
-            <Table.Cell>
-                {playersStr}
+                    <div className="labels">
+                        {renderPlayersLabel(game)}
+                        {renderWinMethodLabel(game)}
+                    </div>
+                </div>
+                {(game.synopsis || game.description || "N/A").substring(0, 200)}
             </Table.Cell>
 
             {token && <Table.Cell>
