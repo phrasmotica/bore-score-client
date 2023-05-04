@@ -13,6 +13,10 @@ export const useAddGroupMembership = (queryClient: QueryClient, group: Group, us
             queryKey: ["groupMemberships", username],
         })
 
+        queryClient.invalidateQueries({
+            queryKey: ["players", `group:${group.name}`],
+        })
+
         toast({
             title: "",
             description: `You joined ${group.displayName}!`,
