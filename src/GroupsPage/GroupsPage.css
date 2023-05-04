@@ -50,3 +50,13 @@
     max-width: 100px;
     max-height: 100px;
 }
+
+.group-header {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 0.25em;
+}
+
+.ui.label.group-visibility-label {
+    margin-left: 0.5em;
+}

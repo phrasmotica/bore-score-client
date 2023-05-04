@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query"
 import { Link } from "react-router-dom"
-import { Button, Icon, Table } from "semantic-ui-react"
+import { Button, Icon, Label, Table } from "semantic-ui-react"
 import moment from "moment"
 import { v4 as newGuid } from "uuid"
 
@@ -10,7 +10,7 @@ import { parseToken } from "../Auth"
 import { useAddGroupMembership } from "../Mutations"
 import { useGroupMemberships } from "../QueryHelpers"
 
-import { Group } from "../models/Group"
+import { Group, GroupVisibilityName } from "../models/Group"
 
 interface GroupCardProps {
     group: Group
@@ -39,25 +39,31 @@ export const GroupCard = (props: GroupCardProps) => {
         inviterUsername: "",
     })
 
+    const renderVisibilityLabel = (group: Group) => {
+        const colour = group.visibility === GroupVisibilityName.Private ? "purple" : "green"
+
+        return (
+            <Label className="group-visibility-label" color={colour}>
+                {group.visibility}
+            </Label>
+        )
+    }
+
     return (
-        <Table.Row key={group.name}>
+        <Table.Row key={group.name} className={"group-card " + group.visibility}>
             <Table.Cell className="image-cell">
                 <GameImage imageSrc={group.profilePicture} />
             </Table.Cell>
 
             <Table.Cell>
-                <Link to={`/groups/${group.name}`}>
-                    {group.displayName}
-                </Link>
-            </Table.Cell>
+                <div className="group-header">
+                    <Link to={`/groups/${group.name}`}>
+                        <h3>{group.displayName}</h3>
+                    </Link>
+                    {renderVisibilityLabel(group)}
+                </div>
 
-            <Table.Cell>
-                {group.description || "N/A"}
-            </Table.Cell>
-
-            <Table.Cell>
-                {/* TODO: show visibility display name */}
-                {group.visibility}
+                <em>{group.description || "N/A"}</em>
             </Table.Cell>
 
             {token && <Table.Cell>

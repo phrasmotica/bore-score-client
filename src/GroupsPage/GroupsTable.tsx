@@ -28,8 +28,6 @@ export const GroupsTable = (props: GroupsTableProps) => {
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell colSpan={2}>Group</Table.HeaderCell>
-                        <Table.HeaderCell width={6}>Description</Table.HeaderCell>
-                        <Table.HeaderCell width={2}>Visibility</Table.HeaderCell>
                         {token && <Table.HeaderCell width={2}></Table.HeaderCell>}
                     </Table.Row>
                 </Table.Header>
@@ -41,7 +39,7 @@ export const GroupsTable = (props: GroupsTableProps) => {
                             setShowAddResultModal(true)
                         }
 
-                        return <GroupCard group={g} addResult={addResult} />
+                        return <GroupCard key={g.id} group={g} addResult={addResult} />
                     })}
                 </Table.Body>
             </Table>
