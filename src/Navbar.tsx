@@ -55,12 +55,6 @@ export const Navbar = () => {
                 </Link>
             </Menu.Item>
 
-            <Menu.Item>
-                <Link to="/scorecard">
-                    Scorecard
-                </Link>
-            </Menu.Item>
-
             {!token && <Menu.Menu position="right">
                 <Menu.Item>
                     <Link to={loginLink}>

@@ -13,7 +13,6 @@ import { LoginPage } from "./LoginPage/LoginPage"
 import { PlayerDetailsPage } from "./PlayerDetailsPage/PlayerDetailsPage"
 import { ProfilePage } from "./ProfilePage/ProfilePage"
 import { ResultsPage } from "./ResultsPage/ResultsPage"
-import { ScorecardPage } from "./ScorecardPage/ScorecardPage"
 
 import "./App.css"
 
@@ -35,7 +34,6 @@ const App = () => (
                     <Route path="/groups/:name" element={<GroupDetailsPage />} />
                     <Route path="/groups" element={<GroupsPage />} />
                     <Route path="/results" element={<ResultsPage />} />
-                    <Route path="/scorecard" element={<ScorecardPage />} />
                 </Routes>
             </HashRouter>
         </div>
