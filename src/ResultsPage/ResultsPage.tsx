@@ -58,10 +58,10 @@ export const ResultsPage = () => {
 
                     {token && <Button
                         icon
-                        color="yellow"
+                        color="teal"
                         onClick={() => setShowAddResultModal(true)}>
-                        <span>Add New Result&nbsp;</span>
-                        <Icon name="plus" />
+                        <span>Submit Result&nbsp;</span>
+                        <Icon name="edit" />
                     </Button>}
                 </div>
 
