@@ -1,11 +1,10 @@
 import { useState } from "react"
-import { Link } from "react-router-dom"
-import { Button, Icon, Table } from "semantic-ui-react"
+import { Table } from "semantic-ui-react"
 
 import { AddResultModal } from "../AddResultModal/AddResultModal"
-import { GameImage } from "../GameImage"
 
 import { parseToken } from "../Auth"
+import { GameCard } from "./GameCard"
 
 import { Game } from "../models/Game"
 import { WinMethod } from "../models/WinMethod"
@@ -47,64 +46,20 @@ export const GamesTable = (props: GamesTableProps) => {
             <Table compact celled color="teal">
                 <Table.Header>
                     <Table.Row>
-                        <Table.HeaderCell colSpan={2} width={3}>Game</Table.HeaderCell>
-                        <Table.HeaderCell width={6}>Synopsis</Table.HeaderCell>
-                        <Table.HeaderCell width={2}>Players</Table.HeaderCell>
-                        <Table.HeaderCell width={2}>Win Method</Table.HeaderCell>
-                        {token && <Table.HeaderCell width={3}></Table.HeaderCell>}
+                        <Table.HeaderCell colSpan={2}>Game</Table.HeaderCell>
+                        <Table.HeaderCell width={4}>Players</Table.HeaderCell>
+                        {token && <Table.HeaderCell width={2}></Table.HeaderCell>}
                     </Table.Row>
                 </Table.Header>
 
                 <Table.Body>
                     {gamesToShow.map(g => {
-                        let playersStr = `${g.minPlayers}-${g.maxPlayers}`
-                        if (g.minPlayers === g.maxPlayers) {
-                            playersStr = g.minPlayers.toString()
-                        }
-
-                        let winMethod = props.winMethods.find(w => w.name === g.winMethod)
-
                         const addResult = () => {
                             setSelectedGame(g.name)
                             setShowAddResultModal(true)
                         }
 
-                        return (
-                            <Table.Row key={g.name}>
-                                <Table.Cell>
-                                    <GameImage imageSrc={g.imageLink} />
-                                </Table.Cell>
-
-                                <Table.Cell>
-                                    <Link to={`/games/${g.name}`}>
-                                        {g.displayName}
-                                    </Link>
-                                </Table.Cell>
-
-                                <Table.Cell>
-                                    {g.synopsis || g.description || "N/A"}
-                                </Table.Cell>
-
-                                <Table.Cell>
-                                    {playersStr}
-                                </Table.Cell>
-
-                                <Table.Cell>
-                                    {winMethod?.displayName ?? g.winMethod}
-                                </Table.Cell>
-
-                                {token && <Table.Cell>
-                                    <Button
-                                        icon
-                                        fluid
-                                        color="teal"
-                                        onClick={addResult}>
-                                        <span>Submit Result&nbsp;</span>
-                                        <Icon name="edit" />
-                                    </Button>
-                                </Table.Cell>}
-                            </Table.Row>
-                        )
+                        return <GameCard key={g.id} game={g} addResult={addResult} />
                     })}
                 </Table.Body>
             </Table>

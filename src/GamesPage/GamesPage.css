@@ -29,3 +29,13 @@
     margin-right: 0.5rem;
     border-right: 1px solid rgba(34, 36, 38, 0.15);
 }
+
+.game-header {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 0.25em;
+}
+
+.ui.label.win-method-label {
+    margin-left: 0.5em;
+}
