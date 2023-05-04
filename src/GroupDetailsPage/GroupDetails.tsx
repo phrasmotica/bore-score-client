@@ -29,7 +29,7 @@ export const GroupDetails = (props: GroupDetailsProps) => {
 
     const { data: games } = useGames()
     const { data: memberships } = useGroupMemberships(username)
-    const { data: players } = usePlayers()
+    const { data: players } = usePlayers(props.group.name)
     const { data: results } = useResults({ group: props.group.name })
 
     const queryClient = useQueryClient()
@@ -86,6 +86,11 @@ export const GroupDetails = (props: GroupDetailsProps) => {
 
                     <p className="time-created">
                         <em>Created on {displayDateValue(moment.unix(props.group.timeCreated))}</em>
+                    </p>
+
+                    {/* TODO: show member list if user is a member */}
+                    <p className="members-count">
+                        <em>{(players ?? []).length} member(s)</em>
                     </p>
 
                     <h3>Recent Results</h3>
