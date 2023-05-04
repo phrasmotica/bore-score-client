@@ -60,6 +60,7 @@ export const AddGroupModal = (props: AddGroupModalProps) => {
         description: description,
         profilePicture: profilePicture,
         visibility: visibility,
+        createdBy: "",
     })
 
     return (

@@ -12,7 +12,7 @@ import { ResultsList } from "../ResultsPage/ResultsList"
 import { parseToken } from "../Auth"
 import { displayDateValue } from "../MomentHelpers"
 import { useAddGroupMembership } from "../Mutations"
-import { useGames, useGroupMemberships, usePlayers, useResults } from "../QueryHelpers"
+import { useGames, useGroupMemberships, usePlayer, usePlayers, useResults } from "../QueryHelpers"
 
 import { Group } from "../models/Group"
 
@@ -31,6 +31,7 @@ export const GroupDetails = (props: GroupDetailsProps) => {
     const { data: games } = useGames()
     const { data: memberships } = useGroupMemberships(username)
     const { data: players } = usePlayers(props.group.name)
+    const { data: creator } = usePlayer(props.group.createdBy)
     const { data: results } = useResults({ group: props.group.name })
 
     const queryClient = useQueryClient()
@@ -95,7 +96,7 @@ export const GroupDetails = (props: GroupDetailsProps) => {
                         <em>{members.length} member(s)</em>
                     </p>}
 
-                    {isInGroup && members.length > 0 && <MemberList members={members} />}
+                    {isInGroup && members.length > 0 && <MemberList members={members} creatorUsername={creator?.username || ""} />}
                 </div>
 
                 <div className="results">

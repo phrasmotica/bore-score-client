@@ -6,6 +6,7 @@ export interface Group {
     description: string
     profilePicture: string
     visibility: GroupVisibilityName
+    createdBy: string
 }
 
 export enum GroupVisibilityName {

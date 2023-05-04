@@ -4,6 +4,7 @@ import { Player } from "../models/Player"
 
 interface MemberListProps {
     members: Player[]
+    creatorUsername: string
 }
 
 export const MemberList = (props: MemberListProps) => {
@@ -16,6 +17,7 @@ export const MemberList = (props: MemberListProps) => {
                         <Link to={`/players/${m.username}`}>
                             {m.displayName}
                         </Link>
+                        {(m.username === props.creatorUsername ? " (creator)" : "")}
                     </span>
                 </div>
             ))}
