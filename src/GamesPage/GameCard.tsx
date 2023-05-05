@@ -60,7 +60,6 @@ export const GameCard = (props: GameCardProps) => {
                     </div>
 
                     <div className="game-content">
-                        {/* TODO: figure out making this look nice with >1 line of text */}
                         {game.synopsis || game.description || "N/A"}
                     </div>
                 </div>

@@ -1,6 +1,7 @@
 import { useState } from "react"
+import { Button, Icon } from "semantic-ui-react"
 
-import { GamesTable } from "./GamesTable"
+import { GamesList } from "./GamesList"
 import { PlayerCountFilter } from "./PlayerCountFilter"
 import { WinMethodFilterDropdown } from "./WinMethodFilterDropdown"
 
@@ -11,7 +12,6 @@ import { useTitle } from "../Hooks"
 import { useGames, useWinMethods } from "../QueryHelpers"
 
 import "./GamesPage.css"
-import { Button, Icon } from "semantic-ui-react"
 
 export const GamesPage = () => {
     useTitle("Games")
@@ -76,7 +76,7 @@ export const GamesPage = () => {
                     </Button>}
                 </div>
 
-                <GamesTable
+                <GamesList
                     games={games ?? []}
                     winMethods={winMethods ?? []}
                     selectedWinMethods={selectedWinMethods}

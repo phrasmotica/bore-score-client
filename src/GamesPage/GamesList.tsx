@@ -8,7 +8,7 @@ import { GameCard } from "./GameCard"
 import { Game } from "../models/Game"
 import { WinMethod } from "../models/WinMethod"
 
-interface GamesTableProps {
+interface GamesListProps {
     games: Game[]
     winMethods: WinMethod[]
     selectedWinMethods: string[]
@@ -18,7 +18,7 @@ interface GamesTableProps {
     maxPlayers: number
 }
 
-export const GamesTable = (props: GamesTableProps) => {
+export const GamesList = (props: GamesListProps) => {
     const [selectedGame, setSelectedGame] = useState("")
     const [showAddResultModal, setShowAddResultModal] = useState(false)
 
