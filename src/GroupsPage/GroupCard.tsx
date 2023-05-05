@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query"
 import { Link } from "react-router-dom"
-import { Button, Icon, Label, Table } from "semantic-ui-react"
+import { Button, Icon, Label } from "semantic-ui-react"
 import moment from "moment"
 import { v4 as newGuid } from "uuid"
 
@@ -49,24 +49,30 @@ export const GroupCard = (props: GroupCardProps) => {
         )
     }
 
+    // TODO: turn this into a GameCard-style div that can go in a list item
     return (
-        <Table.Row key={group.name} className={"group-card " + group.visibility}>
-            <Table.Cell className="image-cell">
+        <div key={group.name} className="group-card">
+            <div className="left">
                 <GameImage imageSrc={group.profilePicture} />
-            </Table.Cell>
 
-            <Table.Cell>
-                <div className="group-header">
-                    <Link to={`/groups/${group.name}`}>
-                        <h3>{group.displayName}</h3>
-                    </Link>
-                    {renderVisibilityLabel(group)}
+                <div className="group-text">
+                    <div className="group-header">
+                        <Link to={`/groups/${group.name}`}>
+                            <h3>{group.displayName}</h3>
+                        </Link>
+
+                        <div className="labels">
+                            {renderVisibilityLabel(group)}
+                        </div>
+                    </div>
+
+                    <div className="group-content">
+                        <em>{group.description || "N/A"}</em>
+                    </div>
                 </div>
+            </div>
 
-                <em>{group.description || "N/A"}</em>
-            </Table.Cell>
-
-            {token && <Table.Cell>
+            {token && <div className="right">
                 {username && !isInGroup && <Button
                     icon
                     fluid
@@ -84,7 +90,7 @@ export const GroupCard = (props: GroupCardProps) => {
                     <span>Submit Result&nbsp;</span>
                     <Icon name="edit" />
                 </Button>}
-            </Table.Cell>}
-        </Table.Row>
+            </div>}
+        </div>
     )
 }

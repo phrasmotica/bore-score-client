@@ -19,8 +19,7 @@
 
 .groups-page .sidebar {
     text-align: end;
-    min-width: 15vw;
-    max-width: 15vw;
+    min-width: 250px;
 }
 
 .groups-page .sidebar .filters {
@@ -33,30 +32,72 @@
     flex-grow: 1;
 }
 
-.groups-table .ui.table td.image-cell {
-    width: 100px;
-    height: 100px;
-}
-
-.groups-table .ui.table td .game-image {
+.group-card {
     display: flex;
     align-items: center;
-    justify-content: center;
-    width: 100px;
-    height: 100px;
+    justify-content: space-between;
+    padding: 0.25em 0em;
 }
 
-.groups-table .ui.table td .game-image .image {
+.group-card .left {
+    display: flex;
+    text-align: start;
+    flex-grow: 1;
+}
+
+.group-card .game-image {
+    display: flex;
+    justify-content: center;
+    width: 100px;
+    flex-shrink: 0;
+}
+
+.group-card .game-image .image {
     max-width: 100px;
     max-height: 100px;
+}
+
+.group-card .group-text {
+    margin-left: 0.5em;
 }
 
 .group-header {
     display: flex;
     align-items: flex-end;
-    margin-bottom: 0.25em;
 }
 
-.ui.label.group-visibility-label {
+.group-header .labels {
     margin-left: 0.5em;
+    flex-shrink: 0;
+}
+
+.group-content {
+    display: flex;
+    margin-top: 0.25em;
+}
+
+.group-card .right {
+    margin-left: 1em;
+    flex-shrink: 0;
+}
+
+@media screen and (max-width: 767px) {
+    .groups-page {
+        flex-direction: column;
+    }
+
+    .groups-page .sidebar .filters {
+        padding-right: 0rem;
+        margin-right: 0rem;
+        border-right: unset;
+    }
+
+    .groups-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .groups-header .labels {
+        margin-left: 0em;
+    }
 }
