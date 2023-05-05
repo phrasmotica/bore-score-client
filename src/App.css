@@ -124,31 +124,6 @@
   justify-content: space-between;
 }
 
-.games-page .sidebar .ui.form .fields > .field.player-count-checkbox {
-  flex: 0 1 auto;
-}
-
-.games-page .sidebar .ui.form .fields > .field.player-count-picker {
-  flex: 1 1 auto;
-  max-width: 5vw;
-}
-
-.games-page-body {
-  flex-grow: 1;
-}
-
-.games-table .game-image {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: unset;
-}
-
-.games-table .ui.table td .game-image .image {
-  max-width: 100px;
-  max-height: 100px;
-}
-
 .game-details-page .header {
   text-align: start;
   margin-bottom: 0.5em;

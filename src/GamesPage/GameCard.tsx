@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { Table, Button, Icon, Label } from "semantic-ui-react"
+import { Button, Icon, Label } from "semantic-ui-react"
 
 import { parseToken } from "../Auth"
 import { GameImage } from "../GameImage"
@@ -43,26 +43,30 @@ export const GameCard = (props: GameCardProps) => {
     }
 
     return (
-        <Table.Row key={game.name}>
-            <Table.Cell>
+        <div className="game-card">
+            <div className="left">
                 <GameImage imageSrc={game.imageLink} />
-            </Table.Cell>
 
-            <Table.Cell>
-                <div className="game-header">
-                    <Link to={`/games/${game.name}`}>
-                        <h3>{game.displayName}</h3>
-                    </Link>
+                <div className="game-text">
+                    <div className="game-header">
+                        <Link to={`/games/${game.name}`}>
+                            <h3>{game.displayName}</h3>
+                        </Link>
 
-                    <div className="labels">
-                        {renderPlayersLabel(game)}
-                        {renderWinMethodLabel(game)}
+                        <div className="labels">
+                            {renderPlayersLabel(game)}
+                            {renderWinMethodLabel(game)}
+                        </div>
+                    </div>
+
+                    <div className="game-content">
+                        {/* TODO: figure out making this look nice with >1 line of text */}
+                        {game.synopsis || game.description || "N/A"}
                     </div>
                 </div>
-                {(game.synopsis || game.description || "N/A").substring(0, 200)}
-            </Table.Cell>
+            </div>
 
-            {token && <Table.Cell>
+            {token && <div className="right">
                 <Button
                     icon
                     fluid
@@ -71,7 +75,7 @@ export const GameCard = (props: GameCardProps) => {
                     <span>Submit Result&nbsp;</span>
                     <Icon name="edit" />
                 </Button>
-            </Table.Cell>}
-        </Table.Row>
+            </div>}
+        </div>
     )
 }

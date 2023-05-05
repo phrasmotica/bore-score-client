@@ -2,6 +2,19 @@
     display: flex;
 }
 
+.games-page .sidebar .ui.form .fields > .field.player-count-checkbox {
+    flex: 0 1 auto;
+}
+
+.games-page .sidebar .ui.form .fields > .field.player-count-picker {
+    flex: 1 1 auto;
+    max-width: 5vw;
+}
+
+.games-page-body {
+    flex-grow: 1;
+}
+
 .games-page h2 {
     margin-bottom: 0em;
 }
@@ -30,12 +43,47 @@
     border-right: 1px solid rgba(34, 36, 38, 0.15);
 }
 
+.game-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.25em 0em;
+}
+
+.game-card .left {
+    display: flex;
+    text-align: start;
+    flex-grow: 1;
+}
+
+.game-card .game-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    flex-shrink: 0;
+}
+
+.game-card .game-image .image {
+    max-width: 100px;
+    max-height: 100px;
+}
+
 .game-header {
     display: flex;
     align-items: flex-end;
-    margin-bottom: 0.25em;
 }
 
 .game-header .labels {
     margin-left: 0.5em;
+}
+
+.game-content {
+    display: flex;
+    margin-top: 0.25em;
+}
+
+.game-card .right {
+    margin-left: 1em;
+    flex-shrink: 0;
 }
