@@ -6,11 +6,11 @@ import { GroupCard } from "./GroupCard"
 
 import { Group } from "../models/Group"
 
-interface GroupsTableProps {
+interface GroupsListProps {
     groups: Group[]
 }
 
-export const GroupsTable = (props: GroupsTableProps) => {
+export const GroupsList = (props: GroupsListProps) => {
     const [selectedGroup, setSelectedGroup] = useState("")
     const [showAddResultModal, setShowAddResultModal] = useState(false)
 

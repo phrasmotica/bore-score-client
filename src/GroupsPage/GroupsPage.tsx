@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Button, Icon } from "semantic-ui-react"
 
-import { GroupsTable } from "./GroupsTable"
+import { GroupsList } from "./GroupsList"
 
 import { AddGroupModal } from "../AddGroupModal/AddGroupModal"
 
@@ -47,7 +47,7 @@ export const GroupsPage = () => {
                     </Button>}
                 </div>
 
-                <GroupsTable
+                <GroupsList
                     groups={groups ?? []} />
             </div>
         </div>
