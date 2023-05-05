@@ -8,7 +8,7 @@
 
 .games-page .sidebar .ui.form .fields > .field.player-count-picker {
     flex: 1 1 auto;
-    max-width: 5vw;
+    max-width: 100px;
 }
 
 .games-page-body {
@@ -33,8 +33,7 @@
 
 .games-page .sidebar {
     text-align: end;
-    min-width: 15vw;
-    max-width: 15vw;
+    min-width: 250px;
 }
 
 .games-page .sidebar .filters {
@@ -58,7 +57,6 @@
 
 .game-card .game-image {
     display: flex;
-    align-items: center;
     justify-content: center;
     width: 100px;
     flex-shrink: 0;
@@ -76,6 +74,28 @@
 
 .game-header .labels {
     margin-left: 0.5em;
+    flex-shrink: 0;
+}
+
+@media screen and (max-width: 767px) {
+    .games-page {
+        flex-direction: column;
+    }
+
+    .games-page .sidebar .filters {
+        padding-right: 0rem;
+        margin-right: 0rem;
+        border-right: unset;
+    }
+
+    .game-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .game-header .labels {
+        margin-left: 0em;
+    }
 }
 
 .game-content {
