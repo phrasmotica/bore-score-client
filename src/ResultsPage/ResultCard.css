@@ -1,20 +1,48 @@
+.ui.accordion.result-card-header {
+    padding: 0.25em 0em;
+}
+
+.ui.accordion.result-card-header.pending {
+    background-color: rgba(255, 228, 196, 0.5);
+}
+
+.ui.accordion.result-card-header.approved {
+    background-color: rgba(60, 179, 114, 0.3);
+}
+
+.ui.accordion.result-card-header.rejected {
+    background-color: rgba(240, 128, 128, 0.4);
+}
+
+.ui.accordion.result-card-header > .title {
+    text-align: start;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ui.accordion.result-card-header > .title h3 {
+    display: inline;
+    margin: 0em;
+}
+
+.ui.accordion.result-card-header > .title > i.icon {
+    transition: transform .25s ease,opacity .1s ease;
+}
+
+.ui.accordion.result-card-header > .title.active > i.icon {
+    transform: rotate(-90deg);
+}
+
+.ui.accordion.result-card-header > .content {
+    padding: 0.75em 1em!important;
+}
+
 .result-card {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0.25em 0em;
-}
-
-.result-card.pending {
-    background-color: rgba(255, 228, 196, 0.5);
-}
-
-.result-card.approved {
-    background-color: rgba(60, 179, 114, 0.3);
-}
-
-.result-card.rejected {
-    background-color: rgba(240, 128, 128, 0.4);
 }
 
 .result-card .left {

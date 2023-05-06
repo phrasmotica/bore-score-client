@@ -41,7 +41,7 @@ export const ResultsList = (props: ResultsListProps) => {
 
     return (
         <div className="results-list">
-            <List divided>
+            <List>
                 {resultsToShow.length <= 0 && renderNoResultsMessage()}
                 {resultsToShow.length > 0 && resultsToShow.map(r => (
                     <List.Item>
