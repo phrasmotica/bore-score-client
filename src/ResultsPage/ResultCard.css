@@ -1,3 +1,8 @@
+:root {
+    --approved: 33, 186, 69;
+    --rejected: 219, 40, 40;
+}
+
 .ui.accordion.result-card-header {
     padding: 0.25em 0em;
 }
@@ -19,6 +24,39 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.ui.accordion.result-card-header > .title i.icon.approval-icon {
+    font-size: calc(9rem / 7);
+    line-height: unset;
+    vertical-align: unset;
+    color: unset!important;
+}
+
+.ui.accordion.result-card-header > .title i.icon.approval-icon.green {
+    color: rgba(var(--approved), 0.4)!important;
+    transition: color .1s ease;
+}
+
+.ui.accordion.result-card-header > .title:hover i.icon.approval-icon.green {
+    color: rgba(var(--approved), 0.87)!important;
+}
+
+.ui.accordion.result-card-header > .title.active i.icon.approval-icon.green {
+    color: rgba(var(--approved), 0.95)!important;
+}
+
+.ui.accordion.result-card-header > .title i.icon.approval-icon.red {
+    color: rgba(var(--rejected), 0.4)!important;
+    transition: color .1s ease;
+}
+
+.ui.accordion.result-card-header > .title:hover i.icon.approval-icon.red {
+    color: rgba(var(--rejected), 0.87)!important;
+}
+
+.ui.accordion.result-card-header > .title.active i.icon.approval-icon.red {
+    color: rgba(var(--rejected), 0.95)!important;
 }
 
 .ui.accordion.result-card-header > .title h3 {
@@ -63,10 +101,6 @@
     max-height: 100px;
 }
 
-.result-card .result-text {
-    /* margin-left: 0.5em; */
-}
-
 .result-header {
     display: flex;
     align-items: flex-end;
@@ -80,6 +114,14 @@
 .result-content {
     display: flex;
     margin-top: 0.25em;
+}
+
+.result-content > .score-card {
+    flex-shrink: 0;
+}
+
+.result-content > :not(:first-child) {
+    margin-left: 1em;
 }
 
 .result-card .right {

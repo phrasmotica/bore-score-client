@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { Link } from "react-router-dom"
 import { toast } from "react-semantic-toasts"
 import { Accordion, Icon, SemanticCOLORS, SemanticICONS } from "semantic-ui-react"
@@ -27,7 +28,6 @@ import { Result } from "../models/Result"
 import { WinMethodName } from "../models/WinMethod"
 
 import "./ResultCard.css"
-import { useState } from "react"
 
 interface ResultCardProps {
     result: Result
@@ -128,7 +128,7 @@ export const ResultCard = (props: ResultCardProps) => {
         }
     })
 
-    const renderScoresSummary = () => {
+    const renderScoreCard = () => {
         switch (game?.winMethod) {
             case WinMethodName.IndividualScore:
                 return <IndividualScoreCard players={playersWithNames} />
@@ -179,10 +179,28 @@ export const ResultCard = (props: ResultCardProps) => {
         approvalStatus: ApprovalStatus.Rejected,
     })
 
+    const createIcon = (approvalStatus: ApprovalStatus) => {
+        let colour = "black"
+        let iconName = "question circle outline"
+
+        if (approvalStatus === ApprovalStatus.Rejected) {
+            colour = "red"
+            iconName = "times circle outline"
+        }
+
+        if (approvalStatus === ApprovalStatus.Approved) {
+            colour = "green"
+            iconName = "check circle outline"
+        }
+
+        return <Icon className="approval-icon" name={iconName as SemanticICONS} color={colour as SemanticCOLORS} />
+    }
+
     return (
         <Accordion styled fluid className={`result-card-header ${overallApproval}`}>
             <Accordion.Title active={showDetails} onClick={() => setShowDetails(s => !s)}>
                 <span>
+                    {createIcon(overallApproval)}
                     <h3>{game.displayName}</h3>&nbsp;
                     <em>at {displayDateTimeValue(moment.unix(r.timePlayed))}</em>
                 </span>
@@ -206,8 +224,8 @@ export const ResultCard = (props: ResultCardProps) => {
                             </div>
 
                             <div className="result-content">
-                                <div>
-                                    {renderScoresSummary()}
+                                <div className="score-card">
+                                    {renderScoreCard()}
                                 </div>
 
                                 {!props.hideGroups && <div>
