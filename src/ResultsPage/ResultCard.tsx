@@ -215,7 +215,7 @@ export const ResultCard = (props: ResultCardProps) => {
                         <div className="result-text">
                             <div className="result-header">
                                 <Link to={`/games/${game.name}`}>
-                                    {game.displayName}
+                                    <h3>{game.displayName}</h3>
                                 </Link>
 
                                 <div className="labels">

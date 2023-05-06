@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom"
+import { List } from "semantic-ui-react"
+
 import { ScoreCardProps, createIcon } from "./ScoreCardProps"
 
 export const IndividualScoreCard = (props: ScoreCardProps) => (
-    <div>
+    <List divided>
         {props.players.map((s, i) => {
             let nameElement = <span>(unknown player)</span>
             let key = i.toString()
@@ -29,7 +31,7 @@ export const IndividualScoreCard = (props: ScoreCardProps) => (
                 content = <b>{content}</b>
             }
 
-            return <div key={key}>{content}</div>
+            return <List.Item key={key}>{content}</List.Item>
         })}
-    </div>
+    </List>
 )
