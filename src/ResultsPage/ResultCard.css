@@ -1,11 +1,60 @@
-.result-card.pending > td {
+.result-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.25em 0em;
+}
+
+.result-card.pending {
     background-color: rgba(255, 228, 196, 0.5);
 }
 
-.result-card.approved > td {
+.result-card.approved {
     background-color: rgba(60, 179, 114, 0.3);
 }
 
-.result-card.rejected > td {
+.result-card.rejected {
     background-color: rgba(240, 128, 128, 0.4);
+}
+
+.result-card .left {
+    display: flex;
+    text-align: start;
+    flex-grow: 1;
+}
+
+.result-card .game-image {
+    display: flex;
+    justify-content: center;
+    width: 100px;
+    flex-shrink: 0;
+}
+
+.result-card .game-image .image {
+    max-width: 100px;
+    max-height: 100px;
+}
+
+.result-card .result-text {
+    /* margin-left: 0.5em; */
+}
+
+.result-header {
+    display: flex;
+    align-items: flex-end;
+}
+
+.result-header .labels {
+    margin-left: 0.5em;
+    flex-shrink: 0;
+}
+
+.result-content {
+    display: flex;
+    margin-top: 0.25em;
+}
+
+.result-card .right {
+    margin-left: 1em;
+    flex-shrink: 0;
 }

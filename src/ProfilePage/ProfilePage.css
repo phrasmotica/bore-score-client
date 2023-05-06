@@ -12,7 +12,7 @@
     margin-top: 0.5em;
 }
 
-.profile-page .content .left {
+.profile-page .content > .left {
     text-align: end;
 }
 
@@ -21,6 +21,6 @@
     width: 100%;
 }
 
-.results-table .no-results-message {
+.results-list .no-results-message {
     text-align: center;
 }

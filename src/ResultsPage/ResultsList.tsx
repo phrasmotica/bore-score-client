@@ -1,4 +1,4 @@
-import { Table } from "semantic-ui-react"
+import { List } from "semantic-ui-react"
 
 import { ResultCard } from "./ResultCard"
 
@@ -34,31 +34,17 @@ export const ResultsList = (props: ResultsListProps) => {
     }
 
     const renderNoResultsMessage = () => (
-        <Table.Row>
-            <Table.Cell colSpan={16}>
-                <p className="no-results-message">No results to show.</p>
-            </Table.Cell>
-        </Table.Row>
+        <List.Item>
+            <p className="no-results-message">No results to show.</p>
+        </List.Item>
     )
 
     return (
-        <div className="results-table">
-            <Table compact celled color="teal">
-                <Table.Header>
-                    <Table.Row>
-                        <Table.HeaderCell colSpan={2} width={3}>Game</Table.HeaderCell>
-                        <Table.HeaderCell width={3}>Result</Table.HeaderCell>
-                        {!props.hideGroups && <Table.HeaderCell width={2}>Group</Table.HeaderCell>}
-                        <Table.HeaderCell width={2}>Played</Table.HeaderCell>
-                        <Table.HeaderCell width={2}>Submitted</Table.HeaderCell>
-                        <Table.HeaderCell width={4}>Notes</Table.HeaderCell>
-                        {props.approvals && <Table.HeaderCell width={4}>Approvals</Table.HeaderCell>}
-                    </Table.Row>
-                </Table.Header>
-
-                <Table.Body>
-                    {resultsToShow.length <= 0 && renderNoResultsMessage()}
-                    {resultsToShow.length > 0 && resultsToShow.map(r => (
+        <div className="results-list">
+            <List divided>
+                {resultsToShow.length <= 0 && renderNoResultsMessage()}
+                {resultsToShow.length > 0 && resultsToShow.map(r => (
+                    <List.Item>
                         <ResultCard
                             approvals={props.approvals}
                             hideGroups={props.hideGroups}
@@ -68,9 +54,9 @@ export const ResultsList = (props: ResultsListProps) => {
                             groups={props.groups}
                             players={props.players}
                             currentUser={token?.username} />
-                    ))}
-                </Table.Body>
-            </Table>
+                    </List.Item>
+                ))}
+            </List>
         </div>
     )
 }

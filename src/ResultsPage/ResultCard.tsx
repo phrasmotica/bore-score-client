@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import { toast } from "react-semantic-toasts"
-import { SemanticCOLORS, SemanticICONS, Table } from "semantic-ui-react"
+import { SemanticCOLORS, SemanticICONS } from "semantic-ui-react"
 import moment from "moment"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { v4 as newGuid } from "uuid"
@@ -177,44 +177,52 @@ export const ResultCard = (props: ResultCardProps) => {
     })
 
     return (
-        <Table.Row className={`result-card ${overallApproval}`}>
-            <Table.Cell>
+        <div className={`result-card ${overallApproval}`}>
+            <div className="left">
                 <GameImage imageSrc={game.imageLink} />
-            </Table.Cell>
 
-            <Table.Cell>
-                <Link to={`/games/${game.name}`}>
-                    {game.displayName}
-                </Link>
-            </Table.Cell>
+                <div className="result-text">
+                    <div className="result-header">
+                        <Link to={`/games/${game.name}`}>
+                            {game.displayName}
+                        </Link>
 
-            <Table.Cell>
-                {renderScoresSummary()}
-            </Table.Cell>
+                        <div className="labels">
 
-            {!props.hideGroups && <Table.Cell>
-                {renderGroupName()}
-            </Table.Cell>}
+                        </div>
+                    </div>
 
-            <Table.Cell>
-                {displayDateTimeValue(moment.unix(r.timePlayed))}
-            </Table.Cell>
+                    <div className="result-content">
+                        <div>
+                            {renderScoresSummary()}
+                        </div>
 
-            <Table.Cell>
-                {displayDateTimeValue(moment.unix(r.timeCreated))}
-            </Table.Cell>
+                        {!props.hideGroups && <div>
+                            {renderGroupName()}
+                        </div>}
 
-            <Table.Cell>
-                {r.notes}
-            </Table.Cell>
+                        <div>
+                            {displayDateTimeValue(moment.unix(r.timePlayed))}
+                        </div>
 
-            {props.approvals && <Table.Cell>
+                        <div>
+                            {displayDateTimeValue(moment.unix(r.timeCreated))}
+                        </div>
+
+                        <div>
+                            {r.notes}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {props.approvals && <div className="right">
                 {hasCurrentUser && overallApproval === ApprovalStatus.Pending && <ResultApprover
                     approveEnabled={approvalMap.get(props.currentUser!) !== ApprovalStatus.Approved}
                     approve={approve}
                     rejectEnabled={approvalMap.get(props.currentUser!) !== ApprovalStatus.Rejected}
                     reject={reject} />}
-            </Table.Cell>}
-        </Table.Row>
+            </div>}
+        </div>
     )
 }
