@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Button, Icon } from "semantic-ui-react"
+import { Button, Form, Icon } from "semantic-ui-react"
 
 import { GameFilterDropdown } from "./GameFilterDropdown"
 import { GroupFilterDropdown } from "./GroupFilterDropdown"
@@ -17,6 +17,9 @@ export const ResultsPage = () => {
     useTitle("Results")
 
     const [showAddResultModal, setShowAddResultModal] = useState(false)
+    const [showApprovedOnly, setShowApprovedOnly] = useState(false)
+    const [selectedGames, setSelectedGames] = useState<string[]>([])
+    const [selectedGroups, setSelectedGroups] = useState<string[]>([])
 
     const token = parseToken()
 
@@ -24,9 +27,6 @@ export const ResultsPage = () => {
     const { data: groups } = useGroups(true)
     const { data: players } = usePlayers()
     const { data: results } = useResults()
-
-    const [selectedGames, setSelectedGames] = useState<string[]>([])
-    const [selectedGroups, setSelectedGroups] = useState<string[]>([])
 
     return (
         <div className="results-page">
@@ -50,6 +50,13 @@ export const ResultsPage = () => {
                         results={results ?? []}
                         selectedGroups={selectedGroups}
                         setSelectedGroups={setSelectedGroups} />
+
+                    <Form className="results-approved-only-container">
+                        <Form.Checkbox
+                            label="Approved results only"
+                            checked={showApprovedOnly}
+                            onChange={(e, { checked }) => setShowApprovedOnly(checked ?? false)} />
+                    </Form>
                 </div>
             </div>
 
@@ -72,7 +79,8 @@ export const ResultsPage = () => {
                     results={results ?? []}
                     players={players ?? []}
                     selectedGames={selectedGames}
-                    selectedGroups={selectedGroups} />
+                    selectedGroups={selectedGroups}
+                    showApprovedOnly={showApprovedOnly} />
             </div>
         </div>
     )

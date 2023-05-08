@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import { toast } from "react-semantic-toasts"
-import { Accordion, Icon, SemanticCOLORS, SemanticICONS } from "semantic-ui-react"
+import { Accordion, Icon, List, SemanticCOLORS, SemanticICONS } from "semantic-ui-react"
 import moment from "moment"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { v4 as newGuid } from "uuid"
@@ -36,6 +36,7 @@ interface ResultCardProps {
     players: Player[]
     currentUser?: string
     approvals?: boolean
+    showApprovedOnly?: boolean
     hideGroups?: boolean
 }
 
@@ -107,6 +108,10 @@ export const ResultCard = (props: ResultCardProps) => {
     const isRejected = rejectedCount === r.scores.length
     if (isRejected) {
         overallApproval = ApprovalStatus.Rejected
+    }
+
+    if (props.showApprovedOnly && overallApproval !== ApprovalStatus.Approved) {
+        return null
     }
 
     let bestScore = r.scores.reduce((a, b) => a.score > b.score ? a : b).score
@@ -200,46 +205,48 @@ export const ResultCard = (props: ResultCardProps) => {
     let showGroup = !props.hideGroups && groupName.length > 0
 
     return (
-        <Accordion styled fluid className={`result-card-header ${overallApproval}`}>
-            <Accordion.Title active={showDetails} onClick={() => setShowDetails(s => !s)}>
-                <span>
-                    {createIcon(overallApproval)}
-                    <h3>{game.displayName}</h3>&nbsp;
-                    <em>at {displayDateTimeValue(moment.unix(r.timePlayed))}</em>&nbsp;
-                    {showGroup && <em>in {group?.displayName ?? r.groupName}</em>}
-                </span>
+        <List.Item>
+            <Accordion styled fluid className={`result-card-header ${overallApproval}`}>
+                <Accordion.Title active={showDetails} onClick={() => setShowDetails(s => !s)}>
+                    <span>
+                        {createIcon(overallApproval)}
+                        <h3>{game.displayName}</h3>&nbsp;
+                        <em>at {displayDateTimeValue(moment.unix(r.timePlayed))}</em>&nbsp;
+                        {showGroup && <em>in {group?.displayName ?? r.groupName}</em>}
+                    </span>
 
-                <Icon name="chevron left" />
-            </Accordion.Title>
+                    <Icon name="chevron left" />
+                </Accordion.Title>
 
-            <Accordion.Content active={showDetails}>
-                <div className={`result-card ${overallApproval}`}>
-                    <div className="left">
-                        <GameImage imageSrc={game.imageLink} />
+                <Accordion.Content active={showDetails}>
+                    <div className={`result-card ${overallApproval}`}>
+                        <div className="left">
+                            <GameImage imageSrc={game.imageLink} />
 
-                        <div className="result-text">
-                            <div className="result-content">
-                                <div className="score-card">
-                                    {renderScoreCard()}
-                                    {!props.hideGroups && renderGroupLink()}
-                                </div>
+                            <div className="result-text">
+                                <div className="result-content">
+                                    <div className="score-card">
+                                        {renderScoreCard()}
+                                        {!props.hideGroups && renderGroupLink()}
+                                    </div>
 
-                                <div>
-                                    {r.notes}
+                                    <div>
+                                        {r.notes}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    {props.approvals && <div className="right">
-                        {hasCurrentUser && overallApproval === ApprovalStatus.Pending && <ResultApprover
-                            approveEnabled={approvalMap.get(props.currentUser!) !== ApprovalStatus.Approved}
-                            approve={approve}
-                            rejectEnabled={approvalMap.get(props.currentUser!) !== ApprovalStatus.Rejected}
-                            reject={reject} />}
-                    </div>}
-                </div>
-            </Accordion.Content>
-        </Accordion>
+                        {props.approvals && <div className="right">
+                            {hasCurrentUser && overallApproval === ApprovalStatus.Pending && <ResultApprover
+                                approveEnabled={approvalMap.get(props.currentUser!) !== ApprovalStatus.Approved}
+                                approve={approve}
+                                rejectEnabled={approvalMap.get(props.currentUser!) !== ApprovalStatus.Rejected}
+                                reject={reject} />}
+                        </div>}
+                    </div>
+                </Accordion.Content>
+            </Accordion>
+        </List.Item>
     )
 }

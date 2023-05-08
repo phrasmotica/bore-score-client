@@ -16,6 +16,7 @@ interface ResultsListProps {
     players: Player[]
     selectedGames: string[]
     selectedGroups: string[]
+    showApprovedOnly?: boolean
     approvals?: boolean
     hideGroups?: boolean
 }
@@ -44,17 +45,16 @@ export const ResultsList = (props: ResultsListProps) => {
             <List>
                 {resultsToShow.length <= 0 && renderNoResultsMessage()}
                 {resultsToShow.length > 0 && resultsToShow.map(r => (
-                    <List.Item>
-                        <ResultCard
-                            approvals={props.approvals}
-                            hideGroups={props.hideGroups}
-                            key={r.id}
-                            result={r}
-                            games={props.games}
-                            groups={props.groups}
-                            players={props.players}
-                            currentUser={token?.username} />
-                    </List.Item>
+                    <ResultCard
+                        approvals={props.approvals}
+                        showApprovedOnly={props.showApprovedOnly}
+                        hideGroups={props.hideGroups}
+                        key={r.id}
+                        result={r}
+                        games={props.games}
+                        groups={props.groups}
+                        players={props.players}
+                        currentUser={token?.username} />
                 ))}
             </List>
         </div>

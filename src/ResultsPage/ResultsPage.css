@@ -31,6 +31,15 @@
     margin-top: 1em;
 }
 
+.results-page .results-approved-only-container {
+    margin-top: 1em;
+}
+
+.results-page .results-approved-only-container > .field {
+    display: flex;
+    justify-content: flex-start;
+}
+
 .results-page-body {
     flex-grow: 1;
 }
