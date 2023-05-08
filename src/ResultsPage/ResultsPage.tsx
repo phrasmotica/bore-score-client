@@ -38,6 +38,7 @@ export const ResultsPage = () => {
                 </div>
 
                 <div className="filters">
+                    {/* TODO: only show options that pass the other filters */}
                     <GameFilterDropdown
                         games={games ?? []}
                         results={results ?? []}

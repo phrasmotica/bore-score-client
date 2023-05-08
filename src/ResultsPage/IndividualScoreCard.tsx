@@ -20,11 +20,16 @@ export const IndividualScoreCard = (props: ScoreCardProps) => (
             }
 
             let content = (
-                <span>
-                    {createIcon(s.approvalStatus)}
-                    {nameElement}
-                    : {s.score}
-                </span>
+                <div className="score">
+                    <span>
+                        {createIcon(s.approvalStatus)}
+                        {nameElement}
+                    </span>
+
+                    <span className="value">
+                        {s.score}
+                    </span>
+                </div>
             )
 
             if (s.hasBestScore) {

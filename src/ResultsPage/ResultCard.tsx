@@ -148,19 +148,19 @@ export const ResultCard = (props: ResultCardProps) => {
 
     let group = props.groups.find(gr => gr.name === r.groupName)
 
-    const renderGroupName = () => {
-        let groupNameElement = <span>{group?.displayName ?? r.groupName}</span>
-
+    const renderGroupLink = () => {
         let linkToGroup = r.groupName.length > 0 && r.groupName !== "all"
         if (linkToGroup) {
             return (
-                <Link to={`/groups/${r.groupName}`}>
-                    {groupNameElement}
-                </Link>
+                <div className="group-link">
+                    Posted in <Link to={`/groups/${r.groupName}`}>
+                        <span>{group?.displayName ?? r.groupName}</span>
+                    </Link>
+                </div>
             )
         }
 
-        return groupNameElement
+        return null
     }
 
     const approve = () => addApproval({
@@ -196,14 +196,19 @@ export const ResultCard = (props: ResultCardProps) => {
         return <Icon className="approval-icon" name={iconName as SemanticICONS} color={colour as SemanticCOLORS} />
     }
 
+    let groupName = group?.displayName ?? r.groupName
+    let showGroup = !props.hideGroups && groupName.length > 0
+
     return (
         <Accordion styled fluid className={`result-card-header ${overallApproval}`}>
             <Accordion.Title active={showDetails} onClick={() => setShowDetails(s => !s)}>
                 <span>
                     {createIcon(overallApproval)}
                     <h3>{game.displayName}</h3>&nbsp;
-                    <em>at {displayDateTimeValue(moment.unix(r.timePlayed))}</em>
+                    <em>at {displayDateTimeValue(moment.unix(r.timePlayed))}</em>&nbsp;
+                    {showGroup && <em>in {group?.displayName ?? r.groupName}</em>}
                 </span>
+
                 <Icon name="chevron left" />
             </Accordion.Title>
 
@@ -213,24 +218,11 @@ export const ResultCard = (props: ResultCardProps) => {
                         <GameImage imageSrc={game.imageLink} />
 
                         <div className="result-text">
-                            <div className="result-header">
-                                <Link to={`/games/${game.name}`}>
-                                    <h3>{game.displayName}</h3>
-                                </Link>
-
-                                <div className="labels">
-
-                                </div>
-                            </div>
-
                             <div className="result-content">
                                 <div className="score-card">
                                     {renderScoreCard()}
+                                    {!props.hideGroups && renderGroupLink()}
                                 </div>
-
-                                {!props.hideGroups && <div>
-                                    {renderGroupName()}
-                                </div>}
 
                                 <div>
                                     {r.notes}

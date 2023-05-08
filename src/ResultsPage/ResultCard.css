@@ -101,19 +101,8 @@
     max-height: 100px;
 }
 
-.result-header {
-    display: flex;
-    align-items: flex-end;
-}
-
-.result-header .labels {
-    margin-left: 0.5em;
-    flex-shrink: 0;
-}
-
 .result-content {
     display: flex;
-    margin-top: 0.25em;
 }
 
 .result-content > .score-card {
@@ -121,7 +110,20 @@
 }
 
 .result-content > .score-card > .ui.list {
-    padding: 0.5em 0em 0em 0em;
+    padding: 0em;
+}
+
+.result-content > .score-card .group-link {
+    margin-top: 0.25em;
+}
+
+.result-content > .score-card .score {
+    display: flex;
+    justify-content: space-between;
+}
+
+.result-content > .score-card .score > .value {
+    margin-left: 0.5em;
 }
 
 .result-content > :not(:first-child) {

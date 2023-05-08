@@ -17,7 +17,8 @@
 
 .results-page .sidebar {
     text-align: end;
-    min-width: 250px;
+    width: 250px;
+    flex-shrink: 0;
 }
 
 .results-page .sidebar .filters {
