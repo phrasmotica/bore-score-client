@@ -216,16 +216,18 @@ export const AddResultModal = (props: AddResultModalProps) => {
 
                         <Accordion styled fluid>
                             <Accordion.Title active={showPlayers} onClick={() => setShowPlayers(s => !s)}>
-                                Players
-                                <Icon name="dropdown" />
+                                <h3>Players</h3>
+
+                                <Icon name="chevron left" />
                             </Accordion.Title>
                             <Accordion.Content active={showPlayers}>
                                 {renderGameForm()}
                             </Accordion.Content>
 
                             <Accordion.Title active={showGroup} onClick={() => setShowGroup(s => !s)}>
-                                Group
-                                <Icon name="dropdown" />
+                                <h3>Group</h3>
+
+                                <Icon name="chevron left" />
                             </Accordion.Title>
                             <Accordion.Content active={showGroup}>
                                 <GroupForm
@@ -237,8 +239,9 @@ export const AddResultModal = (props: AddResultModalProps) => {
                             </Accordion.Content>
 
                             <Accordion.Title active={showNotes} onClick={() => setShowNotes(s => !s)}>
-                                Notes
-                                <Icon name="dropdown" />
+                                <h3>Notes</h3>
+
+                                <Icon name="chevron left" />
                             </Accordion.Title>
                             <Accordion.Content active={showNotes}>
                                 <Form>

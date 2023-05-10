@@ -55,6 +55,20 @@
 .add-result-form .ui.styled.accordion > .title {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+}
+
+.add-result-form .ui.styled.accordion > .title > i.icon {
+    transition: transform .25s ease,opacity .1s ease;
+    line-height: calc(8rem / 7); /* ensures icon rotates about (nearly) its centre */
+}
+
+.add-result-form .ui.styled.accordion > .title.active > i.icon {
+    transform: rotate(-90deg);
+}
+
+.add-result-form .ui.styled.accordion > .title h3 {
+    margin: 0em;
 }
 
 .add-result-form .group-container {

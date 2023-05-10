@@ -20,7 +20,6 @@
 }
 
 .ui.accordion.result-card-header > .title {
-    text-align: start;
     display: flex;
     align-items: center;
     justify-content: space-between;
