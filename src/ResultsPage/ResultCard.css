@@ -77,13 +77,10 @@
 }
 
 .result-card {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     padding: 0.25em 0em;
 }
 
-.result-card .left {
+.result-card .details {
     display: flex;
     text-align: start;
     flex-grow: 1;
@@ -130,7 +127,16 @@
     margin-left: 1em;
 }
 
-.result-card .right {
+.result-card .approval {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(60, 179, 114, 0.3);
+    padding: 0.25em;
+    border-radius: calc(2rem / 7);
+    margin-bottom: 1em;
+}
+
+.result-card .approval > .result-approver {
     margin-left: 1em;
-    flex-shrink: 0;
 }

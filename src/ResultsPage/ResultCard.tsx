@@ -203,6 +203,7 @@ export const ResultCard = (props: ResultCardProps) => {
 
     let groupName = group?.displayName ?? r.groupName
     let showGroup = !props.hideGroups && groupName.length > 0
+    let showApprovals = props.approvals && hasCurrentUser && overallApproval === ApprovalStatus.Pending
 
     return (
         <List.Item>
@@ -220,7 +221,21 @@ export const ResultCard = (props: ResultCardProps) => {
 
                 <Accordion.Content active={showDetails}>
                     <div className={`result-card ${overallApproval}`}>
-                        <div className="left">
+                        {showApprovals && <div className="approval">
+                            <div>
+                                <span><em>Approve this result?</em></span>
+                            </div>
+
+                            <div className="result-approver">
+                                <ResultApprover
+                                    approveEnabled={approvalMap.get(props.currentUser!) !== ApprovalStatus.Approved}
+                                    approve={approve}
+                                    rejectEnabled={approvalMap.get(props.currentUser!) !== ApprovalStatus.Rejected}
+                                    reject={reject} />
+                            </div>
+                        </div>}
+
+                        <div className="details">
                             <GameImage imageSrc={game.imageLink} />
 
                             <div className="result-text">
@@ -236,14 +251,6 @@ export const ResultCard = (props: ResultCardProps) => {
                                 </div>
                             </div>
                         </div>
-
-                        {props.approvals && <div className="right">
-                            {hasCurrentUser && overallApproval === ApprovalStatus.Pending && <ResultApprover
-                                approveEnabled={approvalMap.get(props.currentUser!) !== ApprovalStatus.Approved}
-                                approve={approve}
-                                rejectEnabled={approvalMap.get(props.currentUser!) !== ApprovalStatus.Rejected}
-                                reject={reject} />}
-                        </div>}
                     </div>
                 </Accordion.Content>
             </Accordion>
