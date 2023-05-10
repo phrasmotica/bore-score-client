@@ -18,6 +18,7 @@ export const ResultsPage = () => {
 
     const [showAddResultModal, setShowAddResultModal] = useState(false)
     const [showApprovedOnly, setShowApprovedOnly] = useState(false)
+    const [showMineOnly, setShowMineOnly] = useState(false)
     const [selectedGames, setSelectedGames] = useState<string[]>([])
     const [selectedGroups, setSelectedGroups] = useState<string[]>([])
 
@@ -51,11 +52,16 @@ export const ResultsPage = () => {
                         selectedGroups={selectedGroups}
                         setSelectedGroups={setSelectedGroups} />
 
-                    <Form className="results-approved-only-container">
+                    <Form className="filters-form">
                         <Form.Checkbox
                             label="Approved results only"
                             checked={showApprovedOnly}
                             onChange={(e, { checked }) => setShowApprovedOnly(checked ?? false)} />
+
+                        <Form.Checkbox
+                            label="My results only"
+                            checked={showMineOnly}
+                            onChange={(e, { checked }) => setShowMineOnly(checked ?? false)} />
                     </Form>
                 </div>
             </div>
@@ -80,7 +86,8 @@ export const ResultsPage = () => {
                     players={players ?? []}
                     selectedGames={selectedGames}
                     selectedGroups={selectedGroups}
-                    showApprovedOnly={showApprovedOnly} />
+                    showApprovedOnly={showApprovedOnly}
+                    showMineOnly={showMineOnly} />
             </div>
         </div>
     )

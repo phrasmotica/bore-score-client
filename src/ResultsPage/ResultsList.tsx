@@ -17,12 +17,14 @@ interface ResultsListProps {
     selectedGames: string[]
     selectedGroups: string[]
     showApprovedOnly?: boolean
+    showMineOnly?: boolean
     approvals?: boolean
     hideGroups?: boolean
 }
 
 export const ResultsList = (props: ResultsListProps) => {
     const token = parseToken()
+    const username = token?.username || ""
 
     let resultsToShow = sortResultsByRecent(props.results)
 
@@ -32,6 +34,10 @@ export const ResultsList = (props: ResultsListProps) => {
 
     if (props.selectedGroups.length > 0) {
         resultsToShow = resultsToShow.filter(r => props.selectedGroups.includes(r.groupName))
+    }
+
+    if (props.showMineOnly) {
+        resultsToShow = resultsToShow.filter(r => !username || r.scores.map(s => s.username).includes(username))
     }
 
     const renderNoResultsMessage = () => (

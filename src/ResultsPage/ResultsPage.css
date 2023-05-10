@@ -31,11 +31,11 @@
     margin-top: 1em;
 }
 
-.results-page .results-approved-only-container {
+.results-page .filters-form {
     margin-top: 1em;
 }
 
-.results-page .results-approved-only-container > .field {
+.results-page .filters-form > .field {
     display: flex;
     justify-content: flex-start;
 }
