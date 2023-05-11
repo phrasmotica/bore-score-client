@@ -73,14 +73,14 @@ export const GamesPage = () => {
                         enabled={filterByMinPlayers}
                         setEnabled={setFilterByMinPlayers}
                         value={minPlayers}
-                        setValue={setMinPlayers} />
+                        setValue={v => setMinPlayers(Math.min(v, maxPlayers))} />
 
                     <PlayerCountFilter
                         label="Maximum players"
                         enabled={filterByMaxPlayers}
                         setEnabled={setFilterByMaxPlayers}
                         value={maxPlayers}
-                        setValue={setMaxPlayers} />
+                        setValue={v => setMaxPlayers(Math.max(v, minPlayers))} />
                 </div>
             </div>
 
