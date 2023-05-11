@@ -1,13 +1,16 @@
 import { useState } from "react"
-import { Button, Icon } from "semantic-ui-react"
+import { Button, Form, Icon } from "semantic-ui-react"
 
 import { GroupsList } from "./GroupsList"
 
 import { AddGroupModal } from "../AddGroupModal/AddGroupModal"
 
 import { parseToken } from "../Auth"
+import { FilterSet } from "../Filters"
 import { useTitle } from "../Hooks"
 import { useGroups } from "../QueryHelpers"
+
+import { Group, GroupVisibilityName } from "../models/Group"
 
 import "./GroupsPage.css"
 
@@ -19,6 +22,17 @@ export const GroupsPage = () => {
     const token = parseToken()
 
     const [showAddGroupModal, setShowAddGroupModal] = useState(false)
+    const [showPublicOnly, setShowPublicOnly] = useState(false)
+
+    let filters = new FilterSet([
+        {
+            condition: showPublicOnly,
+            func: (g: Group) => g.visibility === GroupVisibilityName.Public,
+        },
+    ])
+
+    let allGroups = groups ?? []
+    let filteredGroups = filters.apply(allGroups)
 
     return (
         <div className="groups-page">
@@ -30,7 +44,13 @@ export const GroupsPage = () => {
                 </div>
 
                 <div className="filters">
-
+                    <Form className="filters-form">
+                        <Form.Checkbox
+                            label="Public groups only"
+                            checked={showPublicOnly}
+                            onChange={(e, { checked }) => setShowPublicOnly(checked ?? false)}
+                            disabled={filters.only(0).forceApply(filteredGroups).length <= 0} />
+                    </Form>
                 </div>
             </div>
 
@@ -47,8 +67,7 @@ export const GroupsPage = () => {
                     </Button>}
                 </div>
 
-                <GroupsList
-                    groups={groups ?? []} />
+                <GroupsList groups={filteredGroups} />
             </div>
         </div>
     )

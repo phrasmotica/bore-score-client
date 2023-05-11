@@ -28,6 +28,11 @@
     border-right: 1px solid rgba(34, 36, 38, 0.15);
 }
 
+.groups-page .filters-form > .field {
+    display: flex;
+    justify-content: flex-start;
+}
+
 .groups-page .groups-page-body {
     flex-grow: 1;
 }
