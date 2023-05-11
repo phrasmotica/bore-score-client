@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { Button, Icon } from "semantic-ui-react"
 
 import { GamesList } from "./GamesList"
@@ -22,6 +22,24 @@ export const GamesPage = () => {
     const { data: games } = useGames()
     const { data: winMethods } = useWinMethods()
 
+    let allGames = useMemo(() => games ?? [], [games])
+
+    let lowestMinPlayers = useMemo(() => {
+        if (allGames.length <= 0) {
+            return 2
+        }
+
+        return allGames.reduce((a, b) => a.minPlayers < b.minPlayers ? a : b).minPlayers
+    }, [allGames])
+
+    let highestMaxPlayers = useMemo(() => {
+        if (allGames.length <= 0) {
+            return 4
+        }
+
+        return allGames.reduce((a, b) => a.maxPlayers > b.maxPlayers ? a : b).maxPlayers
+    }, [allGames])
+
     const token = parseToken()
 
     const [showAddGameModal, setShowAddGameModal] = useState(false)
@@ -29,10 +47,10 @@ export const GamesPage = () => {
     const [selectedWinMethods, setSelectedWinMethods] = useState<string[]>([])
 
     const [filterByMinPlayers, setFilterByMinPlayers] = useState(false)
-    const [minPlayers, setMinPlayers] = useState(1)
+    const [minPlayers, setMinPlayers] = useState(lowestMinPlayers)
 
     const [filterByMaxPlayers, setFilterByMaxPlayers] = useState(false)
-    const [maxPlayers, setMaxPlayers] = useState(2)
+    const [maxPlayers, setMaxPlayers] = useState(highestMaxPlayers)
 
     let filters = new FilterSet<Game>([
         {
@@ -49,7 +67,6 @@ export const GamesPage = () => {
         },
     ])
 
-    let allGames = games ?? []
     let filteredGames = filters.apply(allGames)
 
     return (
@@ -73,14 +90,14 @@ export const GamesPage = () => {
                         enabled={filterByMinPlayers}
                         setEnabled={setFilterByMinPlayers}
                         value={minPlayers}
-                        setValue={v => setMinPlayers(Math.min(v, maxPlayers))} />
+                        setValue={v => setMinPlayers(Math.min(Math.max(v, lowestMinPlayers), maxPlayers))} />
 
                     <PlayerCountFilter
                         label="Maximum players"
                         enabled={filterByMaxPlayers}
                         setEnabled={setFilterByMaxPlayers}
                         value={maxPlayers}
-                        setValue={v => setMaxPlayers(Math.max(v, minPlayers))} />
+                        setValue={v => setMaxPlayers(Math.max(Math.min(v, highestMaxPlayers), minPlayers))} />
                 </div>
             </div>
 
