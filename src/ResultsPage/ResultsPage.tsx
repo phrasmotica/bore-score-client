@@ -44,12 +44,12 @@ export const ResultsPage = () => {
             func: r => selectedGroups.includes(r.groupName),
         },
         {
-            condition: showMineOnly,
-            func: r => !username || r.scores.map(s => s.username).includes(username),
-        },
-        {
             condition: showApprovedOnly,
             func: r => r.approvalStatus === ApprovalStatus.Approved,
+        },
+        {
+            condition: showMineOnly,
+            func: r => !username || r.scores.map(s => s.username).includes(username),
         },
     ])
 
@@ -82,12 +82,14 @@ export const ResultsPage = () => {
                         <Form.Checkbox
                             label="Approved results only"
                             checked={showApprovedOnly}
-                            onChange={(e, { checked }) => setShowApprovedOnly(checked ?? false)} />
+                            onChange={(e, { checked }) => setShowApprovedOnly(checked ?? false)}
+                            disabled={filters.only(2).forceApply(filteredResults).length <= 0} />
 
                         <Form.Checkbox
                             label="My results only"
                             checked={showMineOnly}
-                            onChange={(e, { checked }) => setShowMineOnly(checked ?? false)} />
+                            onChange={(e, { checked }) => setShowMineOnly(checked ?? false)}
+                            disabled={filters.only(3).forceApply(filteredResults).length <= 0} />
                     </Form>
                 </div>
             </div>
