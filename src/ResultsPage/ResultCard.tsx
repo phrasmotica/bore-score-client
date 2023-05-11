@@ -24,19 +24,18 @@ import { Approval, ApprovalStatus, sortApprovalsByRecent } from "../models/Appro
 import { Game } from "../models/Game"
 import { Group } from "../models/Group"
 import { Player } from "../models/Player"
-import { Result } from "../models/Result"
+import { ResultResponse } from "../models/Result"
 import { WinMethodName } from "../models/WinMethod"
 
 import "./ResultCard.css"
 
 interface ResultCardProps {
-    result: Result
+    result: ResultResponse
     games: Game[]
     groups: Group[]
     players: Player[]
     currentUser?: string
     approvals?: boolean
-    showApprovedOnly?: boolean
     hideGroups?: boolean
 }
 
@@ -92,26 +91,6 @@ export const ResultCard = (props: ResultCardProps) => {
     for (let group of approvalGroups) {
         let latestStatus = sortApprovalsByRecent(group[1])[0]
         approvalMap.set(group[0], latestStatus.approvalStatus)
-    }
-
-    let overallApproval = ApprovalStatus.Pending
-
-    const approvedCount = [...approvalMap.values()].filter(a => a === ApprovalStatus.Approved).length
-
-    const isApproved = approvedCount === r.scores.length
-    if (isApproved) {
-        overallApproval = ApprovalStatus.Approved
-    }
-
-    const rejectedCount = [...approvalMap.values()].filter(a => a === ApprovalStatus.Rejected).length
-
-    const isRejected = rejectedCount === r.scores.length
-    if (isRejected) {
-        overallApproval = ApprovalStatus.Rejected
-    }
-
-    if (props.showApprovedOnly && overallApproval !== ApprovalStatus.Approved) {
-        return null
     }
 
     let bestScore = r.scores.reduce((a, b) => a.score > b.score ? a : b).score
@@ -203,14 +182,14 @@ export const ResultCard = (props: ResultCardProps) => {
 
     let groupName = group?.displayName ?? r.groupName
     let showGroup = !props.hideGroups && groupName.length > 0
-    let showApprovals = props.approvals && hasCurrentUser && overallApproval === ApprovalStatus.Pending
+    let showApprovals = props.approvals && hasCurrentUser && r.approvalStatus === ApprovalStatus.Pending
 
     return (
         <List.Item>
-            <Accordion styled fluid className={`result-card-header ${overallApproval}`}>
+            <Accordion styled fluid className={`result-card-header ${r.approvalStatus}`}>
                 <Accordion.Title active={showDetails} onClick={() => setShowDetails(s => !s)}>
                     <span>
-                        {createIcon(overallApproval)}
+                        {createIcon(r.approvalStatus)}
                         <h3>{game.displayName}</h3>&nbsp;
                         <em>at {displayDateTimeValue(moment.unix(r.timePlayed))}</em>&nbsp;
                         {showGroup && <em>in {group?.displayName ?? r.groupName}</em>}
@@ -220,7 +199,7 @@ export const ResultCard = (props: ResultCardProps) => {
                 </Accordion.Title>
 
                 <Accordion.Content active={showDetails}>
-                    <div className={`result-card ${overallApproval}`}>
+                    <div className={`result-card ${r.approvalStatus}`}>
                         {showApprovals && <div className="approval">
                             <div>
                                 <span><em>Approve this result?</em></span>

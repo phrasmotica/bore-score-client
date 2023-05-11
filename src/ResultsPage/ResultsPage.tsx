@@ -11,6 +11,7 @@ import { parseToken } from "../Auth"
 import { useTitle } from "../Hooks"
 import { useGames, useGroups, usePlayers, useResults } from "../QueryHelpers"
 
+import { ApprovalStatus } from "../models/Approval"
 import { sortResultsByRecent } from "../models/Result"
 
 import "./ResultsPage.css"
@@ -44,6 +45,10 @@ export const ResultsPage = () => {
 
     if (showMineOnly) {
         resultsToShow = resultsToShow.filter(r => !username || r.scores.map(s => s.username).includes(username))
+    }
+
+    if (showApprovedOnly) {
+        resultsToShow = resultsToShow.filter(r => r.approvalStatus === ApprovalStatus.Approved)
     }
 
     return (
@@ -101,8 +106,7 @@ export const ResultsPage = () => {
                     games={games ?? []}
                     groups={groups ?? []}
                     results={resultsToShow}
-                    players={players ?? []}
-                    showApprovedOnly={showApprovedOnly} />
+                    players={players ?? []} />
             </div>
         </div>
     )

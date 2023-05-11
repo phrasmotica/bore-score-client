@@ -2,13 +2,13 @@ import moment from "moment"
 
 import { getHeaders, getToken, parseToken, removeToken, setToken } from "./Auth"
 
-import { Approval, ApprovalStatus } from "./models/Approval"
+import { Approval } from "./models/Approval"
 import { Game } from "./models/Game"
 import { Group } from "./models/Group"
 import { GroupMembership } from "./models/GroupMembership"
 import { LinkType } from "./models/LinkType"
 import { Player } from "./models/Player"
-import { PlayerScore, Result } from "./models/Result"
+import { Result, ResultResponse } from "./models/Result"
 import { Summary } from "./models/Summary"
 import { User } from "./models/User"
 import { WinMethod } from "./models/WinMethod"
@@ -363,17 +363,4 @@ interface TokenResponse {
 
 interface TokenRefreshRequest {
     token: string
-}
-
-interface ResultResponse {
-    id: string
-    gameName: string
-    groupName: string
-    timeCreated: number
-    timePlayed: number
-    notes: string
-    cooperativeScore: number
-    cooperativeWin: boolean
-    scores: PlayerScore[]
-    approvalStatus: ApprovalStatus
 }

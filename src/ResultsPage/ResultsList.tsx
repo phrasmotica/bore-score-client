@@ -7,14 +7,13 @@ import { parseToken } from "../Auth"
 import { Game } from "../models/Game"
 import { Group } from "../models/Group"
 import { Player } from "../models/Player"
-import { Result } from "../models/Result"
+import { ResultResponse } from "../models/Result"
 
 interface ResultsListProps {
     games: Game[]
     groups: Group[]
-    results: Result[]
+    results: ResultResponse[]
     players: Player[]
-    showApprovedOnly?: boolean
     approvals?: boolean
     hideGroups?: boolean
 }
@@ -35,7 +34,6 @@ export const ResultsList = (props: ResultsListProps) => {
                 {props.results.length > 0 && props.results.map(r => (
                     <ResultCard
                         approvals={props.approvals}
-                        showApprovedOnly={props.showApprovedOnly}
                         hideGroups={props.hideGroups}
                         key={r.id}
                         result={r}
