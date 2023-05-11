@@ -8,6 +8,7 @@ import { ResultsList } from "./ResultsList"
 import { AddResultModal } from "../AddResultModal/AddResultModal"
 
 import { parseToken } from "../Auth"
+import { FilterSet } from "../Filters"
 import { useTitle } from "../Hooks"
 import { useGames, useGroups, usePlayers, useResults } from "../QueryHelpers"
 
@@ -33,30 +34,27 @@ export const ResultsPage = () => {
     const { data: players } = usePlayers()
     const { data: results } = useResults()
 
-    // first element is the condition for the filter to apply,
-    // second element is the filter itself
-    type Filter<T> = [boolean, (r: T) => boolean]
-
-    let filters = [
-        [selectedGames.length > 0, r => selectedGames.includes(r.gameName)],
-        [selectedGroups.length > 0, r => selectedGroups.includes(r.groupName)],
-        [showMineOnly, r => !username || r.scores.map(s => s.username).includes(username)],
-        [showApprovedOnly, r => r.approvalStatus === ApprovalStatus.Approved],
-    ] as Filter<ResultResponse>[]
-
-    const applyFilters = (results: ResultResponse[], filters: Filter<ResultResponse>[]) => {
-        let filteredResults = [...results]
-
-        for (let f of filters) {
-            const [condition, func] = f
-            filteredResults = filteredResults.filter(r => !condition || func(r))
-        }
-
-        return filteredResults
-    }
+    let filters = new FilterSet<ResultResponse>([
+        {
+            condition: selectedGames.length > 0,
+            func: r => selectedGames.includes(r.gameName),
+        },
+        {
+            condition: selectedGroups.length > 0,
+            func: r => selectedGroups.includes(r.groupName),
+        },
+        {
+            condition: showMineOnly,
+            func: r => !username || r.scores.map(s => s.username).includes(username),
+        },
+        {
+            condition: showApprovedOnly,
+            func: r => r.approvalStatus === ApprovalStatus.Approved,
+        },
+    ])
 
     let allResults = sortResultsByRecent(results ?? [])
-    let filteredResults = applyFilters(allResults, filters)
+    let filteredResults = filters.apply(allResults)
 
     return (
         <div className="results-page">
@@ -70,13 +68,13 @@ export const ResultsPage = () => {
                 <div className="filters">
                     <GameFilterDropdown
                         games={games ?? []}
-                        results={applyFilters(allResults, filters.filter((v, i) => i !== 0))}
+                        results={filters.except(0).apply(allResults)}
                         selectedGames={selectedGames}
                         setSelectedGames={setSelectedGames} />
 
                     <GroupFilterDropdown
                         groups={groups ?? []}
-                        results={applyFilters(allResults, filters.filter((v, i) => i !== 1))}
+                        results={filters.except(1).apply(allResults)}
                         selectedGroups={selectedGroups}
                         setSelectedGroups={setSelectedGroups} />
 
