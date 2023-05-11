@@ -11,6 +11,8 @@ import { parseToken } from "../Auth"
 import { useTitle } from "../Hooks"
 import { useGames, useGroups, usePlayers, useResults } from "../QueryHelpers"
 
+import { sortResultsByRecent } from "../models/Result"
+
 import "./ResultsPage.css"
 
 export const ResultsPage = () => {
@@ -23,11 +25,26 @@ export const ResultsPage = () => {
     const [selectedGroups, setSelectedGroups] = useState<string[]>([])
 
     const token = parseToken()
+    const username = token?.username ?? ""
 
     const { data: games } = useGames()
     const { data: groups } = useGroups(true)
     const { data: players } = usePlayers()
     const { data: results } = useResults()
+
+    let resultsToShow = sortResultsByRecent(results ?? [])
+
+    if (selectedGames.length > 0) {
+        resultsToShow = resultsToShow.filter(r => selectedGames.includes(r.gameName))
+    }
+
+    if (selectedGroups.length > 0) {
+        resultsToShow = resultsToShow.filter(r => selectedGroups.includes(r.groupName))
+    }
+
+    if (showMineOnly) {
+        resultsToShow = resultsToShow.filter(r => !username || r.scores.map(s => s.username).includes(username))
+    }
 
     return (
         <div className="results-page">
@@ -39,7 +56,8 @@ export const ResultsPage = () => {
                 </div>
 
                 <div className="filters">
-                    {/* TODO: only show options that pass the other filters */}
+                    {/* TODO: only show options that pass the other filters.
+                        This requires computing the results to show in this component... */}
                     <GameFilterDropdown
                         games={games ?? []}
                         results={results ?? []}
@@ -82,12 +100,9 @@ export const ResultsPage = () => {
                 <ResultsList
                     games={games ?? []}
                     groups={groups ?? []}
-                    results={results ?? []}
+                    results={resultsToShow}
                     players={players ?? []}
-                    selectedGames={selectedGames}
-                    selectedGroups={selectedGroups}
-                    showApprovedOnly={showApprovedOnly}
-                    showMineOnly={showMineOnly} />
+                    showApprovedOnly={showApprovedOnly} />
             </div>
         </div>
     )

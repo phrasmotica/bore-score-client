@@ -7,38 +7,20 @@ import { parseToken } from "../Auth"
 import { Game } from "../models/Game"
 import { Group } from "../models/Group"
 import { Player } from "../models/Player"
-import { Result, sortResultsByRecent } from "../models/Result"
+import { Result } from "../models/Result"
 
 interface ResultsListProps {
     games: Game[]
     groups: Group[]
     results: Result[]
     players: Player[]
-    selectedGames: string[]
-    selectedGroups: string[]
     showApprovedOnly?: boolean
-    showMineOnly?: boolean
     approvals?: boolean
     hideGroups?: boolean
 }
 
 export const ResultsList = (props: ResultsListProps) => {
     const token = parseToken()
-    const username = token?.username || ""
-
-    let resultsToShow = sortResultsByRecent(props.results)
-
-    if (props.selectedGames.length > 0) {
-        resultsToShow = resultsToShow.filter(r => props.selectedGames.includes(r.gameName))
-    }
-
-    if (props.selectedGroups.length > 0) {
-        resultsToShow = resultsToShow.filter(r => props.selectedGroups.includes(r.groupName))
-    }
-
-    if (props.showMineOnly) {
-        resultsToShow = resultsToShow.filter(r => !username || r.scores.map(s => s.username).includes(username))
-    }
 
     const renderNoResultsMessage = () => (
         <List.Item>
@@ -49,8 +31,8 @@ export const ResultsList = (props: ResultsListProps) => {
     return (
         <div className="results-list">
             <List>
-                {resultsToShow.length <= 0 && renderNoResultsMessage()}
-                {resultsToShow.length > 0 && resultsToShow.map(r => (
+                {props.results.length <= 0 && renderNoResultsMessage()}
+                {props.results.length > 0 && props.results.map(r => (
                     <ResultCard
                         approvals={props.approvals}
                         showApprovedOnly={props.showApprovedOnly}

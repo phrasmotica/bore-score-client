@@ -107,9 +107,7 @@ export const GroupDetails = (props: GroupDetailsProps) => {
                         games={games ?? []}
                         groups={[props.group]}
                         players={players ?? []}
-                        results={results ?? []}
-                        selectedGames={[]}
-                        selectedGroups={[]} />
+                        results={results ?? []} />
                 </div>
             </div>
         </div>

@@ -71,9 +71,7 @@ export const ProfilePage = () => {
                         games={games ?? []}
                         groups={groups ?? []}
                         players={players ?? []}
-                        results={resultsToShow}
-                        selectedGames={[]}
-                        selectedGroups={[]} />
+                        results={resultsToShow} />
                 </div>
             </div>
         </div>
