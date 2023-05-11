@@ -10,7 +10,7 @@ export interface Result {
     scores: PlayerScore[]
 }
 
-interface PlayerScore {
+export interface PlayerScore {
     username: string
     score: number
     isWinner: boolean

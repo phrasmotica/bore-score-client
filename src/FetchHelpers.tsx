@@ -2,13 +2,13 @@ import moment from "moment"
 
 import { getHeaders, getToken, parseToken, removeToken, setToken } from "./Auth"
 
-import { Approval } from "./models/Approval"
+import { Approval, ApprovalStatus } from "./models/Approval"
 import { Game } from "./models/Game"
 import { Group } from "./models/Group"
 import { GroupMembership } from "./models/GroupMembership"
 import { LinkType } from "./models/LinkType"
 import { Player } from "./models/Player"
-import { Result } from "./models/Result"
+import { PlayerScore, Result } from "./models/Result"
 import { Summary } from "./models/Summary"
 import { User } from "./models/User"
 import { WinMethod } from "./models/WinMethod"
@@ -268,7 +268,8 @@ export const getWinMethods = () => {
 }
 
 export const getResults = (options?: {
-    username?: string, group?: string
+    username?: string
+    group?: string
 }) => {
     let url = `${process.env.REACT_APP_API_URL}/results`
 
@@ -284,7 +285,7 @@ export const getResults = (options?: {
         headers: getHeaders(),
     })
     .then(handleResponse)
-    .then((data: Result[]) => data)
+    .then((data: ResultResponse[]) => data)
 }
 
 export const postResult = (result: Result) => {
@@ -362,4 +363,17 @@ interface TokenResponse {
 
 interface TokenRefreshRequest {
     token: string
+}
+
+interface ResultResponse {
+    id: string
+    gameName: string
+    groupName: string
+    timeCreated: number
+    timePlayed: number
+    notes: string
+    cooperativeScore: number
+    cooperativeWin: boolean
+    scores: PlayerScore[]
+    approvalStatus: ApprovalStatus
 }
