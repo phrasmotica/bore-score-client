@@ -8,8 +8,11 @@ import { WinMethodFilterDropdown } from "./WinMethodFilterDropdown"
 import { AddGameModal } from "../AddGameModal/AddGameModal"
 
 import { parseToken } from "../Auth"
+import { FilterSet } from "../Filters"
 import { useTitle } from "../Hooks"
 import { useGames, useWinMethods } from "../QueryHelpers"
+
+import { Game } from "../models/Game"
 
 import "./GamesPage.css"
 
@@ -31,6 +34,24 @@ export const GamesPage = () => {
     const [filterByMaxPlayers, setFilterByMaxPlayers] = useState(false)
     const [maxPlayers, setMaxPlayers] = useState(2)
 
+    let filters = new FilterSet<Game>([
+        {
+            condition: selectedWinMethods.length > 0,
+            func: g => selectedWinMethods.includes(g.winMethod),
+        },
+        {
+            condition: filterByMinPlayers,
+            func: g => g.minPlayers >= minPlayers,
+        },
+        {
+            condition: filterByMaxPlayers,
+            func: g => g.maxPlayers <= maxPlayers,
+        },
+    ])
+
+    let allGames = games ?? []
+    let filteredGames = filters.apply(allGames)
+
     return (
         <div className="games-page">
             <AddGameModal open={showAddGameModal} setOpen={setShowAddGameModal} />
@@ -43,7 +64,7 @@ export const GamesPage = () => {
                 <div className="filters">
                     <WinMethodFilterDropdown
                         winMethods={winMethods ?? []}
-                        games={games ?? []}
+                        games={filters.except(0).apply(allGames)}
                         selectedWinMethods={selectedWinMethods}
                         setSelectedWinMethods={setSelectedWinMethods} />
 
@@ -76,14 +97,7 @@ export const GamesPage = () => {
                     </Button>}
                 </div>
 
-                <GamesList
-                    games={games ?? []}
-                    winMethods={winMethods ?? []}
-                    selectedWinMethods={selectedWinMethods}
-                    useMinPlayers={filterByMinPlayers}
-                    minPlayers={minPlayers}
-                    useMaxPlayers={filterByMaxPlayers}
-                    maxPlayers={maxPlayers} />
+                <GamesList games={filteredGames} />
             </div>
         </div>
     )
