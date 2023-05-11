@@ -8,7 +8,7 @@ import { Group } from "./models/Group"
 import { GroupMembership } from "./models/GroupMembership"
 import { LinkType } from "./models/LinkType"
 import { Player } from "./models/Player"
-import { Result } from "./models/Result"
+import { Result, ResultResponse } from "./models/Result"
 import { Summary } from "./models/Summary"
 import { User } from "./models/User"
 import { WinMethod } from "./models/WinMethod"
@@ -268,7 +268,8 @@ export const getWinMethods = () => {
 }
 
 export const getResults = (options?: {
-    username?: string, group?: string
+    username?: string
+    group?: string
 }) => {
     let url = `${process.env.REACT_APP_API_URL}/results`
 
@@ -284,7 +285,7 @@ export const getResults = (options?: {
         headers: getHeaders(),
     })
     .then(handleResponse)
-    .then((data: Result[]) => data)
+    .then((data: ResultResponse[]) => data)
 }
 
 export const postResult = (result: Result) => {

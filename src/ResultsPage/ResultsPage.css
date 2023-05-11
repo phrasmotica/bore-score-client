@@ -17,8 +17,8 @@
 
 .results-page .sidebar {
     text-align: end;
-    min-width: 15vw;
-    max-width: 15vw;
+    width: 250px;
+    flex-shrink: 0;
 }
 
 .results-page .sidebar .filters {
@@ -31,18 +31,15 @@
     margin-top: 1em;
 }
 
+.results-page .filters-form {
+    margin-top: 1em;
+}
+
+.results-page .filters-form > .field {
+    display: flex;
+    justify-content: flex-start;
+}
+
 .results-page-body {
     flex-grow: 1;
-}
-
-.results-table .game-image {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: unset;
-}
-
-.results-table .ui.table td .game-image .image {
-    max-width: 100px;
-    max-height: 100px;
 }

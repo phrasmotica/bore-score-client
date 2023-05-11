@@ -1,6 +1,7 @@
+import { useState } from "react"
 import { Link } from "react-router-dom"
 import { toast } from "react-semantic-toasts"
-import { SemanticCOLORS, SemanticICONS, Table } from "semantic-ui-react"
+import { Accordion, Icon, List, SemanticCOLORS, SemanticICONS } from "semantic-ui-react"
 import moment from "moment"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { v4 as newGuid } from "uuid"
@@ -23,13 +24,13 @@ import { Approval, ApprovalStatus, sortApprovalsByRecent } from "../models/Appro
 import { Game } from "../models/Game"
 import { Group } from "../models/Group"
 import { Player } from "../models/Player"
-import { Result } from "../models/Result"
+import { ResultResponse } from "../models/Result"
 import { WinMethodName } from "../models/WinMethod"
 
 import "./ResultCard.css"
 
 interface ResultCardProps {
-    result: Result
+    result: ResultResponse
     games: Game[]
     groups: Group[]
     players: Player[]
@@ -39,6 +40,8 @@ interface ResultCardProps {
 }
 
 export const ResultCard = (props: ResultCardProps) => {
+    const [showDetails, setShowDetails] = useState(false)
+
     let r = props.result
 
     const token = parseToken()
@@ -90,22 +93,6 @@ export const ResultCard = (props: ResultCardProps) => {
         approvalMap.set(group[0], latestStatus.approvalStatus)
     }
 
-    let overallApproval = ApprovalStatus.Pending
-
-    const approvedCount = [...approvalMap.values()].filter(a => a === ApprovalStatus.Approved).length
-
-    const isApproved = approvedCount === r.scores.length
-    if (isApproved) {
-        overallApproval = ApprovalStatus.Approved
-    }
-
-    const rejectedCount = [...approvalMap.values()].filter(a => a === ApprovalStatus.Rejected).length
-
-    const isRejected = rejectedCount === r.scores.length
-    if (isRejected) {
-        overallApproval = ApprovalStatus.Rejected
-    }
-
     let bestScore = r.scores.reduce((a, b) => a.score > b.score ? a : b).score
 
     // players who were in the game
@@ -125,7 +112,7 @@ export const ResultCard = (props: ResultCardProps) => {
         }
     })
 
-    const renderScoresSummary = () => {
+    const renderScoreCard = () => {
         switch (game?.winMethod) {
             case WinMethodName.IndividualScore:
                 return <IndividualScoreCard players={playersWithNames} />
@@ -145,19 +132,19 @@ export const ResultCard = (props: ResultCardProps) => {
 
     let group = props.groups.find(gr => gr.name === r.groupName)
 
-    const renderGroupName = () => {
-        let groupNameElement = <span>{group?.displayName ?? r.groupName}</span>
-
+    const renderGroupLink = () => {
         let linkToGroup = r.groupName.length > 0 && r.groupName !== "all"
         if (linkToGroup) {
             return (
-                <Link to={`/groups/${r.groupName}`}>
-                    {groupNameElement}
-                </Link>
+                <div className="group-link">
+                    Posted in <Link to={`/groups/${r.groupName}`}>
+                        <span>{group?.displayName ?? r.groupName}</span>
+                    </Link>
+                </div>
             )
         }
 
-        return groupNameElement
+        return null
     }
 
     const approve = () => addApproval({
@@ -176,45 +163,76 @@ export const ResultCard = (props: ResultCardProps) => {
         approvalStatus: ApprovalStatus.Rejected,
     })
 
+    const createIcon = (approvalStatus: ApprovalStatus) => {
+        let colour = "black"
+        let iconName = "question circle outline"
+
+        if (approvalStatus === ApprovalStatus.Rejected) {
+            colour = "red"
+            iconName = "times circle outline"
+        }
+
+        if (approvalStatus === ApprovalStatus.Approved) {
+            colour = "green"
+            iconName = "check circle outline"
+        }
+
+        return <Icon className="approval-icon" name={iconName as SemanticICONS} color={colour as SemanticCOLORS} />
+    }
+
+    let groupName = group?.displayName ?? r.groupName
+    let showGroup = !props.hideGroups && groupName.length > 0
+    let showApprovals = props.approvals && hasCurrentUser && r.approvalStatus === ApprovalStatus.Pending
+
     return (
-        <Table.Row className={`result-card ${overallApproval}`}>
-            <Table.Cell>
-                <GameImage imageSrc={game.imageLink} />
-            </Table.Cell>
+        <List.Item>
+            <Accordion styled fluid className={`result-card-header ${r.approvalStatus}`}>
+                <Accordion.Title active={showDetails} onClick={() => setShowDetails(s => !s)}>
+                    <span>
+                        {createIcon(r.approvalStatus)}
+                        <h3>{game.displayName}</h3>&nbsp;
+                        <em>at {displayDateTimeValue(moment.unix(r.timePlayed))}</em>&nbsp;
+                        {showGroup && <em>in {group?.displayName ?? r.groupName}</em>}
+                    </span>
 
-            <Table.Cell>
-                <Link to={`/games/${game.name}`}>
-                    {game.displayName}
-                </Link>
-            </Table.Cell>
+                    <Icon name="chevron left" />
+                </Accordion.Title>
 
-            <Table.Cell>
-                {renderScoresSummary()}
-            </Table.Cell>
+                <Accordion.Content active={showDetails}>
+                    <div className={`result-card ${r.approvalStatus}`}>
+                        {showApprovals && <div className="approval">
+                            <div>
+                                <span><em>Approve this result?</em></span>
+                            </div>
 
-            {!props.hideGroups && <Table.Cell>
-                {renderGroupName()}
-            </Table.Cell>}
+                            <div className="result-approver">
+                                <ResultApprover
+                                    approveEnabled={approvalMap.get(props.currentUser!) !== ApprovalStatus.Approved}
+                                    approve={approve}
+                                    rejectEnabled={approvalMap.get(props.currentUser!) !== ApprovalStatus.Rejected}
+                                    reject={reject} />
+                            </div>
+                        </div>}
 
-            <Table.Cell>
-                {displayDateTimeValue(moment.unix(r.timePlayed))}
-            </Table.Cell>
+                        <div className="details">
+                            <GameImage imageSrc={game.imageLink} />
 
-            <Table.Cell>
-                {displayDateTimeValue(moment.unix(r.timeCreated))}
-            </Table.Cell>
+                            <div className="result-text">
+                                <div className="result-content">
+                                    <div className="score-card">
+                                        {renderScoreCard()}
+                                        {!props.hideGroups && renderGroupLink()}
+                                    </div>
 
-            <Table.Cell>
-                {r.notes}
-            </Table.Cell>
-
-            {props.approvals && <Table.Cell>
-                {hasCurrentUser && overallApproval === ApprovalStatus.Pending && <ResultApprover
-                    approveEnabled={approvalMap.get(props.currentUser!) !== ApprovalStatus.Approved}
-                    approve={approve}
-                    rejectEnabled={approvalMap.get(props.currentUser!) !== ApprovalStatus.Rejected}
-                    reject={reject} />}
-            </Table.Cell>}
-        </Table.Row>
+                                    <div>
+                                        {r.notes}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </Accordion.Content>
+            </Accordion>
+        </List.Item>
     )
 }

@@ -4,6 +4,7 @@ import { toast } from "react-semantic-toasts"
 
 import { GroupDetails } from "./GroupDetails"
 
+import { parseToken } from "../Auth"
 import { PersistentError } from "../FetchHelpers"
 import { resetTitle, setTitle } from "../Helpers"
 import { useGroup } from "../QueryHelpers"
@@ -15,12 +16,20 @@ interface GroupDetailsPageProps {
 export const GroupDetailsPage = (props: GroupDetailsPageProps) => {
     let { name } = useParams()
 
+    const token = parseToken()
+
     const location = useLocation()
     const navigate = useNavigate()
 
     const { data: group } = useGroup(name || "", error => {
         if (error.message === PersistentError.Unauthorised) {
-            navigate("/login?redirect=" + encodeURIComponent(location.pathname))
+            if (token) {
+                groupAccessDeniedToast()
+                navigate("/groups")
+            }
+            else {
+                navigate("/login?redirect=" + encodeURIComponent(location.pathname))
+            }
         }
 
         if (error.message === PersistentError.NotFound) {
@@ -54,6 +63,13 @@ export const GroupDetailsPage = (props: GroupDetailsPageProps) => {
         </div>
     )
 }
+
+const groupAccessDeniedToast = () => toast({
+    title: "",
+    description: "You do not have permission to view that group.",
+    color: "red",
+    icon: "dont",
+})
 
 const groupNotFoundToast = () => toast({
     title: "",

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { Button, Icon } from "semantic-ui-react"
 
 import { GamesList } from "./GamesList"
@@ -8,8 +8,11 @@ import { WinMethodFilterDropdown } from "./WinMethodFilterDropdown"
 import { AddGameModal } from "../AddGameModal/AddGameModal"
 
 import { parseToken } from "../Auth"
+import { FilterSet } from "../Filters"
 import { useTitle } from "../Hooks"
 import { useGames, useWinMethods } from "../QueryHelpers"
+
+import { Game } from "../models/Game"
 
 import "./GamesPage.css"
 
@@ -19,6 +22,24 @@ export const GamesPage = () => {
     const { data: games } = useGames()
     const { data: winMethods } = useWinMethods()
 
+    let allGames = useMemo(() => games ?? [], [games])
+
+    let lowestMinPlayers = useMemo(() => {
+        if (allGames.length <= 0) {
+            return 2
+        }
+
+        return allGames.reduce((a, b) => a.minPlayers < b.minPlayers ? a : b).minPlayers
+    }, [allGames])
+
+    let highestMaxPlayers = useMemo(() => {
+        if (allGames.length <= 0) {
+            return 4
+        }
+
+        return allGames.reduce((a, b) => a.maxPlayers > b.maxPlayers ? a : b).maxPlayers
+    }, [allGames])
+
     const token = parseToken()
 
     const [showAddGameModal, setShowAddGameModal] = useState(false)
@@ -26,10 +47,27 @@ export const GamesPage = () => {
     const [selectedWinMethods, setSelectedWinMethods] = useState<string[]>([])
 
     const [filterByMinPlayers, setFilterByMinPlayers] = useState(false)
-    const [minPlayers, setMinPlayers] = useState(1)
+    const [minPlayers, setMinPlayers] = useState(lowestMinPlayers)
 
     const [filterByMaxPlayers, setFilterByMaxPlayers] = useState(false)
-    const [maxPlayers, setMaxPlayers] = useState(2)
+    const [maxPlayers, setMaxPlayers] = useState(highestMaxPlayers)
+
+    let filters = new FilterSet<Game>([
+        {
+            condition: selectedWinMethods.length > 0,
+            func: g => selectedWinMethods.includes(g.winMethod),
+        },
+        {
+            condition: filterByMinPlayers,
+            func: g => g.minPlayers >= minPlayers,
+        },
+        {
+            condition: filterByMaxPlayers,
+            func: g => g.maxPlayers <= maxPlayers,
+        },
+    ])
+
+    let filteredGames = filters.apply(allGames)
 
     return (
         <div className="games-page">
@@ -43,7 +81,7 @@ export const GamesPage = () => {
                 <div className="filters">
                     <WinMethodFilterDropdown
                         winMethods={winMethods ?? []}
-                        games={games ?? []}
+                        games={filters.except(0).apply(allGames)}
                         selectedWinMethods={selectedWinMethods}
                         setSelectedWinMethods={setSelectedWinMethods} />
 
@@ -52,14 +90,14 @@ export const GamesPage = () => {
                         enabled={filterByMinPlayers}
                         setEnabled={setFilterByMinPlayers}
                         value={minPlayers}
-                        setValue={setMinPlayers} />
+                        setValue={v => setMinPlayers(Math.min(Math.max(v, lowestMinPlayers), maxPlayers))} />
 
                     <PlayerCountFilter
                         label="Maximum players"
                         enabled={filterByMaxPlayers}
                         setEnabled={setFilterByMaxPlayers}
                         value={maxPlayers}
-                        setValue={setMaxPlayers} />
+                        setValue={v => setMaxPlayers(Math.max(Math.min(v, highestMaxPlayers), minPlayers))} />
                 </div>
             </div>
 
@@ -76,14 +114,7 @@ export const GamesPage = () => {
                     </Button>}
                 </div>
 
-                <GamesList
-                    games={games ?? []}
-                    winMethods={winMethods ?? []}
-                    selectedWinMethods={selectedWinMethods}
-                    useMinPlayers={filterByMinPlayers}
-                    minPlayers={minPlayers}
-                    useMaxPlayers={filterByMaxPlayers}
-                    maxPlayers={maxPlayers} />
+                <GamesList games={filteredGames} />
             </div>
         </div>
     )

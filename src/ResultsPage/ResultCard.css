@@ -1,11 +1,141 @@
-.result-card.pending > td {
+:root {
+    --approved: 33, 186, 69;
+    --rejected: 219, 40, 40;
+}
+
+.ui.accordion.result-card-header {
+    padding: 0.25em 0em;
+}
+
+.ui.accordion.result-card-header.pending {
     background-color: rgba(255, 228, 196, 0.5);
 }
 
-.result-card.approved > td {
+.ui.accordion.result-card-header.approved {
     background-color: rgba(60, 179, 114, 0.3);
 }
 
-.result-card.rejected > td {
+.ui.accordion.result-card-header.rejected {
     background-color: rgba(240, 128, 128, 0.4);
+}
+
+.ui.accordion.result-card-header > .title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ui.accordion.result-card-header > .title i.icon.approval-icon {
+    font-size: calc(9rem / 7);
+    line-height: unset;
+    vertical-align: unset;
+    color: unset!important;
+}
+
+.ui.accordion.result-card-header > .title i.icon.approval-icon.green {
+    color: rgba(var(--approved), 0.4)!important;
+    transition: color .1s ease;
+}
+
+.ui.accordion.result-card-header > .title:hover i.icon.approval-icon.green {
+    color: rgba(var(--approved), 0.87)!important;
+}
+
+.ui.accordion.result-card-header > .title.active i.icon.approval-icon.green {
+    color: rgba(var(--approved), 0.95)!important;
+}
+
+.ui.accordion.result-card-header > .title i.icon.approval-icon.red {
+    color: rgba(var(--rejected), 0.4)!important;
+    transition: color .1s ease;
+}
+
+.ui.accordion.result-card-header > .title:hover i.icon.approval-icon.red {
+    color: rgba(var(--rejected), 0.87)!important;
+}
+
+.ui.accordion.result-card-header > .title.active i.icon.approval-icon.red {
+    color: rgba(var(--rejected), 0.95)!important;
+}
+
+.ui.accordion.result-card-header > .title h3 {
+    display: inline;
+    margin: 0em;
+}
+
+.ui.accordion.result-card-header > .title > i.icon {
+    transition: transform .25s ease,opacity .1s ease;
+}
+
+.ui.accordion.result-card-header > .title.active > i.icon {
+    transform: rotate(-90deg);
+}
+
+.ui.accordion.result-card-header > .content {
+    padding: 0.75em 1em!important;
+}
+
+.result-card {
+    padding: 0.25em 0em;
+}
+
+.result-card .details {
+    display: flex;
+    text-align: start;
+    flex-grow: 1;
+}
+
+.result-card .game-image {
+    display: flex;
+    justify-content: center;
+    width: 100px;
+    flex-shrink: 0;
+}
+
+.result-card .game-image .image {
+    max-width: 100px;
+    max-height: 100px;
+}
+
+.result-content {
+    display: flex;
+}
+
+.result-content > .score-card {
+    flex-shrink: 0;
+}
+
+.result-content > .score-card > .ui.list {
+    padding: 0em;
+}
+
+.result-content > .score-card .group-link {
+    margin-top: 0.25em;
+}
+
+.result-content > .score-card .score {
+    display: flex;
+    justify-content: space-between;
+}
+
+.result-content > .score-card .score > .value {
+    margin-left: 0.5em;
+}
+
+.result-content > :not(:first-child) {
+    margin-left: 1em;
+}
+
+.result-card .approval {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(60, 179, 114, 0.3);
+    padding: 0.25em;
+    border-radius: calc(2rem / 7);
+    margin-bottom: 1em;
+}
+
+.result-card .approval > .result-approver {
+    margin-left: 1em;
 }

@@ -30,7 +30,10 @@ export const GameFilterDropdown = (props: GameFilterDropdownProps) => {
                 search
                 placeholder="Filter by game"
                 onChange={(_, data) => props.setSelectedGames(data.value as string[])}
-                options={options} />
+                options={options}
+
+                // this should never happen but it's here for completeness
+                disabled={options.every(o => o.disabled)} />
         </div>
     )
 }
