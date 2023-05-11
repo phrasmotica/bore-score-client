@@ -30,7 +30,8 @@ export const WinMethodFilterDropdown = (props: WinMethodFilterDropdownProps) => 
                 search
                 placeholder="Filter by win method"
                 onChange={(_, data) => props.setSelectedWinMethods(data.value as string[])}
-                options={options} />
+                options={options}
+                disabled={options.every(o => o.disabled)} />
         </div>
     )
 }
