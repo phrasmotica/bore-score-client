@@ -1,3 +1,4 @@
+import moment from "moment"
 import { useState } from "react"
 import { Button, Form, Icon } from "semantic-ui-react"
 
@@ -6,6 +7,7 @@ import { GroupFilterDropdown } from "./GroupFilterDropdown"
 import { ResultsList } from "./ResultsList"
 
 import { AddResultModal } from "../AddResultModal/AddResultModal"
+import { DateTimeForm } from "../AddResultModal/DateTimeForm"
 
 import { parseToken } from "../Auth"
 import { FilterSet } from "../Filters"
@@ -25,6 +27,9 @@ export const ResultsPage = () => {
     const [showMineOnly, setShowMineOnly] = useState(false)
     const [selectedGames, setSelectedGames] = useState<string[]>([])
     const [selectedGroups, setSelectedGroups] = useState<string[]>([])
+
+    const [filterByTimePlayed, setFilterByTimePlayed] = useState(false)
+    const [timePlayedEarliest, setTimePlayedEarliest] = useState(moment())
 
     const token = parseToken()
     const username = token?.username ?? ""
@@ -50,6 +55,10 @@ export const ResultsPage = () => {
         {
             condition: showMineOnly,
             func: r => !username || r.scores.map(s => s.username).includes(username),
+        },
+        {
+            condition: filterByTimePlayed,
+            func: r => r.timePlayed >= timePlayedEarliest.unix(),
         },
     ])
 
@@ -77,6 +86,16 @@ export const ResultsPage = () => {
                         results={filters.except(1).apply(allResults)}
                         selectedGroups={selectedGroups}
                         setSelectedGroups={setSelectedGroups} />
+
+                    {/* TODO: allow filtering by range of time played */}
+                    <Form.Checkbox
+                        label="Filter by time played"
+                        checked={filterByTimePlayed}
+                        onChange={(e, { checked }) => setFilterByTimePlayed(checked ?? false)} />
+
+                    <DateTimeForm
+                        timePlayed={timePlayedEarliest}
+                        setTimePlayed={setTimePlayedEarliest} />
 
                     <Form className="filters-form">
                         <Form.Checkbox
