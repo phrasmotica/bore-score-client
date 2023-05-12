@@ -6,7 +6,7 @@ import { GroupsList } from "./GroupsList"
 import { AddGroupModal } from "../AddGroupModal/AddGroupModal"
 
 import { parseToken } from "../Auth"
-import { FilterSet } from "../Filters"
+import { Filter, FilterSet } from "../Filters"
 import { useTitle } from "../Hooks"
 import { useGroups } from "../QueryHelpers"
 
@@ -24,11 +24,8 @@ export const GroupsPage = () => {
     const [showAddGroupModal, setShowAddGroupModal] = useState(false)
     const [showPublicOnly, setShowPublicOnly] = useState(false)
 
-    let filters = new FilterSet([
-        {
-            condition: showPublicOnly,
-            func: (g: Group) => g.visibility === GroupVisibilityName.Public,
-        },
+    let filters = new FilterSet<Group>([
+        new Filter(showPublicOnly, g => g.visibility === GroupVisibilityName.Public),
     ])
 
     let allGroups = groups ?? []

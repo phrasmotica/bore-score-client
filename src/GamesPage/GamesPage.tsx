@@ -8,7 +8,7 @@ import { WinMethodFilterDropdown } from "./WinMethodFilterDropdown"
 import { AddGameModal } from "../AddGameModal/AddGameModal"
 
 import { parseToken } from "../Auth"
-import { FilterSet } from "../Filters"
+import { Filter, FilterSet } from "../Filters"
 import { useTitle } from "../Hooks"
 import { useGames, useWinMethods } from "../QueryHelpers"
 
@@ -53,18 +53,9 @@ export const GamesPage = () => {
     const [maxPlayers, setMaxPlayers] = useState(highestMaxPlayers)
 
     let filters = new FilterSet<Game>([
-        {
-            condition: selectedWinMethods.length > 0,
-            func: g => selectedWinMethods.includes(g.winMethod),
-        },
-        {
-            condition: filterByMinPlayers,
-            func: g => g.minPlayers >= minPlayers,
-        },
-        {
-            condition: filterByMaxPlayers,
-            func: g => g.maxPlayers <= maxPlayers,
-        },
+        new Filter(selectedWinMethods.length > 0, g => selectedWinMethods.includes(g.winMethod)),
+        new Filter(filterByMinPlayers, g => g.minPlayers >= minPlayers),
+        new Filter(filterByMaxPlayers, g => g.maxPlayers <= maxPlayers),
     ])
 
     let filteredGames = filters.apply(allGames)

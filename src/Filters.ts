@@ -1,6 +1,16 @@
-interface Filter<T> {
-    condition: boolean
-    func: (e: T) => boolean
+export class Filter<T> {
+    constructor(
+        private condition: boolean,
+        private func: (e: T) => boolean
+    ) { }
+
+    applies() {
+        return this.condition
+    }
+
+    apply(e: T) {
+        return this.func(e)
+    }
 }
 
 export class FilterSet<T> {
@@ -16,7 +26,7 @@ export class FilterSet<T> {
 
         for (let f of this.filters) {
             // condition must be true for func to be applied
-            filteredElements = filteredElements.filter(r => !f.condition || f.func(r))
+            filteredElements = filteredElements.filter(r => !f.applies() || f.apply(r))
         }
 
         return filteredElements
@@ -31,7 +41,7 @@ export class FilterSet<T> {
         let filteredElements = [...elements]
 
         for (let f of this.filters) {
-            filteredElements = filteredElements.filter(f.func)
+            filteredElements = filteredElements.filter(e => f.apply(e))
         }
 
         return filteredElements

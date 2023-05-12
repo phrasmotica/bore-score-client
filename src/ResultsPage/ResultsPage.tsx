@@ -10,7 +10,7 @@ import { AddResultModal } from "../AddResultModal/AddResultModal"
 import { DateTimeForm } from "../AddResultModal/DateTimeForm"
 
 import { parseToken } from "../Auth"
-import { FilterSet } from "../Filters"
+import { Filter, FilterSet } from "../Filters"
 import { useTitle } from "../Hooks"
 import { useGames, useGroups, usePlayers, useResults } from "../QueryHelpers"
 
@@ -40,26 +40,11 @@ export const ResultsPage = () => {
     const { data: results } = useResults()
 
     let filters = new FilterSet<ResultResponse>([
-        {
-            condition: selectedGames.length > 0,
-            func: r => selectedGames.includes(r.gameName),
-        },
-        {
-            condition: selectedGroups.length > 0,
-            func: r => selectedGroups.includes(r.groupName),
-        },
-        {
-            condition: showApprovedOnly,
-            func: r => r.approvalStatus === ApprovalStatus.Approved,
-        },
-        {
-            condition: showMineOnly,
-            func: r => !username || r.scores.map(s => s.username).includes(username),
-        },
-        {
-            condition: filterByTimePlayed,
-            func: r => r.timePlayed >= timePlayedEarliest.unix(),
-        },
+        new Filter(selectedGames.length > 0, r => selectedGames.includes(r.gameName)),
+        new Filter(selectedGroups.length > 0, r => selectedGroups.includes(r.gameName)),
+        new Filter(showApprovedOnly, r => r.approvalStatus === ApprovalStatus.Approved),
+        new Filter(showMineOnly, r => !username || r.scores.map(s => s.username).includes(username)),
+        new Filter(filterByTimePlayed, r => r.timePlayed >= timePlayedEarliest.unix()),
     ])
 
     let allResults = sortResultsByRecent(results ?? [])
