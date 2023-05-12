@@ -52,11 +52,10 @@ export const GamesPage = () => {
     const [filterByMaxPlayers, setFilterByMaxPlayers] = useState(false)
     const [maxPlayers, setMaxPlayers] = useState(highestMaxPlayers)
 
-    let filters = new FilterSet<Game>([
-        new Filter(selectedWinMethods.length > 0, g => selectedWinMethods.includes(g.winMethod)),
-        new Filter(filterByMinPlayers, g => g.minPlayers >= minPlayers),
-        new Filter(filterByMaxPlayers, g => g.maxPlayers <= maxPlayers),
-    ])
+    let filters = new FilterSet<Game>()
+        .with(new Filter(selectedWinMethods.length > 0, g => selectedWinMethods.includes(g.winMethod)))
+        .with(new Filter(filterByMinPlayers, g => g.minPlayers >= minPlayers))
+        .with(new Filter(filterByMaxPlayers, g => g.maxPlayers <= maxPlayers))
 
     let filteredGames = filters.apply(allGames)
 

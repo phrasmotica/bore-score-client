@@ -39,13 +39,12 @@ export const ResultsPage = () => {
     const { data: players } = usePlayers()
     const { data: results } = useResults()
 
-    let filters = new FilterSet<ResultResponse>([
-        new Filter(selectedGames.length > 0, r => selectedGames.includes(r.gameName)),
-        new Filter(selectedGroups.length > 0, r => selectedGroups.includes(r.gameName)),
-        new Filter(showApprovedOnly, r => r.approvalStatus === ApprovalStatus.Approved),
-        new Filter(showMineOnly, r => !username || r.scores.map(s => s.username).includes(username)),
-        new Filter(filterByTimePlayed, r => r.timePlayed >= timePlayedEarliest.unix()),
-    ])
+    let filters = new FilterSet<ResultResponse>()
+        .with(new Filter(selectedGames.length > 0, r => selectedGames.includes(r.gameName)))
+        .with(new Filter(selectedGroups.length > 0, r => selectedGroups.includes(r.gameName)))
+        .with(new Filter(showApprovedOnly, r => r.approvalStatus === ApprovalStatus.Approved))
+        .with(new Filter(showMineOnly, r => !username || r.scores.map(s => s.username).includes(username)))
+        .with(new Filter(filterByTimePlayed, r => r.timePlayed >= timePlayedEarliest.unix()))
 
     let allResults = sortResultsByRecent(results ?? [])
     let filteredResults = filters.apply(allResults)

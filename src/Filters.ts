@@ -14,7 +14,16 @@ export class Filter<T> {
 }
 
 export class FilterSet<T> {
-    constructor(private filters: Filter<T>[]) { }
+    private filters: Filter<T>[]
+
+    constructor(filters?: Filter<T>[]) {
+        this.filters = filters ?? []
+    }
+
+    with(f: Filter<T>) {
+        this.filters.push(f)
+        return this
+    }
 
     /**
      * Applies the filters in this FilterSet to the given elements and returns
@@ -57,7 +66,7 @@ export class FilterSet<T> {
             throw new Error(`Index ${index} is out of range`)
         }
 
-        return new FilterSet(this.filters.filter((f, i) => i !== index))
+        return new FilterSet<T>(this.filters.filter((f, i) => i !== index))
     }
 
     /**
@@ -70,6 +79,6 @@ export class FilterSet<T> {
             throw new Error(`Index ${index} is out of range`)
         }
 
-        return new FilterSet([this.filters[index]])
+        return new FilterSet<T>().with(this.filters[index])
     }
 }
