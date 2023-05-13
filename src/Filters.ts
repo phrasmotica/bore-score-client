@@ -14,14 +14,14 @@ export class Filter<T> {
 }
 
 export class FilterSet<T> {
-    private filters: Filter<T>[]
+    private filters: Map<string, Filter<T>>
 
-    constructor(filters?: Filter<T>[]) {
-        this.filters = filters ?? []
+    constructor(filters?: Map<string, Filter<T>>) {
+        this.filters = filters ?? new Map<string, Filter<T>>()
     }
 
-    with(f: Filter<T>) {
-        this.filters.push(f)
+    with(name: string, f: Filter<T>) {
+        this.filters.set(name, f)
         return this
     }
 
@@ -33,7 +33,7 @@ export class FilterSet<T> {
     apply(elements: T[]) {
         let filteredElements = [...elements]
 
-        for (let f of this.filters) {
+        for (let f of this.filters.values()) {
             // condition must be true for func to be applied
             filteredElements = filteredElements.filter(r => !f.applies() || f.apply(r))
         }
@@ -49,7 +49,7 @@ export class FilterSet<T> {
     forceApply(elements: T[]) {
         let filteredElements = [...elements]
 
-        for (let f of this.filters) {
+        for (let f of this.filters.values()) {
             filteredElements = filteredElements.filter(e => f.apply(e))
         }
 
@@ -61,12 +61,15 @@ export class FilterSet<T> {
      * from this FilterSet.
      * @param index the index of the filter to exclude
      */
-    except(index: number) {
-        if (index < 0 || index >= this.filters.length) {
-            throw new Error(`Index ${index} is out of range`)
+    except(name: string) {
+        if (!this.filters.has(name)) {
+            throw new Error(`Filter ${name} does not exist`)
         }
 
-        return new FilterSet<T>(this.filters.filter((f, i) => i !== index))
+        const newFilters = new Map<string, Filter<T>>(this.filters)
+        newFilters.delete(name)
+
+        return new FilterSet<T>(newFilters)
     }
 
     /**
@@ -74,11 +77,11 @@ export class FilterSet<T> {
      * from this FilterSet.
      * @param index the index of the filter to include
      */
-    only(index: number) {
-        if (index < 0 || index >= this.filters.length) {
-            throw new Error(`Index ${index} is out of range`)
+    only(name: string) {
+        if (!this.filters.has(name)) {
+            throw new Error(`Filter ${name} does not exist`)
         }
 
-        return new FilterSet<T>().with(this.filters[index])
+        return new FilterSet<T>().with(name, this.filters.get(name)!)
     }
 }

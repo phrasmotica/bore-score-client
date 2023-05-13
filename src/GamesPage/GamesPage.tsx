@@ -53,9 +53,9 @@ export const GamesPage = () => {
     const [maxPlayers, setMaxPlayers] = useState(highestMaxPlayers)
 
     let filters = new FilterSet<Game>()
-        .with(new Filter(selectedWinMethods.length > 0, g => selectedWinMethods.includes(g.winMethod)))
-        .with(new Filter(filterByMinPlayers, g => g.minPlayers >= minPlayers))
-        .with(new Filter(filterByMaxPlayers, g => g.maxPlayers <= maxPlayers))
+        .with("winMethod", new Filter(selectedWinMethods.length > 0, g => selectedWinMethods.includes(g.winMethod)))
+        .with("minPlayers", new Filter(filterByMinPlayers, g => g.minPlayers >= minPlayers))
+        .with("maxPlayers", new Filter(filterByMaxPlayers, g => g.maxPlayers <= maxPlayers))
 
     let filteredGames = filters.apply(allGames)
 
@@ -71,7 +71,7 @@ export const GamesPage = () => {
                 <div className="filters">
                     <WinMethodFilterDropdown
                         winMethods={winMethods ?? []}
-                        games={filters.except(0).apply(allGames)}
+                        games={filters.except("winMethod").apply(allGames)}
                         selectedWinMethods={selectedWinMethods}
                         setSelectedWinMethods={setSelectedWinMethods} />
 

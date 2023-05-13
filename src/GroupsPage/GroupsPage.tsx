@@ -25,7 +25,7 @@ export const GroupsPage = () => {
     const [showPublicOnly, setShowPublicOnly] = useState(false)
 
     let filters = new FilterSet<Group>()
-        .with(new Filter(showPublicOnly, g => g.visibility === GroupVisibilityName.Public))
+        .with("visibility", new Filter(showPublicOnly, g => g.visibility === GroupVisibilityName.Public))
 
     let allGroups = groups ?? []
     let filteredGroups = filters.apply(allGroups)
@@ -45,7 +45,7 @@ export const GroupsPage = () => {
                             label="Public groups only"
                             checked={showPublicOnly}
                             onChange={(e, { checked }) => setShowPublicOnly(checked ?? false)}
-                            disabled={filters.only(0).forceApply(filteredGroups).length <= 0} />
+                            disabled={filters.only("visibility").forceApply(filteredGroups).length <= 0} />
                     </Form>
                 </div>
             </div>

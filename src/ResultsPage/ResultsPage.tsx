@@ -40,11 +40,11 @@ export const ResultsPage = () => {
     const { data: results } = useResults()
 
     let filters = new FilterSet<ResultResponse>()
-        .with(new Filter(selectedGames.length > 0, r => selectedGames.includes(r.gameName)))
-        .with(new Filter(selectedGroups.length > 0, r => selectedGroups.includes(r.gameName)))
-        .with(new Filter(showApprovedOnly, r => r.approvalStatus === ApprovalStatus.Approved))
-        .with(new Filter(showMineOnly, r => !username || r.scores.map(s => s.username).includes(username)))
-        .with(new Filter(filterByTimePlayed, r => r.timePlayed >= timePlayedEarliest.unix()))
+        .with("game", new Filter(selectedGames.length > 0, r => selectedGames.includes(r.gameName)))
+        .with("group", new Filter(selectedGroups.length > 0, r => selectedGroups.includes(r.groupName)))
+        .with("approvedOnly", new Filter(showApprovedOnly, r => r.approvalStatus === ApprovalStatus.Approved))
+        .with("mineOnly", new Filter(showMineOnly, r => !username || r.scores.map(s => s.username).includes(username)))
+        .with("timePlayedEarliest", new Filter(filterByTimePlayed, r => r.timePlayed >= timePlayedEarliest.unix()))
 
     let allResults = sortResultsByRecent(results ?? [])
     let filteredResults = filters.apply(allResults)
@@ -61,13 +61,13 @@ export const ResultsPage = () => {
                 <div className="filters">
                     <GameFilterDropdown
                         games={games ?? []}
-                        results={filters.except(0).apply(allResults)}
+                        results={filters.except("game").apply(allResults)}
                         selectedGames={selectedGames}
                         setSelectedGames={setSelectedGames} />
 
                     <GroupFilterDropdown
                         groups={groups ?? []}
-                        results={filters.except(1).apply(allResults)}
+                        results={filters.except("group").apply(allResults)}
                         selectedGroups={selectedGroups}
                         setSelectedGroups={setSelectedGroups} />
 
@@ -86,13 +86,13 @@ export const ResultsPage = () => {
                             label="Approved results only"
                             checked={showApprovedOnly}
                             onChange={(e, { checked }) => setShowApprovedOnly(checked ?? false)}
-                            disabled={filters.only(2).forceApply(filteredResults).length <= 0} />
+                            disabled={filters.only("approvedOnly").forceApply(filteredResults).length <= 0} />
 
                         <Form.Checkbox
                             label="My results only"
                             checked={showMineOnly}
                             onChange={(e, { checked }) => setShowMineOnly(checked ?? false)}
-                            disabled={filters.only(3).forceApply(filteredResults).length <= 0} />
+                            disabled={filters.only("mineOnly").forceApply(filteredResults).length <= 0} />
                     </Form>
                 </div>
             </div>
