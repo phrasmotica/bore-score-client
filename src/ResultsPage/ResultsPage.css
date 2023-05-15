@@ -40,6 +40,29 @@
     justify-content: flex-start;
 }
 
+.results-page .datetime-container {
+    margin-top: 0.5em;
+}
+
+.results-page .datetime-container .ui.form.datetime-form {
+    margin-bottom: 0.5em;
+}
+
+.results-page .datetime-container .ui.form .fields {
+    margin-bottom: 0em;
+}
+
+.results-page .datetime-container p {
+    text-align: start;
+    margin-bottom: 0.25em;
+}
+
+.results-page .datetime-container .ui.form input[type="date"],
+.results-page .datetime-container .ui.form input[type="time"] {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+}
+
 .results-page-body {
     flex-grow: 1;
 }

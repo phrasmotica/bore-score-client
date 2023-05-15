@@ -42,6 +42,11 @@
     align-items: center;
 }
 
+.setting-container input[type="date"],
+.setting-container input[type="time"] {
+    height: 38px;
+}
+
 .add-result-form .field.notes-input > textarea {
     min-height: 5em;
     max-height: 15em;

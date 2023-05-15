@@ -1,5 +1,5 @@
 import moment from "moment"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { Button, Form, Icon } from "semantic-ui-react"
 
 import { GameFilterDropdown } from "./GameFilterDropdown"
@@ -22,6 +22,26 @@ import "./ResultsPage.css"
 export const ResultsPage = () => {
     useTitle("Results")
 
+    const { data: results } = useResults()
+
+    let allResults = useMemo(() => sortResultsByRecent(results ?? []), [results])
+
+    let oldestTimePlayed = useMemo(() => {
+        if (allResults.length <= 0) {
+            return moment.unix(0)
+        }
+
+        return moment.unix(allResults.reduce((a, b) => a.timePlayed < b.timePlayed ? a : b).timePlayed)
+    }, [allResults])
+
+    let newestTimePlayed = useMemo(() => {
+        if (allResults.length <= 0) {
+            return moment.unix(0)
+        }
+
+        return moment.unix(allResults.reduce((a, b) => a.timePlayed > b.timePlayed ? a : b).timePlayed)
+    }, [allResults])
+
     const [showAddResultModal, setShowAddResultModal] = useState(false)
     const [showApprovedOnly, setShowApprovedOnly] = useState(false)
     const [showMineOnly, setShowMineOnly] = useState(false)
@@ -29,7 +49,8 @@ export const ResultsPage = () => {
     const [selectedGroups, setSelectedGroups] = useState<string[]>([])
 
     const [filterByTimePlayed, setFilterByTimePlayed] = useState(false)
-    const [timePlayedEarliest, setTimePlayedEarliest] = useState(moment())
+    const [timePlayedEarliest, setTimePlayedEarliest] = useState(oldestTimePlayed)
+    const [timePlayedLatest, setTimePlayedLatest] = useState(newestTimePlayed)
 
     const token = parseToken()
     const username = token?.username ?? ""
@@ -37,7 +58,6 @@ export const ResultsPage = () => {
     const { data: games } = useGames()
     const { data: groups } = useGroups(true)
     const { data: players } = usePlayers()
-    const { data: results } = useResults()
 
     let filters = new FilterSet<ResultResponse>()
         .with("game", new Filter(selectedGames.length > 0, r => selectedGames.includes(r.gameName)))
@@ -45,8 +65,8 @@ export const ResultsPage = () => {
         .with("approvedOnly", new Filter(showApprovedOnly, r => r.approvalStatus === ApprovalStatus.Approved))
         .with("mineOnly", new Filter(showMineOnly, r => !username || r.scores.map(s => s.username).includes(username)))
         .with("timePlayedEarliest", new Filter(filterByTimePlayed, r => r.timePlayed >= timePlayedEarliest.unix()))
+        .with("timePlayedLatest", new Filter(filterByTimePlayed, r => r.timePlayed <= timePlayedLatest.unix()))
 
-    let allResults = sortResultsByRecent(results ?? [])
     let filteredResults = filters.apply(allResults)
 
     return (
@@ -71,16 +91,6 @@ export const ResultsPage = () => {
                         selectedGroups={selectedGroups}
                         setSelectedGroups={setSelectedGroups} />
 
-                    {/* TODO: allow filtering by range of time played */}
-                    <Form.Checkbox
-                        label="Filter by time played"
-                        checked={filterByTimePlayed}
-                        onChange={(e, { checked }) => setFilterByTimePlayed(checked ?? false)} />
-
-                    <DateTimeForm
-                        timePlayed={timePlayedEarliest}
-                        setTimePlayed={setTimePlayedEarliest} />
-
                     <Form className="filters-form">
                         <Form.Checkbox
                             label="Approved results only"
@@ -93,7 +103,28 @@ export const ResultsPage = () => {
                             checked={showMineOnly}
                             onChange={(e, { checked }) => setShowMineOnly(checked ?? false)}
                             disabled={filters.only("mineOnly").forceApply(filteredResults).length <= 0} />
+
+                        <Form.Checkbox
+                            label="Filter by time played"
+                            checked={filterByTimePlayed}
+                            onChange={(e, { checked }) => setFilterByTimePlayed(checked ?? false)} />
                     </Form>
+
+                    {filterByTimePlayed && <div className="datetime-container">
+                        <p>Earliest</p>
+
+                        <DateTimeForm
+                            hideLabels
+                            timePlayed={timePlayedEarliest}
+                            setTimePlayed={setTimePlayedEarliest} />
+
+                        <p>Latest</p>
+
+                        <DateTimeForm
+                            hideLabels
+                            timePlayed={timePlayedLatest}
+                            setTimePlayed={setTimePlayedLatest} />
+                    </div>}
                 </div>
             </div>
 

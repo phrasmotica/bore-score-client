@@ -6,6 +6,7 @@ import { dateValue, momentFromDate, momentFromTime, timeValue } from "../MomentH
 interface DateTimeFormProps {
     timePlayed: moment.Moment
     setTimePlayed: (timePlayed: moment.Moment) => void
+    hideLabels?: boolean
 }
 
 export const DateTimeForm = (props: DateTimeFormProps) => {
@@ -34,16 +35,19 @@ export const DateTimeForm = (props: DateTimeFormProps) => {
 
     return (
         <Form className="datetime-form">
-            <Form.Group widths="equal" className="setting-container">
+            <Form.Group className="setting-container">
                 <Form.Input
+                    width={9}
                     type="date"
-                    label="Date"
+                    label={!props.hideLabels && "Date"}
                     value={dateValue(props.timePlayed)}
                     onChange={(e, { value }) => setNewDate(value)} />
 
                 <Form.Input
+                    fluid
+                    width={7}
                     type="time"
-                    label="Time"
+                    label={!props.hideLabels && "Time"}
                     value={timeValue(props.timePlayed)}
                     onChange={(e, { value }) => setNewTime(value)} />
             </Form.Group>
