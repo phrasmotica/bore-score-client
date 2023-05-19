@@ -79,52 +79,56 @@ export const ResultsPage = () => {
                 </div>
 
                 <div className="filters">
-                    <GameFilterDropdown
-                        games={games ?? []}
-                        results={filters.except("game").apply(allResults)}
-                        selectedGames={selectedGames}
-                        setSelectedGames={setSelectedGames} />
+                    <div>
+                        <GameFilterDropdown
+                            games={games ?? []}
+                            results={filters.except("game").apply(allResults)}
+                            selectedGames={selectedGames}
+                            setSelectedGames={setSelectedGames} />
 
-                    <GroupFilterDropdown
-                        groups={groups ?? []}
-                        results={filters.except("group").apply(allResults)}
-                        selectedGroups={selectedGroups}
-                        setSelectedGroups={setSelectedGroups} />
+                        <GroupFilterDropdown
+                            groups={groups ?? []}
+                            results={filters.except("group").apply(allResults)}
+                            selectedGroups={selectedGroups}
+                            setSelectedGroups={setSelectedGroups} />
 
-                    <Form className="filters-form">
-                        <Form.Checkbox
-                            label="Approved results only"
-                            checked={showApprovedOnly}
-                            onChange={(e, { checked }) => setShowApprovedOnly(checked ?? false)}
-                            disabled={filters.only("approvedOnly").forceApply(filteredResults).length <= 0} />
+                        <Form className="filters-form">
+                            <Form.Checkbox
+                                label="Approved results only"
+                                checked={showApprovedOnly}
+                                onChange={(e, { checked }) => setShowApprovedOnly(checked ?? false)}
+                                disabled={filters.only("approvedOnly").forceApply(filteredResults).length <= 0} />
 
-                        <Form.Checkbox
-                            label="My results only"
-                            checked={showMineOnly}
-                            onChange={(e, { checked }) => setShowMineOnly(checked ?? false)}
-                            disabled={filters.only("mineOnly").forceApply(filteredResults).length <= 0} />
+                            <Form.Checkbox
+                                label="My results only"
+                                checked={showMineOnly}
+                                onChange={(e, { checked }) => setShowMineOnly(checked ?? false)}
+                                disabled={filters.only("mineOnly").forceApply(filteredResults).length <= 0} />
+                        </Form>
+                    </div>
 
-                        <Form.Checkbox
-                            label="Filter by time played"
-                            checked={filterByTimePlayed}
-                            onChange={(e, { checked }) => setFilterByTimePlayed(checked ?? false)} />
-                    </Form>
+                    <div>
+                        <Form className="filters-form">
+                            <Form.Checkbox
+                                label="Filter by time played"
+                                checked={filterByTimePlayed}
+                                onChange={(e, { checked }) => setFilterByTimePlayed(checked ?? false)} />
+                        </Form>
 
-                    {filterByTimePlayed && <div className="datetime-container">
-                        <p>Earliest</p>
+                        <div className="datetime-container">
+                            <DateTimeForm
+                                dateLabel="Earliest"
+                                timePlayed={timePlayedEarliest}
+                                setTimePlayed={setTimePlayedEarliest}
+                                disabled={!filterByTimePlayed} />
 
-                        <DateTimeForm
-                            hideLabels
-                            timePlayed={timePlayedEarliest}
-                            setTimePlayed={setTimePlayedEarliest} />
-
-                        <p>Latest</p>
-
-                        <DateTimeForm
-                            hideLabels
-                            timePlayed={timePlayedLatest}
-                            setTimePlayed={setTimePlayedLatest} />
-                    </div>}
+                            <DateTimeForm
+                                dateLabel="Latest"
+                                timePlayed={timePlayedLatest}
+                                setTimePlayed={setTimePlayedLatest}
+                                disabled={!filterByTimePlayed} />
+                        </div>
+                    </div>
                 </div>
             </div>
 

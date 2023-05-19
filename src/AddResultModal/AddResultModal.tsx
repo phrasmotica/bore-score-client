@@ -210,6 +210,8 @@ export const AddResultModal = (props: AddResultModalProps) => {
                     <div className="details">
                         <div className="form-header">
                             <DateTimeForm
+                                dateLabel="Date"
+                                timeLabel="Time"
                                 timePlayed={timePlayed}
                                 setTimePlayed={setTimePlayed} />
                         </div>
