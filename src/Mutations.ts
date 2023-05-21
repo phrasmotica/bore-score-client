@@ -80,7 +80,7 @@ export const useDeclineGroupInvitation = (queryClient: QueryClient, group: Group
         toast({
             title: "",
             description: `You declined the invitation to join ${group.displayName}.`,
-            color: "green",
+            color: "green", // TODO: negative action, make this a different colour?
             icon: "users",
         })
     },

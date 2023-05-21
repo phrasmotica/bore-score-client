@@ -21,12 +21,19 @@ export const InvitationsList = (props: InvitationsListProps) => {
         <div className="invitations-list">
             <List>
                 {props.invitations.length <= 0 && renderNoInvitationsMessage()}
-                {props.invitations.length > 0 && props.invitations.map(i => (
-                    <InvitationCard
-                        key={i.id}
-                        invitation={i}
-                        groups={props.groups} />
-                ))}
+                {props.invitations.length > 0 && props.invitations.map(i => {
+                    let group = props.groups.find(gr => gr.id === i.groupId)
+                    if (!group) {
+                        return null
+                    }
+
+                    return (
+                        <InvitationCard
+                            key={i.id}
+                            invitation={i}
+                            group={group} />
+                    )
+                })}
             </List>
         </div>
     )

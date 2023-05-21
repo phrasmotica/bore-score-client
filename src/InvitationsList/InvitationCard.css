@@ -126,16 +126,6 @@
     margin-left: 1em;
 }
 
-.invitation-card .approval {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(60, 179, 114, 0.3);
-    padding: 0.25em;
-    border-radius: calc(2rem / 7);
+.invitation-card > .invitation-buttons {
     margin-bottom: 1em;
-}
-
-.invitation-card .approval > .result-approver {
-    margin-left: 1em;
 }
