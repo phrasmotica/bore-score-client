@@ -51,13 +51,13 @@ export const GroupCard = (props: GroupCardProps) => {
 
     // TODO: turn this into a GameCard-style div that can go in a list item
     return (
-        <div key={group.name} className="group-card">
+        <div key={group.id} className="group-card">
             <div className="left">
                 <GameImage imageSrc={group.profilePicture} />
 
                 <div className="group-text">
                     <div className="group-header">
-                        <Link to={`/groups/${group.name}`}>
+                        <Link to={`/groups/${group.id}`}>
                             <h3>{group.displayName}</h3>
                         </Link>
 
@@ -86,7 +86,7 @@ export const GroupCard = (props: GroupCardProps) => {
                     icon
                     fluid
                     color="teal"
-                    onClick={() => props.addResult(group.name)}>
+                    onClick={() => props.addResult(group.id)}>
                     <span>Submit Result&nbsp;</span>
                     <Icon name="edit" />
                 </Button>}

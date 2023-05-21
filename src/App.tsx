@@ -28,10 +28,9 @@ const App = () => (
                     <Route path="/me" element={<ProfilePage />} />
                     <Route path="/admin" element={<AdminPage />} />
                     <Route path="/players/:username" element={<PlayerDetailsPage />} />
-                    <Route path="/groups/:name" element={<GroupDetailsPage />} />
+                    <Route path="/groups/:groupId" element={<GroupDetailsPage />} />
                     <Route path="/games/:name" element={<GameDetailsPage />} />
                     <Route path="/games" element={<GamesPage />} />
-                    <Route path="/groups/:name" element={<GroupDetailsPage />} />
                     <Route path="/groups" element={<GroupsPage />} />
                     <Route path="/results" element={<ResultsPage />} />
                 </Routes>

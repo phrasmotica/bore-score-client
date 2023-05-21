@@ -189,10 +189,10 @@ export const getGroups = (getAll?: boolean) => {
     .then((data: Group[]) => data)
 }
 
-export const getGroup = (name: string) => {
+export const getGroup = (id: string) => {
     const headers = getHeaders()
 
-    return fetch(`${process.env.REACT_APP_API_URL}/groups/${name}`, {
+    return fetch(`${process.env.REACT_APP_API_URL}/groups/${id}`, {
         headers: headers,
     })
     .then(handleUnauthorisedResponse)
@@ -269,7 +269,7 @@ export const getWinMethods = () => {
 
 export const getResults = (options?: {
     username?: string
-    group?: string
+    groupId?: string
 }) => {
     let url = `${process.env.REACT_APP_API_URL}/results`
 
@@ -277,8 +277,8 @@ export const getResults = (options?: {
     if (options?.username) {
         url += `?username=${options.username}`
     }
-    else if (options?.group) {
-        url += `?group=${options.group}`
+    else if (options?.groupId) {
+        url += `?group=${options.groupId}`
     }
 
     return fetch(url, {

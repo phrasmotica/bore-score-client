@@ -14,14 +14,14 @@ interface GroupDetailsPageProps {
 }
 
 export const GroupDetailsPage = (props: GroupDetailsPageProps) => {
-    let { name } = useParams()
+    let { groupId } = useParams()
 
     const token = parseToken()
 
     const location = useLocation()
     const navigate = useNavigate()
 
-    const { data: group } = useGroup(name || "", error => {
+    const { data: group } = useGroup(groupId || "", error => {
         if (error.message === PersistentError.Unauthorised) {
             if (token) {
                 groupAccessDeniedToast()

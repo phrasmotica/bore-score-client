@@ -30,9 +30,9 @@ export const GroupDetails = (props: GroupDetailsProps) => {
 
     const { data: games } = useGames()
     const { data: memberships } = useGroupMemberships(username)
-    const { data: players } = usePlayers(props.group.name)
+    const { data: players } = usePlayers(props.group.id)
     const { data: creator } = usePlayer(props.group.createdBy)
-    const { data: results } = useResults({ group: props.group.name })
+    const { data: results } = useResults({ groupId: props.group.id })
 
     const queryClient = useQueryClient()
 
@@ -54,7 +54,7 @@ export const GroupDetails = (props: GroupDetailsProps) => {
 
     return (
         <div className="group-details">
-            <AddResultModal group={props.group.name} open={showAddResultModal} setOpen={setShowAddResultModal} />
+            <AddResultModal group={props.group.id} open={showAddResultModal} setOpen={setShowAddResultModal} />
 
             <div className="content">
                 <div className="left">

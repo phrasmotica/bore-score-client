@@ -65,14 +65,14 @@ export const AddResultModal = (props: AddResultModalProps) => {
 
     const [game, setGame] = useState<Game>()
     const [useGroup, setUseGroup] = useState(false)
-    const [group, setGroup] = useState("")
+    const [groupId, setGroupId] = useState("")
     const [timePlayed, setTimePlayed] = useState(moment())
     const [notes, setNotes] = useState("")
 
     const [formData, setFormData] = useState<any>()
     const [formIsComplete, setFormIsComplete] = useState(false)
 
-    const { data: players } = usePlayers(useGroup ? group : "")
+    const { data: players } = usePlayers(useGroup ? groupId : "")
 
     useEffect(() => {
         if (games && games.length > 0) {
@@ -83,9 +83,9 @@ export const AddResultModal = (props: AddResultModalProps) => {
 
     useEffect(() => {
         if (groups && groups.length > 0) {
-            let groupFromParam = groups.find(g => g.name === props.group)
+            let groupFromParam = groups.find(g => g.id === props.group)
             let defaultGroup = groupFromParam ?? groups[0]
-            setGroup(defaultGroup.name)
+            setGroupId(defaultGroup.id)
 
             if (groupFromParam !== undefined) {
                 setUseGroup(true)
@@ -158,7 +158,7 @@ export const AddResultModal = (props: AddResultModalProps) => {
             id: newGuid(),
             timeCreated: moment().unix(),
             gameName: game.name,
-            groupName: useGroup ? group : "",
+            groupId: useGroup ? groupId : "",
             timePlayed: submitValue(timePlayed),
             notes: notes,
             ...formData
@@ -236,8 +236,8 @@ export const AddResultModal = (props: AddResultModalProps) => {
                                     groups={groupsToShow}
                                     useGroup={useGroup}
                                     setUseGroup={setUseGroup}
-                                    group={group}
-                                    setGroup={setGroup} />
+                                    group={groupId}
+                                    setGroup={setGroupId} />
                             </Accordion.Content>
 
                             <Accordion.Title active={showNotes} onClick={() => setShowNotes(s => !s)}>

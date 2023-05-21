@@ -35,9 +35,9 @@ export const useGroups = (getAll?: boolean) => {
     })
 }
 
-export const useGroup = (name: string, onError?: (error: Error) => void) => useQuery({
-    queryKey: ["group", name],
-    queryFn: () => getGroup(name),
+export const useGroup = (id: string, onError?: (error: Error) => void) => useQuery({
+    queryKey: ["group", id],
+    queryFn: () => getGroup(id),
     onError,
     retry: shouldRetry,
 })
@@ -62,15 +62,15 @@ export const useSummary = () => useQuery({
 })
 
 // TODO: add error handling
-export const usePlayers = (group?: string) => {
+export const usePlayers = (groupId?: string) => {
     let key = ["players"]
-    if (group) {
-        key.push(`group:${group}`)
+    if (groupId) {
+        key.push(`groupId:${groupId}`)
     }
 
     return useQuery({
         queryKey: key,
-        queryFn: () => getPlayers(group),
+        queryFn: () => getPlayers(groupId),
     })
 }
 
@@ -84,15 +84,16 @@ export const usePlayer = (username: string, onError?: (error: Error) => void) =>
 
 // TODO: add error handling
 export const useResults = (options?: {
-    username?: string, group?: string
+    username?: string
+    groupId?: string
 }) => {
     let key = ["results"]
     if (options?.username) {
         key.push(`username:${options.username}`)
     }
 
-    if (options?.group) {
-        key.push(`group:${options?.group}`)
+    if (options?.groupId) {
+        key.push(`groupId:${options.groupId}`)
     }
 
     return useQuery({

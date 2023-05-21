@@ -14,7 +14,7 @@ export const useAddGroupMembership = (queryClient: QueryClient, group: Group, us
         })
 
         queryClient.invalidateQueries({
-            queryKey: ["players", `group:${group.name}`],
+            queryKey: ["players", `groupId:${group.id}`],
         })
 
         toast({

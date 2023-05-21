@@ -11,13 +11,13 @@ interface GroupFilterDropdownProps {
 }
 
 export const GroupFilterDropdown = (props: GroupFilterDropdownProps) => {
-    const getCount = (name: string) => props.results.filter(r => r.groupName === name).length
+    const getCount = (id: string) => props.results.filter(r => r.groupId === id).length
 
     const options = props.groups.map(g => ({
-        key: g.name,
-        text: g.displayName + ` (${getCount(g.name)})`,
-        value: g.name,
-        disabled: getCount(g.name) <= 0,
+        key: g.id,
+        text: g.displayName + ` (${getCount(g.id)})`,
+        value: g.id,
+        disabled: getCount(g.id) <= 0,
     }))
 
     return (

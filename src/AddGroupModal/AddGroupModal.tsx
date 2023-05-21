@@ -1,14 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import moment from "moment"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useNavigate } from "react-router"
 import { Button, Form, Header, Icon, Input, Label, Message, Modal } from "semantic-ui-react"
 import { v4 as newGuid } from "uuid"
 
 import { postGroup } from "../FetchHelpers"
-import { computeName } from "../Helpers"
 import { ImagePreview } from "../ImagePreview/ImagePreview"
-import { useGroups } from "../QueryHelpers"
 
 import { Group, GroupVisibilityName } from "../models/Group"
 
@@ -22,8 +20,6 @@ interface AddGroupModalProps {
 export const AddGroupModal = (props: AddGroupModalProps) => {
     const navigate = useNavigate()
 
-    const { data: groups } = useGroups()
-
     const queryClient = useQueryClient()
 
     const { mutate: addGroup } = useMutation({
@@ -33,29 +29,21 @@ export const AddGroupModal = (props: AddGroupModalProps) => {
                 queryKey: ["groups"]
             })
 
-            navigate(`/groups/${data.name}`)
+            navigate(`/groups/${data.id}`)
         },
     })
 
-    const [name, setName] = useState("")
     const [displayName, setDisplayName] = useState("")
     const [description, setDescription] = useState("")
     const [visibility, setVisibility] = useState(GroupVisibilityName.Public)
     const [profilePicture, setProfilePicture] = useState("")
 
-    useEffect(() => {
-        setName(computeName(displayName))
-    }, [displayName])
-
-    // TODO: append "-1" if name is not available on submitting
-    const nameIsAvailable = () => !groups || !groups.map(p => p.name).includes(name)
-
-    const formIsComplete = () => name.length > 0 && nameIsAvailable() && displayName.length > 0
+    const formIsComplete = () => displayName.length > 0
 
     const submit = () => addGroup({
         id: newGuid(),
         timeCreated: moment().unix(),
-        name: name,
+        name: "",
         displayName: displayName,
         description: description,
         profilePicture: profilePicture,

@@ -23,7 +23,7 @@ export const GroupsList = (props: GroupsListProps) => {
             <List divided>
                 {groupsToShow.map(g => {
                     const addResult = () => {
-                        setSelectedGroup(g.name)
+                        setSelectedGroup(g.id)
                         setShowAddResultModal(true)
                     }
 

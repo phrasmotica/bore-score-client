@@ -61,7 +61,7 @@ export const ResultsPage = () => {
 
     let filters = new FilterSet<ResultResponse>()
         .with("game", new Filter(selectedGames.length > 0, r => selectedGames.includes(r.gameName)))
-        .with("group", new Filter(selectedGroups.length > 0, r => selectedGroups.includes(r.groupName)))
+        .with("group", new Filter(selectedGroups.length > 0, r => selectedGroups.includes(r.groupId)))
         .with("approvedOnly", new Filter(showApprovedOnly, r => r.approvalStatus === ApprovalStatus.Approved))
         .with("mineOnly", new Filter(showMineOnly, r => !username || r.scores.map(s => s.username).includes(username)))
         .with("timePlayedEarliest", new Filter(filterByTimePlayed, r => r.timePlayed >= timePlayedEarliest.unix()))

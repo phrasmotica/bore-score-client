@@ -3,7 +3,7 @@ import { ApprovalStatus } from "./Approval"
 export interface Result {
     id: string
     gameName: string
-    groupName: string
+    groupId: string
     timeCreated: number
     timePlayed: number
     notes: string
@@ -15,7 +15,7 @@ export interface Result {
 export interface ResultResponse {
     id: string
     gameName: string
-    groupName: string
+    groupId: string
     timeCreated: number
     timePlayed: number
     notes: string

@@ -130,15 +130,14 @@ export const ResultCard = (props: ResultCardProps) => {
         return null
     }
 
-    let group = props.groups.find(gr => gr.name === r.groupName)
+    let group = props.groups.find(gr => gr.id === r.groupId)
 
     const renderGroupLink = () => {
-        let linkToGroup = r.groupName.length > 0 && r.groupName !== "all"
-        if (linkToGroup) {
+        if (r.groupId) {
             return (
                 <div className="group-link">
-                    Posted in <Link to={`/groups/${r.groupName}`}>
-                        <span>{group?.displayName ?? r.groupName}</span>
+                    Posted in <Link to={`/groups/${r.groupId}`}>
+                        <span>{group?.displayName ?? "(unknown group)"}</span>
                     </Link>
                 </div>
             )
@@ -180,7 +179,7 @@ export const ResultCard = (props: ResultCardProps) => {
         return <Icon className="approval-icon" name={iconName as SemanticICONS} color={colour as SemanticCOLORS} />
     }
 
-    let groupName = group?.displayName ?? r.groupName
+    let groupName = group?.displayName ?? "(unknown group)"
     let showGroup = !props.hideGroups && groupName.length > 0
     let showApprovals = props.approvals && hasCurrentUser && r.approvalStatus === ApprovalStatus.Pending
 
@@ -192,7 +191,7 @@ export const ResultCard = (props: ResultCardProps) => {
                         {createIcon(r.approvalStatus)}
                         <h3>{game.displayName}</h3>&nbsp;
                         <em>at {displayDateTimeValue(moment.unix(r.timePlayed))}</em>&nbsp;
-                        {showGroup && <em>in {group?.displayName ?? r.groupName}</em>}
+                        {showGroup && <em>in {groupName}</em>}
                     </span>
 
                     <Icon name="chevron left" />
