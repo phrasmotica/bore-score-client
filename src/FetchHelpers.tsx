@@ -104,11 +104,11 @@ export const getPlayer = (username: string) => {
 export const deletePlayer = (username: string) => {
     const headers = getHeaders()
 
-    // TODO: handle error without parsing response as JSON
     return fetch(`${process.env.REACT_APP_API_URL}/players/${username}`, {
         method: "DELETE",
         headers: headers,
     })
+    .then(handleResponseEmpty)
 }
 
 export const postPlayer = (player: Player) => {
@@ -336,6 +336,12 @@ export const refreshToken = (request: TokenRefreshRequest) => {
     })
     .then(res => res.json())
     .then((res: TokenResponse) => res)
+}
+
+const handleResponseEmpty = (res: Response) => {
+    if (!res.ok) {
+        throw new FetchError(res, `Response from ${res.url} returned error ${res.status} (${res.statusText})`)
+    }
 }
 
 const handleResponse = (res: Response) => {
