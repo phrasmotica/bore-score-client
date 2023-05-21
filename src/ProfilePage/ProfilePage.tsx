@@ -3,18 +3,18 @@ import { useLocation, useNavigate } from "react-router"
 import { Link } from "react-router-dom"
 import { Button } from "semantic-ui-react"
 
+import { InvitationsList } from "../InvitationsList/InvitationsList"
 import { ResultsList } from "../ResultsPage/ResultsList"
 
 import { parseToken } from "../Auth"
 import { useTitle } from "../Hooks"
 import { PlayerImage } from "../PlayerImage"
-import { useGames, useGroupInvitations, useGroups, usePlayers, useResults, useUser } from "../QueryHelpers"
+import { useGames, useGroupInvitations, useGroups, usePlayers, useResultsForUser, useUser } from "../QueryHelpers"
 
 import { sortResultsByRecent } from "../models/Result"
 
 import "react-semantic-toasts/styles/react-semantic-alert.css"
 import "./ProfilePage.css"
-import { InvitationsList } from "../InvitationsList/InvitationsList"
 
 export const ProfilePage = () => {
     useTitle("My Profile")
@@ -26,7 +26,7 @@ export const ProfilePage = () => {
     const { data: groups } = useGroups()
     const { data: invitations } = useGroupInvitations(username)
     const { data: players } = usePlayers()
-    const { data: results } = useResults({ username })
+    const { data: results } = useResultsForUser(username)
     const { data: user } = useUser(username)
 
     const location = useLocation()

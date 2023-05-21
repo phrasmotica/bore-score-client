@@ -299,6 +299,16 @@ export const getResults = (options?: {
     .then((data: ResultResponse[]) => data)
 }
 
+export const getResultsForUser = (username: string) => {
+    let url = `${process.env.REACT_APP_API_URL}/users/${username}/results`
+
+    return fetch(url, {
+        headers: getHeaders(),
+    })
+    .then(handleResponse)
+    .then((data: ResultResponse[]) => data)
+}
+
 export const postResult = (result: Result) => {
     const headers = getHeaders()
     headers.set("Content-Type", "application/json")
