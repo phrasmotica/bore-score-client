@@ -11,8 +11,8 @@ import { ResultsList } from "../ResultsPage/ResultsList"
 
 import { parseToken } from "../Auth"
 import { displayDateValue } from "../MomentHelpers"
-import { useAddGroupMembership } from "../Mutations"
-import { useGames, useGroupMemberships, usePlayer, usePlayers, useResultsForGroup } from "../QueryHelpers"
+import { useAcceptGroupInvitation, useAddGroupMembership } from "../Mutations"
+import { useGames, useGroupInvitations, useGroupMemberships, usePlayer, usePlayers, useResultsForGroup } from "../QueryHelpers"
 
 import { GroupResponse, GroupVisibilityName } from "../models/Group"
 import { InvitationStatus } from "../models/GroupMembership"
@@ -35,6 +35,8 @@ export const GroupDetails = (props: GroupDetailsProps) => {
     const { data: players } = usePlayers(props.group.id) // TODO: disable this query if not a member
     const { data: creator } = usePlayer(props.group.createdBy)
 
+    const { data: invitations } = useGroupInvitations(username)
+
     const { data: results } = useResultsForGroup(
         props.group.id,
         results => {
@@ -54,12 +56,17 @@ export const GroupDetails = (props: GroupDetailsProps) => {
     const queryClient = useQueryClient()
 
     const { mutate: addGroupMembership } = useAddGroupMembership(queryClient, props.group, username)
+    const { mutate: acceptGroupInvitation } = useAcceptGroupInvitation(queryClient, props.group, username)
 
     let imageSrc = props.group.profilePicture
 
     const members = players ?? []
 
-    const isInGroup = memberships && memberships.some(m => m.groupId === props.group.id)
+    const isInGroup = (memberships ?? []).some(m => m.groupId === props.group.id)
+
+    const invitation = (invitations ?? []).find(i => i.groupId === props.group.id && i.invitationStatus === InvitationStatus.Sent)
+    const isInvitedToGroup = !isInGroup && invitation !== undefined
+
     const canJoinGroup = username.length > 0 && !isInGroup && props.group.visibility === GroupVisibilityName.Public
 
     const joinGroup = () => addGroupMembership({
@@ -69,6 +76,12 @@ export const GroupDetails = (props: GroupDetailsProps) => {
         username: username,
         inviterUsername: "",
     })
+
+    const acceptInvitation = () => {
+        if (invitation) {
+            acceptGroupInvitation(invitation.id)
+        }
+    }
 
     return (
         <div className="group-details">
@@ -87,7 +100,14 @@ export const GroupDetails = (props: GroupDetailsProps) => {
                         <Icon name="users" />
                     </Button>}
 
-                    {/* TODO: show button for accepting invite, if applicable */}
+                    {isInvitedToGroup && <Button
+                        icon
+                        fluid
+                        color="yellow"
+                        onClick={acceptInvitation}>
+                        <span>Accept Invitation&nbsp;</span>
+                        <Icon name="check" />
+                    </Button>}
 
                     {isInGroup && <Button
                         icon
