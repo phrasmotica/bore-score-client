@@ -8,12 +8,13 @@ import { ResultsList } from "../ResultsPage/ResultsList"
 import { parseToken } from "../Auth"
 import { useTitle } from "../Hooks"
 import { PlayerImage } from "../PlayerImage"
-import { useGames, useGroups, usePlayers, useResults, useUser } from "../QueryHelpers"
+import { useGames, useGroupInvitations, useGroups, usePlayers, useResults, useUser } from "../QueryHelpers"
 
 import { sortResultsByRecent } from "../models/Result"
 
 import "react-semantic-toasts/styles/react-semantic-alert.css"
 import "./ProfilePage.css"
+import { InvitationsList } from "../InvitationsList/InvitationsList"
 
 export const ProfilePage = () => {
     useTitle("My Profile")
@@ -23,6 +24,7 @@ export const ProfilePage = () => {
 
     const { data: games } = useGames()
     const { data: groups } = useGroups()
+    const { data: invitations } = useGroupInvitations(username)
     const { data: players } = usePlayers()
     const { data: results } = useResults({ username })
     const { data: user } = useUser(username)
@@ -72,6 +74,12 @@ export const ProfilePage = () => {
                         groups={groups ?? []}
                         players={players ?? []}
                         results={resultsToShow} />
+
+                    <h3>Group Invitations</h3>
+
+                    <InvitationsList
+                        invitations={invitations ?? []}
+                        groups={groups ?? []} />
                 </div>
             </div>
         </div>

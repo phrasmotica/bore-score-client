@@ -30,6 +30,7 @@ export const GroupCard = (props: GroupCardProps) => {
     const { mutate: addGroupMembership } = useAddGroupMembership(queryClient, group, username)
 
     const isInGroup = memberships && memberships.some(m => m.groupId === group.id)
+    const canJoinGroup = username.length > 0 && !isInGroup && group.visibility === GroupVisibilityName.Public
 
     const joinGroup = () => addGroupMembership({
         id: newGuid(),
@@ -49,7 +50,6 @@ export const GroupCard = (props: GroupCardProps) => {
         )
     }
 
-    // TODO: turn this into a GameCard-style div that can go in a list item
     return (
         <div key={group.id} className="group-card">
             <div className="left">
@@ -73,7 +73,7 @@ export const GroupCard = (props: GroupCardProps) => {
             </div>
 
             {token && <div className="right">
-                {username && !isInGroup && <Button
+                {canJoinGroup && <Button
                     icon
                     fluid
                     color="yellow"
@@ -81,6 +81,8 @@ export const GroupCard = (props: GroupCardProps) => {
                     <span>Join Group&nbsp;</span>
                     <Icon name="users" />
                 </Button>}
+
+                {/* TODO: show button for accepting invite, if applicable */}
 
                 {isInGroup && <Button
                     icon

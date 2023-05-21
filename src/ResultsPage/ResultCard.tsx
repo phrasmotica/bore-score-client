@@ -180,7 +180,7 @@ export const ResultCard = (props: ResultCardProps) => {
     }
 
     let groupName = group?.displayName ?? "(unknown group)"
-    let showGroup = !props.hideGroups && groupName.length > 0
+    let showGroup = !props.hideGroups && r.groupId.length > 0
     let showApprovals = props.approvals && hasCurrentUser && r.approvalStatus === ApprovalStatus.Pending
 
     return (
@@ -220,7 +220,7 @@ export const ResultCard = (props: ResultCardProps) => {
                                 <div className="result-content">
                                     <div className="score-card">
                                         {renderScoreCard()}
-                                        {!props.hideGroups && renderGroupLink()}
+                                        {showGroup && renderGroupLink()}
                                     </div>
 
                                     <div>

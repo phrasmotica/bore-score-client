@@ -1,0 +1,141 @@
+:root {
+    --accepted: 33, 186, 69;
+    --declined: 219, 40, 40;
+}
+
+.ui.accordion.invitation-card-header {
+    padding: 0.25em 0em;
+}
+
+.ui.accordion.invitation-card-header.sent {
+    background-color: rgba(255, 228, 196, 0.5);
+}
+
+.ui.accordion.invitation-card-header.accepted {
+    background-color: rgba(60, 179, 114, 0.3);
+}
+
+.ui.accordion.invitation-card-header.declined {
+    background-color: rgba(240, 128, 128, 0.4);
+}
+
+.ui.accordion.invitation-card-header > .title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ui.accordion.invitation-card-header > .title i.icon.approval-icon {
+    font-size: calc(9rem / 7);
+    line-height: unset;
+    vertical-align: unset;
+    color: unset!important;
+}
+
+.ui.accordion.invitation-card-header > .title i.icon.approval-icon.green {
+    color: rgba(var(--accepted), 0.4)!important;
+    transition: color .1s ease;
+}
+
+.ui.accordion.invitation-card-header > .title:hover i.icon.approval-icon.green {
+    color: rgba(var(--accepted), 0.87)!important;
+}
+
+.ui.accordion.invitation-card-header > .title.active i.icon.approval-icon.green {
+    color: rgba(var(--accepted), 0.95)!important;
+}
+
+.ui.accordion.invitation-card-header > .title i.icon.approval-icon.red {
+    color: rgba(var(--declined), 0.4)!important;
+    transition: color .1s ease;
+}
+
+.ui.accordion.invitation-card-header > .title:hover i.icon.approval-icon.red {
+    color: rgba(var(--declined), 0.87)!important;
+}
+
+.ui.accordion.invitation-card-header > .title.active i.icon.approval-icon.red {
+    color: rgba(var(--declined), 0.95)!important;
+}
+
+.ui.accordion.invitation-card-header > .title h3 {
+    display: inline;
+    margin: 0em;
+}
+
+.ui.accordion.invitation-card-header > .title > i.icon {
+    transition: transform .25s ease,opacity .1s ease;
+}
+
+.ui.accordion.invitation-card-header > .title.active > i.icon {
+    transform: rotate(-90deg);
+}
+
+.ui.accordion.invitation-card-header > .content {
+    padding: 0.75em 1em!important;
+}
+
+.invitation-card {
+    padding: 0.25em 0em;
+}
+
+.invitation-card .details {
+    display: flex;
+    text-align: start;
+    flex-grow: 1;
+}
+
+.invitation-card .game-image {
+    display: flex;
+    justify-content: center;
+    width: 100px;
+    flex-shrink: 0;
+}
+
+.invitation-card .game-image .image {
+    max-width: 100px;
+    max-height: 100px;
+}
+
+.invitation-content {
+    display: flex;
+}
+
+.invitation-content > .score-card {
+    flex-shrink: 0;
+}
+
+.invitation-content > .score-card > .ui.list {
+    padding: 0em;
+}
+
+.invitation-content > .score-card .group-link {
+    margin-top: 0.25em;
+}
+
+.invitation-content > .score-card .score {
+    display: flex;
+    justify-content: space-between;
+}
+
+.invitation-content > .score-card .score > .value {
+    margin-left: 0.5em;
+}
+
+.invitation-content > :not(:first-child) {
+    margin-left: 1em;
+}
+
+.invitation-card .approval {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(60, 179, 114, 0.3);
+    padding: 0.25em;
+    border-radius: calc(2rem / 7);
+    margin-bottom: 1em;
+}
+
+.invitation-card .approval > .result-approver {
+    margin-left: 1em;
+}

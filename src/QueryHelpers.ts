@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 
-import { PersistentError, getApprovals, getGame, getGames, getGroup, getGroupMemberships, getGroups, getLinkTypes, getPlayer, getPlayers, getResults, getSummary, getUser, getWinMethods } from "./FetchHelpers"
+import { PersistentError, getApprovals, getGame, getGames, getGroup, getGroupInvitations, getGroupMemberships, getGroups, getLinkTypes, getPlayer, getPlayers, getResults, getSummary, getUser, getWinMethods } from "./FetchHelpers"
 
 // TODO: add error handling
 export const useApprovals = (resultId: string, enabled: boolean) => useQuery({
@@ -40,6 +40,13 @@ export const useGroup = (id: string, onError?: (error: Error) => void) => useQue
     queryFn: () => getGroup(id),
     onError,
     retry: shouldRetry,
+})
+
+// TODO: add error handling
+export const useGroupInvitations = (username: string) => useQuery({
+    queryKey: ["groupInvitations", username],
+    queryFn: () => getGroupInvitations(username),
+    enabled: username.length > 0,
 })
 
 // TODO: add error handling
@@ -86,7 +93,7 @@ export const usePlayer = (username: string, onError?: (error: Error) => void) =>
 export const useResults = (options?: {
     username?: string
     groupId?: string
-}) => {
+}, onError?: (error: Error) => void) => {
     let key = ["results"]
     if (options?.username) {
         key.push(`username:${options.username}`)
@@ -99,6 +106,8 @@ export const useResults = (options?: {
     return useQuery({
         queryKey: key,
         queryFn: () => getResults(options),
+        onError,
+        retry: shouldRetry,
     })
 }
 

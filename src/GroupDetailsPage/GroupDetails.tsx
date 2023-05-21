@@ -10,11 +10,12 @@ import { MemberList } from "./MemberList"
 import { ResultsList } from "../ResultsPage/ResultsList"
 
 import { parseToken } from "../Auth"
+import { PersistentError } from "../FetchHelpers"
 import { displayDateValue } from "../MomentHelpers"
 import { useAddGroupMembership } from "../Mutations"
 import { useGames, useGroupMemberships, usePlayer, usePlayers, useResults } from "../QueryHelpers"
 
-import { Group } from "../models/Group"
+import { Group, GroupVisibilityName } from "../models/Group"
 
 import "./GroupDetails.css"
 
@@ -32,7 +33,16 @@ export const GroupDetails = (props: GroupDetailsProps) => {
     const { data: memberships } = useGroupMemberships(username)
     const { data: players } = usePlayers(props.group.id)
     const { data: creator } = usePlayer(props.group.createdBy)
-    const { data: results } = useResults({ groupId: props.group.id })
+    const { data: results } = useResults({ groupId: props.group.id }, error => {
+        if (error.message === PersistentError.Unauthorised) {
+            if (token) {
+                // TODO: show message "you must be a member to see this group's results"
+            }
+            else {
+                // TODO: show message "you must be logged in to see this group's results"
+            }
+        }
+    })
 
     const queryClient = useQueryClient()
 
@@ -43,6 +53,7 @@ export const GroupDetails = (props: GroupDetailsProps) => {
     const members = players ?? []
 
     const isInGroup = memberships && memberships.some(m => m.groupId === props.group.id)
+    const canJoinGroup = username.length > 0 && !isInGroup && props.group.visibility === GroupVisibilityName.Public
 
     const joinGroup = () => addGroupMembership({
         id: newGuid(),
@@ -60,7 +71,7 @@ export const GroupDetails = (props: GroupDetailsProps) => {
                 <div className="left">
                     <GameImage imageSrc={imageSrc} />
 
-                    {username && !isInGroup && <Button
+                    {canJoinGroup && <Button
                         icon
                         fluid
                         color="yellow"
@@ -68,6 +79,8 @@ export const GroupDetails = (props: GroupDetailsProps) => {
                         <span>Join Group&nbsp;</span>
                         <Icon name="users" />
                     </Button>}
+
+                    {/* TODO: show button for accepting invite, if applicable */}
 
                     {isInGroup && <Button
                         icon

@@ -5,7 +5,7 @@ import { getHeaders, getToken, parseToken, removeToken, setToken } from "./Auth"
 import { Approval } from "./models/Approval"
 import { Game } from "./models/Game"
 import { Group } from "./models/Group"
-import { GroupMembership } from "./models/GroupMembership"
+import { GroupInvitation, GroupMembership } from "./models/GroupMembership"
 import { LinkType } from "./models/LinkType"
 import { Player } from "./models/Player"
 import { Result, ResultResponse } from "./models/Result"
@@ -43,6 +43,7 @@ window.fetch = async (...args) => {
     return response
 }
 
+// TODO: change this to use error status codes
 export enum PersistentError {
     Unauthorised = "unauthorised",
     NotFound = "not found",
@@ -212,6 +213,16 @@ export const postGroup = (group: Group) => {
     })
     .then(handleResponse)
     .then((data: Group) => data)
+}
+
+export const getGroupInvitations = (username: string) => {
+    const headers = getHeaders()
+
+    return fetch(`${process.env.REACT_APP_API_URL}/users/${username}/invitations`, {
+        headers: headers,
+    })
+    .then(handleResponse)
+    .then((data: GroupInvitation[]) => data)
 }
 
 export const getGroupMemberships = (username: string) => {
