@@ -43,7 +43,6 @@ export const AddGroupModal = (props: AddGroupModalProps) => {
     const submit = () => addGroup({
         id: newGuid(),
         timeCreated: moment().unix(),
-        name: "",
         displayName: displayName,
         description: description,
         profilePicture: profilePicture,

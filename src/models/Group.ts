@@ -1,6 +1,5 @@
 export interface Group {
     id: string
-    name: string
     timeCreated: number
     displayName: string
     description: string
