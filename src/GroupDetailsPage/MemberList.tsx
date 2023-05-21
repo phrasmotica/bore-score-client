@@ -12,7 +12,7 @@ export const MemberList = (props: MemberListProps) => {
         <div>
             <strong>Members</strong>
             {props.members.map(m => (
-                <div>
+                <div key={m.id}>
                     <span>
                         <Link to={`/players/${m.username}`}>
                             {m.displayName}

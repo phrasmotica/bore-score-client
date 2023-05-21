@@ -23,6 +23,7 @@ export const InvitationsList = (props: InvitationsListProps) => {
                 {props.invitations.length <= 0 && renderNoInvitationsMessage()}
                 {props.invitations.length > 0 && props.invitations.map(i => (
                     <InvitationCard
+                        key={i.id}
                         invitation={i}
                         groups={props.groups} />
                 ))}
