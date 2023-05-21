@@ -7,10 +7,11 @@ import { v4 as newGuid } from "uuid"
 import { GameImage } from "../GameImage"
 
 import { parseToken } from "../Auth"
-import { useAddGroupMembership } from "../Mutations"
-import { useGroupMemberships } from "../QueryHelpers"
+import { useAcceptGroupInvitation, useAddGroupMembership } from "../Mutations"
+import { useGroupInvitations, useGroupMemberships } from "../QueryHelpers"
 
 import { Group, GroupVisibilityName } from "../models/Group"
+import { InvitationStatus } from "../models/GroupMembership"
 
 interface GroupCardProps {
     group: Group
@@ -25,11 +26,17 @@ export const GroupCard = (props: GroupCardProps) => {
 
     const group = props.group
 
+    const { data: invitations } = useGroupInvitations(username)
     const { data: memberships } = useGroupMemberships(username)
 
     const { mutate: addGroupMembership } = useAddGroupMembership(queryClient, group, username)
+    const { mutate: acceptGroupInvitation } = useAcceptGroupInvitation(queryClient, props.group, username)
 
     const isInGroup = memberships && memberships.some(m => m.groupId === group.id)
+
+    const invitation = (invitations ?? []).find(i => i.groupId === props.group.id && i.invitationStatus === InvitationStatus.Sent)
+    const isInvitedToGroup = !isInGroup && invitation !== undefined
+
     const canJoinGroup = username.length > 0 && !isInGroup && group.visibility === GroupVisibilityName.Public
 
     const joinGroup = () => addGroupMembership({
@@ -39,6 +46,12 @@ export const GroupCard = (props: GroupCardProps) => {
         username: username,
         inviterUsername: "",
     })
+
+    const acceptInvitation = () => {
+        if (invitation) {
+            acceptGroupInvitation(invitation.id)
+        }
+    }
 
     const renderVisibilityLabel = (group: Group) => {
         const colour = group.visibility === GroupVisibilityName.Private ? "purple" : "green"
@@ -82,7 +95,14 @@ export const GroupCard = (props: GroupCardProps) => {
                     <Icon name="users" />
                 </Button>}
 
-                {/* TODO: show button for accepting invite, if applicable */}
+                {isInvitedToGroup && <Button
+                    icon
+                    fluid
+                    color="yellow"
+                    onClick={acceptInvitation}>
+                    <span>Accept Invitation&nbsp;</span>
+                    <Icon name="check" />
+                </Button>}
 
                 {isInGroup && <Button
                     icon
