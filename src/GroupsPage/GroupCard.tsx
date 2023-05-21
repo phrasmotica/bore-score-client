@@ -1,13 +1,13 @@
 import { useQueryClient } from "@tanstack/react-query"
 import { Link } from "react-router-dom"
-import { Button, Icon, Label } from "semantic-ui-react"
+import { Button, ButtonGroup, Icon, Label } from "semantic-ui-react"
 import moment from "moment"
 import { v4 as newGuid } from "uuid"
 
 import { GameImage } from "../GameImage"
 
 import { parseToken } from "../Auth"
-import { useAcceptGroupInvitation, useAddGroupMembership } from "../Mutations"
+import { useAcceptGroupInvitation, useAddGroupMembership, useDeclineGroupInvitation } from "../Mutations"
 import { useGroupInvitations, useGroupMemberships } from "../QueryHelpers"
 
 import { Group, GroupVisibilityName } from "../models/Group"
@@ -31,6 +31,7 @@ export const GroupCard = (props: GroupCardProps) => {
 
     const { mutate: addGroupMembership } = useAddGroupMembership(queryClient, group, username)
     const { mutate: acceptGroupInvitation } = useAcceptGroupInvitation(queryClient, props.group, username)
+    const { mutate: declineGroupInvitation } = useDeclineGroupInvitation(queryClient, props.group)
 
     const isInGroup = memberships && memberships.some(m => m.groupId === group.id)
 
@@ -50,6 +51,12 @@ export const GroupCard = (props: GroupCardProps) => {
     const acceptInvitation = () => {
         if (invitation) {
             acceptGroupInvitation(invitation.id)
+        }
+    }
+
+    const declineInvitation = () => {
+        if (invitation) {
+            declineGroupInvitation(invitation.id)
         }
     }
 
@@ -95,14 +102,25 @@ export const GroupCard = (props: GroupCardProps) => {
                     <Icon name="users" />
                 </Button>}
 
-                {isInvitedToGroup && <Button
-                    icon
-                    fluid
-                    color="yellow"
-                    onClick={acceptInvitation}>
-                    <span>Accept Invitation&nbsp;</span>
-                    <Icon name="check" />
-                </Button>}
+                {isInvitedToGroup && <ButtonGroup vertical>
+                    <Button
+                        icon
+                        fluid
+                        color="yellow"
+                        onClick={acceptInvitation}>
+                        <span>Accept Invitation&nbsp;</span>
+                        <Icon name="check" />
+                    </Button>
+
+                    <Button
+                        icon
+                        fluid
+                        color="red"
+                        onClick={declineInvitation}>
+                        <span>Decline Invitation&nbsp;</span>
+                        <Icon name="delete" />
+                    </Button>
+                </ButtonGroup>}
 
                 {isInGroup && <Button
                     icon

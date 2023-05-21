@@ -225,6 +225,16 @@ export const acceptGroupInvitation = (invitationId: string) => {
     .then(handleResponseEmpty)
 }
 
+export const declineGroupInvitation = (invitationId: string) => {
+    const headers = getHeaders()
+
+    return fetch(`${process.env.REACT_APP_API_URL}/invitations/${invitationId}/decline`, {
+        method: "POST",
+        headers: headers,
+    })
+    .then(handleResponseEmpty)
+}
+
 export const getGroupMemberships = (username: string) => {
     const headers = getHeaders()
 

@@ -1,7 +1,7 @@
 import { QueryClient, useMutation } from "@tanstack/react-query"
 import { toast } from "react-semantic-toasts"
 
-import { FetchError, acceptGroupInvitation, postGroupMembership } from "./FetchHelpers"
+import { FetchError, acceptGroupInvitation, declineGroupInvitation, postGroupMembership } from "./FetchHelpers"
 
 import { Group } from "./models/Group"
 import { GroupMembership } from "./models/GroupMembership"
@@ -64,6 +64,30 @@ export const useAcceptGroupInvitation = (queryClient: QueryClient, group: Group,
         toast({
             title: "",
             description: `Failed to join ${group.displayName}.`,
+            color: "red",
+            icon: "users",
+        })
+    },
+})
+
+export const useDeclineGroupInvitation = (queryClient: QueryClient, group: Group) => useMutation({
+    mutationFn: declineGroupInvitation,
+    onSuccess() {
+        queryClient.invalidateQueries({
+            predicate: query => query.queryKey.includes("groupInvitations"),
+        })
+
+        toast({
+            title: "",
+            description: `You declined the invitation to join ${group.displayName}.`,
+            color: "green",
+            icon: "users",
+        })
+    },
+    onError(error: FetchError, variables, context) {
+        toast({
+            title: "",
+            description: `Failed to decline the invitation to join ${group.displayName}.`,
             color: "red",
             icon: "users",
         })
