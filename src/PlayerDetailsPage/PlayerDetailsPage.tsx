@@ -3,20 +3,15 @@ import { toast } from "react-semantic-toasts"
 
 import { PlayerDetails } from "./PlayerDetails"
 
-import { PersistentError } from "../FetchHelpers"
 import { usePlayer } from "../QueryHelpers"
 
-interface PlayerDetailsPageProps {
-
-}
-
-export const PlayerDetailsPage = (props: PlayerDetailsPageProps) => {
+export const PlayerDetailsPage = () => {
     let { username } = useParams()
 
     const navigate = useNavigate()
 
     const { data: player } = usePlayer(username || "", error => {
-        if (error.message === PersistentError.NotFound) {
+        if (error.isNotFound()) {
             playerNotFoundToast()
             navigate("/")
         }

@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 
-import { PersistentError, getApprovals, getGame, getGames, getGroup, getGroupInvitations, getGroupMemberships, getGroups, getLinkTypes, getPlayer, getPlayers, getPlayersInGroup, getResults, getResultsForGroup, getResultsForUser, getSummary, getUser, getWinMethods } from "./FetchHelpers"
+import { FetchError, getApprovals, getGame, getGames, getGroup, getGroupInvitations, getGroupMemberships, getGroups, getLinkTypes, getPlayer, getPlayers, getPlayersInGroup, getResults, getResultsForGroup, getResultsForUser, getSummary, getUser, getWinMethods } from "./FetchHelpers"
+import { ResultResponse } from "./models/Result"
 
 // TODO: add error handling
 export const useApprovals = (resultId: string, enabled: boolean) => useQuery({
@@ -15,7 +16,7 @@ export const useGames = () => useQuery({
     queryFn: () => getGames(),
 })
 
-export const useGame = (name: string, onError?: (error: Error) => void) => useQuery({
+export const useGame = (name: string, onError?: (error: FetchError) => void) => useQuery({
     queryKey: ["game", name],
     queryFn: () => getGame(name),
     onError,
@@ -35,7 +36,7 @@ export const useGroups = (getAll?: boolean) => {
     })
 }
 
-export const useGroup = (id: string, onError?: (error: Error) => void) => useQuery({
+export const useGroup = (id: string, onError?: (error: FetchError) => void) => useQuery({
     queryKey: ["group", id],
     queryFn: () => getGroup(id),
     onError,
@@ -88,38 +89,35 @@ export const usePlayersInGroup = (groupId: string) => useQuery({
 })
 
 // TODO: add error handling
-export const usePlayer = (username: string, onError?: (error: Error) => void) => useQuery({
+export const usePlayer = (username: string, onError?: (error: FetchError) => void) => useQuery({
     queryKey: ["player", username],
     queryFn: () => getPlayer(username),
     onError,
     retry: shouldRetry,
 })
 
-export const useResults = (options?: {
-    groupId?: string
-}, onError?: (error: Error) => void) => {
-    let key = ["results"]
-
-    if (options?.groupId) {
-        key.push(`groupId:${options.groupId}`)
-    }
-
+export const useResults = (onError?: (error: FetchError) => void) => {
     return useQuery({
-        queryKey: key,
-        queryFn: () => getResults(options),
+        queryKey: ["results"],
+        queryFn: getResults,
         onError,
         retry: shouldRetry,
     })
 }
 
-export const useResultsForGroup = (groupId: string, onError?: (error: Error) => void) => useQuery({
+export const useResultsForGroup = (
+    groupId: string,
+    onSuccess?: (data: ResultResponse[]) => void,
+    onError?: (error: FetchError) => void
+) => useQuery({
     queryKey: ["results", `groupId:${groupId}`],
     queryFn: () => getResultsForGroup(groupId),
+    onSuccess,
     onError,
     retry: shouldRetry,
 })
 
-export const useResultsForUser = (username: string, onError?: (error: Error) => void) => useQuery({
+export const useResultsForUser = (username: string, onError?: (error: FetchError) => void) => useQuery({
     queryKey: ["results", `username:${username}`],
     queryFn: () => getResultsForUser(username),
     onError,
@@ -138,6 +136,6 @@ export const useWinMethods = () => useQuery({
     queryFn: () => getWinMethods(),
 })
 
-const shouldRetry = (failureCount: number, error: Error) => {
-    return !Object.values(PersistentError).includes(error.message as PersistentError)
+const shouldRetry = (failureCount: number, error: FetchError) => {
+    return ![401, 404].includes(error.response.status)
 }

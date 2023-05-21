@@ -10,12 +10,12 @@ import { MemberList } from "./MemberList"
 import { ResultsList } from "../ResultsPage/ResultsList"
 
 import { parseToken } from "../Auth"
-import { PersistentError } from "../FetchHelpers"
 import { displayDateValue } from "../MomentHelpers"
 import { useAddGroupMembership } from "../Mutations"
 import { useGames, useGroupMemberships, usePlayer, usePlayersInGroup, useResultsForGroup } from "../QueryHelpers"
 
 import { Group, GroupVisibilityName } from "../models/Group"
+import { InvitationStatus } from "../models/GroupMembership"
 
 import "./GroupDetails.css"
 
@@ -25,6 +25,7 @@ interface GroupDetailsProps {
 
 export const GroupDetails = (props: GroupDetailsProps) => {
     const [showAddResultModal, setShowAddResultModal] = useState(false)
+    const [resultsErrorMessage, setResultsErrorMessage] = useState("")
 
     const token = parseToken()
     const username = token?.username || ""
@@ -33,16 +34,22 @@ export const GroupDetails = (props: GroupDetailsProps) => {
     const { data: memberships } = useGroupMemberships(username)
     const { data: players } = usePlayersInGroup(props.group.id)
     const { data: creator } = usePlayer(props.group.createdBy)
-    const { data: results } = useResultsForGroup(props.group.id, error => {
-        if (error.message === PersistentError.Unauthorised) {
-            if (token) {
-                // TODO: show message "you must be a member to see this group's results"
+
+    const { data: results } = useResultsForGroup(
+        props.group.id,
+        results => {
+            setResultsErrorMessage("")
+        },
+        error => {
+            if (error.response.status === 401) {
+                if (token) {
+                    setResultsErrorMessage("You must be a member to see this group's results.")
+                }
+                else {
+                    setResultsErrorMessage("You must be logged in to see this group's results.")
+                }
             }
-            else {
-                // TODO: show message "you must be logged in to see this group's results"
-            }
-        }
-    })
+        })
 
     const queryClient = useQueryClient()
 
@@ -115,12 +122,16 @@ export const GroupDetails = (props: GroupDetailsProps) => {
                 <div className="results">
                     <h3>Recent Results</h3>
 
-                    <ResultsList
+                    {resultsErrorMessage && <p className="no-results-message">
+                        {resultsErrorMessage}
+                    </p>}
+
+                    {!resultsErrorMessage && <ResultsList
                         hideGroups
                         games={games ?? []}
                         groups={[props.group]}
                         players={players ?? []}
-                        results={results ?? []} />
+                        results={results ?? []} />}
                 </div>
             </div>
         </div>

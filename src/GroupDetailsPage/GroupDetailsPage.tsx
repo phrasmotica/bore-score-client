@@ -5,7 +5,6 @@ import { toast } from "react-semantic-toasts"
 import { GroupDetails } from "./GroupDetails"
 
 import { parseToken } from "../Auth"
-import { PersistentError } from "../FetchHelpers"
 import { resetTitle, setTitle } from "../Helpers"
 import { useGroup } from "../QueryHelpers"
 
@@ -22,7 +21,7 @@ export const GroupDetailsPage = (props: GroupDetailsPageProps) => {
     const navigate = useNavigate()
 
     const { data: group } = useGroup(groupId || "", error => {
-        if (error.message === PersistentError.Unauthorised) {
+        if (error.isUnauthorised()) {
             if (token) {
                 groupAccessDeniedToast()
                 navigate("/groups")
@@ -32,7 +31,7 @@ export const GroupDetailsPage = (props: GroupDetailsPageProps) => {
             }
         }
 
-        if (error.message === PersistentError.NotFound) {
+        if (error.isNotFound()) {
             groupNotFoundToast()
             navigate("/groups")
         }

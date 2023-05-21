@@ -43,12 +43,6 @@ window.fetch = async (...args) => {
     return response
 }
 
-// TODO: change this to use error status codes
-export enum PersistentError {
-    Unauthorised = "unauthorised",
-    NotFound = "not found",
-}
-
 export const getSummary = () => {
     const headers = getHeaders()
 
@@ -113,7 +107,6 @@ export const getPlayer = (username: string) => {
     return fetch(`${process.env.REACT_APP_API_URL}/players/${username}`, {
         headers: headers,
     })
-    .then(handleNotFoundResponse)
     .then(handleResponse)
     .then((data: Player) => data)
 }
@@ -157,7 +150,6 @@ export const getGame = (name: string) => {
     return fetch(`${process.env.REACT_APP_API_URL}/games/${name}`, {
         headers: headers,
     })
-    .then(handleNotFoundResponse)
     .then(handleResponse)
     .then((data: Game) => data)
 }
@@ -206,8 +198,6 @@ export const getGroup = (id: string) => {
     return fetch(`${process.env.REACT_APP_API_URL}/groups/${id}`, {
         headers: headers,
     })
-    .then(handleUnauthorisedResponse)
-    .then(handleNotFoundResponse)
     .then(handleResponse)
     .then((data: Group) => data)
 }
@@ -288,22 +278,11 @@ export const getWinMethods = () => {
     .then((data: WinMethod[]) => data)
 }
 
-export const getResults = (options?: {
-    username?: string
-    groupId?: string
-}) => {
-    let url = `${process.env.REACT_APP_API_URL}/results`
+export const getResults = () => {
+    const headers = getHeaders()
 
-    // API currently allows only one or the other
-    if (options?.username) {
-        url += `?username=${options.username}`
-    }
-    else if (options?.groupId) {
-        url += `?group=${options.groupId}`
-    }
-
-    return fetch(url, {
-        headers: getHeaders(),
+    return fetch(`${process.env.REACT_APP_API_URL}/results`, {
+        headers: headers,
     })
     .then(handleResponse)
     .then((data: ResultResponse[]) => data)
@@ -369,28 +348,12 @@ export const refreshToken = (request: TokenRefreshRequest) => {
     .then((res: TokenResponse) => res)
 }
 
-const handleUnauthorisedResponse = (res: Response) => {
-    if (res.status === 401) {
-        throw new Error(PersistentError.Unauthorised)
-    }
-
-    return res
-}
-
-const handleNotFoundResponse = (res: Response) => {
-    if (res.status === 404) {
-        throw new Error(PersistentError.NotFound)
-    }
-
-    return res
-}
-
 const handleResponse = (res: Response) => {
     if (res.ok) {
         return res.json()
     }
 
-    throw new Error(`Response from ${res.url} returned error ${res.status} (${res.statusText})`)
+    throw new FetchError(res, `Response from ${res.url} returned error ${res.status} (${res.statusText})`)
 }
 
 interface TokenRequest {
@@ -404,4 +367,18 @@ interface TokenResponse {
 
 interface TokenRefreshRequest {
     token: string
+}
+
+export class FetchError extends Error {
+    constructor(public response: Response, message?: string) {
+        super(message)
+    }
+
+    isUnauthorised() {
+        return this.response.status === 401
+    }
+
+    isNotFound() {
+        return this.response.status === 404
+    }
 }
