@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 
-import { FetchError, getApprovals, getGame, getGames, getGroup, getGroupInvitations, getGroupMemberships, getGroups, getLinkTypes, getPlayer, getPlayers, getPlayersInGroup, getResults, getResultsForGroup, getResultsForUser, getSummary, getUser, getWinMethods } from "./FetchHelpers"
+import { FetchError, getApprovals, getGame, getGames, getGroup, getGroupInvitations, getGroupMemberships, getGroups, getLinkTypes, getPlayer, getPlayers, getResults, getResultsForGroup, getResultsForUser, getSummary, getUser, getWinMethods } from "./FetchHelpers"
 import { ResultResponse } from "./models/Result"
 
 // TODO: add error handling
@@ -81,12 +81,6 @@ export const usePlayers = (groupId?: string) => {
         queryFn: () => getPlayers(groupId),
     })
 }
-
-// TODO: add error handling
-export const usePlayersInGroup = (groupId: string) => useQuery({
-    queryKey: ["players", `groupId:${groupId}`],
-    queryFn: () => getPlayersInGroup(groupId),
-})
 
 // TODO: add error handling
 export const usePlayer = (username: string, onError?: (error: FetchError) => void) => useQuery({

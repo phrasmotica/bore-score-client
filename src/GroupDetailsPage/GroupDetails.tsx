@@ -12,7 +12,7 @@ import { ResultsList } from "../ResultsPage/ResultsList"
 import { parseToken } from "../Auth"
 import { displayDateValue } from "../MomentHelpers"
 import { useAddGroupMembership } from "../Mutations"
-import { useGames, useGroupMemberships, usePlayer, usePlayersInGroup, useResultsForGroup } from "../QueryHelpers"
+import { useGames, useGroupMemberships, usePlayer, usePlayers, useResultsForGroup } from "../QueryHelpers"
 
 import { Group, GroupVisibilityName } from "../models/Group"
 import { InvitationStatus } from "../models/GroupMembership"
@@ -32,7 +32,7 @@ export const GroupDetails = (props: GroupDetailsProps) => {
 
     const { data: games } = useGames()
     const { data: memberships } = useGroupMemberships(username)
-    const { data: players } = usePlayersInGroup(props.group.id)
+    const { data: players } = usePlayers(props.group.id)
     const { data: creator } = usePlayer(props.group.createdBy)
 
     const { data: results } = useResultsForGroup(
