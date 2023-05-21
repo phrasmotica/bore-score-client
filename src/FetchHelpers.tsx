@@ -97,6 +97,16 @@ export const getPlayers = (group?: string) => {
     .then((data: Player[]) => data)
 }
 
+export const getPlayersInGroup = (groupId: string) => {
+    const headers = getHeaders()
+
+    return fetch(`${process.env.REACT_APP_API_URL}/groups/${groupId}/players`, {
+        headers: headers,
+    })
+    .then(handleResponse)
+    .then((data: Player[]) => data)
+}
+
 export const getPlayer = (username: string) => {
     const headers = getHeaders()
 
@@ -291,6 +301,16 @@ export const getResults = (options?: {
     else if (options?.groupId) {
         url += `?group=${options.groupId}`
     }
+
+    return fetch(url, {
+        headers: getHeaders(),
+    })
+    .then(handleResponse)
+    .then((data: ResultResponse[]) => data)
+}
+
+export const getResultsForGroup = (groupId: string) => {
+    let url = `${process.env.REACT_APP_API_URL}/groups/${groupId}/results`
 
     return fetch(url, {
         headers: getHeaders(),

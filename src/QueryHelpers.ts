@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 
-import { PersistentError, getApprovals, getGame, getGames, getGroup, getGroupInvitations, getGroupMemberships, getGroups, getLinkTypes, getPlayer, getPlayers, getResults, getResultsForUser, getSummary, getUser, getWinMethods } from "./FetchHelpers"
+import { PersistentError, getApprovals, getGame, getGames, getGroup, getGroupInvitations, getGroupMemberships, getGroups, getLinkTypes, getPlayer, getPlayers, getPlayersInGroup, getResults, getResultsForGroup, getResultsForUser, getSummary, getUser, getWinMethods } from "./FetchHelpers"
 
 // TODO: add error handling
 export const useApprovals = (resultId: string, enabled: boolean) => useQuery({
@@ -82,6 +82,12 @@ export const usePlayers = (groupId?: string) => {
 }
 
 // TODO: add error handling
+export const usePlayersInGroup = (groupId: string) => useQuery({
+    queryKey: ["players", `groupId:${groupId}`],
+    queryFn: () => getPlayersInGroup(groupId),
+})
+
+// TODO: add error handling
 export const usePlayer = (username: string, onError?: (error: Error) => void) => useQuery({
     queryKey: ["player", username],
     queryFn: () => getPlayer(username),
@@ -105,6 +111,13 @@ export const useResults = (options?: {
         retry: shouldRetry,
     })
 }
+
+export const useResultsForGroup = (groupId: string, onError?: (error: Error) => void) => useQuery({
+    queryKey: ["results", `groupId:${groupId}`],
+    queryFn: () => getResultsForGroup(groupId),
+    onError,
+    retry: shouldRetry,
+})
 
 export const useResultsForUser = (username: string, onError?: (error: Error) => void) => useQuery({
     queryKey: ["results", `username:${username}`],

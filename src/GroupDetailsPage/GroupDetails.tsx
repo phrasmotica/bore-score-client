@@ -13,7 +13,7 @@ import { parseToken } from "../Auth"
 import { PersistentError } from "../FetchHelpers"
 import { displayDateValue } from "../MomentHelpers"
 import { useAddGroupMembership } from "../Mutations"
-import { useGames, useGroupMemberships, usePlayer, usePlayers, useResults } from "../QueryHelpers"
+import { useGames, useGroupMemberships, usePlayer, usePlayersInGroup, useResultsForGroup } from "../QueryHelpers"
 
 import { Group, GroupVisibilityName } from "../models/Group"
 
@@ -31,9 +31,9 @@ export const GroupDetails = (props: GroupDetailsProps) => {
 
     const { data: games } = useGames()
     const { data: memberships } = useGroupMemberships(username)
-    const { data: players } = usePlayers(props.group.id)
+    const { data: players } = usePlayersInGroup(props.group.id)
     const { data: creator } = usePlayer(props.group.createdBy)
-    const { data: results } = useResults({ groupId: props.group.id }, error => {
+    const { data: results } = useResultsForGroup(props.group.id, error => {
         if (error.message === PersistentError.Unauthorised) {
             if (token) {
                 // TODO: show message "you must be a member to see this group's results"
