@@ -1,0 +1,27 @@
+.invite-users-modal {
+    max-width: 900px;
+}
+
+.invite-users-form {
+    display: flex;
+}
+
+.invite-users-form > .left {
+    width: 200px;
+    flex-shrink: 0;
+}
+
+.invite-users-form > .left > .game-image {
+    width: 100%;
+}
+
+.invite-users-form > .right {
+    margin-left: 1em;
+    flex-grow: 1;
+}
+
+.invite-users-form > .right .users-picker a.ui.label {
+    background-color: #00b5ad!important;
+    border-color: #00b5ad!important;
+    color: #fff!important;
+}

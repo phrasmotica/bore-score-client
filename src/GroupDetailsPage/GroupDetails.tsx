@@ -18,6 +18,7 @@ import { GroupResponse, GroupVisibilityName } from "../models/Group"
 import { InvitationStatus } from "../models/GroupMembership"
 
 import "./GroupDetails.css"
+import { InviteUsersModal } from "../InviteUsersModal/InviteUsersModal"
 
 interface GroupDetailsProps {
     group: GroupResponse
@@ -25,6 +26,7 @@ interface GroupDetailsProps {
 
 export const GroupDetails = (props: GroupDetailsProps) => {
     const [showAddResultModal, setShowAddResultModal] = useState(false)
+    const [showInviteUsersModal, setShowInviteUsersModal] = useState(false)
     const [resultsErrorMessage, setResultsErrorMessage] = useState("")
 
     const token = parseToken()
@@ -93,6 +95,7 @@ export const GroupDetails = (props: GroupDetailsProps) => {
     return (
         <div className="group-details">
             <AddResultModal group={props.group.id} open={showAddResultModal} setOpen={setShowAddResultModal} />
+            <InviteUsersModal group={props.group} open={showInviteUsersModal} setOpen={setShowInviteUsersModal} />
 
             <div className="content">
                 <div className="left">
@@ -132,6 +135,15 @@ export const GroupDetails = (props: GroupDetailsProps) => {
                         onClick={() => setShowAddResultModal(true)}>
                         <span>Submit Result&nbsp;</span>
                         <Icon name="edit" />
+                    </Button>}
+
+                    {isInGroup && <Button
+                        icon
+                        fluid
+                        color="yellow"
+                        onClick={() => setShowInviteUsersModal(true)}>
+                        <span>Invite Users&nbsp;</span>
+                        <Icon name="users" />
                     </Button>}
                 </div>
 
