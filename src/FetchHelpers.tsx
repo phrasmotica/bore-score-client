@@ -4,7 +4,7 @@ import { getHeaders, getToken, parseToken, removeToken, setToken } from "./Auth"
 
 import { Approval } from "./models/Approval"
 import { Game } from "./models/Game"
-import { Group } from "./models/Group"
+import { Group, GroupResponse } from "./models/Group"
 import { GroupInvitation, GroupMembership } from "./models/GroupMembership"
 import { LinkType } from "./models/LinkType"
 import { Player } from "./models/Player"
@@ -179,7 +179,7 @@ export const getGroups = (getAll?: boolean) => {
         headers: headers,
     })
     .then(handleResponse)
-    .then((data: Group[]) => data)
+    .then((data: GroupResponse[]) => data)
 }
 
 export const getGroup = (id: string) => {
@@ -189,7 +189,7 @@ export const getGroup = (id: string) => {
         headers: headers,
     })
     .then(handleResponse)
-    .then((data: Group) => data)
+    .then((data: GroupResponse) => data)
 }
 
 export const postGroup = (group: Group) => {

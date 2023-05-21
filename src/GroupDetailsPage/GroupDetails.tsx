@@ -14,13 +14,13 @@ import { displayDateValue } from "../MomentHelpers"
 import { useAddGroupMembership } from "../Mutations"
 import { useGames, useGroupMemberships, usePlayer, usePlayers, useResultsForGroup } from "../QueryHelpers"
 
-import { Group, GroupVisibilityName } from "../models/Group"
+import { GroupResponse, GroupVisibilityName } from "../models/Group"
 import { InvitationStatus } from "../models/GroupMembership"
 
 import "./GroupDetails.css"
 
 interface GroupDetailsProps {
-    group: Group
+    group: GroupResponse
 }
 
 export const GroupDetails = (props: GroupDetailsProps) => {
@@ -32,7 +32,7 @@ export const GroupDetails = (props: GroupDetailsProps) => {
 
     const { data: games } = useGames()
     const { data: memberships } = useGroupMemberships(username)
-    const { data: players } = usePlayers(props.group.id)
+    const { data: players } = usePlayers(props.group.id) // TODO: disable this query if not a member
     const { data: creator } = usePlayer(props.group.createdBy)
 
     const { data: results } = useResultsForGroup(
@@ -112,8 +112,8 @@ export const GroupDetails = (props: GroupDetailsProps) => {
                         <em>Created on {displayDateValue(moment.unix(props.group.timeCreated))}</em>
                     </p>
 
-                    {(!isInGroup || members.length <= 0) && <p className="members-count">
-                        <em>{members.length} member(s)</em>
+                    {!isInGroup && <p className="members-count">
+                        <em>{props.group.memberCount} member(s)</em>
                     </p>}
 
                     {isInGroup && members.length > 0 && <MemberList members={members} creatorUsername={creator?.username || ""} />}
