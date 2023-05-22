@@ -66,6 +66,7 @@ export const GroupDetails = (props: GroupDetailsProps) => {
     const members = players ?? []
 
     const isInGroup = (memberships ?? []).some(m => m.groupId === props.group.id)
+    const canInvite = isInGroup && props.group.visibility === GroupVisibilityName.Private
 
     const invitation = (invitations ?? []).find(i => i.groupId === props.group.id && i.invitationStatus === InvitationStatus.Sent)
     const isInvitedToGroup = !isInGroup && invitation !== undefined
@@ -137,7 +138,7 @@ export const GroupDetails = (props: GroupDetailsProps) => {
                         <Icon name="edit" />
                     </Button>}
 
-                    {isInGroup && <Button
+                    {canInvite && <Button
                         icon
                         fluid
                         color="yellow"
