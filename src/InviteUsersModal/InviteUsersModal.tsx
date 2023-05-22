@@ -8,6 +8,11 @@ import { usePlayers } from "../QueryHelpers"
 import { GroupResponse } from "../models/Group"
 
 import "./InviteUsersModal.css"
+import { useAddGroupInvitation } from "../Mutations"
+import { useQueryClient } from "@tanstack/react-query"
+import { parseToken } from "../Auth"
+import { InvitationStatus } from "../models/GroupMembership"
+import { toast } from "react-semantic-toasts"
 
 interface InviteUsersModalProps {
     open: boolean
@@ -16,18 +21,43 @@ interface InviteUsersModalProps {
 }
 
 export const InviteUsersModal = (props: InviteUsersModalProps) => {
+    const queryClient = useQueryClient()
+
+    const token = parseToken()
+    const username = token?.username ?? ""
+
     // TODO: don't load all players in one go
     const { data: allUsers } = usePlayers()
     const { data: usersInGroup } = usePlayers(props.group.id)
+
+    const { mutate: invite } = useAddGroupInvitation(queryClient,
+        data => {
+            toast({
+                title: "",
+                description: `You invited ${data.username} to ${props.group.displayName}!`,
+                color: "green",
+                icon: "users",
+            })
+
+            setInvitees([])
+        },
+        (error, variables) => {
+            toast({
+                title: "",
+                description: `Failed to invite ${variables.username} to ${props.group.displayName}.`,
+                color: "red",
+                icon: "users",
+            })
+        })
 
     const [invitees, setInvitees] = useState<string[]>([])
 
     const members = (usersInGroup ?? []).map(m => m.username)
 
     const usersOptions = (allUsers ?? []).filter(p => !members.includes(p.username)).map(p => ({
-        key: p.id,
+        key: p.username,
         text: p.displayName,
-        value: p.id,
+        value: p.username,
     }))
 
     const formIsComplete = useMemo(
@@ -36,7 +66,17 @@ export const InviteUsersModal = (props: InviteUsersModalProps) => {
     )
 
     const sendInvitations = () => {
-        // TODO: send invites
+        for (let invitee of invitees) {
+            invite({
+                // TODO: remove these top three properties, they are not required
+                id: "",
+                timeCreated: 0,
+                invitationStatus: InvitationStatus.Sent,
+                groupId: props.group.id,
+                username: invitee,
+                inviterUsername: username,
+            })
+        }
     }
 
     let imageSrc = props.group.profilePicture
@@ -87,7 +127,7 @@ export const InviteUsersModal = (props: InviteUsersModalProps) => {
 
                             {invitees.length > 0 && <p>
                                 The <strong>{invitees.length}</strong> selected user(s) will receive an invitation to&nbsp;
-                                <strong>{props.group.displayName}</strong>, which they can either accept or decline.
+                                <strong>{props.group.displayName}</strong>, which they may either accept or decline.
                             </p>}
                         </Form>
                     </div>

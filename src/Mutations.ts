@@ -1,10 +1,10 @@
 import { QueryClient, useMutation } from "@tanstack/react-query"
 import { toast } from "react-semantic-toasts"
 
-import { FetchError, acceptGroupInvitation, declineGroupInvitation, postGroupMembership } from "./FetchHelpers"
+import { FetchError, acceptGroupInvitation, declineGroupInvitation, postGroupInvitation, postGroupMembership } from "./FetchHelpers"
 
 import { Group } from "./models/Group"
-import { GroupMembership } from "./models/GroupMembership"
+import { GroupInvitation, GroupMembership } from "./models/GroupMembership"
 
 export const useAddGroupMembership = (queryClient: QueryClient, group: Group, username: string) => useMutation({
     mutationFn: postGroupMembership,
@@ -32,6 +32,21 @@ export const useAddGroupMembership = (queryClient: QueryClient, group: Group, us
             icon: "users",
         })
     },
+})
+
+export const useAddGroupInvitation = (
+    queryClient: QueryClient,
+    onSuccess: (data: GroupInvitation) => void,
+    onError: (error: FetchError, variables: GroupInvitation) => void) => useMutation({
+    mutationFn: postGroupInvitation,
+    onSuccess(data: GroupInvitation) {
+        queryClient.invalidateQueries({
+            queryKey: ["groupInvitations", data.username],
+        })
+
+        onSuccess(data)
+    },
+    onError,
 })
 
 export const useAcceptGroupInvitation = (queryClient: QueryClient, group: Group, username: string) => useMutation({
