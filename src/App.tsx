@@ -13,6 +13,7 @@ import { LoginPage } from "./LoginPage/LoginPage"
 import { PlayerDetailsPage } from "./PlayerDetailsPage/PlayerDetailsPage"
 import { ProfilePage } from "./ProfilePage/ProfilePage"
 import { ResultsPage } from "./ResultsPage/ResultsPage"
+import { SignupPage } from "./SignupPage/SignupPage"
 
 import "./App.css"
 
@@ -24,6 +25,7 @@ const App = () => (
 
                 <Routes>
                     <Route path="/" element={<HomePage />} />
+                    <Route path="/signup" element={<SignupPage />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/me" element={<ProfilePage />} />
                     <Route path="/admin" element={<AdminPage />} />

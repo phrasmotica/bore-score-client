@@ -1,10 +1,23 @@
 import { QueryClient, useMutation } from "@tanstack/react-query"
 import { toast } from "react-semantic-toasts"
 
-import { FetchError, acceptGroupInvitation, declineGroupInvitation, postGroupInvitation, postGroupMembership } from "./FetchHelpers"
+import { FetchError, TokenResponse, acceptGroupInvitation, declineGroupInvitation, postGroupInvitation, postGroupMembership, postUser, requestToken } from "./FetchHelpers"
 
 import { Group } from "./models/Group"
 import { GroupInvitation, GroupMembership } from "./models/GroupMembership"
+import { User } from "./models/User"
+
+// TODO: add error handling
+export const useSignup = (onSuccess: (data: User) => void) => useMutation({
+    mutationFn: postUser,
+    onSuccess,
+})
+
+// TODO: add error handling
+export const useLogin = (onSuccess: (data: TokenResponse) => void) => useMutation({
+    mutationFn: requestToken,
+    onSuccess,
+})
 
 export const useAddGroupMembership = (queryClient: QueryClient, group: Group, username: string) => useMutation({
     mutationFn: postGroupMembership,

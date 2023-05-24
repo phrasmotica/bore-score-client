@@ -10,7 +10,7 @@ import { LinkType } from "./models/LinkType"
 import { Player } from "./models/Player"
 import { Result, ResultResponse } from "./models/Result"
 import { Summary } from "./models/Summary"
-import { User } from "./models/User"
+import { User, CreateUserRequest } from "./models/User"
 import { WinMethod } from "./models/WinMethod"
 
 // https://dev.to/snigdho611/react-js-interceptors-with-fetch-api-1oei
@@ -291,6 +291,18 @@ export const getUser = (username: string) => {
     .then((data: User) => data)
 }
 
+export const postUser = (user: CreateUserRequest) => {
+    const headers = getHeaders()
+
+    return fetch(`${process.env.REACT_APP_API_URL}/users`, {
+        method: "POST",
+        body: JSON.stringify(user),
+        headers: headers,
+    })
+    .then(handleResponse)
+    .then((data: User) => data)
+}
+
 export const getWinMethods = () => {
     const headers = getHeaders()
 
@@ -390,7 +402,7 @@ interface TokenRequest {
     password: string
 }
 
-interface TokenResponse {
+export interface TokenResponse {
     token: string
 }
 

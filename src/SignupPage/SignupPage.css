@@ -1,0 +1,9 @@
+.ui.form.signup-form {
+    width: 600px;
+}
+
+.signup-page-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

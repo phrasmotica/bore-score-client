@@ -1,10 +1,9 @@
-import { useMutation } from "@tanstack/react-query"
 import { useState } from "react"
 import { useNavigate } from "react-router"
 import { Form } from "semantic-ui-react"
 
 import { setToken } from "../Auth"
-import { requestToken } from "../FetchHelpers"
+import { useLogin } from "../Mutations"
 
 interface LoginFormProps {
     redirect?: string
@@ -13,12 +12,9 @@ interface LoginFormProps {
 export const LoginForm = (props: LoginFormProps) => {
     const navigate = useNavigate()
 
-    const { mutate } = useMutation({
-        mutationFn: requestToken,
-        onSuccess: data => {
-            setToken(data.token)
-            navigate(props.redirect || "/")
-        },
+    const { mutate: login } = useLogin(data => {
+        setToken(data.token)
+        navigate(props.redirect || "/")
     })
 
     const [email, setEmail] = useState("")
@@ -26,7 +22,7 @@ export const LoginForm = (props: LoginFormProps) => {
 
     const formComplete = () => email.length > 0 && password.length > 0
 
-    const submit = () => mutate({
+    const submit = () => login({
         email: email,
         password: password,
     })
@@ -52,7 +48,7 @@ export const LoginForm = (props: LoginFormProps) => {
                 onChange={(e, data) => setPassword(data.value)}
             />
 
-            <Form.Button disabled={!formComplete()}>
+            <Form.Button fluid color="blue" disabled={!formComplete()}>
                 Login
             </Form.Button>
         </Form>
