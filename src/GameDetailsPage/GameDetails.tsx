@@ -82,6 +82,8 @@ export const GameDetails = (props: GameDetailsProps) => {
 
     let imageSrc = game.imageLink || "https://e.snmc.io/i/600/s/9f6d3d17acac6ce20993eb158c203e4b/5662600/godspeed-you-black-emperor-lift-yr-skinny-fists-like-antennas-to-heaven-cover-art.jpg"
 
+    const canDelete = token && token.permissions.includes("superuser")
+
     return (
         <div className="game-details">
             <AddResultModal game={props.game.name} open={showAddResultModal} setOpen={setShowAddResultModal} />
@@ -100,7 +102,7 @@ export const GameDetails = (props: GameDetailsProps) => {
                         <Icon name="edit" />
                     </Button>}
 
-                    {token && <Button
+                    {canDelete && <Button
                         icon
                         fluid
                         color="red"
