@@ -33,5 +33,6 @@ export const getHeaders = () => {
 interface AuthToken {
     username: string
     email: string
+    permissions: string[]
     exp: number
 }

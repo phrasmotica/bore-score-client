@@ -79,9 +79,7 @@ export const PlayerDetails = (props: PlayerDetailsProps) => {
         </Modal>
     )
 
-    if (player === undefined) {
-        return null
-    }
+    const canDelete = token && token.permissions.includes("superuser")
 
     return (
         <div className="player-details">
@@ -91,7 +89,7 @@ export const PlayerDetails = (props: PlayerDetailsProps) => {
                 <div className="left">
                     <PlayerImage imageSrc={player.profilePicture} />
 
-                    {token && <Button
+                    {canDelete && <Button
                         icon
                         fluid
                         color="red"
