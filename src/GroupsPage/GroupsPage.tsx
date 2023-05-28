@@ -45,7 +45,7 @@ export const GroupsPage = () => {
                             label="Public groups only"
                             checked={showPublicOnly}
                             onChange={(e, { checked }) => setShowPublicOnly(checked ?? false)}
-                            disabled={filters.only("visibility").forceApply(filteredGroups).length <= 0} />
+                            disabled={filters.except("visibility").forceApply(allGroups, true).length <= 0} />
                     </Form>
                 </div>
             </div>

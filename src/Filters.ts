@@ -46,7 +46,13 @@ export class FilterSet<T> {
      * of whether its condition is met, and returns the elements that passed the filters.
      * @param elements the elements to filter
      */
-    forceApply(elements: T[]) {
+    forceApply(elements: T[], filterUp?: boolean) {
+        if (this.filters.size <= 0) {
+            // depends whether we are filtering "up" from an empty set
+            // or "down" from a populated set
+            return filterUp ? [] : elements
+        }
+
         let filteredElements = [...elements]
 
         for (let f of this.filters.values()) {
