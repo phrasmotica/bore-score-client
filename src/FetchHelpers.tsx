@@ -124,6 +124,18 @@ export const postPlayer = (player: Player) => {
     .then((data: Player) => data)
 }
 
+export const updatePlayer = (player: Player) => {
+    const headers = getHeaders()
+    headers.set("Content-Type", "application/json")
+
+    return fetch(`${process.env.REACT_APP_API_URL}/players/${player.username}`, {
+        method: "PUT",
+        body: JSON.stringify(player),
+        headers: headers,
+    })
+    .then(handleResponseEmpty)
+}
+
 export const getGames = () => {
     const headers = getHeaders()
 

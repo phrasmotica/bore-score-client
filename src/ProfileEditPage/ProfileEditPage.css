@@ -1,0 +1,27 @@
+.profile-edit-page .header {
+    text-align: start;
+    margin-bottom: 0.5em;
+}
+
+.profile-edit-page .content {
+    display: flex;
+}
+
+.profile-edit-page .content > :not(:first-child) {
+    margin-left: 0.5em;
+    border-left: 1px solid rgba(34, 36, 38, 0.15);
+    padding-left: 0.5em;
+}
+
+.profile-edit-page .content .left > :not(:first-child) {
+    margin-top: 0.5em;
+}
+
+.profile-edit-page .content > .left {
+    text-align: end;
+}
+
+.profile-edit-page .content .details {
+    text-align: start;
+    width: 100%;
+}

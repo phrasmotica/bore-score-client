@@ -11,6 +11,7 @@ import { GroupsPage } from "./GroupsPage/GroupsPage"
 import { HomePage } from "./HomePage/HomePage"
 import { LoginPage } from "./LoginPage/LoginPage"
 import { PlayerDetailsPage } from "./PlayerDetailsPage/PlayerDetailsPage"
+import { ProfileEditPage } from "./ProfileEditPage/ProfileEditPage"
 import { ProfilePage } from "./ProfilePage/ProfilePage"
 import { ResultsPage } from "./ResultsPage/ResultsPage"
 import { SignupPage } from "./SignupPage/SignupPage"
@@ -28,6 +29,7 @@ const App = () => (
                     <Route path="/signup" element={<SignupPage />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/me" element={<ProfilePage />} />
+                    <Route path="/me-edit" element={<ProfileEditPage />} />
                     <Route path="/admin" element={<AdminPage />} />
                     <Route path="/players/:username" element={<PlayerDetailsPage />} />
                     <Route path="/groups/:groupId" element={<GroupDetailsPage />} />

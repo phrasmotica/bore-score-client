@@ -9,7 +9,7 @@ import { ResultsList } from "../ResultsPage/ResultsList"
 import { parseToken } from "../Auth"
 import { useTitle } from "../Hooks"
 import { PlayerImage } from "../PlayerImage"
-import { useGames, useGroupInvitations, useGroups, usePlayers, useResultsForUser, useUser } from "../QueryHelpers"
+import { useGames, useGroupInvitations, useGroups, usePlayer, usePlayers, useResultsForUser, useUser } from "../QueryHelpers"
 
 import { sortResultsByRecent } from "../models/Result"
 
@@ -26,6 +26,7 @@ export const ProfilePage = () => {
     const { data: groups } = useGroups()
     const { data: invitations } = useGroupInvitations(username)
     const { data: players } = usePlayers()
+    const { data: player } = usePlayer(username)
     const { data: results } = useResultsForUser(username)
     const { data: user } = useUser(username)
 
@@ -38,7 +39,7 @@ export const ProfilePage = () => {
         }
     }, [token, navigate, location.pathname])
 
-    if (!token || !user) {
+    if (!token || !user || !player) {
         return null
     }
 
@@ -54,7 +55,7 @@ export const ProfilePage = () => {
                 <div className="left">
                     <h3>{user.username}</h3>
 
-                    <PlayerImage />
+                    <PlayerImage imageSrc={player.profilePicture} />
 
                     {isCurrentUser && <div>
                         <Link to="/me-edit">
