@@ -17,7 +17,7 @@ export const SignupForm = (props: SignupFormProps) => {
         navigate(props.redirect || "/")
     })
 
-    const { mutate: createUser } = useSignup(data => {
+    const { mutate: createUser, isLoading } = useSignup(data => {
         // log in after successful sign up
         login({
             email: data.email,
@@ -27,23 +27,36 @@ export const SignupForm = (props: SignupFormProps) => {
 
     const [email, setEmail] = useState("")
     const [username, setUsername] = useState("")
+    const [displayName, setDisplayName] = useState("")
     const [password, setPassword] = useState("")
+
     const [passwordAgain, setPasswordAgain] = useState("")
+    const [passwordAgainDirty, setPasswordAgainDirty] = useState(false)
 
     const formComplete = useMemo(
-        () => email.length > 0 && password.length > 0 && passwordAgain === password,
-        [email, password, passwordAgain])
+        () => email.length > 0 && username.length > 0 && displayName.length > 0 && password.length > 0 && passwordAgain === password,
+        [email, username, displayName, password, passwordAgain])
 
-    const submit = () => createUser({
-        username: username,
-        email: email,
-        password: password,
-    })
+    const submit = () => {
+        if (formComplete) {
+            createUser({
+                username: username,
+                email: email,
+                displayName: displayName,
+                password: password,
+            })
+        }
+    }
+
+    const handlePasswordAgain = (str: string) => {
+        setPasswordAgain(str)
+        setPasswordAgainDirty(true)
+    }
 
     // TODO: add form validation
 
     return (
-        <Form className="signup-form" onSubmit={submit}>
+        <Form className="signup-form" loading={isLoading} onSubmit={submit}>
             <Form.Input
                 fluid
                 label="Email address"
@@ -64,6 +77,15 @@ export const SignupForm = (props: SignupFormProps) => {
 
             <Form.Input
                 fluid
+                label="Display Name"
+                placeholder="Display Name"
+                id="form-input-display-name"
+                value={displayName}
+                onChange={(e, data) => setDisplayName(data.value)}
+            />
+
+            <Form.Input
+                fluid
                 type="password"
                 label="Password"
                 placeholder="Password"
@@ -79,7 +101,8 @@ export const SignupForm = (props: SignupFormProps) => {
                 placeholder="Confirm Password"
                 id="form-input-confirm-password"
                 value={passwordAgain}
-                onChange={(e, data) => setPasswordAgain(data.value)}
+                onChange={(e, data) => handlePasswordAgain(data.value)}
+                error={passwordAgainDirty && passwordAgain !== password}
             />
 
             <Form.Button fluid color="blue" disabled={!formComplete}>
