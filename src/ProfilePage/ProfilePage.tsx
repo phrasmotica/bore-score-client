@@ -9,7 +9,7 @@ import { ResultsList } from "../ResultsPage/ResultsList"
 import { parseToken } from "../Auth"
 import { useTitle } from "../Hooks"
 import { PlayerImage } from "../PlayerImage"
-import { useGames, useGroupInvitations, useGroups, usePlayer, usePlayers, useResultsForUser, useUser } from "../QueryHelpers"
+import { useGames, useGroupInvitations, useGroups, usePlayer, usePlayers, useResultsForUser } from "../QueryHelpers"
 
 import { sortResultsByRecent } from "../models/Result"
 
@@ -28,7 +28,6 @@ export const ProfilePage = () => {
     const { data: players } = usePlayers()
     const { data: player } = usePlayer(username)
     const { data: results } = useResultsForUser(username)
-    const { data: user } = useUser(username)
 
     const location = useLocation()
     const navigate = useNavigate()
@@ -39,11 +38,9 @@ export const ProfilePage = () => {
         }
     }, [token, navigate, location.pathname])
 
-    if (!token || !user || !player) {
+    if (!token || !player) {
         return null
     }
-
-    const isCurrentUser = username === user.username
 
     let resultsToShow = sortResultsByRecent(results ?? []).slice(0, 5)
 
@@ -53,17 +50,17 @@ export const ProfilePage = () => {
 
             <div className="content">
                 <div className="left">
-                    <h3>{user.username}</h3>
+                    <h3>{player.displayName}</h3>
 
                     <PlayerImage imageSrc={player.profilePicture} />
 
-                    {isCurrentUser && <div>
+                    <div>
                         <Link to="/me-edit">
                             <Button fluid color="teal">
                                 Edit Profile
                             </Button>
                         </Link>
-                    </div>}
+                    </div>
                 </div>
 
                 <div className="details">

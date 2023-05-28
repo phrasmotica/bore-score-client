@@ -7,7 +7,7 @@ import { parseToken } from "../Auth"
 import { useTitle } from "../Hooks"
 import { useUpdateProfile } from "../Mutations"
 import { PlayerImage } from "../PlayerImage"
-import { usePlayer, useUser } from "../QueryHelpers"
+import { usePlayer } from "../QueryHelpers"
 
 import "react-semantic-toasts/styles/react-semantic-alert.css"
 import "./ProfileEditPage.css"
@@ -21,7 +21,6 @@ export const ProfileEditPage = () => {
     const queryClient = useQueryClient()
 
     const { data: player } = usePlayer(username)
-    const { data: user } = useUser(username)
 
     const { mutate: updatePlayer, isLoading } = useUpdateProfile(() => {
         queryClient.invalidateQueries({
@@ -29,19 +28,22 @@ export const ProfileEditPage = () => {
         })
     })
 
+    const [newDisplayName, setNewDisplayName] = useState("")
     const [newProfilePicture, setNewProfilePicture] = useState("")
 
     useEffect(() => {
         if (player) {
+            setNewDisplayName(player.displayName)
             setNewProfilePicture(player.profilePicture)
         }
     }, [player])
 
     const formComplete = useMemo(
-        () => newProfilePicture.length > 0 && newProfilePicture !== player?.profilePicture,
-        [newProfilePicture])
+        () => (newProfilePicture.length > 0 && newProfilePicture !== player?.profilePicture)
+            || (newDisplayName.length > 0 && newDisplayName !== player?.displayName),
+        [newProfilePicture, newDisplayName, player])
 
-    if (!token || !user || !player) {
+    if (!token || !player) {
         return null
     }
 
@@ -52,7 +54,7 @@ export const ProfileEditPage = () => {
                 id: "",
                 username: username,
                 timeCreated: 0,
-                displayName: player.displayName,
+                displayName: newDisplayName,
                 profilePicture: newProfilePicture,
             })
         }
@@ -70,7 +72,7 @@ export const ProfileEditPage = () => {
 
             <div className="content">
                 <div className="left">
-                    <h3>{user.username}</h3>
+                    <h3>{player.displayName}</h3>
 
                     <PlayerImage imageSrc={player.profilePicture} />
                 </div>
@@ -79,9 +81,17 @@ export const ProfileEditPage = () => {
                     <Form className="profile-form" loading={isLoading} onSubmit={submit}>
                         <Form.Input
                             fluid
-                            label="Profile picture"
-                            placeholder="Profile picture"
-                            id="form-input-email"
+                            label="Display Name"
+                            placeholder="Display Name"
+                            id="form-input-display-name"
+                            value={newDisplayName}
+                            onChange={(e, data) => setNewDisplayName(data.value)}/>
+
+                        <Form.Input
+                            fluid
+                            label="Profile Picture"
+                            placeholder="Profile Picture"
+                            id="form-input-profile-picture"
                             value={newProfilePicture}
                             onChange={(e, data) => setNewProfilePicture(data.value)}/>
 
