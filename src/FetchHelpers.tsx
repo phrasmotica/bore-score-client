@@ -314,6 +314,18 @@ export const postUser = (user: CreateUserRequest) => {
     .then(handleResponseEmpty)
 }
 
+export const updatePassword = (request: UpdatePasswordRequest) => {
+    const headers = getHeaders()
+    headers.set("Content-Type", "application/json")
+
+    return fetch(`${process.env.REACT_APP_API_URL}/users/${request.username}/password`, {
+        method: "PUT",
+        body: JSON.stringify(request),
+        headers: headers,
+    })
+    .then(handleResponseEmpty)
+}
+
 export const getWinMethods = () => {
     const headers = getHeaders()
 
@@ -406,6 +418,12 @@ const handleResponse = (res: Response) => {
     }
 
     throw new FetchError(res, `Response from ${res.url} returned error ${res.status} (${res.statusText})`)
+}
+
+interface UpdatePasswordRequest {
+    username: string
+    currentPassword: string
+    newPassword: string
 }
 
 interface TokenRequest {

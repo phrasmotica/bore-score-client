@@ -13,15 +13,16 @@
     padding-left: 0.5em;
 }
 
-.profile-edit-page .content .left > :not(:first-child) {
+.profile-edit-page .content > .left > :not(:first-child) {
     margin-top: 0.5em;
 }
 
 .profile-edit-page .content > .left {
-    text-align: end;
+    text-align: start;
 }
 
-.profile-edit-page .content .details {
+.profile-edit-page .content > .form-container {
+    flex-grow: 1;
     text-align: start;
     width: 100%;
 }

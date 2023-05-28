@@ -8,15 +8,15 @@
     padding-left: 0.5em;
 }
 
-.profile-page .content .left > :not(:first-child) {
+.profile-page .content > .left > :not(:first-child) {
     margin-top: 0.5em;
 }
 
 .profile-page .content > .left {
-    text-align: end;
+    text-align: start;
 }
 
-.profile-page .content .details {
+.profile-page .content > .details {
     text-align: start;
     width: 100%;
 }
