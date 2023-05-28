@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { Form } from "semantic-ui-react"
 import { useQueryClient } from "@tanstack/react-query"
 
@@ -21,6 +21,14 @@ export const ProfileEditPage = () => {
     const queryClient = useQueryClient()
 
     const { data: player } = usePlayer(username)
+
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (!token) {
+            navigate("/login")
+        }
+    }, [token, navigate])
 
     const updateProfileQuery = useUpdateProfile(() => {
         queryClient.invalidateQueries({
