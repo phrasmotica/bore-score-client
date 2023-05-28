@@ -1,5 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
+import { useLocation, useNavigate } from "react-router"
 import moment from "moment"
 import { Button, ButtonGroup, Icon, Message } from "semantic-ui-react"
 import { v4 as newGuid } from "uuid"
@@ -55,6 +56,9 @@ export const GroupDetails = (props: GroupDetailsProps) => {
             }
         })
 
+    const location = useLocation()
+    const navigate = useNavigate()
+
     const queryClient = useQueryClient()
 
     const { mutate: addGroupMembership } = useAddGroupMembership(queryClient, props.group, username)
@@ -92,6 +96,8 @@ export const GroupDetails = (props: GroupDetailsProps) => {
             declineGroupInvitation(invitation.id)
         }
     }
+
+    const leaderboardsLink = location.pathname + "/leaderboards"
 
     return (
         <div className="group-details">
@@ -136,6 +142,15 @@ export const GroupDetails = (props: GroupDetailsProps) => {
                         onClick={() => setShowAddResultModal(true)}>
                         <span>Submit Result&nbsp;</span>
                         <Icon name="edit" />
+                    </Button>}
+
+                    {isInGroup && <Button
+                        icon
+                        fluid
+                        color="blue"
+                        onClick={() => navigate(leaderboardsLink)}>
+                        <span>View Leaderboards&nbsp;</span>
+                        <Icon name="trophy" />
                     </Button>}
 
                     {canInvite && <Button
