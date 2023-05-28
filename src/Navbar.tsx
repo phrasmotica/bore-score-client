@@ -4,14 +4,14 @@ import { Menu, Dropdown } from "semantic-ui-react"
 
 import { parseToken, removeToken } from "./Auth"
 
+const noRedirectPaths = ["/signup", "/login"]
+
 export const Navbar = () => {
     const token = parseToken()
 
     const logOut = () => {
         removeToken()
         window.dispatchEvent(new Event("storage"))
-
-        // TODO: redirect to a non-authed page. Maybe login page or home page?
     }
 
     useEffect(() => {
@@ -26,7 +26,7 @@ export const Navbar = () => {
     const location = useLocation()
 
     let loginLink = "/login"
-    if (location.pathname) {
+    if (location.pathname && !noRedirectPaths.includes(location.pathname)) {
         loginLink += `?redirect=${location.pathname}`
     }
 
