@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react"
+import { Slider } from "react-semantic-ui-range"
 import { Button, Icon } from "semantic-ui-react"
 
 import { GamesList } from "./GamesList"
-import { PlayerCountFilter } from "./PlayerCountFilter"
 import { WinMethodFilterDropdown } from "./WinMethodFilterDropdown"
 
 import { AddGameModal } from "../AddGameModal/AddGameModal"
@@ -45,19 +45,25 @@ export const GamesPage = () => {
     const [showAddGameModal, setShowAddGameModal] = useState(false)
 
     const [selectedWinMethods, setSelectedWinMethods] = useState<string[]>([])
-
-    const [filterByMinPlayers, setFilterByMinPlayers] = useState(false)
     const [minPlayers, setMinPlayers] = useState(lowestMinPlayers)
-
-    const [filterByMaxPlayers, setFilterByMaxPlayers] = useState(false)
     const [maxPlayers, setMaxPlayers] = useState(highestMaxPlayers)
 
     let filters = new FilterSet<Game>()
         .with("winMethod", new Filter(selectedWinMethods.length > 0, g => selectedWinMethods.includes(g.winMethod)))
-        .with("minPlayers", new Filter(filterByMinPlayers, g => g.minPlayers >= minPlayers))
-        .with("maxPlayers", new Filter(filterByMaxPlayers, g => g.maxPlayers <= maxPlayers))
+        .with("numPlayers", new Filter(true, g => g.minPlayers >= minPlayers && g.maxPlayers <= maxPlayers))
 
     let filteredGames = filters.apply(allGames)
+
+    let sliderSettings = {
+        start: [lowestMinPlayers, highestMaxPlayers],
+        min: lowestMinPlayers,
+        max: highestMaxPlayers,
+        step: 1,
+        onChange: (values: number[]) => {
+            setMinPlayers(values[0])
+            setMaxPlayers(values[1])
+        }
+    }
 
     return (
         <div className="games-page">
@@ -75,19 +81,18 @@ export const GamesPage = () => {
                         selectedWinMethods={selectedWinMethods}
                         setSelectedWinMethods={setSelectedWinMethods} />
 
-                    <PlayerCountFilter
-                        label="Minimum players"
-                        enabled={filterByMinPlayers}
-                        setEnabled={setFilterByMinPlayers}
-                        value={minPlayers}
-                        setValue={v => setMinPlayers(Math.min(Math.max(v, lowestMinPlayers), maxPlayers))} />
+                    {/* TODO: improve the slider */}
+                    <div className="slider">
+                        <Slider
+                            discrete
+                            multiple
+                            value={[minPlayers, maxPlayers]}
+                            settings={sliderSettings} />
+                    </div>
 
-                    <PlayerCountFilter
-                        label="Maximum players"
-                        enabled={filterByMaxPlayers}
-                        setEnabled={setFilterByMaxPlayers}
-                        value={maxPlayers}
-                        setValue={v => setMaxPlayers(Math.max(Math.min(v, highestMaxPlayers), minPlayers))} />
+                    <div style={{textAlign: "center"}}>
+                        {minPlayers}&nbsp;&le;&nbsp;Players&nbsp;&le;&nbsp;{maxPlayers}
+                    </div>
                 </div>
             </div>
 

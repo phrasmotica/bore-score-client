@@ -42,6 +42,10 @@
     border-right: 1px solid rgba(34, 36, 38, 0.15);
 }
 
+.games-page .sidebar .filters .slider {
+    margin-top: 1rem;
+}
+
 .game-card {
     display: flex;
     align-items: center;
