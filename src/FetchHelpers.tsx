@@ -299,8 +299,7 @@ export const postUser = (user: CreateUserRequest) => {
         body: JSON.stringify(user),
         headers: headers,
     })
-    .then(handleResponse)
-    .then((data: User) => data)
+    .then(handleResponseEmpty)
 }
 
 export const getWinMethods = () => {

@@ -17,10 +17,10 @@ export const SignupForm = (props: SignupFormProps) => {
         navigate(props.redirect || "/")
     })
 
-    const { mutate: createUser, isLoading } = useSignup(data => {
+    const { mutate: createUser, isLoading } = useSignup(() => {
         // log in after successful sign up
         login({
-            email: data.email,
+            email: email,
             password: password,
         })
     })

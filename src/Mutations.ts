@@ -5,10 +5,9 @@ import { FetchError, TokenResponse, acceptGroupInvitation, declineGroupInvitatio
 
 import { Group } from "./models/Group"
 import { GroupInvitation, GroupMembership } from "./models/GroupMembership"
-import { User } from "./models/User"
 
 // TODO: add error handling
-export const useSignup = (onSuccess: (data: User) => void) => useMutation({
+export const useSignup = (onSuccess: () => void) => useMutation({
     mutationFn: postUser,
     onSuccess,
 })
