@@ -3,7 +3,6 @@ import { SemanticToastContainer } from "react-semantic-toasts"
 
 import { Navbar } from "./Navbar"
 
-import { AdminPage } from "./AdminPage/AdminPage"
 import { GameDetailsPage } from "./GameDetailsPage/GameDetailsPage"
 import { GamesPage } from "./GamesPage/GamesPage"
 import { GroupDetailsPage } from "./GroupDetailsPage/GroupDetailsPage"
@@ -30,7 +29,6 @@ const App = () => (
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/me" element={<ProfilePage />} />
                     <Route path="/me-edit" element={<ProfileEditPage />} />
-                    <Route path="/admin" element={<AdminPage />} />
                     <Route path="/players/:username" element={<PlayerDetailsPage />} />
                     <Route path="/groups/:groupId" element={<GroupDetailsPage />} />
                     <Route path="/games/:name" element={<GameDetailsPage />} />

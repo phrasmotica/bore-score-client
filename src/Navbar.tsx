@@ -71,12 +71,6 @@ export const Navbar = () => {
 
             {token && <Menu.Menu position="right">
                 <Menu.Item>
-                    <Link to="/admin">
-                        Admin
-                    </Link>
-                </Menu.Item>
-
-                <Menu.Item>
                     <Link to="/me">
                         <strong>{username}</strong>
                     </Link>
