@@ -1,7 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
 import moment from "moment"
-import { Button, ButtonGroup, Icon } from "semantic-ui-react"
+import { Button, ButtonGroup, Icon, Message } from "semantic-ui-react"
 import { v4 as newGuid } from "uuid"
 
 import { AddResultModal } from "../AddResultModal/AddResultModal"
@@ -171,9 +171,9 @@ export const GroupDetails = (props: GroupDetailsProps) => {
                 <div className="results">
                     <h3>Recent Results</h3>
 
-                    {resultsErrorMessage && <p className="no-results-message">
+                    {resultsErrorMessage && <Message error className="no-results-message">
                         {resultsErrorMessage}
-                    </p>}
+                    </Message>}
 
                     {!resultsErrorMessage && <ResultsList
                         hideGroups
