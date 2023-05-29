@@ -12,8 +12,8 @@
     flex-grow: 1;
 }
 
-.group-details .content .left > button.ui.button,
-.group-details .content .left > .ui.buttons {
+.group-details .content .left button.ui.button,
+.group-details .content .left .ui.buttons {
     margin-top: 0.5rem;
 }
 

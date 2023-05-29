@@ -1,12 +1,14 @@
 import { useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
-import { useLocation, useNavigate } from "react-router"
+import { useLocation } from "react-router"
+import { Link } from "react-router-dom"
 import moment from "moment"
 import { Button, ButtonGroup, Icon, Message } from "semantic-ui-react"
 import { v4 as newGuid } from "uuid"
 
 import { AddResultModal } from "../AddResultModal/AddResultModal"
 import { GameImage } from "../GameImage"
+import { InviteUsersModal } from "../InviteUsersModal/InviteUsersModal"
 import { MemberList } from "./MemberList"
 import { ResultsList } from "../ResultsPage/ResultsList"
 
@@ -19,7 +21,6 @@ import { GroupResponse, GroupVisibilityName } from "../models/Group"
 import { InvitationStatus } from "../models/GroupMembership"
 
 import "./GroupDetails.css"
-import { InviteUsersModal } from "../InviteUsersModal/InviteUsersModal"
 
 interface GroupDetailsProps {
     group: GroupResponse
@@ -57,7 +58,6 @@ export const GroupDetails = (props: GroupDetailsProps) => {
         })
 
     const location = useLocation()
-    const navigate = useNavigate()
 
     const queryClient = useQueryClient()
 
@@ -144,15 +144,6 @@ export const GroupDetails = (props: GroupDetailsProps) => {
                         <Icon name="edit" />
                     </Button>}
 
-                    {isInGroup && <Button
-                        icon
-                        fluid
-                        color="blue"
-                        onClick={() => navigate(leaderboardsLink)}>
-                        <span>View Leaderboards&nbsp;</span>
-                        <Icon name="trophy" />
-                    </Button>}
-
                     {canInvite && <Button
                         icon
                         fluid
@@ -161,6 +152,16 @@ export const GroupDetails = (props: GroupDetailsProps) => {
                         <span>Invite Users&nbsp;</span>
                         <Icon name="users" />
                     </Button>}
+
+                    {isInGroup && <Link to={leaderboardsLink}>
+                        <Button
+                            icon
+                            fluid
+                            color="blue">
+                            <span>View Leaderboards&nbsp;</span>
+                            <Icon name="trophy" />
+                        </Button>
+                    </Link>}
                 </div>
 
                 <div className="details">

@@ -86,6 +86,8 @@ export const GroupLeaderboard = (props: GroupLeaderboardProps) => {
                 <div className="leaderboard">
                     <h3>Leaderboard</h3>
 
+                    {/* TODO: put game dropdown next to leaderboard on wide screens */}
+
                     <Dropdown
                         fluid
                         selection
