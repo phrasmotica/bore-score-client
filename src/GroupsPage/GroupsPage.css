@@ -37,6 +37,10 @@
     flex-grow: 1;
 }
 
+.groups-page .no-groups-message {
+    text-align: start;
+}
+
 .group-card {
     display: flex;
     align-items: center;

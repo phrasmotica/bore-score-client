@@ -100,3 +100,7 @@
 .results-page-body {
     flex-grow: 1;
 }
+
+.results-page-body .no-results-message {
+    text-align: start;
+}

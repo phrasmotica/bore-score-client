@@ -1,4 +1,4 @@
-import { List } from "semantic-ui-react"
+import { List, Message } from "semantic-ui-react"
 
 import { ResultCard } from "./ResultCard"
 
@@ -22,9 +22,9 @@ export const ResultsList = (props: ResultsListProps) => {
     const token = parseToken()
 
     const renderNoResultsMessage = () => (
-        <List.Item>
-            <p className="no-results-message">No results to show.</p>
-        </List.Item>
+        <Message className="no-results-message">
+            No results to show.
+        </Message>
     )
 
     return (

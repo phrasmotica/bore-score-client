@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { List } from "semantic-ui-react"
+import { List, Message } from "semantic-ui-react"
 
 import { AddResultModal } from "../AddResultModal/AddResultModal"
 import { GroupCard } from "./GroupCard"
@@ -14,6 +14,12 @@ export const GroupsList = (props: GroupsListProps) => {
     const [selectedGroup, setSelectedGroup] = useState("")
     const [showAddResultModal, setShowAddResultModal] = useState(false)
 
+    const renderNoGroupsMessage = () => (
+        <Message className="no-groups-message">
+            No groups to show.
+        </Message>
+    )
+
     let groupsToShow = [...props.groups]
 
     return (
@@ -21,7 +27,8 @@ export const GroupsList = (props: GroupsListProps) => {
             <AddResultModal group={selectedGroup} open={showAddResultModal} setOpen={setShowAddResultModal} />
 
             <List divided>
-                {groupsToShow.map(g => {
+                {groupsToShow.length <= 0 && renderNoGroupsMessage()}
+                {groupsToShow.length > 0 && groupsToShow.map(g => {
                     const addResult = () => {
                         setSelectedGroup(g.id)
                         setShowAddResultModal(true)
