@@ -3,10 +3,6 @@
     margin-bottom: 0.5em;
 }
 
-.group-details .game-image .ui.image {
-    width: 100%;
-}
-
 .group-details .content {
     display: flex;
     margin-bottom: 0.5rem;
@@ -19,6 +15,10 @@
 .group-details .content .left > button.ui.button,
 .group-details .content .left > .ui.buttons {
     margin-top: 0.5rem;
+}
+
+.group-details .content .left > .game-image .ui.image {
+    width: 100%;
 }
 
 .group-details .content .left > .ui.buttons > button.ui.button {
@@ -37,14 +37,14 @@
     margin-top: 1rem;
 }
 
-.group-details-page .content .details {
+.group-details-page .content > .details {
     text-align: start;
     padding-left: 0.5rem;
     margin-left: 0.5rem;
     border-left: 1px solid rgba(34, 36, 38, 0.15);
 }
 
-.group-details-page .content .results {
+.group-details-page .content > .results {
     text-align: start;
     padding-left: 0.5rem;
     margin-left: 0.5rem;
