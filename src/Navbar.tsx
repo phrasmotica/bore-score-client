@@ -8,6 +8,7 @@ const noRedirectPaths = ["/signup", "/login"]
 
 export const Navbar = () => {
     const token = parseToken()
+    const username = token?.username ?? ""
 
     const logOut = () => {
         removeToken()
@@ -71,7 +72,7 @@ export const Navbar = () => {
             </Menu.Menu>}
 
             {token && <Menu.Menu position="right">
-                <Dropdown item simple text="My Account">
+                <Dropdown item simple text={username || "My Account"}>
                     <Dropdown.Menu>
                         <Dropdown.Item>
                             <Link to="/me">
