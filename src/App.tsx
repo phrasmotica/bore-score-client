@@ -6,6 +6,7 @@ import { Navbar } from "./Navbar"
 import { GameDetailsPage } from "./GameDetailsPage/GameDetailsPage"
 import { GamesPage } from "./GamesPage/GamesPage"
 import { GroupDetailsPage } from "./GroupDetailsPage/GroupDetailsPage"
+import { GroupLeaderboardPage } from "./GroupLeaderboardPage/GroupLeaderboardPage"
 import { GroupsPage } from "./GroupsPage/GroupsPage"
 import { HomePage } from "./HomePage/HomePage"
 import { LoginPage } from "./LoginPage/LoginPage"
@@ -30,6 +31,7 @@ const App = () => (
                     <Route path="/me" element={<ProfilePage />} />
                     <Route path="/me-edit" element={<ProfileEditPage />} />
                     <Route path="/players/:username" element={<PlayerDetailsPage />} />
+                    <Route path="/groups/:groupId/leaderboards" element={<GroupLeaderboardPage />} />
                     <Route path="/groups/:groupId" element={<GroupDetailsPage />} />
                     <Route path="/games/:name" element={<GameDetailsPage />} />
                     <Route path="/games" element={<GamesPage />} />

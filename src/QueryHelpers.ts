@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query"
 
-import { FetchError, getApprovals, getGame, getGames, getGroup, getGroupInvitations, getGroupMemberships, getGroups, getLinkTypes, getPlayer, getPlayers, getResults, getResultsForGroup, getResultsForUser, getSummary, getUser, getWinMethods } from "./FetchHelpers"
+import { FetchError, getApprovals, getGame, getGames, getGroup, getGroupInvitations, getGroupMemberships, getGroups, getLeaderboardForGroupAndGame, getLinkTypes, getPlayer, getPlayers, getResults, getResultsForGroup, getResultsForUser, getSummary, getUser, getWinMethods } from "./FetchHelpers"
 import { ResultResponse } from "./models/Result"
+import { Leaderboard } from "./models/Leaderboard"
 
 // TODO: add error handling
 export const useApprovals = (resultId: string, enabled: boolean) => useQuery({
@@ -55,6 +56,19 @@ export const useGroupMemberships = (username: string) => useQuery({
     queryKey: ["groupMemberships", username],
     queryFn: () => getGroupMemberships(username),
     enabled: username.length > 0,
+})
+
+export const useLeaderboardForGroupAndGame = (
+    groupId: string,
+    gameId: string,
+    onSuccess?: (data: Leaderboard) => void,
+    onError?: (error: FetchError) => void
+) => useQuery({
+    queryKey: ["leaderboard", `groupId:${groupId}`, `gameId:${gameId}`],
+    queryFn: () => getLeaderboardForGroupAndGame(groupId, gameId),
+    onSuccess,
+    onError,
+    retry: shouldRetry,
 })
 
 // TODO: add error handling

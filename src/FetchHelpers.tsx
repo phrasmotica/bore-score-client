@@ -12,6 +12,7 @@ import { Result, ResultResponse } from "./models/Result"
 import { Summary } from "./models/Summary"
 import { User, CreateUserRequest } from "./models/User"
 import { WinMethod } from "./models/WinMethod"
+import { Leaderboard } from "./models/Leaderboard"
 
 // https://dev.to/snigdho611/react-js-interceptors-with-fetch-api-1oei
 const { fetch: originalFetch } = window
@@ -281,6 +282,16 @@ export const postGroupMembership = (membership: GroupMembership) => {
     })
     .then(handleResponse)
     .then((data: GroupMembership) => data)
+}
+
+export const getLeaderboardForGroupAndGame = (groupId: string, gameId: string) => {
+    let url = `${process.env.REACT_APP_API_URL}/groups/${groupId}/leaderboard/${gameId}`
+
+    return fetch(url, {
+        headers: getHeaders(),
+    })
+    .then(handleResponse)
+    .then((data: Leaderboard) => data)
 }
 
 export const getLinkTypes = () => {

@@ -1,0 +1,56 @@
+.group-leaderboard-page .header {
+    text-align: start;
+    margin-bottom: 0.5em;
+}
+
+.group-leaderboard .game-image .ui.image {
+    width: 100%;
+}
+
+.group-leaderboard .content {
+    display: flex;
+    margin-bottom: 0.5rem;
+}
+
+.group-leaderboard .content > :last-child {
+    flex-grow: 1;
+}
+
+.group-leaderboard .content .left > button.ui.button,
+.group-leaderboard .content .left > .ui.buttons {
+    margin-top: 0.5rem;
+}
+
+.group-leaderboard .content .left > .ui.buttons > button.ui.button {
+    justify-content: center;
+}
+
+.group-leaderboard .display-name-header {
+    text-align: start;
+    margin-top: 0rem;
+    margin-bottom: 0.5rem;
+}
+
+.group-leaderboard .description {
+    text-align: start;
+    white-space: pre-line;
+    margin-top: 1rem;
+}
+
+.group-leaderboard-page .content .details {
+    text-align: start;
+    padding-left: 0.5rem;
+    margin-left: 0.5rem;
+    border-left: 1px solid rgba(34, 36, 38, 0.15);
+}
+
+.group-leaderboard-page .content .leaderboard {
+    text-align: start;
+    padding-left: 0.5rem;
+    margin-left: 0.5rem;
+    border-left: 1px solid rgba(34, 36, 38, 0.15);
+}
+
+.group-leaderboard-page .content .leaderboard > .leaderboard-list {
+    margin-top: 0.5em;
+}
