@@ -12,12 +12,12 @@ interface SignupFormProps {
 export const SignupForm = (props: SignupFormProps) => {
     const navigate = useNavigate()
 
-    const { mutate: login } = useLogin(data => {
+    const { mutate: login, isLoading: isLoggingIn } = useLogin(data => {
         setToken(data.token)
         navigate(props.redirect || "/")
     })
 
-    const { mutate: createUser, isLoading } = useSignup(() => {
+    const { mutate: createUser, isLoading: isSigningUp } = useSignup(() => {
         // log in after successful sign up
         login({
             email: email,
@@ -54,6 +54,8 @@ export const SignupForm = (props: SignupFormProps) => {
     }
 
     // TODO: add form validation
+
+    const isLoading = useMemo(() => isSigningUp || isLoggingIn, [isSigningUp, isLoggingIn])
 
     return (
         <Form className="signup-form" loading={isLoading} onSubmit={submit}>
