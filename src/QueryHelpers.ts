@@ -69,6 +69,7 @@ export const useLeaderboardForGroupAndGame = (
     onSuccess,
     onError,
     retry: shouldRetry,
+    enabled: groupId.length > 0 && gameId.length > 0,
 })
 
 // TODO: add error handling
