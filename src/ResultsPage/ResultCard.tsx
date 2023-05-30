@@ -77,7 +77,7 @@ export const ResultCard = (props: ResultCardProps) => {
         },
     })
 
-    let game = props.games.find(g => g.name === r.gameName)
+    let game = props.games.find(g => g.id === r.gameId)
 
     if (game === undefined) {
         return null

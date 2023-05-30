@@ -63,7 +63,7 @@ export const GroupLeaderboard = (props: GroupLeaderboardProps) => {
         value: g.id,
     }))
 
-    const gameName = useMemo(
+    const gameDisplayName = useMemo(
         () => (games ?? []).find(g => g.id === gameId)?.displayName || "(unknown game)",
         [games, gameId])
 
@@ -105,7 +105,7 @@ export const GroupLeaderboard = (props: GroupLeaderboardProps) => {
 
                     {!isLoading && <div>
                         {!leaderboardErrorMessage && leaderboard && <h3>
-                            Leaderboard for {gameName}
+                            Leaderboard for {gameDisplayName}
                         </h3>}
 
                         {leaderboardMessage && <Message className="leaderboard-message">

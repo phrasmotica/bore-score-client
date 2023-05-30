@@ -13,15 +13,16 @@ import { IndividualScoreForm } from "./IndividualScoreForm"
 import { IndividualWinForm } from "./IndividualWinForm"
 import { GameImage } from "../GameImage"
 
+import { parseToken } from "../Auth"
 import { postResult } from "../FetchHelpers"
 import { submitValue } from "../MomentHelpers"
 import { useGames, useGroupMemberships, useGroups, usePlayers } from "../QueryHelpers"
 
 import { Game } from "../models/Game"
+import { Result } from "../models/Result"
 import { WinMethodName } from "../models/WinMethod"
 
 import "./AddResultModal.css"
-import { parseToken } from "../Auth"
 
 interface AddResultModalProps {
     open: boolean
@@ -157,12 +158,12 @@ export const AddResultModal = (props: AddResultModalProps) => {
         addResult({
             id: newGuid(),
             timeCreated: moment().unix(),
-            gameName: game.name,
+            gameId: game.id,
             groupId: useGroup ? groupId : "",
             timePlayed: submitValue(timePlayed),
             notes: notes,
             ...formData
-        })
+        } as Result)
     }
 
     let imageSrc = game?.imageLink

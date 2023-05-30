@@ -54,8 +54,8 @@ export const HomePage = () => {
         }
 
         let lastResults = sortResultsByRecent(results ?? [])
-        let gameNames = [...new Set(lastResults.map(r => r.gameName))].slice(0, 5)
-        let gamesToShow = gameNames.map(n => games.find(g => g.name === n)!)
+        let gameIds = [...new Set(lastResults.map(r => r.gameId))].slice(0, 5)
+        let gamesToShow = gameIds.map(id => games.find(g => g.id === id)!)
 
         return (
             <div className="games-carousel">
