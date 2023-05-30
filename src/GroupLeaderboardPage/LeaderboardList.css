@@ -22,5 +22,10 @@
 }
 
 .leaderboard-list > .ui.list > .item > .content {
+    display: flex;
     margin-top: 0.5em;
+}
+
+.leaderboard-list > .ui.list > .item > .content > :not(:first-child) {
+    margin-left: 0.5em;
 }

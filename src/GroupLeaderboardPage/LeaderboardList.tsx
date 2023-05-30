@@ -14,8 +14,18 @@ interface LeaderboardListProps {
     players: Player[]
 }
 
+const getAverage = (r: Rank) => r.pointsScored / r.playedCount
+
+const sortLeaderboard = (r: Rank, s: Rank) => {
+    if (s.pointsScored === r.pointsScored) {
+        return getAverage(s) - getAverage(r)
+    }
+
+    return s.pointsScored - r.pointsScored
+}
+
 export const LeaderboardList = (props: LeaderboardListProps) => {
-    let sorted = props.leaderboard.leaderboard.sort((r, s) => s.pointsScored - r.pointsScored)
+    let sorted = props.leaderboard.leaderboard.sort(sortLeaderboard)
 
     const token = parseToken()
     const username = token?.username || ""
@@ -58,7 +68,8 @@ const LeaderboardCard = (props: {
             </List.Header>
 
             {open && <List.Content>
-                <div>TODO: details</div>
+                <div>Played: {props.rank.playedCount}</div>
+                <div>Average: {getAverage(props.rank)} point(s)</div>
             </List.Content>}
         </List.Item>
     )
