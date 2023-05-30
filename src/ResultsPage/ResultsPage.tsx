@@ -1,5 +1,6 @@
+import { useEffect, useMemo, useState } from "react"
 import moment from "moment"
-import { useMemo, useState } from "react"
+import { useSearchParams } from "react-router-dom"
 import { Button, Form, Icon } from "semantic-ui-react"
 
 import { GameFilterDropdown } from "./GameFilterDropdown"
@@ -21,6 +22,8 @@ import "./ResultsPage.css"
 
 export const ResultsPage = () => {
     useTitle("Results")
+
+    const [searchParams, _] = useSearchParams()
 
     const { data: results } = useResults()
 
@@ -59,8 +62,26 @@ export const ResultsPage = () => {
     const { data: groups } = useGroups(true)
     const { data: players } = usePlayers()
 
+    useEffect(() => {
+        const gameFromParam = searchParams.get("game")
+        if (gameFromParam) {
+            setSelectedGames([gameFromParam])
+        }
+        else {
+            setSelectedGames([])
+        }
+
+        const groupFromParam = searchParams.get("group")
+        if (groupFromParam) {
+            setSelectedGroups([groupFromParam])
+        }
+        else {
+            setSelectedGroups([])
+        }
+    }, [searchParams])
+
     let filters = new FilterSet<ResultResponse>()
-        .with("game", new Filter(selectedGames.length > 0, r => selectedGames.includes(r.gameName)))
+        .with("game", new Filter(selectedGames.length > 0, r => selectedGames.includes(r.gameId)))
         .with("group", new Filter(selectedGroups.length > 0, r => selectedGroups.includes(r.groupId)))
         .with("approvedOnly", new Filter(showApprovedOnly, r => r.approvalStatus === ApprovalStatus.Approved))
         .with("mineOnly", new Filter(showMineOnly, r => !username || r.scores.map(s => s.username).includes(username)))

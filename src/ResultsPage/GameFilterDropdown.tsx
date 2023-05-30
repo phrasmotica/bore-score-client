@@ -11,13 +11,13 @@ interface GameFilterDropdownProps {
 }
 
 export const GameFilterDropdown = (props: GameFilterDropdownProps) => {
-    const getCount = (name: string) => props.results.filter(r => r.gameName === name).length
+    const getCount = (id: string) => props.results.filter(r => r.gameId === id).length
 
     const options = props.games.map(g => ({
-        key: g.name,
-        text: g.displayName + ` (${getCount(g.name)})`,
-        value: g.name,
-        disabled: getCount(g.name) <= 0,
+        key: g.id,
+        text: g.displayName + ` (${getCount(g.id)})`,
+        value: g.id,
+        disabled: getCount(g.id) <= 0,
     }))
 
     return (
@@ -29,6 +29,7 @@ export const GameFilterDropdown = (props: GameFilterDropdownProps) => {
                 selection
                 search
                 placeholder="Filter by game"
+                value={props.selectedGames}
                 onChange={(_, data) => props.setSelectedGames(data.value as string[])}
                 options={options}
 

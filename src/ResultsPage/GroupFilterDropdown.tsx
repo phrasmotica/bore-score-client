@@ -29,6 +29,7 @@ export const GroupFilterDropdown = (props: GroupFilterDropdownProps) => {
                 selection
                 search
                 placeholder="Filter by group"
+                value={props.selectedGroups}
                 onChange={(_, data) => props.setSelectedGroups(data.value as string[])}
                 options={options}
                 disabled={options.every(o => o.disabled)} />
