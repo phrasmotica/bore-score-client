@@ -1,16 +1,20 @@
-.leaderboard-list > .ui.list > .item {
+.leaderboard-list > .ui.list > .item > .header {
     display: flex;
     align-items: center;
 }
 
-.leaderboard-list > .ui.list > .item > :not(:first-child) {
+.leaderboard-list > .ui.list > .item > .header > :not(:first-child) {
     margin-left: 0.5em;
 }
 
-.leaderboard-list > .ui.list > .item > .player-image {
+.leaderboard-list > .ui.list > .item > .header > .player-image {
     width: 30px;
 }
 
-.leaderboard-list > .ui.list > .item > .player-name {
+.leaderboard-list > .ui.list > .item > .header > .player-name {
     flex-grow: 1;
+}
+
+.leaderboard-list > .ui.list > .item > .content {
+    margin-top: 0.5em;
 }

@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { List } from "semantic-ui-react"
 
 import { parseToken } from "../Auth"
@@ -42,11 +43,23 @@ const LeaderboardCard = (props: {
     image: string
     name: string
     rank: Rank
-}) => (
-    <List.Item>
-        <div>{props.index}</div>
-        <PlayerImage imageSrc={props.image} />
-        <div className="player-name"><strong>{props.name}</strong></div>
-        <div>{props.rank.pointsScored} point(s)</div>
-    </List.Item>
-)
+}) => {
+    const [open, setOpen] = useState(false)
+
+    // TODO: use an accordion instead
+
+    return (
+        <List.Item onClick={() => setOpen(!open)}>
+            <List.Header>
+                <div>{props.index}</div>
+                <PlayerImage imageSrc={props.image} />
+                <div className="player-name"><strong>{props.name}</strong></div>
+                <div>{props.rank.pointsScored} point(s)</div>
+            </List.Header>
+
+            {open && <List.Content>
+                <div>TODO: details</div>
+            </List.Content>}
+        </List.Item>
+    )
+}
