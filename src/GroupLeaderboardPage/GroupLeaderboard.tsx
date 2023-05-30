@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react"
 import moment from "moment"
+import { Link } from "react-router-dom"
 import { Dropdown, Message } from "semantic-ui-react"
 
 import { GameImage } from "../GameImage"
@@ -66,6 +67,8 @@ export const GroupLeaderboard = (props: GroupLeaderboardProps) => {
         () => (games ?? []).find(g => g.id === gameId)?.displayName || "(unknown game)",
         [games, gameId])
 
+    const resultsLink = `/results?group=${props.group.id}&game=${gameId}`
+
     return (
         <div className="group-leaderboard">
             <div className="content">
@@ -100,24 +103,31 @@ export const GroupLeaderboard = (props: GroupLeaderboardProps) => {
                             options={gameOptions} />
                     </div>
 
-                    <div>
-                        {!isLoading && !leaderboardErrorMessage && leaderboard && <h3>
+                    {!isLoading && <div>
+                        {!leaderboardErrorMessage && leaderboard && <h3>
                             Leaderboard for {gameName}
                         </h3>}
 
-                        {!isLoading && leaderboardMessage && <Message className="leaderboard-message">
+                        {leaderboardMessage && <Message className="leaderboard-message">
                             {leaderboardMessage}
                         </Message>}
 
-                        {!isLoading && leaderboardErrorMessage && <Message error className="leaderboard-message">
+                        {leaderboardErrorMessage && <Message error className="leaderboard-message">
                             {leaderboardErrorMessage}
                         </Message>}
 
-                        {!isLoading && !leaderboardErrorMessage && leaderboard &&
-                            <LeaderboardList
-                                leaderboard={leaderboard}
-                                players={players ?? []} />}
-                    </div>
+                        {!leaderboardMessage && !leaderboardErrorMessage && leaderboard &&
+                        <LeaderboardList
+                            leaderboard={leaderboard}
+                            players={players ?? []} />}
+
+                        {!leaderboardMessage && !leaderboardErrorMessage && leaderboard &&
+                        <div>
+                            <Link to={resultsLink}>
+                                <em>{leaderboard.playedCount} result(s) recorded</em>
+                            </Link>
+                        </div>}
+                    </div>}
                 </div>
             </div>
         </div>
