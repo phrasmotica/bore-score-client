@@ -54,7 +54,7 @@ const LeaderboardCard = (props: {
                 <div>{props.index}</div>
                 <PlayerImage imageSrc={props.image} />
                 <div className="player-name"><strong>{props.name}</strong></div>
-                <div>{props.rank.pointsScored} point(s)</div>
+                <div className="player-score">{props.rank.pointsScored} point(s)</div>
             </List.Header>
 
             {open && <List.Content>

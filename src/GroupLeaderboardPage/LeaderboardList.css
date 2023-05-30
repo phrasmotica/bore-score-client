@@ -9,10 +9,16 @@
 
 .leaderboard-list > .ui.list > .item > .header > .player-image {
     width: 30px;
+    flex-shrink: 0;
 }
 
 .leaderboard-list > .ui.list > .item > .header > .player-name {
     flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.leaderboard-list > .ui.list > .item > .header > .player-score {
+    flex-shrink: 0;
 }
 
 .leaderboard-list > .ui.list > .item > .content {

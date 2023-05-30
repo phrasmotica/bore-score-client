@@ -7,21 +7,21 @@
     width: 100%;
 }
 
-.group-leaderboard .content {
+.group-leaderboard > .content {
     display: flex;
     margin-bottom: 0.5rem;
 }
 
-.group-leaderboard .content > :last-child {
+.group-leaderboard > .content > :last-child {
     flex-grow: 1;
 }
 
-.group-leaderboard .content .left > button.ui.button,
-.group-leaderboard .content .left > .ui.buttons {
+.group-leaderboard > .content .left > button.ui.button,
+.group-leaderboard > .content .left > .ui.buttons {
     margin-top: 0.5rem;
 }
 
-.group-leaderboard .content .left > .ui.buttons > button.ui.button {
+.group-leaderboard > .content .left > .ui.buttons > button.ui.button {
     justify-content: center;
 }
 
@@ -42,6 +42,7 @@
     padding-left: 0.5rem;
     margin-left: 0.5rem;
     border-left: 1px solid rgba(34, 36, 38, 0.15);
+    flex-shrink: 0;
 }
 
 .group-leaderboard-page .content .leaderboard {
@@ -49,8 +50,33 @@
     padding-left: 0.5rem;
     margin-left: 0.5rem;
     border-left: 1px solid rgba(34, 36, 38, 0.15);
+    display: flex;
 }
 
-.group-leaderboard-page .content .leaderboard > .leaderboard-list {
-    margin-top: 0.5em;
+.group-leaderboard-page .content .leaderboard > :first-child {
+    width: 150px;
+    flex-shrink: 0;
+}
+
+.group-leaderboard-page .content .leaderboard > :not(:first-child) {
+    margin-left: 0.5em;
+}
+
+@media screen and (max-width: 899px) {
+    .group-leaderboard-page .content .leaderboard {
+        flex-direction: column;
+    }
+
+    .group-leaderboard-page .content .leaderboard > :first-child {
+        width: 100%;
+    }
+
+    .group-leaderboard-page .content .leaderboard > :not(:first-child) {
+        margin-left: 0em;
+        margin-top: 0.5em;
+    }
+}
+
+.group-leaderboard-page .content .leaderboard > :last-child {
+    flex-grow: 1;
 }

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import moment from "moment"
 import { Dropdown, Message } from "semantic-ui-react"
 
@@ -62,6 +62,10 @@ export const GroupLeaderboard = (props: GroupLeaderboardProps) => {
         value: g.id,
     }))
 
+    const gameName = useMemo(
+        () => (games ?? []).find(g => g.id === gameId)?.displayName || "(unknown game)",
+        [games, gameId])
+
     return (
         <div className="group-leaderboard">
             <div className="content">
@@ -84,30 +88,36 @@ export const GroupLeaderboard = (props: GroupLeaderboardProps) => {
                 </div>
 
                 <div className="leaderboard">
-                    <h3>Leaderboard</h3>
-
                     {/* TODO: put game dropdown next to leaderboard on wide screens */}
 
-                    <Dropdown
-                        fluid
-                        selection
-                        search
-                        placeholder="Select game"
-                        onChange={(_, data) => setGameId(data.value as string)}
-                        options={gameOptions} />
+                    <div>
+                        <Dropdown
+                            fluid
+                            selection
+                            search
+                            placeholder="Select game"
+                            onChange={(_, data) => setGameId(data.value as string)}
+                            options={gameOptions} />
+                    </div>
 
-                    {!isLoading && leaderboardMessage && <Message className="leaderboard-message">
-                        {leaderboardMessage}
-                    </Message>}
+                    <div>
+                        {!isLoading && !leaderboardErrorMessage && leaderboard && <h3>
+                            Leaderboard for {gameName}
+                        </h3>}
 
-                    {!isLoading && leaderboardErrorMessage && <Message error className="leaderboard-message">
-                        {leaderboardErrorMessage}
-                    </Message>}
+                        {!isLoading && leaderboardMessage && <Message className="leaderboard-message">
+                            {leaderboardMessage}
+                        </Message>}
 
-                    {!isLoading && !leaderboardErrorMessage && leaderboard &&
-                        <LeaderboardList
-                            leaderboard={leaderboard}
-                            players={players ?? []} />}
+                        {!isLoading && leaderboardErrorMessage && <Message error className="leaderboard-message">
+                            {leaderboardErrorMessage}
+                        </Message>}
+
+                        {!isLoading && !leaderboardErrorMessage && leaderboard &&
+                            <LeaderboardList
+                                leaderboard={leaderboard}
+                                players={players ?? []} />}
+                    </div>
                 </div>
             </div>
         </div>
