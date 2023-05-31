@@ -1,10 +1,11 @@
 import { useQueryClient } from "@tanstack/react-query"
 import { Link } from "react-router-dom"
-import { Button, ButtonGroup, Icon, Label } from "semantic-ui-react"
+import { Button, ButtonGroup, Icon } from "semantic-ui-react"
 import moment from "moment"
 import { v4 as newGuid } from "uuid"
 
 import { GameImage } from "../GameImage"
+import { GroupVisibilityLabel } from "../GroupVisibilityLabel"
 
 import { parseToken } from "../Auth"
 import { useAcceptGroupInvitation, useAddGroupMembership, useDeclineGroupInvitation } from "../Mutations"
@@ -60,16 +61,6 @@ export const GroupCard = (props: GroupCardProps) => {
         }
     }
 
-    const renderVisibilityLabel = (group: Group) => {
-        const colour = group.visibility === GroupVisibilityName.Private ? "purple" : "green"
-
-        return (
-            <Label className="group-visibility-label" color={colour}>
-                {group.visibility}
-            </Label>
-        )
-    }
-
     return (
         <div key={group.id} className="group-card">
             <div className="left">
@@ -82,7 +73,7 @@ export const GroupCard = (props: GroupCardProps) => {
                         </Link>
 
                         <div className="labels">
-                            {renderVisibilityLabel(group)}
+                            <GroupVisibilityLabel group={group} />
                         </div>
                     </div>
 

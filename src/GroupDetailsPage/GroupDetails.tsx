@@ -21,6 +21,7 @@ import { GroupResponse, GroupVisibilityName } from "../models/Group"
 import { InvitationStatus } from "../models/GroupMembership"
 
 import "./GroupDetails.css"
+import { GroupVisibilityLabel } from "../GroupVisibilityLabel"
 
 interface GroupDetailsProps {
     group: GroupResponse
@@ -165,9 +166,17 @@ export const GroupDetails = (props: GroupDetailsProps) => {
                 </div>
 
                 <div className="details">
-                    <h3 className="display-name-header">
-                        {props.group.displayName}
-                    </h3>
+                    <div className="group-header">
+                        <div>
+                            <h3>
+                                {props.group.displayName}
+                            </h3>
+                        </div>
+
+                        <div className="labels">
+                            <GroupVisibilityLabel group={props.group} />
+                        </div>
+                    </div>
 
                     <p className="description">
                         {props.group.description}
