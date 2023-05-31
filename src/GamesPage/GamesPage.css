@@ -42,7 +42,7 @@
     border-right: 1px solid rgba(34, 36, 38, 0.15);
 }
 
-.games-page .sidebar .filters .slider {
+.games-page .sidebar .filters > :not(:first-child) {
     margin-top: 1rem;
 }
 

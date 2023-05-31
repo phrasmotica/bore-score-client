@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react"
 import { Slider } from "react-semantic-ui-range"
-import { Button, Icon } from "semantic-ui-react"
+import { Button, Icon, Input } from "semantic-ui-react"
 
 import { GamesList } from "./GamesList"
 import { WinMethodFilterDropdown } from "./WinMethodFilterDropdown"
@@ -44,11 +44,13 @@ export const GamesPage = () => {
 
     const [showAddGameModal, setShowAddGameModal] = useState(false)
 
+    const [searchTerm, setSearchTerm] = useState("")
     const [selectedWinMethods, setSelectedWinMethods] = useState<string[]>([])
     const [minPlayers, setMinPlayers] = useState(lowestMinPlayers)
     const [maxPlayers, setMaxPlayers] = useState(highestMaxPlayers)
 
     let filters = new FilterSet<Game>()
+        .with("searchTerm", new Filter(searchTerm.length > 0, g => g.displayName.toLowerCase().includes(searchTerm))) // TODO: use fuzzy search
         .with("winMethod", new Filter(selectedWinMethods.length > 0, g => selectedWinMethods.includes(g.winMethod)))
         .with("numPlayers", new Filter(true, g => g.minPlayers >= minPlayers && g.maxPlayers <= maxPlayers))
 
@@ -75,6 +77,13 @@ export const GamesPage = () => {
                 </div>
 
                 <div className="filters">
+                    <Input
+                        fluid
+                        icon="search"
+                        placeholder="Search by name"
+                        value={searchTerm}
+                        onChange={(e, { value }) => setSearchTerm(value)} />
+
                     <WinMethodFilterDropdown
                         winMethods={winMethods ?? []}
                         games={filters.except("winMethod").apply(allGames)}
@@ -88,10 +97,10 @@ export const GamesPage = () => {
                             multiple
                             value={[minPlayers, maxPlayers]}
                             settings={sliderSettings} />
-                    </div>
 
-                    <div style={{textAlign: "center"}}>
-                        {minPlayers}&nbsp;&le;&nbsp;Players&nbsp;&le;&nbsp;{maxPlayers}
+                        <div style={{textAlign: "center"}}>
+                            {minPlayers}&nbsp;&le;&nbsp;Players&nbsp;&le;&nbsp;{maxPlayers}
+                        </div>
                     </div>
                 </div>
             </div>
