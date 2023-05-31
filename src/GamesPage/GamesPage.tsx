@@ -21,25 +21,17 @@ import "./GamesPage.css"
 export const GamesPage = () => {
     useTitle("Games")
 
-    const { data: games } = useGames()
+    const { data: games, isLoading: isLoadingGames } = useGames()
     const { data: winMethods } = useWinMethods()
 
     let allGames = useMemo(() => games ?? [], [games])
 
     let lowestMinPlayers = useMemo(() => {
-        if (allGames.length <= 0) {
-            return 2
-        }
-
-        return allGames.reduce((a, b) => a.minPlayers < b.minPlayers ? a : b).minPlayers
+        return allGames.map(g => g.minPlayers).reduce((a, b) => Math.min(a, b), 1)
     }, [allGames])
 
     let highestMaxPlayers = useMemo(() => {
-        if (allGames.length <= 0) {
-            return 4
-        }
-
-        return allGames.reduce((a, b) => a.maxPlayers > b.maxPlayers ? a : b).maxPlayers
+        return allGames.map(g => g.maxPlayers).reduce((a, b) => Math.max(a, b), 6)
     }, [allGames])
 
     const token = parseToken()
@@ -53,7 +45,7 @@ export const GamesPage = () => {
     let filters = new FilterSet<Game>()
         .with("searchTerm", new Filter(searchTerm.length > 0, games => getMatches(searchTerm, games, "displayName")))
         .with("winMethod", new Predicate(selectedWinMethods.length > 0, g => selectedWinMethods.includes(g.winMethod)))
-        .with("playerRange", new Predicate(true, g => g.maxPlayers >= playerRange[0] && g.minPlayers <= playerRange[1]))
+        .with("playerRange", new Predicate(!isLoadingGames, g => g.maxPlayers >= playerRange[0] && g.minPlayers <= playerRange[1]))
 
     let filteredGames = filters.apply(allGames)
 
