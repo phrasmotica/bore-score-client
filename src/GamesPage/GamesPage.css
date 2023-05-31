@@ -46,6 +46,23 @@
     margin-top: 1rem;
 }
 
+.games-page .sidebar .filters > .slider {
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    padding-bottom: 2em;
+}
+
+.games-page .sidebar .filters > .slider > p {
+    text-align: center;
+    margin-bottom: 0.5em;
+}
+
+.rc-tooltip-placement-bottom {
+    padding: 0px!important;
+    font-size: 14px!important;
+    z-index: 5;
+}
+
 .game-card {
     display: flex;
     align-items: center;

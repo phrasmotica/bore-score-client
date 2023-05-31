@@ -1,11 +1,11 @@
 import { useMemo, useState } from "react"
-import { Slider } from "react-semantic-ui-range"
 import { Button, Icon, Input } from "semantic-ui-react"
 
 import { GamesList } from "./GamesList"
 import { WinMethodFilterDropdown } from "./WinMethodFilterDropdown"
 
 import { AddGameModal } from "../AddGameModal/AddGameModal"
+import { TooltipSlider } from "../TooltipSlider"
 
 import { parseToken } from "../Auth"
 import { Filter, FilterSet, Predicate } from "../Filters"
@@ -15,6 +15,7 @@ import { useGames, useWinMethods } from "../QueryHelpers"
 
 import { Game } from "../models/Game"
 
+import "rc-slider/assets/index.css"
 import "./GamesPage.css"
 
 export const GamesPage = () => {
@@ -47,26 +48,14 @@ export const GamesPage = () => {
 
     const [searchTerm, setSearchTerm] = useState("")
     const [selectedWinMethods, setSelectedWinMethods] = useState<string[]>([])
-    const [minPlayers, setMinPlayers] = useState(lowestMinPlayers)
-    const [maxPlayers, setMaxPlayers] = useState(highestMaxPlayers)
+    const [playerRange, setPlayerRange] = useState([lowestMinPlayers, highestMaxPlayers])
 
     let filters = new FilterSet<Game>()
         .with("searchTerm", new Filter(searchTerm.length > 0, games => getMatches(searchTerm, games, "displayName")))
         .with("winMethod", new Predicate(selectedWinMethods.length > 0, g => selectedWinMethods.includes(g.winMethod)))
-        .with("numPlayers", new Predicate(true, g => g.maxPlayers >= minPlayers && g.minPlayers <= maxPlayers))
+        .with("playerRange", new Predicate(true, g => g.maxPlayers >= playerRange[0] && g.minPlayers <= playerRange[1]))
 
     let filteredGames = filters.apply(allGames)
-
-    let sliderSettings = {
-        start: [lowestMinPlayers, highestMaxPlayers],
-        min: lowestMinPlayers,
-        max: highestMaxPlayers,
-        step: 1,
-        onChange: (values: number[]) => {
-            setMinPlayers(values[0])
-            setMaxPlayers(values[1])
-        }
-    }
 
     return (
         <div className="games-page">
@@ -91,17 +80,18 @@ export const GamesPage = () => {
                         selectedWinMethods={selectedWinMethods}
                         setSelectedWinMethods={setSelectedWinMethods} />
 
-                    {/* TODO: improve the slider */}
                     <div className="slider">
-                        <Slider
-                            discrete
-                            multiple
-                            value={[minPlayers, maxPlayers]}
-                            settings={sliderSettings} />
+                        <p>Players</p>
 
-                        <div style={{textAlign: "center"}}>
-                            {minPlayers}&nbsp;&le;&nbsp;Players&nbsp;&le;&nbsp;{maxPlayers}
-                        </div>
+                        <TooltipSlider
+                            range
+                            dots
+                            allowCross={false}
+                            min={lowestMinPlayers}
+                            max={highestMaxPlayers}
+                            value={playerRange}
+                            onChange={v => setPlayerRange(v as number[])}
+                            tipProps={{visible: true}} />
                     </div>
                 </div>
             </div>
