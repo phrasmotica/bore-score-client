@@ -6,7 +6,7 @@ import { GroupsList } from "./GroupsList"
 import { AddGroupModal } from "../AddGroupModal/AddGroupModal"
 
 import { parseToken } from "../Auth"
-import { Filter, FilterSet } from "../Filters"
+import { FilterSet, Predicate } from "../Filters"
 import { useTitle } from "../Hooks"
 import { useGroups } from "../QueryHelpers"
 
@@ -25,7 +25,7 @@ export const GroupsPage = () => {
     const [showPublicOnly, setShowPublicOnly] = useState(false)
 
     let filters = new FilterSet<Group>()
-        .with("visibility", new Filter(showPublicOnly, g => g.visibility === GroupVisibilityName.Public))
+        .with("visibility", new Predicate(showPublicOnly, g => g.visibility === GroupVisibilityName.Public))
 
     let allGroups = groups ?? []
     let filteredGroups = filters.apply(allGroups)

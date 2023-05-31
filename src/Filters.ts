@@ -1,15 +1,24 @@
 export class Filter<T> {
     constructor(
         private condition: boolean,
-        private func: (e: T) => boolean
+        private func: (elems: T[]) => T[]
     ) { }
 
     applies() {
         return this.condition
     }
 
-    apply(e: T) {
-        return this.func(e)
+    apply(elems: T[]) {
+        return this.func(elems)
+    }
+}
+
+export class Predicate<T> extends Filter<T> {
+    constructor(
+        condition: boolean,
+        func: (e: T) => boolean
+    ) {
+        super(condition, elems => elems.filter(e => func(e)))
     }
 }
 
@@ -34,8 +43,9 @@ export class FilterSet<T> {
         let filteredElements = [...elements]
 
         for (let f of this.filters.values()) {
-            // condition must be true for func to be applied
-            filteredElements = filteredElements.filter(r => !f.applies() || f.apply(r))
+            if (f.applies()) {
+                filteredElements = f.apply(filteredElements)
+            }
         }
 
         return filteredElements
@@ -56,7 +66,7 @@ export class FilterSet<T> {
         let filteredElements = [...elements]
 
         for (let f of this.filters.values()) {
-            filteredElements = filteredElements.filter(e => f.apply(e))
+            filteredElements = f.apply(filteredElements)
         }
 
         return filteredElements

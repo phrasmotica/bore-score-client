@@ -11,7 +11,7 @@ import { AddResultModal } from "../AddResultModal/AddResultModal"
 import { DateTimeForm } from "../AddResultModal/DateTimeForm"
 
 import { parseToken } from "../Auth"
-import { Filter, FilterSet } from "../Filters"
+import { FilterSet, Predicate } from "../Filters"
 import { useTitle } from "../Hooks"
 import { useGames, useGroups, usePlayers, useResults } from "../QueryHelpers"
 
@@ -81,12 +81,12 @@ export const ResultsPage = () => {
     }, [searchParams])
 
     let filters = new FilterSet<ResultResponse>()
-        .with("game", new Filter(selectedGames.length > 0, r => selectedGames.includes(r.gameId)))
-        .with("group", new Filter(selectedGroups.length > 0, r => selectedGroups.includes(r.groupId)))
-        .with("approvedOnly", new Filter(showApprovedOnly, r => r.approvalStatus === ApprovalStatus.Approved))
-        .with("mineOnly", new Filter(showMineOnly, r => !username || r.scores.map(s => s.username).includes(username)))
-        .with("timePlayedEarliest", new Filter(filterByTimePlayed, r => r.timePlayed >= timePlayedEarliest.unix()))
-        .with("timePlayedLatest", new Filter(filterByTimePlayed, r => r.timePlayed <= timePlayedLatest.unix()))
+        .with("game", new Predicate(selectedGames.length > 0, r => selectedGames.includes(r.gameId)))
+        .with("group", new Predicate(selectedGroups.length > 0, r => selectedGroups.includes(r.groupId)))
+        .with("approvedOnly", new Predicate(showApprovedOnly, r => r.approvalStatus === ApprovalStatus.Approved))
+        .with("mineOnly", new Predicate(showMineOnly, r => !username || r.scores.map(s => s.username).includes(username)))
+        .with("timePlayedEarliest", new Predicate(filterByTimePlayed, r => r.timePlayed >= timePlayedEarliest.unix()))
+        .with("timePlayedLatest", new Predicate(filterByTimePlayed, r => r.timePlayed <= timePlayedLatest.unix()))
 
     let filteredResults = filters.apply(allResults)
 

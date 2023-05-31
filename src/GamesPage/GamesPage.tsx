@@ -8,7 +8,8 @@ import { WinMethodFilterDropdown } from "./WinMethodFilterDropdown"
 import { AddGameModal } from "../AddGameModal/AddGameModal"
 
 import { parseToken } from "../Auth"
-import { Filter, FilterSet } from "../Filters"
+import { Filter, FilterSet, Predicate } from "../Filters"
+import { getMatches } from "../Fuzzy"
 import { useTitle } from "../Hooks"
 import { useGames, useWinMethods } from "../QueryHelpers"
 
@@ -50,9 +51,9 @@ export const GamesPage = () => {
     const [maxPlayers, setMaxPlayers] = useState(highestMaxPlayers)
 
     let filters = new FilterSet<Game>()
-        .with("searchTerm", new Filter(searchTerm.length > 0, g => g.displayName.toLowerCase().includes(searchTerm))) // TODO: use fuzzy search
-        .with("winMethod", new Filter(selectedWinMethods.length > 0, g => selectedWinMethods.includes(g.winMethod)))
-        .with("numPlayers", new Filter(true, g => g.minPlayers >= minPlayers && g.maxPlayers <= maxPlayers))
+        .with("searchTerm", new Filter(searchTerm.length > 0, games => getMatches(searchTerm, games, "displayName")))
+        .with("winMethod", new Predicate(selectedWinMethods.length > 0, g => selectedWinMethods.includes(g.winMethod)))
+        .with("numPlayers", new Predicate(true, g => g.minPlayers >= minPlayers && g.maxPlayers <= maxPlayers))
 
     let filteredGames = filters.apply(allGames)
 
