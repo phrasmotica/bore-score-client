@@ -8,11 +8,11 @@ import { resetTitle, setTitle } from "../Helpers"
 import { useGame, useLinkTypes, useWinMethods } from "../QueryHelpers"
 
 export const GameDetailsPage = () => {
-    let { name } = useParams()
+    let { gameId } = useParams()
 
     const navigate = useNavigate()
 
-    const { data: game } = useGame(name || "", error => {
+    const { data: game } = useGame(gameId || "", error => {
         if (error.isNotFound()) {
             gameNotFoundToast()
             navigate("/games")

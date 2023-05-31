@@ -1,5 +1,3 @@
-import removeAccents from "remove-accents"
-
 export const setTitle = (title: string) => document.title = title
 
 export const resetTitle = () => setTitle("BoreScore")
@@ -50,40 +48,4 @@ export const getPlayersToUse = (players: string[], minCount: number) => {
 
     // restrict to effectiveCount at most
     return players.slice(0, minCount)
-}
-
-export const computeName = (displayName: string) => {
-    // remove diacritic marks
-    let computedName = removeAccents(displayName)
-
-    // remove apostrophes
-    computedName = computedName.replaceAll("'", "")
-
-    // set to lower case
-    computedName = computedName.toLowerCase()
-
-    // restrict to alphanumeric
-    computedName = computedName.replaceAll(/[^a-zA-Z0-9 ]+/g, " ")
-
-    // trim leading/trailing whitespace
-    computedName = computedName.trim()
-
-    // replace each block of spaces with a hyphen
-    computedName = computedName.replaceAll(/\s+/g, "-")
-
-    // limit to 100 chars
-    return computedName.substring(0, 100)
-}
-
-export const handleResponse = async (res: Response) => {
-    if (res.ok) {
-        return res
-    }
-
-    let json = await res.json() as ReqError
-    throw new Error(json.message)
-}
-
-interface ReqError {
-    message: string
 }

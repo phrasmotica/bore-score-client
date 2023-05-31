@@ -147,10 +147,10 @@ export const getGames = () => {
     .then((data: Game[]) => data)
 }
 
-export const getGame = (name: string) => {
+export const getGame = (id: string) => {
     const headers = getHeaders()
 
-    return fetch(`${process.env.REACT_APP_API_URL}/games/${name}`, {
+    return fetch(`${process.env.REACT_APP_API_URL}/games/${id}`, {
         headers: headers,
     })
     .then(handleResponse)
@@ -170,11 +170,11 @@ export const postGame = (game: Game) => {
     .then((data: Game) => data)
 }
 
-export const deleteGame = (name: string) => {
+export const deleteGame = (id: string) => {
     const headers = getHeaders()
 
     // TODO: handle error without parsing response as JSON
-    return fetch(`${process.env.REACT_APP_API_URL}/games/${name}`, {
+    return fetch(`${process.env.REACT_APP_API_URL}/games/${id}`, {
         method: "DELETE",
         headers: headers,
     })

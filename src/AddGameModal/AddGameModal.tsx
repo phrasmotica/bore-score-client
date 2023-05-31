@@ -9,7 +9,6 @@ import { LinkForm } from "./LinkForm"
 import { ImagePreview } from "../ImagePreview/ImagePreview"
 
 import { postGame } from "../FetchHelpers"
-import { computeName } from "../Helpers"
 import { useGames, useLinkTypes, useWinMethods } from "../QueryHelpers"
 
 import { Link, Game } from "../models/Game"
@@ -38,12 +37,11 @@ export const AddGameModal = (props: AddGameModalProps) => {
                 queryKey: ["games"]
             })
 
-            navigate(`/games/${data.name}`)
+            navigate(`/games/${data.id}`)
         },
     })
 
     const [displayName, setDisplayName] = useState("")
-    const [name, setName] = useState("")
     const [synopsis, setSynopsis] = useState("")
     const [description, setDescription] = useState("")
     const [minPlayers, setMinPlayers] = useState(1)
@@ -53,10 +51,6 @@ export const AddGameModal = (props: AddGameModalProps) => {
     const [links, setLinks] = useState<Link[]>([])
 
     const navigate = useNavigate()
-
-    useEffect(() => {
-        setName(computeName(displayName))
-    }, [displayName])
 
     useEffect(() => {
         if (winMethods && winMethods.length > 0) {
@@ -86,7 +80,6 @@ export const AddGameModal = (props: AddGameModalProps) => {
         id: newGuid(),
         timeCreated: moment().unix(),
         displayName: displayName,
-        name: name,
         synopsis: synopsis,
         description: description,
         minPlayers: minPlayers,

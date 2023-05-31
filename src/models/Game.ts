@@ -3,7 +3,6 @@ import { WinMethodName } from "./WinMethod"
 
 export interface Game {
     id: string
-    name: string
     timeCreated: number
     displayName: string
     synopsis: string

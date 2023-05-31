@@ -9,7 +9,7 @@ import { Game } from "../models/Game"
 
 interface GameCardProps {
     game: Game
-    addResult: (game: string) => void
+    addResult: (gameId: string) => void
 }
 
 export const GameCard = (props: GameCardProps) => {
@@ -21,7 +21,7 @@ export const GameCard = (props: GameCardProps) => {
 
     let winMethod = (winMethods ?? []).find(w => w.name === game.winMethod)
 
-    const addResult = () => props.addResult(game.name)
+    const addResult = () => props.addResult(game.id)
 
     const renderWinMethodLabel = (game: Game) => {
         return (
@@ -49,7 +49,7 @@ export const GameCard = (props: GameCardProps) => {
 
                 <div className="game-text">
                     <div className="game-header">
-                        <Link to={`/games/${game.name}`}>
+                        <Link to={`/games/${game.id}`}>
                             <h3>{game.displayName}</h3>
                         </Link>
 

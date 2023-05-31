@@ -18,7 +18,7 @@ export const GamesList = (props: GamesListProps) => {
     }
 
     let listItems = gamesToShow.map(g => (
-        <Menu.Item key={g.name}>
+        <Menu.Item key={g.id}>
             <span className="display-name">{g.displayName}</span>
         </Menu.Item>
     ))

@@ -27,7 +27,7 @@ import "./AddResultModal.css"
 interface AddResultModalProps {
     open: boolean
     setOpen: (open: boolean) => void
-    game?: string
+    gameId?: string
     group?: string
 }
 
@@ -77,10 +77,10 @@ export const AddResultModal = (props: AddResultModalProps) => {
 
     useEffect(() => {
         if (games && games.length > 0) {
-            let defaultGame = games.find(g => g.name === props.game) ?? games[0]
+            let defaultGame = games.find(g => g.id === props.gameId) ?? games[0]
             setGame(defaultGame)
         }
-    }, [games, props.game])
+    }, [games, props.gameId])
 
     useEffect(() => {
         if (groups && groups.length > 0) {
@@ -169,13 +169,13 @@ export const AddResultModal = (props: AddResultModalProps) => {
     let imageSrc = game?.imageLink
 
     let gameOptions = (games ?? []).map(g => ({
-        key: g.name,
+        key: g.id,
         text: g.displayName,
-        value: g.name,
+        value: g.id,
     }))
 
-    const setSelectedGame = (name: string) => {
-        let game = games?.find(g => g.name === name)
+    const setSelectedGame = (id: string) => {
+        let game = games?.find(g => g.id === id)
         setGame(game)
     }
 
@@ -200,7 +200,7 @@ export const AddResultModal = (props: AddResultModalProps) => {
                                     label="Game"
                                     placeholder="Select game..."
                                     options={gameOptions}
-                                    value={game?.name ?? ""}
+                                    value={game?.id ?? ""}
                                     onChange={(e, { value }) => setSelectedGame(String(value))} />
                             </Form>
                         </div>

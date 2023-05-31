@@ -61,8 +61,8 @@ export const HomePage = () => {
             <div className="games-carousel">
                 {gamesToShow.map(g => (
                     <GameImage
-                        key={g.name}
-                        link={`/games/${g.name}`}
+                        key={g.id}
+                        link={`/games/${g.id}`}
                         imageSrc={g.imageLink} />
                 ))}
             </div>

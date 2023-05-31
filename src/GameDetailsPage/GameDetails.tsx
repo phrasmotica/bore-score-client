@@ -29,7 +29,7 @@ export const GameDetails = (props: GameDetailsProps) => {
     let queryClient = useQueryClient()
 
     const { mutate } = useMutation({
-        mutationFn: (game: Game) => deleteGame(game.name),
+        mutationFn: (game: Game) => deleteGame(game.id),
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ["games"],
@@ -86,7 +86,7 @@ export const GameDetails = (props: GameDetailsProps) => {
 
     return (
         <div className="game-details">
-            <AddResultModal game={props.game.name} open={showAddResultModal} setOpen={setShowAddResultModal} />
+            <AddResultModal gameId={props.game.id} open={showAddResultModal} setOpen={setShowAddResultModal} />
             {renderDeletePrompt()}
 
             <div className="content">

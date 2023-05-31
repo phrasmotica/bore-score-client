@@ -17,9 +17,9 @@ export const useGames = () => useQuery({
     queryFn: () => getGames(),
 })
 
-export const useGame = (name: string, onError?: (error: FetchError) => void) => useQuery({
-    queryKey: ["game", name],
-    queryFn: () => getGame(name),
+export const useGame = (id: string, onError?: (error: FetchError) => void) => useQuery({
+    queryKey: ["game", id],
+    queryFn: () => getGame(id),
     onError,
     retry: shouldRetry,
 })
