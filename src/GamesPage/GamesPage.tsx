@@ -53,7 +53,7 @@ export const GamesPage = () => {
     let filters = new FilterSet<Game>()
         .with("searchTerm", new Filter(searchTerm.length > 0, games => getMatches(searchTerm, games, "displayName")))
         .with("winMethod", new Predicate(selectedWinMethods.length > 0, g => selectedWinMethods.includes(g.winMethod)))
-        .with("numPlayers", new Predicate(true, g => g.minPlayers >= minPlayers && g.maxPlayers <= maxPlayers))
+        .with("numPlayers", new Predicate(true, g => g.maxPlayers >= minPlayers && g.minPlayers <= maxPlayers))
 
     let filteredGames = filters.apply(allGames)
 
