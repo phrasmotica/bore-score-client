@@ -12,7 +12,7 @@ interface LoginFormProps {
 export const LoginForm = (props: LoginFormProps) => {
     const navigate = useNavigate()
 
-    const { mutate: login } = useLogin(data => {
+    const { mutate: login, isLoading } = useLogin(data => {
         setToken(data.token)
         navigate(props.redirect || "/")
     })
@@ -28,7 +28,7 @@ export const LoginForm = (props: LoginFormProps) => {
     })
 
     return (
-        <Form className="login-form" onSubmit={submit}>
+        <Form className="login-form" onSubmit={submit} loading={isLoading}>
             <Form.Input
                 fluid
                 label="Email address"
