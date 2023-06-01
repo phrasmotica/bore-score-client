@@ -34,7 +34,6 @@ interface ResultCardProps {
     games: Game[]
     groups: Group[]
     players: Player[]
-    currentUser?: string
     approvals?: boolean
     hideGroups?: boolean
 }
@@ -45,6 +44,7 @@ export const ResultCard = (props: ResultCardProps) => {
     let r = props.result
 
     const token = parseToken()
+    const username = token?.username ?? ""
 
     const queryClient = useQueryClient()
 
@@ -83,7 +83,7 @@ export const ResultCard = (props: ResultCardProps) => {
         return null
     }
 
-    const hasCurrentUser = props.currentUser && r.scores.map(s => s.username).includes(props.currentUser)
+    const hasCurrentUser = username && r.scores.map(s => s.username).includes(username)
 
     const approvalGroups = groupBy(approvals ?? [], a => a.username)
     const approvalMap = new Map<string, ApprovalStatus>()
@@ -206,9 +206,9 @@ export const ResultCard = (props: ResultCardProps) => {
 
                             <div className="result-approver">
                                 <ResultApprover
-                                    approveEnabled={approvalMap.get(props.currentUser!) !== ApprovalStatus.Approved}
+                                    approveEnabled={approvalMap.get(username!) !== ApprovalStatus.Approved}
                                     approve={approve}
-                                    rejectEnabled={approvalMap.get(props.currentUser!) !== ApprovalStatus.Rejected}
+                                    rejectEnabled={approvalMap.get(username!) !== ApprovalStatus.Rejected}
                                     reject={reject} />
                             </div>
                         </div>}

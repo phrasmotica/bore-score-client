@@ -1,8 +1,6 @@
-import { List, Message } from "semantic-ui-react"
+import { List, Loader, Message } from "semantic-ui-react"
 
 import { ResultCard } from "./ResultCard"
-
-import { parseToken } from "../Auth"
 
 import { Game } from "../models/Game"
 import { Group } from "../models/Group"
@@ -16,33 +14,30 @@ interface ResultsListProps {
     players: Player[]
     approvals?: boolean
     hideGroups?: boolean
+    isLoading?: boolean
 }
 
-export const ResultsList = (props: ResultsListProps) => {
-    const token = parseToken()
+export const ResultsList = (props: ResultsListProps) => (
+    <div className="results-list">
+        {props.isLoading && <Loader inline="centered" active>
+            Loading results...
+        </Loader>}
 
-    const renderNoResultsMessage = () => (
-        <Message className="no-results-message">
-            No results to show.
-        </Message>
-    )
+        {!props.isLoading && <List>
+            {props.results.length <= 0 && <Message className="no-results-message">
+                No results to show.
+            </Message>}
 
-    return (
-        <div className="results-list">
-            <List>
-                {props.results.length <= 0 && renderNoResultsMessage()}
-                {props.results.length > 0 && props.results.map(r => (
-                    <ResultCard
-                        approvals={props.approvals}
-                        hideGroups={props.hideGroups}
-                        key={r.id}
-                        result={r}
-                        games={props.games}
-                        groups={props.groups}
-                        players={props.players}
-                        currentUser={token?.username} />
-                ))}
-            </List>
-        </div>
-    )
-}
+            {props.results.length > 0 && props.results.map(r => (
+                <ResultCard
+                    approvals={props.approvals}
+                    hideGroups={props.hideGroups}
+                    key={r.id}
+                    result={r}
+                    games={props.games}
+                    groups={props.groups}
+                    players={props.players} />
+            ))}
+        </List>}
+    </div>
+)

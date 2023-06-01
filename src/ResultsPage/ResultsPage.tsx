@@ -23,9 +23,9 @@ import "./ResultsPage.css"
 export const ResultsPage = () => {
     useTitle("Results")
 
-    const [searchParams, _] = useSearchParams()
+    const [searchParams] = useSearchParams()
 
-    const { data: results } = useResults()
+    const { data: results, isLoading: isLoadingResults } = useResults()
 
     let allResults = useMemo(() => sortResultsByRecent(results ?? []), [results])
 
@@ -167,6 +167,7 @@ export const ResultsPage = () => {
                 </div>
 
                 <ResultsList
+                    isLoading={isLoadingResults}
                     games={games ?? []}
                     groups={groups ?? []}
                     results={filteredResults}
