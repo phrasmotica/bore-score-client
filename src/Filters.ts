@@ -1,4 +1,9 @@
-export class Filter<T> {
+interface IFilter<T> {
+    applies(): boolean
+    apply(elems: T[]): T[]
+}
+
+export class Filter<T> implements IFilter<T> {
     constructor(
         private condition: boolean,
         private func: (elems: T[]) => T[]
@@ -13,23 +18,29 @@ export class Filter<T> {
     }
 }
 
-export class Predicate<T> extends Filter<T> {
+export class Predicate<T> implements IFilter<T> {
     constructor(
-        condition: boolean,
-        func: (e: T) => boolean
-    ) {
-        super(condition, elems => elems.filter(e => func(e)))
+        private condition: boolean,
+        private pred: (e: T) => boolean
+    ) { }
+
+    applies() {
+        return this.condition
+    }
+
+    apply(elems: T[]) {
+        return elems.filter(e => this.pred(e))
     }
 }
 
 export class FilterSet<T> {
-    private filters: Map<string, Filter<T>>
+    private filters: Map<string, IFilter<T>>
 
-    constructor(filters?: Map<string, Filter<T>>) {
-        this.filters = filters ?? new Map<string, Filter<T>>()
+    constructor(filters?: Map<string, IFilter<T>>) {
+        this.filters = filters ?? new Map<string, IFilter<T>>()
     }
 
-    with(name: string, f: Filter<T>) {
+    with(name: string, f: IFilter<T>) {
         this.filters.set(name, f)
         return this
     }
@@ -82,7 +93,7 @@ export class FilterSet<T> {
             throw new Error(`Filter ${name} does not exist`)
         }
 
-        const newFilters = new Map<string, Filter<T>>(this.filters)
+        const newFilters = new Map<string, IFilter<T>>(this.filters)
         newFilters.delete(name)
 
         return new FilterSet<T>(newFilters)
