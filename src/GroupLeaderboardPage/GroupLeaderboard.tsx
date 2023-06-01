@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react"
 import moment from "moment"
 import { Link } from "react-router-dom"
-import { Dropdown, Message } from "semantic-ui-react"
+import { Dropdown, Message, Tab } from "semantic-ui-react"
 
 import { GameImage } from "../GameImage"
 import { LeaderboardList } from "./LeaderboardList"
@@ -69,6 +69,41 @@ export const GroupLeaderboard = (props: GroupLeaderboardProps) => {
 
     const resultsLink = `/results?group=${props.group.id}&game=${gameId}`
 
+    const tabPanes = [
+        {
+            menuItem: "Leaderboard",
+            render: () => <Tab.Pane attached={false}>
+                {leaderboardMessage && <Message className="leaderboard-message">
+                    {leaderboardMessage}
+                </Message>}
+
+                {leaderboardErrorMessage && <Message error className="leaderboard-message">
+                    {leaderboardErrorMessage}
+                </Message>}
+
+                {!leaderboardMessage && !leaderboardErrorMessage && leaderboard && <div>
+                    <LeaderboardList
+                        leaderboard={leaderboard}
+                        players={players ?? []} />
+
+                    <div>
+                        <Link to={resultsLink}>
+                            <em>{leaderboard.playedCount} result(s) recorded</em>
+                        </Link>
+                    </div>
+                </div>}
+            </Tab.Pane>
+        },
+        {
+            menuItem: "Table",
+            render: () => <Tab.Pane attached={false}>
+                <Message className="leaderboard-message">
+                    TODO: implement this
+                </Message>
+            </Tab.Pane>
+        },
+    ]
+
     return (
         <div className="group-leaderboard">
             <div className="content">
@@ -91,8 +126,6 @@ export const GroupLeaderboard = (props: GroupLeaderboardProps) => {
                 </div>
 
                 <div className="leaderboard">
-                    {/* TODO: put game dropdown next to leaderboard on wide screens */}
-
                     <div>
                         <Dropdown
                             fluid
@@ -104,29 +137,12 @@ export const GroupLeaderboard = (props: GroupLeaderboardProps) => {
                     </div>
 
                     {!isLoading && <div>
+                        {/* TODO: is this header necessary? */}
                         {!leaderboardErrorMessage && leaderboard && <h3>
                             Leaderboard for {gameDisplayName}
                         </h3>}
 
-                        {leaderboardMessage && <Message className="leaderboard-message">
-                            {leaderboardMessage}
-                        </Message>}
-
-                        {leaderboardErrorMessage && <Message error className="leaderboard-message">
-                            {leaderboardErrorMessage}
-                        </Message>}
-
-                        {!leaderboardMessage && !leaderboardErrorMessage && leaderboard &&
-                        <LeaderboardList
-                            leaderboard={leaderboard}
-                            players={players ?? []} />}
-
-                        {!leaderboardMessage && !leaderboardErrorMessage && leaderboard &&
-                        <div>
-                            <Link to={resultsLink}>
-                                <em>{leaderboard.playedCount} result(s) recorded</em>
-                            </Link>
-                        </div>}
+                        <Tab menu={{secondary: true, pointing: true, widths: tabPanes.length,}} panes={tabPanes} />
                     </div>}
                 </div>
             </div>
