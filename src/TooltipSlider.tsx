@@ -65,6 +65,7 @@ const HandleTooltip = (props: HandleTooltipProps) => {
             overlayInnerStyle={style}
             ref={tooltipRef}
             visible={visible}
+            zIndex={5}
             {...restProps}
         >
             {children}
