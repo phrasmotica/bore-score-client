@@ -4,6 +4,12 @@
 
 Run `npm run deploy -- -m "{commitMessage}"`, this should push the latest build of the app to the remote `gh-pages` branch and deploy it to GitHub Pages.
 
+## Azure Static Website (storage account)
+
+Run `npm run build` locally, then deploy the `build` folder to the `$web` static website blob container. Ensure the Rules Engine configuration of the CDN endpoint is configured as shown, so that URLs with paths are rewritten correctly:
+
+![Static Website Rules Engine](./static-website-rules-engine.png)
+
 ## Azure App Services
 
 ### Building the app
