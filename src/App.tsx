@@ -1,4 +1,4 @@
-import { HashRouter, Route, Routes } from "react-router-dom"
+import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { SemanticToastContainer } from "react-semantic-toasts"
 
 import { Navbar } from "./Navbar"
@@ -21,7 +21,7 @@ import "./App.css"
 const App = () => (
     <div className="app-container">
         <div className="content">
-            <HashRouter basename="/">
+            <BrowserRouter>
                 <Navbar />
 
                 <Routes>
@@ -38,7 +38,7 @@ const App = () => (
                     <Route path="/groups" element={<GroupsPage />} />
                     <Route path="/results" element={<ResultsPage />} />
                 </Routes>
-            </HashRouter>
+            </BrowserRouter>
         </div>
 
         <SemanticToastContainer position="bottom-right" maxToasts={3} />

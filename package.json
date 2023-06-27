@@ -1,7 +1,7 @@
 {
   "name": "bore-score-client",
   "version": "0.1.0",
-  "homepage": "https://phrasmotica.github.io/bore-score-client",
+  "homepage": "",
   "private": true,
   "dependencies": {
     "@tanstack/react-query": "^4.29.5",
