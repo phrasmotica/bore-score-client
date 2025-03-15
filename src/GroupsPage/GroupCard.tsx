@@ -1,13 +1,13 @@
 import { useQueryClient } from "@tanstack/react-query"
+import moment from "moment"
+import { useAuth } from "react-oidc-context"
 import { Link } from "react-router-dom"
 import { Button, ButtonGroup, Icon } from "semantic-ui-react"
-import moment from "moment"
 import { v4 as newGuid } from "uuid"
 
 import { GameImage } from "../GameImage"
 import { GroupVisibilityLabel } from "../GroupVisibilityLabel"
 
-import { parseToken } from "../Auth"
 import { useAcceptGroupInvitation, useAddGroupMembership, useDeclineGroupInvitation } from "../Mutations"
 import { useGroupInvitations, useGroupMemberships } from "../QueryHelpers"
 
@@ -22,8 +22,9 @@ interface GroupCardProps {
 export const GroupCard = (props: GroupCardProps) => {
     const queryClient = useQueryClient()
 
-    const token = parseToken()
-    const username = token?.username || ""
+    const auth = useAuth()
+
+    const username = auth.user?.profile.preferred_username || ""
 
     const group = props.group
 
@@ -83,7 +84,7 @@ export const GroupCard = (props: GroupCardProps) => {
                 </div>
             </div>
 
-            {token && <div className="right">
+            {auth.isAuthenticated && <div className="right">
                 {canJoinGroup && <Button
                     icon
                     fluid

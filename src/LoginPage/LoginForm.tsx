@@ -2,7 +2,6 @@ import { useState } from "react"
 import { useNavigate } from "react-router"
 import { Form } from "semantic-ui-react"
 
-import { setToken } from "../Auth"
 import { useLogin } from "../Mutations"
 
 interface LoginFormProps {
@@ -13,7 +12,6 @@ export const LoginForm = (props: LoginFormProps) => {
     const navigate = useNavigate()
 
     const { mutate: login, isLoading } = useLogin(data => {
-        setToken(data.token)
         navigate(props.redirect || "/")
     })
 
@@ -22,10 +20,12 @@ export const LoginForm = (props: LoginFormProps) => {
 
     const formComplete = () => email.length > 0 && password.length > 0
 
-    const submit = () => login({
-        email: email,
-        password: password,
-    })
+    const submit = () => {
+        login({
+            email: email,
+            password: password,
+        })
+    }
 
     return (
         <Form className="login-form" onSubmit={submit} loading={isLoading}>

@@ -1,18 +1,17 @@
 import { useEffect } from "react"
+import { useAuth } from "react-oidc-context"
 import { Link, useLocation } from "react-router-dom"
-import { Menu, Dropdown } from "semantic-ui-react"
-
-import { parseToken, removeToken } from "./Auth"
+import { Dropdown, Menu } from "semantic-ui-react"
 
 const noRedirectPaths = ["/signup", "/login"]
 
 export const Navbar = () => {
-    const token = parseToken()
-    const username = token?.username ?? ""
+    const auth = useAuth()
+
+    const username = auth.user?.profile.preferred_username
 
     const logOut = () => {
-        removeToken()
-        window.dispatchEvent(new Event("storage"))
+        void auth.signoutRedirect()
     }
 
     useEffect(() => {
@@ -57,7 +56,7 @@ export const Navbar = () => {
                 </Link>
             </Menu.Item>
 
-            {!token && <Menu.Menu position="right">
+            {!auth.isAuthenticated && <Menu.Menu position="right">
                 <Menu.Item>
                     <Link to="/signup">
                         Sign Up
@@ -71,7 +70,7 @@ export const Navbar = () => {
                 </Menu.Item>
             </Menu.Menu>}
 
-            {token && <Menu.Menu position="right">
+            {auth.isAuthenticated && <Menu.Menu position="right">
                 <Dropdown item simple text={username || "My Account"}>
                     <Dropdown.Menu>
                         <Dropdown.Item>

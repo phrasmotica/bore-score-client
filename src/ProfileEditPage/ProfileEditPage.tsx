@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import { Form } from "semantic-ui-react"
 import { useQueryClient } from "@tanstack/react-query"
+import { useEffect, useMemo, useState } from "react"
+import { useAuth } from "react-oidc-context"
+import { Link } from "react-router-dom"
+import { Form } from "semantic-ui-react"
 
-import { parseToken } from "../Auth"
 import { useTitle } from "../Hooks"
 import { useUpdatePassword, useUpdateProfile } from "../Mutations"
 import { PlayerImage } from "../PlayerImage"
@@ -15,20 +15,13 @@ import "./ProfileEditPage.css"
 export const ProfileEditPage = () => {
     useTitle("Edit Profile")
 
-    const token = parseToken()
-    const username = token?.username || ""
+    const auth = useAuth()
+
+    const username = auth.user?.profile.preferred_username || ""
 
     const queryClient = useQueryClient()
 
     const { data: player } = usePlayer(username)
-
-    const navigate = useNavigate()
-
-    useEffect(() => {
-        if (!token) {
-            navigate("/login")
-        }
-    }, [token, navigate])
 
     const updateProfileQuery = useUpdateProfile(() => {
         queryClient.invalidateQueries({
@@ -65,7 +58,7 @@ export const ProfileEditPage = () => {
         () => currentPassword.length > 0 && newPassword.length > 0 && newPassword === newPasswordAgain,
         [currentPassword, newPassword, newPasswordAgain])
 
-    if (!token || !player) {
+    if (!auth.isAuthenticated || !player) {
         return null
     }
 

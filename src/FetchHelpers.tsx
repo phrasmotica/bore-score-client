@@ -1,18 +1,16 @@
-import moment from "moment"
-
-import { getHeaders, getToken, parseToken, removeToken, setToken } from "./Auth"
+import { userManager } from "./index"
 
 import { Approval } from "./models/Approval"
 import { Game } from "./models/Game"
 import { Group, GroupResponse } from "./models/Group"
 import { GroupInvitation, GroupMembership } from "./models/GroupMembership"
+import { Leaderboard } from "./models/Leaderboard"
 import { LinkType } from "./models/LinkType"
 import { Player } from "./models/Player"
 import { Result, ResultResponse } from "./models/Result"
 import { Summary } from "./models/Summary"
-import { User, CreateUserRequest } from "./models/User"
+import { CreateUserRequest, User } from "./models/User"
 import { WinMethod } from "./models/WinMethod"
-import { Leaderboard } from "./models/Leaderboard"
 
 // https://dev.to/snigdho611/react-js-interceptors-with-fetch-api-1oei
 const { fetch: originalFetch } = window
@@ -20,23 +18,26 @@ const { fetch: originalFetch } = window
 window.fetch = async (...args) => {
     let [resource, config] = args
 
-    // TODO: currently every request will do this. Do it only once, possibly
-    // with react-query or react-query-auth library?
-    const parsedToken = parseToken()
-    if (parsedToken) {
-        const expiryTime = moment.unix(parsedToken.exp)
-        const now = moment()
-        const secondsLeft = expiryTime.diff(now, "seconds")
+    const addHeaders = resource.toString().includes(process.env.REACT_APP_API_URL || "")
 
-        if (secondsLeft <= 0) {
-            removeToken()
+    if (addHeaders) {
+        if (!config) {
+            config = {} as RequestInit
         }
-        else if (secondsLeft < 30) {
-            console.log("Refreshing token, only %d seconds left", secondsLeft)
-            const token = getToken()
-            const tokenRes = await refreshToken({ token })
-            setToken(tokenRes.token)
+
+        let headers = new Headers()
+
+        let user = await userManager.getUser()
+        let token = user?.access_token
+        if (token) {
+            headers.set("Authorization", `Bearer ${token}`)
         }
+
+        if (["POST", "PUT"].includes(config.method || "")) {
+            headers.set("Content-Type", "application/json")
+        }
+
+        config.headers = headers
     }
 
     const response = await originalFetch(resource, config)
@@ -44,374 +45,253 @@ window.fetch = async (...args) => {
     return response
 }
 
-export const getSummary = () => {
-    const headers = getHeaders()
-
-    return fetch(`${process.env.REACT_APP_API_URL}/summary`, {
-        headers: headers,
-    })
+export const getSummary = async () => {
+    return fetch(`${process.env.REACT_APP_API_URL}/summary`)
     .then(handleResponse)
     .then((data: Summary) => data)
 }
 
-export const getApprovals = (resultId: string) => {
-    const headers = getHeaders()
-
-    return fetch(`${process.env.REACT_APP_API_URL}/approvals/${resultId}`, {
-        headers: headers,
-    })
+export const getApprovals = async (resultId: string) => {
+    return fetch(`${process.env.REACT_APP_API_URL}/approvals/${resultId}`)
     .then(handleResponse)
     .then((data: Approval[]) => data)
 }
 
-export const postApproval = (approval: Approval) => {
-    const headers = getHeaders()
-    headers.set("Content-Type", "application/json")
-
+export const postApproval = async (approval: Approval) => {
     return fetch(`${process.env.REACT_APP_API_URL}/approvals`, {
         method: "POST",
         body: JSON.stringify(approval),
-        headers: headers,
     })
     .then(handleResponse)
     .then((data: Approval) => data)
 }
 
-export const getPlayers = (groupId?: string) => {
-    const headers = getHeaders()
-
+export const getPlayers = async (groupId?: string) => {
     let url = `${process.env.REACT_APP_API_URL}/players`
     if (groupId) {
         url = `${process.env.REACT_APP_API_URL}/groups/${groupId}/players`
     }
 
-    return fetch(url, {
-        headers: headers,
-    })
+    return fetch(url)
     .then(handleResponse)
     .then((data: Player[]) => data)
 }
 
-export const getPlayer = (username: string) => {
-    const headers = getHeaders()
-
-    return fetch(`${process.env.REACT_APP_API_URL}/players/${username}`, {
-        headers: headers,
-    })
+export const getPlayer = async (username: string) => {
+    return fetch(`${process.env.REACT_APP_API_URL}/players/${username}`)
     .then(handleResponse)
     .then((data: Player) => data)
 }
 
-export const deletePlayer = (username: string) => {
-    const headers = getHeaders()
-
+export const deletePlayer = async (username: string) => {
     return fetch(`${process.env.REACT_APP_API_URL}/players/${username}`, {
         method: "DELETE",
-        headers: headers,
     })
     .then(handleResponseEmpty)
 }
 
-export const postPlayer = (player: Player) => {
-    const headers = getHeaders()
-    headers.set("Content-Type", "application/json")
-
+export const postPlayer = async (player: Player) => {
     return fetch(`${process.env.REACT_APP_API_URL}/players`, {
         method: "POST",
         body: JSON.stringify(player),
-        headers: headers,
     })
     .then(handleResponse)
     .then((data: Player) => data)
 }
 
-export const updatePlayer = (player: Player) => {
-    const headers = getHeaders()
-    headers.set("Content-Type", "application/json")
-
+export const updatePlayer = async (player: Player) => {
     return fetch(`${process.env.REACT_APP_API_URL}/players/${player.username}`, {
         method: "PUT",
         body: JSON.stringify(player),
-        headers: headers,
     })
     .then(handleResponseEmpty)
 }
 
-export const getGames = () => {
-    const headers = getHeaders()
-
-    return fetch(`${process.env.REACT_APP_API_URL}/games`, {
-        headers: headers,
-    })
+export const getGames = async () => {
+    return fetch(`${process.env.REACT_APP_API_URL}/games`)
     .then(handleResponse)
     .then((data: Game[]) => data)
 }
 
-export const getGame = (id: string) => {
-    const headers = getHeaders()
-
-    return fetch(`${process.env.REACT_APP_API_URL}/games/${id}`, {
-        headers: headers,
-    })
+export const getGame = async (id: string) => {
+    return fetch(`${process.env.REACT_APP_API_URL}/games/${id}`)
     .then(handleResponse)
     .then((data: Game) => data)
 }
 
-export const postGame = (game: Game) => {
-    const headers = getHeaders()
-    headers.set("Content-Type", "application/json")
-
+export const postGame = async (game: Game) => {
     return fetch(`${process.env.REACT_APP_API_URL}/games`, {
         method: "POST",
         body: JSON.stringify(game),
-        headers: headers,
     })
     .then(handleResponse)
     .then((data: Game) => data)
 }
 
-export const deleteGame = (id: string) => {
-    const headers = getHeaders()
-
+export const deleteGame = async (id: string) => {
     // TODO: handle error without parsing response as JSON
     return fetch(`${process.env.REACT_APP_API_URL}/games/${id}`, {
         method: "DELETE",
-        headers: headers,
     })
 }
 
-export const getGroups = (getAll?: boolean) => {
-    const headers = getHeaders()
-
+export const getGroups = async (getAll?: boolean) => {
     let url = `${process.env.REACT_APP_API_URL}/groups`
     if (getAll) {
         url += "?all=1"
     }
 
-    return fetch(url, {
-        headers: headers,
-    })
+    return fetch(url)
     .then(handleResponse)
     .then((data: GroupResponse[]) => data)
 }
 
-export const getGroup = (id: string) => {
-    const headers = getHeaders()
-
-    return fetch(`${process.env.REACT_APP_API_URL}/groups/${id}`, {
-        headers: headers,
-    })
+export const getGroup = async (id: string) => {
+    return fetch(`${process.env.REACT_APP_API_URL}/groups/${id}`)
     .then(handleResponse)
     .then((data: GroupResponse) => data)
 }
 
-export const postGroup = (group: Group) => {
-    const headers = getHeaders()
-    headers.set("Content-Type", "application/json")
-
+export const postGroup = async (group: Group) => {
     return fetch(`${process.env.REACT_APP_API_URL}/groups`, {
         method: "POST",
         body: JSON.stringify(group),
-        headers: headers,
     })
     .then(handleResponse)
     .then((data: Group) => data)
 }
 
-export const getGroupInvitations = (username: string) => {
-    const headers = getHeaders()
-
-    return fetch(`${process.env.REACT_APP_API_URL}/users/${username}/invitations`, {
-        headers: headers,
-    })
+export const getGroupInvitations = async (username: string) => {
+    return fetch(`${process.env.REACT_APP_API_URL}/users/${username}/invitations`)
     .then(handleResponse)
     .then((data: GroupInvitation[]) => data)
 }
 
-export const acceptGroupInvitation = (invitationId: string) => {
-    const headers = getHeaders()
-
+export const acceptGroupInvitation = async (invitationId: string) => {
     return fetch(`${process.env.REACT_APP_API_URL}/invitations/${invitationId}/accept`, {
         method: "POST",
-        headers: headers,
     })
     .then(handleResponseEmpty)
 }
 
-export const declineGroupInvitation = (invitationId: string) => {
-    const headers = getHeaders()
-
+export const declineGroupInvitation = async (invitationId: string) => {
     return fetch(`${process.env.REACT_APP_API_URL}/invitations/${invitationId}/decline`, {
         method: "POST",
-        headers: headers,
     })
     .then(handleResponseEmpty)
 }
 
-export const postGroupInvitation = (invitation: GroupInvitation) => {
-    const headers = getHeaders()
-    headers.set("Content-Type", "application/json")
-
+export const postGroupInvitation = async (invitation: GroupInvitation) => {
     return fetch(`${process.env.REACT_APP_API_URL}/invitations`, {
         method: "POST",
         body: JSON.stringify(invitation),
-        headers: headers,
     })
     .then(handleResponse)
     .then((data: GroupInvitation) => data)
 }
 
-export const getGroupMemberships = (username: string) => {
-    const headers = getHeaders()
-
-    return fetch(`${process.env.REACT_APP_API_URL}/memberships/${username}`, {
-        headers: headers,
-    })
+export const getGroupMemberships = async (username: string) => {
+    return fetch(`${process.env.REACT_APP_API_URL}/memberships/${username}`)
     .then(handleResponse)
     .then((data: GroupMembership[]) => data)
 }
 
-export const postGroupMembership = (membership: GroupMembership) => {
-    const headers = getHeaders()
-    headers.set("Content-Type", "application/json")
-
+export const postGroupMembership = async (membership: GroupMembership) => {
     return fetch(`${process.env.REACT_APP_API_URL}/memberships`, {
         method: "POST",
         body: JSON.stringify(membership),
-        headers: headers,
     })
     .then(handleResponse)
     .then((data: GroupMembership) => data)
 }
 
-export const getLeaderboardForGroupAndGame = (groupId: string, gameId: string) => {
+export const getLeaderboardForGroupAndGame = async (groupId: string, gameId: string) => {
     let url = `${process.env.REACT_APP_API_URL}/groups/${groupId}/leaderboard/${gameId}`
 
-    return fetch(url, {
-        headers: getHeaders(),
-    })
+    return fetch(url)
     .then(handleResponse)
     .then((data: Leaderboard) => data)
 }
 
-export const getLinkTypes = () => {
-    const headers = getHeaders()
-
-    return fetch(`${process.env.REACT_APP_API_URL}/linkTypes`, {
-        headers: headers,
-    })
+export const getLinkTypes = async () => {
+    return fetch(`${process.env.REACT_APP_API_URL}/linkTypes`)
     .then(handleResponse)
     .then((data: LinkType[]) => data)
 }
 
-export const getUser = (username: string) => {
-    const headers = getHeaders()
-
-    return fetch(`${process.env.REACT_APP_API_URL}/users/${username}`, {
-        headers: headers,
-    })
+export const getUser = async (username: string) => {
+    return fetch(`${process.env.REACT_APP_API_URL}/users/${username}`)
     .then(handleResponse)
     .then((data: User) => data)
 }
 
-export const postUser = (user: CreateUserRequest) => {
-    const headers = getHeaders()
-
+export const postUser = async (user: CreateUserRequest) => {
     return fetch(`${process.env.REACT_APP_API_URL}/users`, {
         method: "POST",
         body: JSON.stringify(user),
-        headers: headers,
     })
     .then(handleResponseEmpty)
 }
 
-export const updatePassword = (request: UpdatePasswordRequest) => {
-    const headers = getHeaders()
-    headers.set("Content-Type", "application/json")
-
+export const updatePassword = async (request: UpdatePasswordRequest) => {
     return fetch(`${process.env.REACT_APP_API_URL}/users/${request.username}/password`, {
         method: "PUT",
         body: JSON.stringify(request),
-        headers: headers,
     })
     .then(handleResponseEmpty)
 }
 
-export const getWinMethods = () => {
-    const headers = getHeaders()
-
-    return fetch(`${process.env.REACT_APP_API_URL}/winMethods`, {
-        headers: headers,
-    })
+export const getWinMethods = async () => {
+    return fetch(`${process.env.REACT_APP_API_URL}/winMethods`)
     .then(handleResponse)
     .then((data: WinMethod[]) => data)
 }
 
-export const getResults = () => {
-    const headers = getHeaders()
-
-    return fetch(`${process.env.REACT_APP_API_URL}/results`, {
-        headers: headers,
-    })
+export const getResults = async () => {
+    return fetch(`${process.env.REACT_APP_API_URL}/results`)
     .then(handleResponse)
     .then((data: ResultResponse[]) => data)
 }
 
-export const getResultsForGroup = (groupId: string) => {
+export const getResultsForGroup = async (groupId: string) => {
     let url = `${process.env.REACT_APP_API_URL}/groups/${groupId}/results`
 
-    return fetch(url, {
-        headers: getHeaders(),
-    })
+    return fetch(url)
     .then(handleResponse)
     .then((data: ResultResponse[]) => data)
 }
 
-export const getResultsForUser = (username: string) => {
+export const getResultsForUser = async (username: string) => {
     let url = `${process.env.REACT_APP_API_URL}/users/${username}/results`
 
-    return fetch(url, {
-        headers: getHeaders(),
-    })
+    return fetch(url)
     .then(handleResponse)
     .then((data: ResultResponse[]) => data)
 }
 
-export const postResult = (result: Result) => {
-    const headers = getHeaders()
-    headers.set("Content-Type", "application/json")
-
+export const postResult = async (result: Result) => {
     return fetch(`${process.env.REACT_APP_API_URL}/results`, {
         method: "POST",
         body: JSON.stringify(result),
-        headers: headers,
     })
     .then(handleResponse)
     .then((data: Result) => data)
 }
 
-export const requestToken = (request: TokenRequest) => {
-    const headers = getHeaders()
-    headers.set("Content-Type", "application/json")
-
+export const requestToken = async (request: TokenRequest) => {
     return fetch(`${process.env.REACT_APP_API_URL}/token`, {
         method: "POST",
         body: JSON.stringify(request),
-        headers: headers,
     })
     .then(res => res.json())
     .then((res: TokenResponse) => res)
 }
 
-export const refreshToken = (request: TokenRefreshRequest) => {
-    const headers = getHeaders()
-    headers.set("Content-Type", "application/json")
-
+export const refreshToken = async (request: TokenRefreshRequest) => {
     // don't make a recursive call to the amended fetch
     return originalFetch(`${process.env.REACT_APP_API_URL}/token/refresh`, {
         method: "POST",
         body: JSON.stringify(request),
-        headers: headers,
     })
     .then(res => res.json())
     .then((res: TokenResponse) => res)

@@ -1,10 +1,10 @@
 import { useEffect } from "react"
+import { useAuth } from "react-oidc-context"
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom"
 import { toast } from "react-semantic-toasts"
 
 import { GroupLeaderboard } from "./GroupLeaderboard"
 
-import { parseToken } from "../Auth"
 import { resetTitle, setTitle } from "../Helpers"
 import { useGroup } from "../QueryHelpers"
 
@@ -15,14 +15,14 @@ interface GroupLeaderboardPageProps {
 export const GroupLeaderboardPage = (props: GroupLeaderboardPageProps) => {
     let { groupId } = useParams()
 
-    const token = parseToken()
+    const auth = useAuth()
 
     const location = useLocation()
     const navigate = useNavigate()
 
     const { data: group } = useGroup(groupId || "", error => {
         if (error.isUnauthorised()) {
-            if (token) {
+            if (auth.isAuthenticated) {
                 groupAccessDeniedToast()
                 navigate("/groups")
             }

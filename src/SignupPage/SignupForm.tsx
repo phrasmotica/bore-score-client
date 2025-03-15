@@ -2,7 +2,6 @@ import { useMemo, useState } from "react"
 import { useNavigate } from "react-router"
 import { Form } from "semantic-ui-react"
 
-import { setToken } from "../Auth"
 import { useLogin, useSignup } from "../Mutations"
 
 interface SignupFormProps {
@@ -13,7 +12,6 @@ export const SignupForm = (props: SignupFormProps) => {
     const navigate = useNavigate()
 
     const { mutate: login, isLoading: isLoggingIn } = useLogin(data => {
-        setToken(data.token)
         navigate(props.redirect || "/")
     })
 

@@ -1,11 +1,11 @@
 import { useState } from "react"
+import { useAuth } from "react-oidc-context"
 import { Button, Form, Icon } from "semantic-ui-react"
 
 import { GroupsList } from "./GroupsList"
 
 import { AddGroupModal } from "../AddGroupModal/AddGroupModal"
 
-import { parseToken } from "../Auth"
 import { FilterSet, Predicate } from "../Filters"
 import { useTitle } from "../Hooks"
 import { useGroups } from "../QueryHelpers"
@@ -19,7 +19,7 @@ export const GroupsPage = () => {
 
     const { data: groups } = useGroups()
 
-    const token = parseToken()
+    const auth = useAuth()
 
     const [showAddGroupModal, setShowAddGroupModal] = useState(false)
     const [showPublicOnly, setShowPublicOnly] = useState(false)
@@ -53,7 +53,7 @@ export const GroupsPage = () => {
                 <div className="header">
                     <h2>Groups</h2>
 
-                    {token && <Button
+                    {auth.isAuthenticated && <Button
                         icon
                         color="yellow"
                         onClick={() => setShowAddGroupModal(true)}>

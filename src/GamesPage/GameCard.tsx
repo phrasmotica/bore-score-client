@@ -1,7 +1,7 @@
+import { useAuth } from "react-oidc-context"
 import { Link } from "react-router-dom"
 import { Button, Icon, Label } from "semantic-ui-react"
 
-import { parseToken } from "../Auth"
 import { GameImage } from "../GameImage"
 import { useWinMethods } from "../QueryHelpers"
 
@@ -13,7 +13,7 @@ interface GameCardProps {
 }
 
 export const GameCard = (props: GameCardProps) => {
-    const token = parseToken()
+    const auth = useAuth()
 
     const { data: winMethods } = useWinMethods()
 
@@ -65,7 +65,7 @@ export const GameCard = (props: GameCardProps) => {
                 </div>
             </div>
 
-            {token && <div className="right">
+            {auth.isAuthenticated && <div className="right">
                 <Button
                     icon
                     fluid

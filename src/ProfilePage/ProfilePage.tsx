@@ -1,12 +1,10 @@
-import { useEffect } from "react"
-import { useLocation, useNavigate } from "react-router"
+import { useAuth } from "react-oidc-context"
 import { Link } from "react-router-dom"
 import { Button } from "semantic-ui-react"
 
 import { InvitationsList } from "../InvitationsList/InvitationsList"
 import { ResultsList } from "../ResultsPage/ResultsList"
 
-import { parseToken } from "../Auth"
 import { useTitle } from "../Hooks"
 import { PlayerImage } from "../PlayerImage"
 import { useGames, useGroupInvitations, useGroups, usePlayer, usePlayers, useResultsForUser } from "../QueryHelpers"
@@ -19,8 +17,9 @@ import "./ProfilePage.css"
 export const ProfilePage = () => {
     useTitle("My Profile")
 
-    const token = parseToken()
-    const username = token?.username || ""
+    const auth = useAuth()
+
+    const username = auth.user?.profile.preferred_username || ""
 
     const { data: games } = useGames()
     const { data: groups } = useGroups()
@@ -29,16 +28,7 @@ export const ProfilePage = () => {
     const { data: player } = usePlayer(username)
     const { data: results } = useResultsForUser(username)
 
-    const location = useLocation()
-    const navigate = useNavigate()
-
-    useEffect(() => {
-        if (!token) {
-            navigate("/login?redirect=" + encodeURIComponent(location.pathname))
-        }
-    }, [token, navigate, location.pathname])
-
-    if (!token || !player) {
+    if (!auth.isAuthenticated || !player) {
         return null
     }
 

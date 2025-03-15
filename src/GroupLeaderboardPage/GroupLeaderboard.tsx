@@ -1,12 +1,12 @@
-import { useMemo, useState } from "react"
 import moment from "moment"
+import { useMemo, useState } from "react"
+import { useAuth } from "react-oidc-context"
 import { Link } from "react-router-dom"
 import { Dropdown, Message, Tab } from "semantic-ui-react"
 
 import { GameImage } from "../GameImage"
 import { LeaderboardList } from "./LeaderboardList"
 
-import { parseToken } from "../Auth"
 import { displayDateValue } from "../MomentHelpers"
 import { useGames, useLeaderboardForGroupAndGame, usePlayers } from "../QueryHelpers"
 
@@ -24,7 +24,7 @@ export const GroupLeaderboard = (props: GroupLeaderboardProps) => {
     const [leaderboardErrorMessage, setLeaderboardErrorMessage] = useState("")
     const [gameId, setGameId] = useState("")
 
-    const token = parseToken()
+    const auth = useAuth()
 
     const { data: games } = useGames()
     const { data: players } = usePlayers(props.group.id) // TODO: disable this query if not a member
@@ -44,7 +44,7 @@ export const GroupLeaderboard = (props: GroupLeaderboardProps) => {
         },
         error => {
             if (error.response.status === 401) {
-                if (token) {
+                if (auth.isAuthenticated) {
                     setLeaderboardMessage("")
                     setLeaderboardErrorMessage("You must be a member to see this group's leaderboards.")
                 }

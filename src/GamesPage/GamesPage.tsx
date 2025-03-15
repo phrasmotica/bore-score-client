@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react"
+import { useAuth } from "react-oidc-context"
 import { Button, Icon, Input } from "semantic-ui-react"
 
 import { GamesList } from "./GamesList"
@@ -7,7 +8,6 @@ import { WinMethodFilterDropdown } from "./WinMethodFilterDropdown"
 import { AddGameModal } from "../AddGameModal/AddGameModal"
 import { TooltipSlider } from "../TooltipSlider"
 
-import { parseToken } from "../Auth"
 import { Filter, FilterSet, Predicate } from "../Filters"
 import { getMatches } from "../Fuzzy"
 import { useTitle } from "../Hooks"
@@ -34,7 +34,7 @@ export const GamesPage = () => {
         return allGames.map(g => g.maxPlayers).reduce((a, b) => Math.max(a, b), 6)
     }, [allGames])
 
-    const token = parseToken()
+    const auth = useAuth()
 
     const [showAddGameModal, setShowAddGameModal] = useState(false)
 
@@ -92,7 +92,7 @@ export const GamesPage = () => {
                 <div className="header">
                     <h2>Games</h2>
 
-                    {token && <Button
+                    {auth.isAuthenticated && <Button
                         icon
                         color="yellow"
                         onClick={() => setShowAddGameModal(true)}>

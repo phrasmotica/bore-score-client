@@ -1,12 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import moment from "moment"
 import { useEffect, useState } from "react"
+import { useAuth } from "react-oidc-context"
 import { useNavigate } from "react-router"
 import { Button, Header, Icon, Modal } from "semantic-ui-react"
 
 import { PlayerImage } from "../PlayerImage"
 
-import { parseToken } from "../Auth"
 import { deletePlayer } from "../FetchHelpers"
 import { resetTitle, setTitle } from "../Helpers"
 import { displayDateValue } from "../MomentHelpers"
@@ -37,7 +37,9 @@ export const PlayerDetails = (props: PlayerDetailsProps) => {
 
     const [showDeletePrompt, setShowDeletePrompt] = useState(false)
 
-    const token = parseToken()
+    const auth = useAuth()
+
+    const scopes = auth.user?.scopes || []
 
     let player = props.player
 
@@ -79,11 +81,11 @@ export const PlayerDetails = (props: PlayerDetailsProps) => {
         </Modal>
     )
 
-    const canDelete = token && token.permissions.includes("superuser")
+    const canDelete = auth.isAuthenticated && scopes.includes("superuser")
 
     return (
         <div className="player-details">
-            {token && renderDeletePrompt(player)}
+            {auth.isAuthenticated && renderDeletePrompt(player)}
 
             <div className="content">
                 <div className="left">

@@ -1,9 +1,10 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import moment from "moment"
 import { useState } from "react"
+import { useAuth } from "react-oidc-context"
 import { Link } from "react-router-dom"
 import { toast } from "react-semantic-toasts"
 import { Accordion, Icon, List, SemanticCOLORS, SemanticICONS } from "semantic-ui-react"
-import moment from "moment"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { v4 as newGuid } from "uuid"
 
 import { CooperativeScoreCard } from "./CooperativeScoreCard"
@@ -14,7 +15,6 @@ import { ResultApprover } from "./ResultApprover"
 
 import { GameImage } from "../GameImage"
 
-import { parseToken } from "../Auth"
 import { postApproval } from "../FetchHelpers"
 import { groupBy } from "../Helpers"
 import { displayDateTimeValue } from "../MomentHelpers"
@@ -43,12 +43,13 @@ export const ResultCard = (props: ResultCardProps) => {
 
     let r = props.result
 
-    const token = parseToken()
-    const username = token?.username ?? ""
+    const auth = useAuth()
+
+    const username = auth.user?.profile.preferred_username || ""
 
     const queryClient = useQueryClient()
 
-    const { data: approvals } = useApprovals(r.id, token !== null)
+    const { data: approvals } = useApprovals(r.id, auth.isAuthenticated)
 
     // TODO: add error handling
     const { mutate: addApproval } = useMutation({
@@ -150,7 +151,7 @@ export const ResultCard = (props: ResultCardProps) => {
         id: newGuid(),
         resultId: r.id,
         timeCreated: moment().unix(),
-        username: token?.username || "",
+        username: username,
         approvalStatus: ApprovalStatus.Approved,
     })
 
@@ -158,7 +159,7 @@ export const ResultCard = (props: ResultCardProps) => {
         id: newGuid(),
         resultId: r.id,
         timeCreated: moment().unix(),
-        username: token?.username || "",
+        username: username,
         approvalStatus: ApprovalStatus.Rejected,
     })
 

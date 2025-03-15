@@ -1,11 +1,11 @@
-import { useState } from "react"
-import { Accordion, Button, ButtonGroup, Icon, List, SemanticCOLORS, SemanticICONS } from "semantic-ui-react"
-import moment from "moment"
 import { useQueryClient } from "@tanstack/react-query"
+import moment from "moment"
+import { useState } from "react"
+import { useAuth } from "react-oidc-context"
+import { Accordion, Button, ButtonGroup, Icon, List, SemanticCOLORS, SemanticICONS } from "semantic-ui-react"
 
 import { GameImage } from "../GameImage"
 
-import { parseToken } from "../Auth"
 import { displayDateTimeValue } from "../MomentHelpers"
 import { useAcceptGroupInvitation, useDeclineGroupInvitation } from "../Mutations"
 
@@ -22,8 +22,9 @@ interface InvitationCardProps {
 export const InvitationCard = (props: InvitationCardProps) => {
     const queryClient = useQueryClient()
 
-    const token = parseToken()
-    const username = token?.username || ""
+    const auth = useAuth()
+
+    const username = auth.user?.profile.preferred_username || ""
 
     const [showDetails, setShowDetails] = useState(false)
 

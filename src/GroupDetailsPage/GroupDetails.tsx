@@ -1,18 +1,19 @@
 import { useQueryClient } from "@tanstack/react-query"
+import moment from "moment"
 import { useState } from "react"
+import { useAuth } from "react-oidc-context"
 import { useLocation } from "react-router"
 import { Link } from "react-router-dom"
-import moment from "moment"
 import { Button, ButtonGroup, Icon, Message } from "semantic-ui-react"
 import { v4 as newGuid } from "uuid"
 
 import { AddResultModal } from "../AddResultModal/AddResultModal"
 import { GameImage } from "../GameImage"
+import { GroupVisibilityLabel } from "../GroupVisibilityLabel"
 import { InviteUsersModal } from "../InviteUsersModal/InviteUsersModal"
-import { MemberList } from "./MemberList"
 import { ResultsList } from "../ResultsPage/ResultsList"
+import { MemberList } from "./MemberList"
 
-import { parseToken } from "../Auth"
 import { displayDateValue } from "../MomentHelpers"
 import { useAcceptGroupInvitation, useAddGroupMembership, useDeclineGroupInvitation } from "../Mutations"
 import { useGames, useGroupInvitations, useGroupMemberships, usePlayer, usePlayers, useResultsForGroup } from "../QueryHelpers"
@@ -21,7 +22,6 @@ import { GroupResponse, GroupVisibilityName } from "../models/Group"
 import { InvitationStatus } from "../models/GroupMembership"
 
 import "./GroupDetails.css"
-import { GroupVisibilityLabel } from "../GroupVisibilityLabel"
 
 interface GroupDetailsProps {
     group: GroupResponse
@@ -32,8 +32,9 @@ export const GroupDetails = (props: GroupDetailsProps) => {
     const [showInviteUsersModal, setShowInviteUsersModal] = useState(false)
     const [resultsErrorMessage, setResultsErrorMessage] = useState("")
 
-    const token = parseToken()
-    const username = token?.username || ""
+    const auth = useAuth()
+
+    const username = auth.user?.profile.preferred_username || ""
 
     const { data: games } = useGames()
     const { data: memberships } = useGroupMemberships(username)
@@ -49,7 +50,7 @@ export const GroupDetails = (props: GroupDetailsProps) => {
         },
         error => {
             if (error.response.status === 401) {
-                if (token) {
+                if (auth.isAuthenticated) {
                     setResultsErrorMessage("You must be a member to see this group's results.")
                 }
                 else {

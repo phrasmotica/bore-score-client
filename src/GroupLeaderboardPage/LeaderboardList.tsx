@@ -1,7 +1,7 @@
 import { useState } from "react"
+import { useAuth } from "react-oidc-context"
 import { List } from "semantic-ui-react"
 
-import { parseToken } from "../Auth"
 import { PlayerImage } from "../PlayerImage"
 
 import { Leaderboard, Rank } from "../models/Leaderboard"
@@ -27,8 +27,9 @@ const sortLeaderboard = (r: Rank, s: Rank) => {
 export const LeaderboardList = (props: LeaderboardListProps) => {
     let sorted = props.leaderboard.leaderboard.sort(sortLeaderboard)
 
-    const token = parseToken()
-    const username = token?.username || ""
+    const auth = useAuth()
+
+    const username = auth.user?.profile.preferred_username || ""
 
     return (
         <div className="leaderboard-list">

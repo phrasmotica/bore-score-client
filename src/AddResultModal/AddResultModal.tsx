@@ -1,19 +1,19 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { useEffect, useState } from "react"
 import moment from "moment"
+import { useEffect, useState } from "react"
+import { useAuth } from "react-oidc-context"
 import { toast } from "react-semantic-toasts"
 import { Accordion, Button, Form, Header, Icon, Modal } from "semantic-ui-react"
 import { v4 as newGuid } from "uuid"
 
-import { GroupForm } from "./GroupForm"
+import { GameImage } from "../GameImage"
 import { CooperativeScoreForm } from "./CooperativeScoreForm"
 import { CooperativeWinForm } from "./CooperativeWinForm"
 import { DateTimeForm } from "./DateTimeForm"
+import { GroupForm } from "./GroupForm"
 import { IndividualScoreForm } from "./IndividualScoreForm"
 import { IndividualWinForm } from "./IndividualWinForm"
-import { GameImage } from "../GameImage"
 
-import { parseToken } from "../Auth"
 import { postResult } from "../FetchHelpers"
 import { submitValue } from "../MomentHelpers"
 import { useGames, useGroupMemberships, useGroups, usePlayers } from "../QueryHelpers"
@@ -34,8 +34,9 @@ interface AddResultModalProps {
 export const AddResultModal = (props: AddResultModalProps) => {
     const queryClient = useQueryClient()
 
-    const token = parseToken()
-    const username = token?.username || ""
+    const auth = useAuth()
+
+    const username = auth.user?.profile.preferred_username || ""
 
     const { data: games } = useGames()
     const { data: groups } = useGroups()

@@ -1,4 +1,7 @@
+import { useQueryClient } from "@tanstack/react-query"
 import { useMemo, useState } from "react"
+import { useAuth } from "react-oidc-context"
+import { toast } from "react-semantic-toasts"
 import { Button, ButtonGroup, Form, Header, Icon, Modal } from "semantic-ui-react"
 
 import { GameImage } from "../GameImage"
@@ -7,12 +10,10 @@ import { usePlayers } from "../QueryHelpers"
 
 import { GroupResponse } from "../models/Group"
 
-import "./InviteUsersModal.css"
-import { useAddGroupInvitation } from "../Mutations"
-import { useQueryClient } from "@tanstack/react-query"
-import { parseToken } from "../Auth"
 import { InvitationStatus } from "../models/GroupMembership"
-import { toast } from "react-semantic-toasts"
+import { useAddGroupInvitation } from "../Mutations"
+
+import "./InviteUsersModal.css"
 
 interface InviteUsersModalProps {
     open: boolean
@@ -23,8 +24,9 @@ interface InviteUsersModalProps {
 export const InviteUsersModal = (props: InviteUsersModalProps) => {
     const queryClient = useQueryClient()
 
-    const token = parseToken()
-    const username = token?.username ?? ""
+    const auth = useAuth()
+
+    const username = auth.user?.profile.preferred_username || ""
 
     // TODO: don't load all players in one go
     const { data: allUsers } = usePlayers()

@@ -1,13 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import moment from "moment"
 import { useState } from "react"
+import { useAuth } from "react-oidc-context"
 import { useNavigate } from "react-router"
 import { Button, Header, Icon, Modal, Table } from "semantic-ui-react"
 
 import { AddResultModal } from "../AddResultModal/AddResultModal"
 import { GameImage } from "../GameImage"
 
-import { parseToken } from "../Auth"
 import { deleteGame } from "../FetchHelpers"
 import { displayDateValue } from "../MomentHelpers"
 
@@ -24,7 +24,9 @@ interface GameDetailsProps {
 export const GameDetails = (props: GameDetailsProps) => {
     let navigate = useNavigate()
 
-    const token = parseToken()
+    const auth = useAuth()
+
+    const scopes = auth.user?.scopes || []
 
     let queryClient = useQueryClient()
 
@@ -82,7 +84,7 @@ export const GameDetails = (props: GameDetailsProps) => {
 
     let imageSrc = game.imageLink || "https://e.snmc.io/i/600/s/9f6d3d17acac6ce20993eb158c203e4b/5662600/godspeed-you-black-emperor-lift-yr-skinny-fists-like-antennas-to-heaven-cover-art.jpg"
 
-    const canDelete = token && token.permissions.includes("superuser")
+    const canDelete = auth.isAuthenticated && scopes.includes("superuser")
 
     return (
         <div className="game-details">
@@ -93,7 +95,7 @@ export const GameDetails = (props: GameDetailsProps) => {
                 <div className="left">
                     <GameImage imageSrc={imageSrc} />
 
-                    {token && <Button
+                    {auth.isAuthenticated && <Button
                         icon
                         fluid
                         color="teal"

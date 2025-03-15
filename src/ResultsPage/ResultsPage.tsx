@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from "react"
 import moment from "moment"
+import { useEffect, useMemo, useState } from "react"
+import { useAuth } from "react-oidc-context"
 import { useSearchParams } from "react-router-dom"
 import { Button, Form, Icon } from "semantic-ui-react"
 
@@ -10,7 +11,6 @@ import { ResultsList } from "./ResultsList"
 import { AddResultModal } from "../AddResultModal/AddResultModal"
 import { DateTimeForm } from "../AddResultModal/DateTimeForm"
 
-import { parseToken } from "../Auth"
 import { FilterSet, Predicate } from "../Filters"
 import { useTitle } from "../Hooks"
 import { useGames, useGroups, usePlayers, useResults } from "../QueryHelpers"
@@ -55,8 +55,9 @@ export const ResultsPage = () => {
     const [timePlayedEarliest, setTimePlayedEarliest] = useState(oldestTimePlayed)
     const [timePlayedLatest, setTimePlayedLatest] = useState(newestTimePlayed)
 
-    const token = parseToken()
-    const username = token?.username ?? ""
+    const auth = useAuth()
+
+    const username = auth.user?.profile.preferred_username || ""
 
     const { data: games } = useGames()
     const { data: groups } = useGroups(true)
@@ -157,7 +158,7 @@ export const ResultsPage = () => {
                 <div className="header">
                     <h2>Results</h2>
 
-                    {token && <Button
+                    {auth.isAuthenticated && <Button
                         icon
                         color="teal"
                         onClick={() => setShowAddResultModal(true)}>
