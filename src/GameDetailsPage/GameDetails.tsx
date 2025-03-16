@@ -26,6 +26,8 @@ export const GameDetails = (props: GameDetailsProps) => {
 
     const auth = useAuth()
 
+    // TODO: manually decode the token to get its custom KC roles...
+    // https://github.com/authts/react-oidc-context/issues/1436#issuecomment-2578281748
     const scopes = auth.user?.scopes || []
 
     let queryClient = useQueryClient()
