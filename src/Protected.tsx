@@ -22,7 +22,10 @@ export const Protected = (props: { children: ReactNode }) => {
                 hasTriedSignin
             )
         ) {
-            void auth.signinRedirect()
+            void auth.signinRedirect({
+                redirect_uri: `${window.location.origin}/openid/callback?redirectUri=${window.location.pathname}`,
+            })
+
             setHasTriedSignin(true)
         }
     }, [auth, hasTriedSignin])

@@ -1,23 +1,27 @@
 import { useEffect } from "react"
 import { useAuth } from "react-oidc-context"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 
 export const AuthCallback = () => {
     const auth = useAuth()
     const navigate = useNavigate()
 
+    const [searchParams] = useSearchParams()
+
+    let redirectUri = searchParams.get("redirectUri") || ""
+    if (!redirectUri) {
+        redirectUri = "/"
+    }
+
     useEffect(() => {
         if (auth.isAuthenticated) {
-            // TODO: this happens after we re-write the browser history in the
-            // onSigninCallback (see index.tsx), so we don't redirect to the
-            // original page after login. How can we do that instead?
-            navigate("/")
+            navigate(redirectUri)
         }
-    }, [auth, navigate])
+    }, [auth, navigate, redirectUri])
 
     return (
         <h1>
-            Processing signin...
+            Processing signin... redirecting to {redirectUri}
         </h1>
     )
 }

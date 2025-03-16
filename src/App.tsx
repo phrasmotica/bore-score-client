@@ -1,3 +1,4 @@
+import { ReactNode } from "react"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { SemanticToastContainer } from "react-semantic-toasts"
 
@@ -15,7 +16,6 @@ import { ProfileEditPage } from "./ProfileEditPage/ProfileEditPage"
 import { ProfilePage } from "./ProfilePage/ProfilePage"
 import { Protected } from "./Protected"
 import { ResultsPage } from "./ResultsPage/ResultsPage"
-import { SignupPage } from "./SignupPage/SignupPage"
 
 import "./App.css"
 
@@ -25,23 +25,26 @@ const App = () => (
             <BrowserRouter>
                 <Navbar />
 
-                <Protected>
-                    <Routes>
-                        <Route path="/" element={<HomePage />} />
-                        <Route path="/openid/callback" element={<AuthCallback />} />
-                        <Route path="/signup" element={<SignupPage />} />
-                        {/* <Route path="/login" element={<LoginPage />} /> */}
-                        <Route path="/me" element={<ProfilePage />} />
-                        <Route path="/me-edit" element={<ProfileEditPage />} />
-                        <Route path="/players/:username" element={<PlayerDetailsPage />} />
-                        <Route path="/groups/:groupId/leaderboards" element={<GroupLeaderboardPage />} />
-                        <Route path="/groups/:groupId" element={<GroupDetailsPage />} />
-                        <Route path="/games/:gameId" element={<GameDetailsPage />} />
-                        <Route path="/games" element={<GamesPage />} />
-                        <Route path="/groups" element={<GroupsPage />} />
-                        <Route path="/results" element={<ResultsPage />} />
-                    </Routes>
-                </Protected>
+                <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/openid/callback" element={<AuthCallback />} />
+                    {/* <Route path="/signup" element={<SignupPage />} /> */}
+                    {/* <Route path="/login" element={<LoginPage />} /> */}
+
+                    <Route path="/games" element={<GamesPage />} />
+                    <Route path="/groups" element={<GroupsPage />} />
+                    <Route path="/results" element={<ResultsPage />} />
+
+                    <Route path="/games/:gameId" element={<GameDetailsPage />} />
+
+                    <Route path="/players/:username" element={<PlayerDetailsPage />} />
+
+                    <Route path="/me" element={protect(<ProfilePage />)} />
+                    <Route path="/me-edit" element={protect(<ProfileEditPage />)} />
+
+                    <Route path="/groups/:groupId/leaderboards" element={<GroupLeaderboardPage />} />
+                    <Route path="/groups/:groupId" element={<GroupDetailsPage />} />
+                </Routes>
             </BrowserRouter>
         </div>
 
@@ -54,5 +57,7 @@ const App = () => (
         </footer>
     </div>
 )
+
+const protect = (component: ReactNode) => <Protected children={component} />
 
 export default App
