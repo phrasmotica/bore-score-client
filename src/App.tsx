@@ -3,6 +3,7 @@ import { SemanticToastContainer } from "react-semantic-toasts"
 
 import { Navbar } from "./Navbar"
 
+import { AuthCallback } from "./AuthCallback"
 import { GameDetailsPage } from "./GameDetailsPage/GameDetailsPage"
 import { GamesPage } from "./GamesPage/GamesPage"
 import { GroupDetailsPage } from "./GroupDetailsPage/GroupDetailsPage"
@@ -27,6 +28,7 @@ const App = () => (
                 <Protected>
                     <Routes>
                         <Route path="/" element={<HomePage />} />
+                        <Route path="/openid/callback" element={<AuthCallback />} />
                         <Route path="/signup" element={<SignupPage />} />
                         {/* <Route path="/login" element={<LoginPage />} /> */}
                         <Route path="/me" element={<ProfilePage />} />

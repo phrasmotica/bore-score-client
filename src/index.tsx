@@ -14,8 +14,8 @@ import "./index.css"
 export const userManager = new UserManager({
     authority: process.env.REACT_APP_AUTHORITY || "",
     client_id: process.env.REACT_APP_CLIENT_ID || "",
-    // redirect_uri: process.env.REACT_APP_REDIRECT_URI || "",
-    redirect_uri: `${window.location.origin}${window.location.pathname}`,
+    redirect_uri: process.env.REACT_APP_REDIRECT_URI || "",
+    // redirect_uri: `${window.location.origin}${window.location.pathname}`,
     // post_logout_redirect_uri: process.env.REACT_APP_POST_LOGOUT_REDIRECT_URI || "",
     post_logout_redirect_uri: window.location.origin,
     userStore: new WebStorageStateStore({ store: window.sessionStorage }),
