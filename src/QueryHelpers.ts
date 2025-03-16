@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query"
 
 import { FetchError, getApprovals, getGame, getGames, getGroup, getGroupInvitations, getGroupMemberships, getGroups, getLeaderboardForGroupAndGame, getLinkTypes, getPlayer, getPlayers, getResults, getResultsForGroup, getResultsForUser, getSummary, getUser, getWinMethods } from "./FetchHelpers"
-import { ResultResponse } from "./models/Result"
 import { Leaderboard } from "./models/Leaderboard"
+import { ResultResponse } from "./models/Result"
 
 // TODO: add error handling
 export const useApprovals = (resultId: string, enabled: boolean) => useQuery({
@@ -146,5 +146,5 @@ export const useWinMethods = () => useQuery({
 })
 
 const shouldRetry = (failureCount: number, error: FetchError) => {
-    return ![401, 404].includes(error.response.status)
+    return ![401, 404].includes(error.response?.status || 0)
 }
