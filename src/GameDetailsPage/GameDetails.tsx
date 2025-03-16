@@ -10,6 +10,7 @@ import { GameImage } from "../GameImage"
 
 import { deleteGame } from "../FetchHelpers"
 import { displayDateValue } from "../MomentHelpers"
+import { useJwt } from "../useJwt"
 
 import { Game } from "../models/Game"
 import { LinkType } from "../models/LinkType"
@@ -26,9 +27,9 @@ export const GameDetails = (props: GameDetailsProps) => {
 
     const auth = useAuth()
 
-    // TODO: manually decode the token to get its custom KC roles...
-    // https://github.com/authts/react-oidc-context/issues/1436#issuecomment-2578281748
-    const scopes = auth.user?.scopes || []
+    const {
+        roles,
+    } = useJwt()
 
     let queryClient = useQueryClient()
 
@@ -86,7 +87,7 @@ export const GameDetails = (props: GameDetailsProps) => {
 
     let imageSrc = game.imageLink || "https://e.snmc.io/i/600/s/9f6d3d17acac6ce20993eb158c203e4b/5662600/godspeed-you-black-emperor-lift-yr-skinny-fists-like-antennas-to-heaven-cover-art.jpg"
 
-    const canDelete = auth.isAuthenticated && scopes.includes("superuser")
+    const canDelete = auth.isAuthenticated && roles.includes("superuser")
 
     return (
         <div className="game-details">

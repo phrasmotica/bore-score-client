@@ -10,6 +10,7 @@ import { PlayerImage } from "../PlayerImage"
 import { deletePlayer } from "../FetchHelpers"
 import { resetTitle, setTitle } from "../Helpers"
 import { displayDateValue } from "../MomentHelpers"
+import { useJwt } from "../useJwt"
 
 import { Player } from "../models/Player"
 
@@ -39,7 +40,9 @@ export const PlayerDetails = (props: PlayerDetailsProps) => {
 
     const auth = useAuth()
 
-    const scopes = auth.user?.scopes || []
+    const {
+        roles,
+    } = useJwt()
 
     let player = props.player
 
@@ -81,7 +84,7 @@ export const PlayerDetails = (props: PlayerDetailsProps) => {
         </Modal>
     )
 
-    const canDelete = auth.isAuthenticated && scopes.includes("superuser")
+    const canDelete = auth.isAuthenticated && roles.includes("superuser")
 
     return (
         <div className="player-details">
